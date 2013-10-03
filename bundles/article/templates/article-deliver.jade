@@ -1,0 +1,21 @@
+.states
+  .state(ng-repeat="state in states")
+    .group(ui-jq="droppable", ui-options="droppableOptions", data-state="{{state.name}}")
+      .top
+        h2.title {{state.label}}
+      .articleparts.content
+        .row-item(ng-repeat="article in articles[state.name]")
+          .header
+             .pull-right
+               span {{article.publishdate | date: 'yyyy-MM-dd' }}
+               button.btn-link(ng-click="toggleArticle(article)")
+                 i(ng-class="toggleIcon(article)")
+             .header-content
+               div(class="article-state {{article.state}}")
+               h3.title {{article.title}}
+          .content(ng-show="collapsed(article)")
+            .inner
+              .row-item(ng-repeat="(index, part) in article.items", ui-jq="draggable", data-id="{{part._id}}")
+                div(class="article-state {{part.state}}")
+                a(href="{{part.link}}") {{part.title}}
+                .status {{ part.status }}

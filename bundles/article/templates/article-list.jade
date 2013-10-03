@@ -1,0 +1,7 @@
+.articleparts
+  .row-item(ng-repeat="article in articles")
+    div(class="article-state {{article.state}}")
+    .pull-right
+      span {{article.publishdate | date: 'yyyy-MM-dd'}}
+    h3.title
+      a(href="{{article.link}}") {{article.title}}

@@ -1,0 +1,28 @@
+form.form.content-table-form(ng-show="items", ng-submit="performActions()")
+  .control-group
+    .controls
+      input(type="text", name="search",
+        ng-model="search", placeholder="{{'GLOBAL.SEARCH' | translate}}")
+    .control-group.actions(ng-show="operations")
+      .controls
+        .operations
+          select(name="operation", ng-options="item.label for (name, item) in operations", ng-model="operation")
+        .actions(ng-transclude)
+        .confirm
+          input(type="submit", value="{{ 'GLOBAL.EXECUTE' | translate }}")
+    table.table.table-striped
+      thead
+        tr
+          th(ng-show="operations")
+            input(type="checkbox", name="selectall", ng-model="selectall", ng-change="toggleSelect()")
+          th(ng-repeat="header in headers") {{header}}
+      tbody
+        tr.item(ng-repeat="(key, item) in items | filter: search")
+          td(ng-show="operations")
+            input(type="checkbox", name="selected", ng-model="selected[key]")
+          td(ng-repeat="property in props")
+            content-value(item="item", property="property", options="properties[property]")
+   .pagination
+     ul
+       li(ng-repeat="page in pages")
+         button.btn-link(ng-click="getPage(page)")

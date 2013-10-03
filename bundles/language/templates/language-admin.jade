@@ -1,0 +1,22 @@
+.container-fluid.main-content
+  .row-fluid
+    .span12.right-side
+      .box.pad
+        h2 {{ 'LANGUAGE.TITLE' | translate }}
+        content-table(items="languages", properties="properties", operations="operations")
+        h3 {{ 'LANGUAGE.ADDNEW' | translate }}
+        form.form.form-horizontal(name="addLanguageForm", ng-submit="addLanguage()")
+          .control-group
+            label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}
+            .controls
+              input(type="text", name="name", ng-model="language.name", required)
+          .control-group
+            label.control-label(for="langcode") {{ 'LANGUAGE.LANGCODE' | translate }}
+            .controls
+              input(type="text", name="name", ng-model="language.langcode", required)
+          .control-group
+            label.control-label(for="langcode") {{ 'LANGUAGE.DIRECTION' | translate }}
+            .controls
+              select(type="text", name="name", ng-model="language.direction", required, ng-options="key as value for (key, value) in directions")
+          .form-actions
+            input.btn.btn-primary(type="submit", value="{{'GLOBAL.SAVE' | translate}}")

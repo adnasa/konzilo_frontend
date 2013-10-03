@@ -1,0 +1,9 @@
+ul.nav(ng-show="showLangs")
+  li.dropdown
+    a.dropdown-toggle(href="#/settings/targets")
+      i.icon-flag
+      span {{currentLanguage}}
+      b.caret
+    ul.dropdown-menu
+      li(ng-repeat="(langcode, language) in languages")
+        a(ng-click="changeLanguage(langcode)") {{langcode}}

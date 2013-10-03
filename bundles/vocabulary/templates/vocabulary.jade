@@ -1,0 +1,41 @@
+.container-fluid.main-content
+  .row-fluid
+    .span2
+      form.box.pad(ng-submit="newVocabulary()")
+        input(type="text", name="target", ng-model="vocabularyName", placeholder="")
+        input.btn.btn-primary(type="submit", name="newstep", value="Spara")
+      ul.targets.nav.nav-tabs.nav-stacked
+        li(ng-repeat="vocabulary in vocabularies")
+          a(href="#/settings/vocabularies/{{vocabulary.name}}") {{ vocabulary.title }}
+    .span5.target(ng-show="vocabulary")
+      .box.pad
+        button.btn.btn-danger.pull-right(ng-click="removeVocabulary(vocabulary)")
+          i.icon-remove
+          span {{ 'VOCABULARY.REMOVE' | translate }}
+        h2 {{vocabulary.title}}
+        form.pad.form.form-horizontal(ng-submit="saveVocabulary()", name="vocabularyForm")
+          .control-group
+            label.control-label {{ 'GLOBAL.TITLE' | translate }}
+            .controls
+              input(type="text", name="title", ng-model="vocabulary.title", ng-change="saveVocabulary()")
+          .control-group
+            label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
+            .controls
+              textarea.input-block-level(name="description",  ng-model="vocabulary.description", ng-change="saveVocabulary()")
+        content-table(query="query", entity-type="Term", properties="properties")
+        form.form-inline.pad(name="newTermForm", ng-submit="newTerm()")
+          input(type="text", name="termname", ng-model="termName", placeholder="{{'VOCABULARY.NEWTERM' | translate}}")
+          button.btn-link(name="newTerm")
+            i.icon-plus
+    .span5.box(ng-show="term")
+      h2 {{term.name}}
+      form.pad.form-horizontal(name="termForm")
+        cmf-autosave-status(status="autosave")
+        .control-group
+          label.control-label {{'GLOBAL.NAME' | translate }}
+          .controls
+            input(type="text", name="name", ng-model="term.name", ng-change="saveTerm()")
+        .control-group
+          label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
+          .controls
+            textarea.input-block-level(name="description",  ng-model="term.description")

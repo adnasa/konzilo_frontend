@@ -1,0 +1,16 @@
+.timeline-content
+  .activate
+    button.btn.activete-btn(ng-click="showTimeline=!showTimeline")
+      .inner {{ 'TIMELINE.TITLE' | translate }}
+  .inner(ng-show="showTimeline")
+    .container-fluid.content
+      .row-fluid
+        form.form.form-inline(name="timelineForm")
+          input(type="text", datepicker-popup="yyyy-MM-dd", ng-model="startdate", open="startopen", placeholder="{{'TIMELINE.STARTDATE' | translate}}")
+          button.btn(ng-click="startopen=!startopen")
+            i.icon-calendar
+          input(type="text", datepicker-popup="yyyy-MM-dd", ng-model="enddate", open="endopen", placeholder="{{'TIMELINE.ENDDATE' | translate}}")
+          button.btn(ng-click="endopen=!endopen")
+            i.icon-calendar
+      .row-fluid
+        .timeline.span12(timeline-canvas, data="getData", start="startdate", end="enddate")

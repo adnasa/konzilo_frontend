@@ -1,0 +1,48 @@
+.clipboard-articles
+  .box.pad
+    .articles.unscheduled
+      .inner
+        div(kntnt-add-article)
+        .row-item(ng-repeat="article in unscheduled"
+          data-id="{{article._id}}"
+          ui-jq="draggable"
+          ui-options="draggableOptions")
+            div(class="article-state {{article.state}}")
+            a(href="{{link(article)}}") {{article.title}}
+            button.btn-link.clipboard-remove(ng-click="removeFromClipboard(article)")
+              i.icon-remove
+    .scheduled
+      .inner
+        .articles
+          .group.date-hidden(
+            ui-jq="droppable"
+            ui-options="droppableOptions"
+            data-date="{{prevDate}}",
+            ng-show="prevDate")
+            .top
+              h2 {{ prevDate }}
+            .content
+
+        .articles.sortable(ui-sortable="options", ng-model="dates")
+          .group(ng-repeat="(index, date) in dates", ui-jq="droppable", ui-options="droppableOptions", data-date="{{date}}")
+            .top
+              h2 {{ date }}
+              button.btn-link.pull-right.calendar-btn(ng-click="toggleDatePicker(date)")
+                i.icon-calendar
+              .picker(ng-show="datePickerShown(date)", ng-model="datePickerValues[index]", ng-change="newDate(index, date)")
+                datepicker(min="today")
+
+            .content
+              .row-item(ng-class="activeArticle(article)", ui-jq="draggable", data-id="{{article._id}}", ng-repeat="article in clipboard[date]")
+                div(class="article-state {{article.state}}")
+                a(href="{{link(article)}}") {{article.title}}
+                button.btn-link.clipboard-remove(ng-click="removeFromClipboard(article)")
+                    i.icon-remove
+        .articles
+          .group.date-hidden(
+            ui-jq="droppable"
+            ui-options="droppableOptions"
+            data-date="{{nextDate}}")
+            .top
+              h2 {{ nextDate | placeholder: "Utan publiceringsdatum" }}
+          .content

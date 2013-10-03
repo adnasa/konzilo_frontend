@@ -1,0 +1,31 @@
+.query-builder
+  .groups(ng-repeat="(index, group) in groups")
+    .filters
+      span.description(ng-show="index > 0") {{'GLOBAL.AND' | translate}}
+      span.description(ng-show="index == 0") {{description}}
+      .filter-group.item.label.label-info(ng-show="group.filter")
+        span {{group.filter.description}}
+        button.btn.btn-link(ng-click="removeGroup(group)", type="button")
+          i.icon-remove
+      .filter.item.label.label-success(ng-repeat="(index, filter) in group.filters")
+         span(ng-show="index > 0") {{ 'GLOBAL.OR' | translate }}
+         span  {{filter.label}}
+         button.btn.btn-link(ng-click="removeFilter(group, filter)")
+           i.icon-remove
+      ul.filter-select
+        li.dropdown(ng-show="group.filter")
+          a.dropdown-toggle
+            i.icon-plus
+          ul.dropdown-menu(ng-show="group.filter.optionValues")
+            li(ng-repeat="(item, label) in group.filter.optionValues", ng-show="filterAvailable(group, item)")
+              a(ng-click="selectOption(group, group.filter, item)") {{label}}
+  ul.filter-select
+    li.dropdown
+      a.dropdown-toggle
+        i.icon-plus
+      ul.dropdown-menu
+        li(ng-repeat="filter in filters", ng-class="dropdownMenu(filter)")
+          a(ng-click="addGroup(filter)", tabindex="-1") {{filter.label}}
+          ul.dropdown-menu(ng-show="filter.optionValues")
+            li(ng-repeat="(item, label) in filter.optionValues")
+              a(ng-click="addGroup(filter, item)") {{label}}

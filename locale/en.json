@@ -1,0 +1,265 @@
+{
+  "REVIEW": {
+    "TITLE": "Review",
+    "DESC": "Choose an article in the list to the right. Article that gets approved disappear from the list.",
+    "APPROVE": "Approve delivery",
+    "DISAPPROVE": "Dismiss delivery"
+  },
+  "GLOBAL": {
+    "SUBMITTER": "Submitter",
+    "PROVIDER": "Provider",
+    "DEADLINE": "Deadline",
+    "TERMS": "Terms",
+    "LANGUAGE": "Language",
+    "TARGET": "Target",
+    "SHOW_ANALYSIS": "Show target analysis",
+    "STEP": "Step",
+    "CHANNEL": "Channel",
+    "SUBJECT": "Topic",
+    "TARGET_TOPIC_SPEC": "{{target}} uses words like {{topic}} and similar phrases which interests them. Add words and phrases that fits below.",
+    "KEYWORD_SPEC": "{{target}} uses the following words and phrases to find adticles while in the step {{step}}:",
+    "KEYWORDS": "Keywords",
+    "ARTICLE_IDEA": "Article idea",
+    "TASK": "Task",
+    "ORDER": "Order",
+    "DISCUSSION": "Discussion",
+    "OPERATIONS": "Operations",
+    "EDIT": "Edit",
+    "ENDPOINT": "Endpoint",
+    "NAME": "Name",
+    "DESCRIPTION": "Description",
+    "SAVE": "Save",
+    "SAVED": "Saved",
+    "SEARCH": "Search",
+    "REMOVE": "Remove",
+    "USER": "User",
+    "USERNAME": "Username",
+    "PASSWORD": "Password",
+    "APPEND": "Append",
+    "WORKINGTITLE": "Working title",
+    "DATE": "Date",
+    "TIME": "Time",
+    "DELIVERY": "Delivery",
+    "ASSIGNMENT": "Assignment",
+    "DISPLAY": "Display",
+    "PUBLISHING": "Publish date",
+    "UNPUBLISHING": "Unpublish date",
+    "VERSIONS": "Versions",
+    "NEWARTICLE": "New article",
+    "NEWPART": "New article part",
+    "RESPONSIBLE": "Responsible",
+    "PUBLISHTIME": "Publish time",
+    "PUBLISHDATE": "Publish time",
+    "UNPUBLISHTIME": "Unpublish time",
+    "UNPUBLISHDATE": "Unpublish time",
+    "HEADLINE": "Headline",
+    "TOPHEADLINE": "Top headline",
+    "KICKER": "Kicker",
+    "LEAD": "Lead",
+    "BODY": "Body",
+    "STATUS": "Status",
+    "TITLE": "Title",
+    "CLOSE": "Close",
+    "EMAIL": "Email",
+    "IMAGE": "Image",
+    "SEND": "Send",
+    "SEARCH": "Search",
+    "EXECUTE": "Execute",
+    "UPLOAD": "Upload",
+    "AND": "and",
+    "OR": "or",
+    "ACTIVATE": "Activate",
+    "TYPE": "Type",
+    "SETTINGS": "Settings",
+    "LOGOUT": "Log out",
+    "BACK": "Back"
+  },
+  "CHANNEL": {
+    "TITLE": "Channels",
+    "ADD_NEW": "Add new channel"
+  },
+  "CLIENT": {
+    "TITLE": "Clients",
+    "ADDNEW": "Add new client",
+    "REDIRECT_URI": "Redirect URI",
+    "CLIENT_ID": "Client ID",
+    "SECRET": "Secret",
+    "REMOVE": "Remove client"
+  },
+  "DASHBOARD": {
+    "TITLE": "Welcome {{name}}",
+    "DESCRIPTION": "Start using Konzilo!"
+  },
+  "LANGUAGE": {
+    "TITLE": "Language",
+    "ADDNEW": "Add new language",
+    "LANGCODE": "Language code",
+    "DIRECTION": "Direction",
+    "STANDARDLANG": "Standard language",
+    "SETDEFAULT": "Use as standard"
+  },
+  "LOGIN": {
+    "LOGIN": "Log in",
+    "FORGOTPASSWORD": "Forgot your password?",
+    "RETRIEVEPASSWORD": "Request new password",
+    "PASSWORDSENT": "A login reset link has been sent to your email address.",
+    "PASSWORDERROR": "Something went wrong. Are you sure you entered the right email address?",
+    "USERNAMEOREMAIL": "Username or email"
+  },
+  "TARGET": {
+    "TITLE": "Target groups",
+    "ADDNEW": "New target group",
+    "TARGETDESC": "Description of the target",
+    "PAIN": "Pain",
+    "GAIN": "Gain",
+    "LOOKINGFOR": "Looking for content like...",
+    "SUBJECTNAME": "Topic name",
+    "THINKING": "I'm thinking about",
+    "INFOABOUT": "I'm looking for information about",
+    "INFLUENCES": "I influence",
+    "DOING": "I do",
+    "INFLUENCED": "I'm influenced by",
+    "EXPERIENCE": "I experience",
+    "CONFIRMREMOVE": "Are you sure you want to remove this target group?"
+
+  },
+  "ORDER": {
+    "TITLE": "Order",
+    "DESCRIPTION": "Order part of articles, like text, images and media och assign them on different people. Use the article picker to add articles that you want to work with..",
+    "PARTDESC": "Description of article part",
+    "SHOWLISTINGS": "Use this article part in listings",
+    "PUBLISHINFO": "(or when all article parts are approved, whatever happens first.)",
+    "ARTICLE_TITLE": "Article description"
+  },
+  "PLAN": {
+    "TITLE": "Plan",
+    "DESCRIPTION": "Create new articles and plan in the list to the left, or choose existing articles in the article picker. Click on any of the articles to plan the article in detail.",
+    "PLAN_TITLE": "Article planning"
+  },
+  "STEP": {
+    "TITLE": "Steps",
+    "ADDSTEP": "Add new step",
+    "DESCRIPTION": "Specify the steps that you expect your readers to go as they grow familiar with you.",
+    "CONFIRMREMOVE": "Are you sure you want to remove this step?"
+  },
+  "VOCABULARY": {
+    "REMOVE": "Remove vocabulary",
+    "NEWTERM": "New vocabulary",
+    "TITLE": "Vocabulary"
+  },
+  "GROUP": {
+    "TITLE": "Groups",
+    "CREATENEW": "New group",
+    "CREATE": "Create group"
+  },
+  "MANAGE": {
+    "TITLE": "Manage",
+    "DESCRIPTION": "Choose the article to manage in the list to the left. Use the article picker to add more articles.",
+    "REMOVE": "Remove article",
+    "PUBLISHEDTO": "Published to",
+    "GOTOARTICLE": "Go to the article",
+    "PUBLISHINFO": "The article was sen to {{channel}} for publishing {{date}}",
+    "SHOWLISTINGS": "Use in listings",
+    "NEWVERSION": "New version",
+    "REMOVEPART": "Remove article part",
+    "ADDPART": "Add article part",
+    "CONFIRMPARTREMOVE": "Are you sure you want to remove this article part?",
+    "CONFIRMARTICLEREMOVE": "Are you sure you want to remove this article?"
+  },
+  "DELIVER": {
+    "TITLE": "Deliver",
+    "DESCRIPTION": "All article parts that you are responsible for are in the list to the left. Pick an article to start delivering."
+  },
+  "IMAGEPART": {
+    "TITLE": "Deliver images",
+    "UPLOADFILES": "Upload files",
+    "LABEL": "One or more images"
+  },
+  "MEDIAPART": {
+    "TITLE": "Deliver media",
+    "MEDIA": "Media",
+    "LABEL": "Embedded media"
+  },
+  "TEXTPART": {
+    "TITLE": "Deliver text",
+    "LABEL": "Text"
+  },
+  "ARTICLEPICKER": {
+    "TITLE": "Add articles",
+    "DESCRIPTION": "Choose which articles that should be added in the article list:",
+    "ALL": "All articles",
+    "RECOMMENDED": "Recommended selection",
+    "CUSTOM": "Customized selection",
+    "SELECTION": "Selected articles",
+    "SHOWARTICLES": "Show articles",
+    "SEARCHARTICLES": "Search through articles",
+    "ADDSELECTED": "Pick selected articles",
+    "EMPTYBEFORE": "Empty the article list before adding articles",
+    "PICKER": "Article picker",
+    "STEPDESC": "Which takes the reader",
+    "PUBLISHDESC": "is published in",
+    "TARGETDESC": "that targets",
+    "RESPONSIBLEDESC": "where responsible are",
+    "STATUSDESC": "which has the status",
+    "MATCHES": "Matching",
+    "MATCHESDEC": "that matches"
+  },
+  "AUTHOR": {
+    "EDIT": "Edit author",
+    "NEW": "New author",
+    "ABOUT": "About the author",
+    "NAME": "Author",
+    "PICK": "Pick author"
+  },
+  "CLIPBOARD": {
+    "DESCRIPTION": "Use the article picker to select articles.."
+  },
+  "COMMENT": {
+    "WRITTENBY": "Written by",
+    "WRITE": "Write a new comment"
+  },
+  "FILE": {
+    "ALLOWEDTYPES": "Allowed types",
+    "ADDNEW": "Add a new file",
+    "UPLOADFILES": "Upload files",
+    "ALLFILES": "All files",
+    "MYFILES": "My files"
+  },
+  "FILTER": {
+    "TITLE": "Configure filter",
+    "FILTERON": "Filter on"
+  },
+  "IMAGE": {
+    "ALT": "Alternative text"
+  },
+  "TIMELINE": {
+    "TITLE": "Timeline",
+    "STARTDATE": "Start date",
+    "ENDDATE": "End date"
+  },
+  "USER": {
+    "TITLE": "Users",
+    "ADDTITLE": "Create new user",
+    "CREATE": "Create user",
+    "ACTIVE": "Active",
+    "INACTIVE": "Inactive",
+    "ROLES": "Roles",
+    "PASSWORDREPEAT": "Repeteat password",
+    "PASSWORDDESC": "Enter a new password here to change the password of the user. The password will not be changed if a new password is not provided."
+  },
+  "ARTICLE": {
+    "IDEA": "Idea",
+    "PLANNED": "Planned",
+    "READY": "Ready",
+    "NOTSTARTED": "Not started",
+    "STARTED": "Workin in progress",
+    "NEEDSREVIEW": "Delivered for review",
+    "APPROVED": "Approved",
+    "NEWVERSION": "New version"
+  },
+  "ENDPOINT": {
+    "REMOVE": "Remove endpoint",
+    "TITLE": "Endpoints",
+    "ADDNEW": "Add new endpoint"
+  }
+}

@@ -1,0 +1,60 @@
+.picker-content(kz-user-access="create articles")
+  .picker-body(collapse="isCollapsed")
+    .container-fluid
+      .row-fluid.picker-form
+        .span3
+          .simple
+            h2 {{ 'ARTICLEPICKER.TITLE' | translate }}
+            .control-group
+              label.control-label {{ 'ARTICLEPICKER.DESCRIPTION' | translate }}
+              .controls
+                label.radio
+                  input(type="radio", name="articles", ng-model="selector", value="all", ng-change="showArticles()")
+                  span {{ 'ARTICLEPICKER.ALL' | translate }}
+                label.radio
+                  input(type="radio", name="articles", ng-model="selector", value="recommended", ng-change="showArticles()")
+                  span {{ 'ARTICLEPICKER.RECOMMENDED' | translate }}
+                label.radio
+                  input(type="radio", name="articles", ng-model="selector", value="advanced", ng-change="showArticles()")
+                  span {{ 'ARTICLEPICKER.CUSTOM' | translate }}
+        .span9
+          .advanced
+            h2 {{ 'ARTICLEPICKER.SELECTION' | translate }}
+            konzilo-query-filters(builder="builder",
+              description="{{ 'ARTICLEPICKER.SHOWARTICLES' | translate }}")
+
+      .row-fluid
+        .span12
+          form.form.pick-form(ng-show="articles")
+            .control-group
+              .controls
+                input(type="text", name="search", ng-model="search", placeholder="{{'ARTICLEPICKER.SEARCHARTICLES' | translate}}")
+            .control-group.actions
+              .controls
+                button.btn-primary.btn(ng-click="addArticles()") {{'ARTICLEPICKER.ADDSELECTED' | translate}}
+                label.checkbox
+                  input(type="checkbox", name="purge", ng-model="purge")
+                  span {{ 'ARTICLEPICKER.EMPTYBEFORE' | translate }}
+          table.articles.table.table-striped(ng-show="articles")
+            tr
+              th
+                input(type="checkbox", name="selectall", ng-model="selectall", ng-change="toggleSelect()")
+              th {{ 'GLOBAL.TITLE' | translate }}
+              th {{ 'GLOBAL.PUBLISHDATE' | translate }}
+              th {{ 'GLOBAL.RESPONSIBLE' | translate }}
+            tr.article(ng-repeat="article in articles | filter: search")
+              td
+                input(type="checkbox", name="selected", ng-model="selected[article._id]")
+              td {{article.title}}
+              td {{article.publishdate | date: "yyyy-MM-dd" }}
+              td {{article.responsible.label }}
+           .pagination
+             ul
+               li(ng-repeat="page in pages")
+                 button.btn-link(ng-click="getPage(page)") {{page + 1}}
+
+  .picker(ng-class="collapseClass()")
+    button.btn.picker-btn(ng-click="isCollapsed = !isCollapsed")
+      .inner
+        span {{'ARTICLEPICKER.PICKER' | translate }}
+        i.icon.icon-circle-arrow-down

@@ -1,0 +1,45 @@
+.timeline-content {
+  width: 100%;
+  background: @white;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  .content {
+    padding-top: 20px;
+  }
+  > .activate {
+    .box-shadow(~"0 1px 10px rgba(0,0,0,.1)");
+    &.collapsed {
+      position: fixed;
+    }
+    width: 100%;
+    button {
+      .border-radius(0px);
+      border: none;
+      text-shadow: none;
+      font-weight: 120;
+      color: @white;
+      width: 100%;
+      background: @kntntGrayDark;
+    }
+  }
+}
+.timeline {
+  .item {
+    word-wrap: break-word;
+    overflow: hidden;
+    padding: 2px;
+    background: #fff;
+    border: 1px solid @grayLight;
+    border-radius: 3px;
+  }
+  .line {
+    background: @kntntGreen;
+  }
+  .hour {
+    background: @grayLight;
+  }
+  .separator {
+    background: @grayLight;
+  }
+}

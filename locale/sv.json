@@ -1,0 +1,265 @@
+{
+  "REVIEW": {
+    "TITLE": "Granska",
+    "DESC": "Välj en artikel i listan åt höger. Artiklar som godkänns försvinner från listan.",
+    "APPROVE": "Godkänn leverans",
+    "DISAPPROVE": "Underkänn leverans"
+  },
+  "GLOBAL": {
+    "SUBMITTER": "Beställare",
+    "PROVIDER": "Leverantör",
+    "DEADLINE": "Deadline",
+    "TERMS": "Villkor",
+    "LANGUAGE": "Språk",
+    "TARGET": "Målgrupp",
+    "SHOW_ANALYSIS": "Visa målgruppsanalys",
+    "STEP": "Steg",
+    "CHANNEL": "Kanal",
+    "SUBJECT": "Ämne",
+    "TARGET_TOPIC_SPEC": "{{target}} använder ord som {{topic}} och liknande ord som intresserar dem. Lägg in ord och fraser som passar artikeln nedan.",
+    "KEYWORD_SPEC": "{{target}} använder följande ord och fraser för att i steget {{step}} hitta artiklar som:",
+    "KEYWORDS": "Sökord",
+    "ARTICLE_IDEA": "Artikelidé",
+    "TASK": "Uppdrag",
+    "ORDER": "Beställning",
+    "DISCUSSION": "Diskussion",
+    "OPERATIONS": "Operationer",
+    "EDIT": "Redigera",
+    "ENDPOINT": "Publiceringsmål",
+    "NAME": "Namn",
+    "DESCRIPTION": "Beskrivning",
+    "SAVE": "Spara",
+    "SAVED": "Sparad",
+    "SEARCH": "Sök",
+    "REMOVE": "Ta bort",
+    "USER": "Användare",
+    "USERNAME": "Användarnamn",
+    "PASSWORD": "Lösenord",
+    "APPEND": "Lägg till",
+    "WORKINGTITLE": "Arbetsnamn",
+    "DATE": "Datum",
+    "TIME": "Tid",
+    "DELIVERY": "Leverans",
+    "ASSIGNMENT": "Uppdrag",
+    "DISPLAY": "Visning",
+    "PUBLISHING": "Publicering",
+    "UNPUBLISHING": "Avpublicering",
+    "VERSIONS": "Versioner",
+    "NEWARTICLE": "Ny artikel",
+    "NEWPART": "Ny artikeldel",
+    "RESPONSIBLE": "Ansvarig",
+    "PUBLISHTIME": "Publiceringstid",
+    "PUBLISHDATE": "Publiceringsdatum",
+    "UNPUBLISHTIME": "Avpubliceringstid",
+    "UNPUBLISHDATE": "Avpubliceringsdatum",
+    "HEADLINE": "Rubrik",
+    "TOPHEADLINE": "Dårrad",
+    "KICKER": "Nedryckare",
+    "LEAD": "Ingress",
+    "BODY": "Brödtext",
+    "STATUS": "Status",
+    "TITLE": "Titel",
+    "CLOSE": "Stäng",
+    "EMAIL": "Email",
+    "IMAGE": "Bild",
+    "SEND": "Skicka",
+    "SEARCH": "Sök",
+    "EXECUTE": "Utför",
+    "UPLOAD": "Ladda upp",
+    "AND": "och",
+    "OR": "eller",
+    "ACTIVATE": "Aktivera",
+    "TYPE": "Typ",
+    "SETTINGS": "Inställningar",
+    "LOGOUT": "Logga ut",
+    "BACK": "Tillbaka"
+  },
+  "CHANNEL": {
+    "TITLE": "Kanaler",
+    "ADD_NEW": "Lägg till ny kanal"
+  },
+  "CLIENT": {
+    "TITLE": "Klienter",
+    "ADDNEW": "Lägg till ny klient",
+    "REDIRECT_URI": "Redirect URI",
+    "CLIENT_ID": "Klient-id",
+    "SECRET": "Hemlighet",
+    "REMOVE": "Ta bort klient"
+  },
+  "DASHBOARD": {
+    "TITLE": "Välkommen {{name}}",
+    "DESCRIPTION": "Nu kan du börja använda Konzilo!"
+  },
+  "LANGUAGE": {
+    "TITLE": "Språk",
+    "ADDNEW": "Lägg till nytt språk",
+    "LANGCODE": "Språk-kod",
+    "DIRECTION": "Riktning",
+    "STANDARDLANG": "Standardspråk",
+    "SETDEFAULT": "Sätt som standard"
+  },
+  "LOGIN": {
+    "LOGIN": "Logga in",
+    "FORGOTPASSWORD": "Glömt lösenordet?",
+    "RETRIEVEPASSWORD": "Begär nytt lösenord",
+    "PASSWORDSENT": "En återställningslänk har skickats till den mail.",
+    "PASSWORDERROR": "Något gick fel när mailet skulle skickas. Angav du rätt uppgifter?",
+    "USERNAMEOREMAIL": "Användarnamn eller E-post"
+  },
+  "TARGET": {
+    "TITLE": "Målgrupper",
+    "ADDNEW": "Ny målgrupp",
+    "TARGETDESC": "Beskrivning av målgruppen",
+    "PAIN": "Pain",
+    "GAIN": "Gain",
+    "LOOKINGFOR": "Söker innehåll som...",
+    "SUBJECTNAME": "Ämnesnamn",
+    "THINKING": "Jag funderar på",
+    "INFOABOUT": "Jag söker information om",
+    "INFLUENCES": "Jag påverkar",
+    "DOING": "Jag gör",
+    "INFLUENCED": "Jag påverkas av",
+    "EXPERIENCE": "Jag upplever",
+    "CONFIRMREMOVE": "Är du säker på att du vill ta bort den här målgruppen?"
+  },
+  "ORDER": {
+    "TITLE": "Beställa",
+    "DESCRIPTION": "Här beställer du delar av artiklar, t.ex. text, bilder och media och lägger ut dem på ansvariga leverantörer. Använd artikelväljaren för att lägga till de artiklar du vill arbeta med i listan åt vänster.",
+    "PARTDESC": "Beskrivning av artikeldel",
+    "SHOWLISTINGS": "Använd den här artikeldelen i listningar",
+    "PUBLISHINFO": "(eller när alla artikeldelar är godkända, vilket som inträffar först)",
+    "ARTICLE_TITLE": "Beskrivning av artikel"
+  },
+  "PLAN": {
+    "TITLE": "Planera",
+    "DESCRIPTION": "Skapa nya artiklar och planera i listan åt vänster, eller välj existerande artiklar med artikelväljaren. Tryck på någon av artiklarna för att detaljplanera.",
+    "PLAN_TITLE": "Planering av artikel"
+  },
+  "STEP": {
+    "TITLE": "Steg",
+    "ADDSTEP": "Lägg till nytt steg",
+    "DESCRIPTION": "Specifiera de steg som en läsare går igenom.",
+    "CONFIRMREMOVE": "Är du säker på att du vill ta bort det här steget?"
+  },
+  "VOCABULARY": {
+    "REMOVE": "Ta bort vokabulär",
+    "NEWTERM": "Ny term",
+    "TITLE": "Vokabulär"
+  },
+  "GROUP": {
+    "TITLE": "Grupper",
+    "CREATENEW": "Ny Grupp",
+    "CREATE": "Skapa grupp"
+  },
+  "MANAGE": {
+    "TITLE": "Hantera",
+    "DESCRIPTION": "Välj artiklar att hantera i listan åt vänster. Använd artikelväljaren för att välja fler artiklar.",
+    "REMOVE": "Ta bort artikel",
+    "PUBLISHEDTO": "Publicerad till",
+    "GOTOARTICLE": "Gå till artikeln",
+    "PUBLISHINFO": "Artikeln skickades till {{channel}} för publicering {{date}}",
+    "SHOWLISTINGS": "Använd i listningar",
+    "NEWVERSION": "Ny version",
+    "REMOVEPART": "Ta bort artikeldel",
+    "ADDPART": "Lägg till artikeldel",
+    "CONFIRMPARTREMOVE": "Är du säker på att du vill ta bort den här artikeldelen?",
+    "CONFIRMARTICLEREMOVE": "Är du säker på att du vill ta bort den här artikeln?"
+  },
+  "DELIVER": {
+    "TITLE": "Leverera",
+    "DESCRIPTION": "Alla artikeldelar som du är ansvarig för att leverera finns i listan åt vänster. Tryck på en artikeldel för att börja leverera."
+  },
+  "IMAGEPART": {
+    "TITLE": "Leverera bilder",
+    "UPLOADFILES": "Ladda upp filer",
+    "LABEL": "En eller flera bilder"
+  },
+  "MEDIAPART": {
+    "TITLE": "Leverera media",
+    "MEDIA": "Media",
+    "LABEL": "Inbäddad media"
+  },
+  "TEXTPART": {
+    "TITLE": "Leverera text",
+    "LABEL": "Text som matas in"
+  },
+  "ARTICLEPICKER": {
+    "TITLE": "Lägg till artiklar",
+    "DESCRIPTION": "Välj vilka artiklar som skall läggas till i artikellistan:",
+    "ALL": "Alla artiklar",
+    "RECOMMENDED": "Rekommenderat urval",
+    "CUSTOM": "Eget urval av artiklar",
+    "SELECTION": "Artiklar urval",
+    "SHOWARTICLES": "Visa artiklar",
+    "SEARCHARTICLES": "Sök bland artiklar",
+    "ADDSELECTED": "Lägg till valda artiklar",
+    "EMPTYBEFORE": "Töm artikellistan innan nya läggs till",
+    "PICKER": "Artikelväljare",
+    "STEPDESC": "Som tar läsaren",
+    "PUBLISHDESC": "Som publiceras på",
+    "TARGETDESC": "som vänder sig till",
+    "RESPONSIBLEDESC": "där ansvarig är",
+    "STATUSDESC": "som har status",
+    "MATCHES": "Matchar",
+    "MATCHESDEC": "som matchar"
+  },
+  "AUTHOR": {
+    "EDIT": "Redigera författare",
+    "NEW": "Ny författare",
+    "ABOUT": "Om författaren",
+    "NAME": "Författare",
+    "PICK": "Välj författare"
+  },
+  "CLIPBOARD": {
+    "DESCRIPTION": "Använd artikelväljaren för att lägga till artiklar."
+  },
+  "COMMENT": {
+    "WRITTENBY": "Skrivet av",
+    "WRITE": "Skriv en kommentar"
+  },
+  "FILE": {
+    "ALLOWEDTYPES": "Tillåtna typer",
+    "ADDNEW": "Lägg till ny fil",
+    "UPLOADFILES": "Ladda up filer",
+    "ALLFILES": "Alla filer",
+    "MYFILES": "Mina filer"
+  },
+  "FILTER": {
+    "TITLE": "Konfigurera filter",
+    "FILTERON": "Filtrera på"
+  },
+  "IMAGE": {
+    "ALT": "Alternativ text"
+  },
+  "TIMELINE": {
+    "TITLE": "Tidslinje",
+    "STARTDATE": "Startdatum",
+    "ENDDATE": "Slutdatum"
+  },
+  "USER": {
+    "TITLE": "Användare",
+    "ADDTITLE": "Skapa ny användare",
+    "CREATE": "Skapa användare",
+    "INACTIVE": "Inaktiv",
+    "ACTIVE": "Aktiv",
+    "ROLES": "Roller",
+    "PASSWORDREPEAT": "Repetera lösenord",
+    "PASSWORDDESC": "Ange ett nytt lösenord här för att byta lösenord på användaren. Anges inget lösenord så bibehålls det gamla."
+  },
+  "ARTICLE": {
+    "IDEA": "Idé",
+    "PLANNED": "Planerad",
+    "READY": "Klar",
+    "NOTSTARTED": "Inte påbörjad",
+    "STARTED": "Arbete pågår",
+    "NEEDSREVIEW": "Levererat till granskning",
+    "APPROVED": "Godkänd",
+    "NEWVERSION": "Ny version"
+  },
+  "ENDPOINT": {
+    "REMOVE": "Ta bort publiceringsmål",
+    "TITLE": "Publiceringsmål",
+    "ADDNEW": "Lägg till nytt publiceringsmål",
+    "NOTAUTHORIZED": "Den här anslutningen är inte auktoriserad än"
+  }
+}

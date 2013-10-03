@@ -1,0 +1,78 @@
+div(kntnt-article-picker)
+.container-fluid.main-content
+  .row-fluid
+    .span3
+      .box.pad
+        div(kntnt-article-parts,
+          link-pattern="#/approve/:part",
+          query="query", part="articlePart")
+    .span9(ng-show="!articlePart")
+      .box.pad
+        h1 {{ 'REVIEW.TITLE' | translate }}
+        p {{ 'REVIEW.DESC' | translate }}
+    .span5(ng-show="articlePart")
+      section.articles
+        .box.pad.articleinfo
+          .inner
+            konzilo-articlepart-form(article-part="articlePart")
+            .well
+              konzilo-articlepart-approve(article-part="articlePart",
+                fail-state="failState", approve-state="approveState")
+    .span4(ng-show="articlePart")
+      .tabbed-box
+        tabset
+          tab(heading="{{'GLOBAL.ORDER' | translate }}")
+            .inner.pad.form.form-horizontal.article-description
+              .control-group(ng-show="part.deadline")
+                label.control-label(for="date") {{ 'GLOBAL.DEADLINE' | translate }}
+                .controls
+                  span {{part.deadline | date: "yyyy-MM-dd"}}
+              .control-group(ng-show="part.terms")
+                label.control-label(for="terms") {{ 'GLOBAL.TERMS' | translate }}
+                .controls
+                  ul.keywords
+                    li.item(ng-repeat="term in terms")
+                      a(ng-href="term") {{term}}
+              .control-group(ng-show="part.language")
+                label.control-label(for="submitter")  {{ 'GLOBAL.LANGUAGE' | translate }}
+                .controls
+                  span {{part.language}}
+              .control-group(ng-show="target")
+                label.control-label(for="target") {{ 'GLOBAL.TARGET' | translate }}
+                .controls
+                  span.help-block {{ target.description }}
+                  a(ng-click="showAnalysis(target)") {{ 'GLOBAL.SHOW_ANALYSIS' | translate }}
+              .control-group(ng-show="article.step")
+                label.control-label(for="steps") {{ 'GLOBAL.STEP' | translate }}
+                .controls
+                  span.help-block {{ target.steps[article.step].description }}
+              .control-group(ng-show="channel")
+                label.control-label {{ 'GLOBAL.CHANNEL' | translate }}
+                .controls
+                  span.help-block {{ channel.description }}
+              .control-group(ng-show="part.article.step")
+                label.control-label(for="target") {{ 'GLOBAL.SUBJECT' | translate }}
+                .controls
+                  span.help-block(ng-show="part.article.topic")
+                    {{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate: translateVars }}
+              .control-group
+                label.control-label {{ 'GLOBAL.KEYWORDS' | translate }}
+                .controls
+                  ul.keywords
+                    li.item(ng-repeat="item in part.article.keywords")
+                      span {{item}}
+              .control-group(ng-show="part.article.description")
+                label.control-label(for="assignment") {{ 'GLOBAL.ARTICLE_IDEA' | translate }}
+                .controls
+                  .text(markdown="part.article.description")
+              .control-group(ng-show="part.assignment")
+                label.control-label(for="assignment") {{ 'GLOBAL.TASK' | translate }}
+                .controls
+                  .text(markdown="part.assignment")
+          tab(heading="{{'GLOBAL.DISCUSSION' | translate}}")
+            .inner.pad
+              konzilo-comments(ng-model="part.comments")
+          tab(heading="Versioner")
+            .inner.pad
+              konzilo-article-part-versions(part="part", link-pattern="#/approve/:id")
+              konzilo-article-part-new-version(part="part")

@@ -1,0 +1,57 @@
+div(kntnt-article-picker)
+.container-fluid.main-content
+  .row-fluid.content
+    .span3
+      .box.pad
+        div(kntnt-add-article, defaults="articleDefaults")
+        kntnt-clipboard-article-list(link-pattern="#/manage/:article/")
+    .span9(ng-show="!article")
+      .box.pad
+        h1 {{'MANAGE.TITLE' | translate}}
+        p {{ 'MANAGE.DESCRIPTION' | translate }}
+    .span5
+      .box.pad(ng-show="article")
+        form.form-inline.options-form.pull-right
+          button.btn.btn-danger(ng-click="removeArticle(article)")
+            i.icon-remove
+            span {{ 'MANAGE.REMOVE' | translate }}
+        h2 {{article.title}}
+        .publish-info(ng-show="publishInfo")
+          .published(ng-show="publishInfo.done")
+            .publish {{ 'MANAGE.PUBLISHEDTO' | translate }} {{channel.name}} {{publishInfo.performed * 1000 | date: 'yyyy-MM-dd HH:mm'}}
+            .link
+              a(href="{{publishInfo.resource_url}}") {{ 'MANAGE.GOTOARTICLE' | translate }}
+          .planned(ng-show="!publishInfo.done")
+            {{ 'MANAGE.PUBLISHINFO' | translate: translations }}
+      accordion.article-accordion
+        accordion-group(ng-repeat="part in article.parts")
+          accordion-heading {{part.title}}
+          form.form-inline.options-form
+            select(ng-model="part.state")
+              option(ng-repeat="state in states",
+                value="{{state.name}}",
+                ng-selected="part.state == state.name") {{state.label}}
+            label.checkbox
+              input(type="checkbox", ng-model="part.teaser")
+              span {{ 'MANAGE.SHOWLISTINGS' | translate }}
+            button.btn(ng-click="newVersion(part)")
+              i.icon-plus
+              span {{ 'MANAGE.NEWVERSION' | translate }}
+            button.btn.btn-danger(ng-click="remove(part)")
+              i.icon-remove
+              span {{ 'MANAGE.REMOVEPART' | translate }}
+          .content
+            konzilo-articlepart-form(article-part="part")
+      .box.pad.create-form(ng-show="article")
+        form.form-inline(name="newPartForm", ng-submit="saveNewPart()")
+           input(type="text", ng-model="newPart.name",
+            required,
+            placeholder="{{ 'MANAGE.ADDPART' | translate }}")
+           select(name="type", ng-model="newPart.type",
+            ng-options="key as value for (key, value) in types",
+            required, placeholder="{{'GLOBAL.DELIVERY' | translate}}")
+           button.btn.create-btn
+             i.icon-plus
+    .span4(ng-show="article")
+      .box.pad
+        konzilo-article-form(article="article")

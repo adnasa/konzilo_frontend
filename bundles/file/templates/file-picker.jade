@@ -1,0 +1,5 @@
+ng-form.file-picker(name="file-picker")
+  a(ng-click="pickFile()", href="")
+    file-view(file="ngModel")
+    .placeholder(ng-show="!ngModel")
+      i.icon-camera

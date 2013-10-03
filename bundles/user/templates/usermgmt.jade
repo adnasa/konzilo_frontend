@@ -1,0 +1,12 @@
+.container-fluid.main-content
+  .row-fluid
+    .span6.right-side
+      section.articleinfo
+          .box.pad
+            h2 Användare
+            content-table(items="users", properties="properties",
+              id="username", selected="selected", entity="entity")
+            user-add-form
+    .span6(ng-show="user")
+      .box.pad
+        user-edit-form(user="user")

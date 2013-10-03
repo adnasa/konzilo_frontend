@@ -1,0 +1,72 @@
+.container-fluid.main-content
+  .row-fluid
+    .span2
+      form.box.pad(ng-submit="newTarget()")
+        input(type="text", name="target", ng-model="targetName", placeholder="{{ 'TARGET.ADDNEW' | translate }}")
+        input.btn.btn-primary(type="submit", name="newtarget", value="{{ 'GLOBAL.SAVE' | translate }}")
+      ul.targets.nav.nav-stacked.nav-tabs.menu-list
+          li(ng-repeat="target in targets")
+            a(href="#/settings/targets/{{target._id}}") {{ target.name }}
+    .span10.target(ng-show="target")
+      .box.pad
+        button.btn.btn-danger.pull-right(ng-click="removeTarget(target)")
+          i.icon-remove
+          span {{'GLOBAL.REMOVE' | translate}}
+        h2 {{title}}
+        cmf-autosave-status(status="autosave")
+        form.form.form-horizontal(ng-submit="saveTarget()", name="mapForm")
+          .control-group
+            label.control-label {{ 'GLOBAL.NAME' | translate }}
+            .controls
+              input(type="text", name="name", ng-model="target.name")
+          .control-group
+            label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
+            .controls
+              textarea.input-block-level(name="target_desc", placeholder="{{ 'TARGET.TARGETDESC' | translate}}",
+                ng-model="target.description")
+          .control-group
+            label.control-label {{ 'TARGET.PAIN' | translate }}
+            .controls
+              textarea.input-block-level(ng-model="target.pain")
+          .control-group
+            label.control-label {{ 'TARGET.GAIN' | translate }}
+            .controls
+              textarea.input-block-level(ng-model="target.gain")
+        form.form.form-horizontal(ng-repeat="(name, mood) in moods")
+          .control-group
+            label.control-label {{ mood | translate }}
+            .controls
+              cmf-input-list(ng-model="target.analysis[name]")
+
+      form.form.form.form-horizontal(name="newstrategy", ng-submit="saveTarget()")
+        .step.box.pad(ng-repeat="step in steps")
+          h3 {{step.name}}
+          .control-group
+            label.control-label {{ "TARGET.LOOKINGFOR" | translate }}
+            .controls
+              textarea.input-block-level(ng-model="target.steps[step._id].description")
+          .topics(ng-repeat="topic in target.steps[step._id].topics")
+            .control-group
+              label.control-label {{ "TARGET.SUBJECTNAME" | translate }}
+              .controls
+                input(ng-model="topic.name", type="text",
+                  placeholder="{{ 'TARGET.SUBJECTNAME' | translate}}", required)
+            .control-group
+              label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
+              .controls
+                textarea(ng-model="topic.description")
+          h4 Nytt ämne
+          .control-group.form-horizontal
+            label.control-label Ämne
+            .controls
+              input(type="text", ng-model="newTopics[step._id].name",
+                placeholder="{{ 'TARGET.SUBJECTNAME' | translate}}")
+          .control-group
+            label.control-label {{ "GLOBAL.DESCRIPTION" | translate }}
+            .controls
+              textarea(ng-model="newTopics[step._id].description",
+                placeholder=" {{ 'GLOBAL.DESCRIPTION' | translate }}")
+            .form-actions
+              button.btn(ng-click="addTopic(target.steps[step._id], step._id)")
+                i.icon-plus
+                span {{"GLOBAL.APPEND" | translate}}

@@ -1,0 +1,46 @@
+ng-form.form.form-horizontal(name="partForm")
+  .title
+    h2 {{ 'TEXTPART.TITLE' | translate }}
+    cmf-autosave-status(status="autosave")
+  .control-group
+    label.control-label {{'GLOBAL.TOPHEADLINE' | translate}}
+    .controls
+      cmf-inline
+        cmf-inline-preview
+          i.icon-edit.pull-right
+          span {{content.topheadline}}
+        cmf-inline-input
+          input(type="text", name="title", ng-model="content.topheadline")
+  .control-group
+    label.control-label {{ 'GLOBAL.HEADLINE' | translate }}
+    .controls
+      cmf-inline
+        cmf-inline-preview
+          i.icon-edit.pull-right
+          h1 {{content.headline}}
+        cmf-inline-input
+          input(type="text", name="headline", ng-model="content.headline")
+  .control-group
+    label.control-label {{ 'GLOBAL.KICKER' | translate }}
+    .controls
+      cmf-inline
+        cmf-inline-preview
+          i.icon-edit.pull-right
+          strong {{content.kicker}}
+        cmf-inline-input
+          input(type="text", name="headline", ng-model="content.kicker")
+  .control-group
+    label.control-label {{ 'GLOBAL.LEAD' | translate }}
+    .controls
+      cmf-inline
+        cmf-inline-preview
+          i.icon-edit.pull-right
+          strong {{content.lead}}
+        cmf-inline-input
+          textarea.input-block-level(type="text", name="lead", ng-model="content.lead")
+  .control-group
+    label.control-label {{ 'GLOBAL.BODY' | translate }}
+    .controls
+      markdown-editor(ng-model="content.body")
+  author-picker(author="part.byline")
+  kz-vocabulary-input(ng-model="part.vocabularies")

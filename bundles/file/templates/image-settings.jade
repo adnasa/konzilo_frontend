@@ -1,0 +1,9 @@
+ng-form(name="imageform")
+  .control-group
+    label.control-label {{ 'IMAGE.ALT' | translate }}
+    .controls
+      input(type="text", name="alt", ng-model="settings.alt", required)
+  .control-group
+    label.control-label {{ 'GLOBAL.TITLE' | translate }}
+    .controls
+      input(type="text", name="title", ng-model="settings.title", required)

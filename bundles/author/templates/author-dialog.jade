@@ -1,0 +1,9 @@
+.upload
+  .modal-header
+    h1 {{title}}
+  .modal-body
+    form(name="authorForm")
+      author-form(author="author")
+  .modal-footer
+    button.btn.btn-primary(ng-click="returnAuthor()", ng-show="authorForm.$valid") {{'GLOBAL.SAVE' | translate}}
+    button(ng-click="close()").btn.btn-warning {{ 'GLOBAL.CLOSE' | translate }}

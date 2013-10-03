@@ -1,0 +1,21 @@
+div(kntnt-article-picker)
+.container-fluid.main-content
+  .row-fluid
+    .span3.left-side
+      div(kntnt-clipboard-articles, link-pattern="#/plan/:_id")
+    .span9(ng-show="!article")
+      .box.pad
+        h1 {{ "PLAN.TITLE" | translate }}
+        p {{ "PLAN.DESCRIPTION" | translate }}
+    .span5.right-side(ng-show="article")
+      section.articleinfo
+        .box.pad
+          h2 {{ "PLAN.PLAN_TITLE" | translate }}
+          konzilo-article-form(article="article")
+    .span4(ng-show="article")
+      .tabbed-box
+        ul.nav.nav-tabs
+          li.active
+            a {{ "GLOBAL.DISCUSSION" | translate }}
+        .inner.pad
+          konzilo-comments(ng-model="article.comments")

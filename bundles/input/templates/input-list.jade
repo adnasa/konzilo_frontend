@@ -1,0 +1,13 @@
+ng-form(name="input-list")
+  .input-list
+    ul.items
+      li.item(ng-repeat="(key, item) in list")
+        .input-append
+          input(type="text",  ng-model="ngModel[key]")
+          button.btn.btn-link(ng-click="removeElement(item)", type="button")
+            i.icon-remove
+      li.item
+        .input-append
+          input(type="text", ng-model="element", placeholder="{{placeholder}}")
+          button.btn.btn-link(ng-click="addElement()")
+            i.icon-plus

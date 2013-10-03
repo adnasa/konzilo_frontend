@@ -1,0 +1,6 @@
+.file-browser
+  form.filter-form
+  ul.clearfix
+    li(ng-repeat="file in files")
+      a(ng-click="selectFile(file)")
+        file-preview(file="file")

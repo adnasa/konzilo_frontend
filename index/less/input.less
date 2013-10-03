@@ -1,0 +1,136 @@
+// Theming for input list.
+// This css requires bootstrap and font awesome css.
+.input-list {
+  ul {
+    display: block;
+    overflow: hidden;
+    margin-bottom: 10px;
+    margin-left: 0;
+    list-style-type: none;
+  }
+  .item {
+    float: left;
+    margin-bottom: 10px;
+    margin-right: 5px;
+    border: 1px solid @grayLight;
+    span {
+      padding-left: 5px;
+    }
+  }
+  input {
+    border: none;
+    width: 100px;
+    box-shadow: none;
+    font-weight: bold;
+    &:hover {
+      box-shadow: none;
+    }
+  }
+  .icon-remove {
+    color: @red;
+  }
+  .icon-plus {
+    color: @kntntGreen;
+  }
+  .remove-btn {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    // Set up font awesome as font.
+    // This requires font awesome.
+    .icon {
+      font-family: FontAwesome;
+      font-weight: normal;
+      font-style: normal;
+      text-decoration: inherit;
+      -webkit-font-smoothing: antialiased;
+
+      /* sprites.less reset */
+      display: inline;
+      width: auto;
+      height: auto;
+      line-height: normal;
+      vertical-align: baseline;
+      background-image: none;
+      background-position: 0% 0%;
+      background-repeat: repeat;
+      margin-top: 0;
+      margin-right: 5px;
+      // Use the circle as default icon.
+      &:before {
+        content: "\f111";
+      }
+    }
+    .btn-primary;
+    &:hover {
+      // We inherit from btn-danger, to get the button to be red.
+      .btn-danger;
+      // Switch to a trash icon.
+      .icon:before {
+        content: "\f014";
+      }
+    }
+  }
+}
+
+.checkboxes {
+  .checkbox {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+// Input previews
+.input-preview {
+  min-height: 20px;
+  overflow: hidden;
+  border: 1px solid @white;
+  &:hover {
+    border: 1px dotted @kntntGreen;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+  }
+}
+
+.save-status {
+  color: @black;
+  font-weight: bold;
+  position: fixed;
+  background: @yellow;
+  padding: 10px;
+  top: 50px;
+  right: 50px;
+}
+
+.no-border {
+  .input-preview;
+  input {
+    .box-shadow(inset 0 0px 0px rgba(0,0,0,.075));
+    background: none;
+    border: none;
+    box-shadow: none;
+    border: 1px solid #fff;
+    &:focus {
+      //.box-shadow(inset 0 0px 0px rgba(0,0,0,.075));
+      background-color: @inputBackground;
+      border: 1px solid @inputBorder;
+    }
+  }
+}
+
+.content-table-form {
+  &.draggable {
+    .item {
+      cursor: move;
+    }
+  }
+}
+
+[contenteditable="true"] {
+  padding: 1px;
+  &:hover {
+    padding: 0px;
+    border: 1px dotted @kntntGreen;
+  }
+}

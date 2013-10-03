@@ -1,0 +1,13 @@
+ng-form.file-upload-list(name="file-input-list", ng-show="show")
+    table.table-striped.files(ng-show="list.length")
+      tr.item(ng-repeat="(key, item) in list")
+        td.span3
+          file-view(file="item")
+        td
+          a(ng-click="editSettings(item)") {{ item.name }}
+        td
+          button.btn.btn-link(ng-click="removeElement(item)", type="button")
+            i.icon-remove
+    button.btn.add-button(ng-click="addFile()", ng-show="allowUpload()")
+      i.icon-plus
+        span {{ 'FILE.ADDNEW' | translate }}

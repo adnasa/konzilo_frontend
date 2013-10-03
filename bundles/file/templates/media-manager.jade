@@ -1,0 +1,18 @@
+.upload
+  .modal-header
+    h1 {{title}}
+  .modal-body
+    .tabs(ng-show="!files")
+      tabset
+        tab(heading="{{'FILE.UPLOADFILES' | translate }}")
+          file-upload-form(files-uploaded="filesUploaded", bundle="bundle")
+        tab(heading="{{'FILE.ALLFILES' | translate}}")
+          file-browser(bundle="bundle", file-selected="fileSelected")
+        tab(heading="{{'FILE.MYFILES' | translate}}")
+          file-browser(bundle="bundle", file-selected="fileSelected", username="user.username")
+    .file-settings(ng-show="files")
+      form(name="settingsForm")
+        file-settings-form(file="file", ng-repeat="file in files")
+  .modal-footer
+    button.btn.btn-primary(ng-click="returnFiles()", ng-show="files") Spara
+    button(ng-click="close()").btn.btn-warning {{'GLOBAL.CLOSE' | translate}}

@@ -1,0 +1,9 @@
+bower_components
+web/
+node_modules/*
+Gruntfile.js
+*.html
+.#*
+.idea
+.emacs*
+*.pyc
