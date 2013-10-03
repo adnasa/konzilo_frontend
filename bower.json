@@ -1,6 +1,6 @@
 {
-  "name": "mockr",
-  "version": "0.1.0",
+  "name": "konzilo_frontend",
+  "version": "0.0.1",
   "dependencies": {
     "angular": "1.0.8",
     "jquery-ui": "~1.10.1",
