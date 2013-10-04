@@ -302,7 +302,8 @@ angular.module("kntnt.user",
         UserState.saveInfo(result)
         if GetParameters["destination"]
           window.location = GetParameters["destination"]
-        $location.url("/")
+        else
+          window.location = "/"
       (result) ->
         $scope.message = "Felaktigt användarnamn eller lösenord"
   $scope.sendPassword = ->
