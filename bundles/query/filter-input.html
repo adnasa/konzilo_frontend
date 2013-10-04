@@ -1,0 +1,18 @@
+
+<div class="filter-config">
+  <div class="modal-header">
+    <h1>{{'FILTER.TITLE' | translate }}</h1>
+  </div>
+  <form ng-submit="saveValue()">
+    <div class="modal-body">
+      <label class="control-label"></label><span>{{ 'FILTER.FILTERON' | translate }}</span><strong>{{filter.label}}</strong>{{filter.description}}:
+      <input type="text" name="input" ng-model="value" ng-show="!options"/>
+      <select type="text" name="input" ng-model="value" ng-show="options">
+        <option ng-repeat="(value, label) in options" value="{{value}}">{{label}}</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" name="save" value="{{'GLOBAL.SAVE' | translate }}" class="btn btn-primary"/>
+    </div>
+  </form>
+</div>

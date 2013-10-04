@@ -1,0 +1,31 @@
+
+<div class="query-builder">
+  <div ng-repeat="(index, group) in groups" class="groups">
+    <div class="filters"><span ng-show="index &gt; 0" class="description">{{'GLOBAL.AND' | translate}}</span><span ng-show="index == 0" class="description">{{description}}</span>
+      <div ng-show="group.filter" class="filter-group item label label-info"><span>{{group.filter.description}}</span>
+        <button ng-click="removeGroup(group)" type="button" class="btn btn-link"><i class="icon-remove"></i></button>
+      </div>
+      <div ng-repeat="(index, filter) in group.filters" class="filter item label label-success"><span ng-show="index &gt; 0">{{ 'GLOBAL.OR' | translate }}</span><span> {{filter.label}}</span>
+        <button ng-click="removeFilter(group, filter)" class="btn btn-link"><i class="icon-remove"></i></button>
+      </div>
+      <ul class="filter-select">
+        <li ng-show="group.filter" class="dropdown"><a class="dropdown-toggle"><i class="icon-plus"></i></a>
+          <ul ng-show="group.filter.optionValues" class="dropdown-menu">
+            <li ng-repeat="(item, label) in group.filter.optionValues" ng-show="filterAvailable(group, item)"><a ng-click="selectOption(group, group.filter, item)">{{label}}</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <ul class="filter-select">
+    <li class="dropdown"><a class="dropdown-toggle"><i class="icon-plus"></i></a>
+      <ul class="dropdown-menu">
+        <li ng-repeat="filter in filters" ng-class="dropdownMenu(filter)"><a ng-click="addGroup(filter)" tabindex="-1">{{filter.label}}</a>
+          <ul ng-show="filter.optionValues" class="dropdown-menu">
+            <li ng-repeat="(item, label) in filter.optionValues"><a ng-click="addGroup(filter, item)">{{label}}</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

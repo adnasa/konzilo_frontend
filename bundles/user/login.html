@@ -1,0 +1,35 @@
+
+<div class="container main-content">
+  <div class="box pad">
+    <form name="loginForm" ng-submit="loginUser()" ng-show="!showReset" class="form form-horizontal">
+      <div ng-show="message" class="alert">{{message | translate}}</div>
+      <div class="control-group">
+        <label class="control-label">{{ 'GLOBAL.USERNAME' | translate }}</label>
+        <div class="controls">
+          <input type="text" name="username" ng-model="username" ng-required="ng-required"/>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">{{ 'GLOBAL.PASSWORD' | translate }}</label>
+        <div class="controls">
+          <input type="password" name="password" ng-model="password" ng-required="ng-required"/><span class="help-block"><a ng-click="showReset = !showReset">{{'LOGIN.FORGOTPASSWORD' | translate}}</a></span>
+        </div>
+      </div>
+      <div class="form-actions">
+        <input type="submit" value="{{ 'LOGIN.LOGIN' | translate }}" class="btn btn-primary"/>
+      </div>
+    </form>
+    <form name="forgotPasswordForm" ng-submit="sendPassword()" ng-show="showReset" class="form-horizontal">
+      <div class="control-group">
+        <label class="control-label">{{'LOGIN.USERNAMEOREMAIL' | translate}}</label>
+        <div class="controls">
+          <input type="text" name="forgotpassword" ng-model="forgot" required="required"/>
+        </div>
+      </div>
+      <div class="form-actions">
+        <input type="submit" value="{{'LOGIN.RETRIEVEPASSWORD' | translate}}" class="btn btn-primary"/>
+        <button type="button" ng-click="showReset = !showReset" class="btn btn-warning">{{'GLOBAL.BACK' | translate}}</button>
+      </div>
+    </form>
+  </div>
+</div>

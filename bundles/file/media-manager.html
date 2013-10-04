@@ -1,0 +1,30 @@
+
+<div class="upload">
+  <div class="modal-header">
+    <h1>{{title}}</h1>
+  </div>
+  <div class="modal-body">
+    <div ng-show="!files" class="tabs">
+      <tabset>
+        <tab heading="{{'FILE.UPLOADFILES' | translate }}">
+          <file-upload-form files-uploaded="filesUploaded" bundle="bundle"></file-upload-form>
+        </tab>
+        <tab heading="{{'FILE.ALLFILES' | translate}}">
+          <file-browser bundle="bundle" file-selected="fileSelected"></file-browser>
+        </tab>
+        <tab heading="{{'FILE.MYFILES' | translate}}">
+          <file-browser bundle="bundle" file-selected="fileSelected" username="user.username"></file-browser>
+        </tab>
+      </tabset>
+    </div>
+    <div ng-show="files" class="file-settings">
+      <form name="settingsForm">
+        <file-settings-form file="file" ng-repeat="file in files"></file-settings-form>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button ng-click="returnFiles()" ng-show="files" class="btn btn-primary">Spara</button>
+    <button ng-click="close()" class="btn btn-warning">{{'GLOBAL.CLOSE' | translate}}</button>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+
+<div class="settings-modal">
+  <div class="modal-header">
+    <h1>{{file.name}}</h1>
+  </div>
+  <div class="modal-body">
+    <div class="file-settings">
+      <ng-form name="settingsForm">
+        <file-settings-form file="file"></file-settings-form>
+      </ng-form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button ng-click="close()" class="btn btn-primary">{{'GLOBAL.CLOSE' | translate}}</button>
+  </div>
+</div>

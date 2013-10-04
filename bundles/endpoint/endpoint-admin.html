@@ -1,0 +1,62 @@
+
+<div class="container-fluid main-content">
+  <div class="row-fluid">
+    <div ng-class="mainClass()" class="span12 right-side">
+      <div class="box pad">
+        <h2>{{'ENDPOINT.TITLE' | translate}}</h2>
+        <content-table items="endpoints" properties="properties" id="name" selected="selected" operations="operations"></content-table>
+        <h3>{{'ENDPOINT.ADDNEW' | translate}}</h3>
+        <form name="addEndpointForm" ng-submit="addEndpoint()" class="form form-horizontal">
+          <div class="control-group">
+            <label for="name" class="control-label">{{'GLOBAL.NAME' | translate}}</label>
+            <div class="controls">
+              <input type="text" name="name" ng-model="newEndpoint.name" required="required"/>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="langcode" class="control-label">{{'GLOBAL.TYPE' | translate}}</label>
+            <div class="controls">
+              <select type="text" name="name" ng-model="type" required="required" ng-options="value.label for (key, value) in types"></select>
+            </div>
+          </div>
+          <div ng-repeat="(name, setting) in type.settings" class="control-group">
+            <label class="control-label">{{setting}}</label>
+            <div class="controls">
+              <input type="text" ng-model="newEndpoint.settings[name]" required="required"/>
+            </div>
+          </div>
+          <div class="form-actions">
+            <input type="submit" value="{{'GLOBAL.SAVE' | translate}}" class="btn btn-primary"/>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div ng-show="endpoint" class="span6">
+      <div class="box pad">
+        <h2>{{endpoint.name}}</h2>
+        <form name="editEndpointForm" ng-submit="addEndpoint()" class="form form-horizontal">
+          <cmf-autosave-status status="autosave"></cmf-autosave-status>
+          <div class="control-group">
+            <label for="name" class="control-label">{{'GLOBAL.NAME' | translate}}</label>
+            <div class="controls">
+              <input type="text" name="name" ng-model="endpoint.name" required="required"/>
+            </div>
+          </div>
+          <div ng-repeat="(name, setting) in getSettings(endpoint.type)" class="control-group">
+            <label class="control-label">{{setting}}</label>
+            <div class="controls">
+              <input type="text" ng-model="endpoint.settings[name]" required="required"/>
+            </div>
+          </div>
+        </form>
+        <form method="POST" action="/endpoint/{{endpoint.name}}/authorize" class="form-horizontal">
+          <div class="control-group">
+            <div class="controls">
+              <input type="submit" name="save" value="Auktorisera" class="btn-primary btn"/>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+
+<div class="upload">
+  <div class="modal-header">
+    <h1>{{title}}</h1>
+  </div>
+  <div class="modal-body">
+    <form name="authorForm">
+      <author-form author="author"></author-form>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button ng-click="returnAuthor()" ng-show="authorForm.$valid" class="btn btn-primary">{{'GLOBAL.SAVE' | translate}}</button>
+    <button ng-click="close()" class="btn btn-warning">{{ 'GLOBAL.CLOSE' | translate }}</button>
+  </div>
+</div>

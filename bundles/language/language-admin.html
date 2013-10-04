@@ -1,0 +1,35 @@
+
+<div class="container-fluid main-content">
+  <div class="row-fluid">
+    <div class="span12 right-side">
+      <div class="box pad">
+        <h2>{{ 'LANGUAGE.TITLE' | translate }}</h2>
+        <content-table items="languages" properties="properties" operations="operations"></content-table>
+        <h3>{{ 'LANGUAGE.ADDNEW' | translate }}</h3>
+        <form name="addLanguageForm" ng-submit="addLanguage()" class="form form-horizontal">
+          <div class="control-group">
+            <label for="name" class="control-label">{{ 'GLOBAL.NAME' | translate }}</label>
+            <div class="controls">
+              <input type="text" name="name" ng-model="language.name" required="required"/>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="langcode" class="control-label">{{ 'LANGUAGE.LANGCODE' | translate }}</label>
+            <div class="controls">
+              <input type="text" name="name" ng-model="language.langcode" required="required"/>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="langcode" class="control-label">{{ 'LANGUAGE.DIRECTION' | translate }}</label>
+            <div class="controls">
+              <select type="text" name="name" ng-model="language.direction" required="required" ng-options="key as value for (key, value) in directions"></select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <input type="submit" value="{{'GLOBAL.SAVE' | translate}}" class="btn btn-primary"/>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

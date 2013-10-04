@@ -1,0 +1,57 @@
+
+<div class="container-fluid main-content">
+  <div class="row-fluid">
+    <div class="span2">
+      <form ng-submit="newVocabulary()" class="box pad">
+        <input type="text" name="target" ng-model="vocabularyName" placeholder=""/>
+        <input type="submit" name="newstep" value="Spara" class="btn btn-primary"/>
+      </form>
+      <ul class="targets nav nav-tabs nav-stacked">
+        <li ng-repeat="vocabulary in vocabularies"><a href="#/settings/vocabularies/{{vocabulary.name}}">{{ vocabulary.title }}</a></li>
+      </ul>
+    </div>
+    <div ng-show="vocabulary" class="span5 target">
+      <div class="box pad">
+        <button ng-click="removeVocabulary(vocabulary)" class="btn btn-danger pull-right"><i class="icon-remove"></i><span>{{ 'VOCABULARY.REMOVE' | translate }}</span></button>
+        <h2>{{vocabulary.title}}</h2>
+        <form ng-submit="saveVocabulary()" name="vocabularyForm" class="pad form form-horizontal">
+          <div class="control-group">
+            <label class="control-label">{{ 'GLOBAL.TITLE' | translate }}</label>
+            <div class="controls">
+              <input type="text" name="title" ng-model="vocabulary.title" ng-change="saveVocabulary()"/>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{ 'GLOBAL.DESCRIPTION' | translate }}</label>
+            <div class="controls">
+              <textarea name="description" ng-model="vocabulary.description" ng-change="saveVocabulary()" class="input-block-level"></textarea>
+            </div>
+          </div>
+        </form>
+        <content-table query="query" entity-type="Term" properties="properties"></content-table>
+        <form name="newTermForm" ng-submit="newTerm()" class="form-inline pad">
+          <input type="text" name="termname" ng-model="termName" placeholder="{{'VOCABULARY.NEWTERM' | translate}}"/>
+          <button name="newTerm" class="btn-link"><i class="icon-plus"></i></button>
+        </form>
+      </div>
+    </div>
+    <div ng-show="term" class="span5 box">
+      <h2>{{term.name}}</h2>
+      <form name="termForm" class="pad form-horizontal">
+        <cmf-autosave-status status="autosave"></cmf-autosave-status>
+        <div class="control-group">
+          <label class="control-label">{{'GLOBAL.NAME' | translate }}</label>
+          <div class="controls">
+            <input type="text" name="name" ng-model="term.name" ng-change="saveTerm()"/>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">{{ 'GLOBAL.DESCRIPTION' | translate }}</label>
+          <div class="controls">
+            <textarea name="description" ng-model="term.description" class="input-block-level"></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

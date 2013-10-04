@@ -1,0 +1,9 @@
+
+<div ng-repeat="vocabulary in vocabularies" class="control-group">
+  <label class="control-label">{{vocabulary.title}}</label>
+  <div class="controls">
+    <select ng-model="ngModel[vocabulary.name]">
+      <option ng-repeat="term in terms[vocabulary.name]" value="{{ term._id }}" ng-selected="ngModel[vocabulary.name] == term._id">{{ term.name }}</option>
+    </select>
+  </div>
+</div>

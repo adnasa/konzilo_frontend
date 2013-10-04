@@ -1,0 +1,23 @@
+
+<div class="timeline-content">
+  <div class="activate">
+    <button ng-click="showTimeline=!showTimeline" class="btn activete-btn">
+      <div class="inner">{{ 'TIMELINE.TITLE' | translate }}</div>
+    </button>
+  </div>
+  <div ng-show="showTimeline" class="inner">
+    <div class="container-fluid content">
+      <div class="row-fluid">
+        <form name="timelineForm" class="form form-inline">
+          <input type="text" datepicker-popup="yyyy-MM-dd" ng-model="startdate" open="startopen" placeholder="{{'TIMELINE.STARTDATE' | translate}}"/>
+          <button ng-click="startopen=!startopen" class="btn"><i class="icon-calendar"></i></button>
+          <input type="text" datepicker-popup="yyyy-MM-dd" ng-model="enddate" open="endopen" placeholder="{{'TIMELINE.ENDDATE' | translate}}"/>
+          <button ng-click="endopen=!endopen" class="btn"><i class="icon-calendar"></i></button>
+        </form>
+      </div>
+      <div class="row-fluid">
+        <div timeline-canvas="timeline-canvas" data="getData" start="startdate" end="enddate" class="timeline span12"></div>
+      </div>
+    </div>
+  </div>
+</div>

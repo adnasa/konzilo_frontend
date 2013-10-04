@@ -1,0 +1,25 @@
+
+<div class="discussion">
+  <div class="avatar">
+    <div class="icon-profile"></div>
+  </div>
+  <div ng-repeat="(index, comment) in ngModel" class="comment-wrapper">
+    <div class="inner">
+      <div class="image"><i class="icon-user"></i></div>
+      <div class="info"><span class="created"><span>{{ 'COMMENT.WRITTENBY' | translate }} {{comment.username}}</span><span class="date"> {{ comment.created | date: 'yyyy-MM-dd HH:mm' }}</span></span><a class="count pull-right">#{{index + 1}}</a>
+        <div class="comment well">{{ comment.comment }}</div>
+      </div>
+    </div>
+  </div>
+  <form ng-submit="newComment()" class="form">
+    <div class="comment-wrapper">
+      <div class="inner">
+        <div class="image"><i class="icon-user"></i></div>
+        <div class="info"><a class="count pull-right">#{{ngModel.length + 1}}</a>
+          <textarea placeholder="{{'COMMENT.WRITE' | translate}}" ng-model="comment" class="comment input-block-level"></textarea>
+          <input type="submit" value="{{'GLOBAL.SEND' | translate}}" class="btn btn-primary"/>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

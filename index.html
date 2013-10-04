@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="konzilo.main" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{{title}} - Konzilo</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/dependencies.js"></script>
+    <script src="/bundles/approve/approve.js"></script>
+    <script src="/bundles/article/article.js"></script>
+    <script src="/bundles/author/author.js"></script>
+    <script src="/bundles/channel/channel.js"></script>
+    <script src="/bundles/client/client.js"></script>
+    <script src="/bundles/clipboard/clipboard.js"></script>
+    <script src="/bundles/comment/comment.js"></script>
+    <script src="/bundles/config/config.js"></script>
+    <script src="/bundles/deliver/deliver.js"></script>
+    <script src="/bundles/endpoint/endpoint.js"></script>
+    <script src="/bundles/entity/entity.js"></script>
+    <script src="/bundles/file/file.js"></script>
+    <script src="/bundles/input/input.js"></script>
+    <script src="/bundles/language/language.js"></script>
+    <script src="/bundles/manage/manage.js"></script>
+    <script src="/bundles/map/map.js"></script>
+    <script src="/bundles/markdown/markdown.js"></script>
+    <script src="/bundles/menu/menu.js"></script>
+    <script src="/bundles/order/order.js"></script>
+    <script src="/bundles/plan/plan.js"></script>
+    <script src="/bundles/query/query.js"></script>
+    <script src="/bundles/step/step.js"></script>
+    <script src="/bundles/timeline/timeline.js"></script>
+    <script src="/bundles/translations/translations.js"></script>
+    <script src="/bundles/user/user.js"></script>
+    <script src="/bundles/vocabulary/vocabulary.js"></script>
+    <script src="/bundles/main/main.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <div class="content">
+        <div class="navbar navbar-fixed-top navbar-inverse">
+          <div class="navbar-inner">
+            <div class="container-fluid"><a href="#/dashboard" class="brand">Konzilo</a>
+              <konzilo-menu menu="mainMenu" class="nav nav-pills mainMenu"></konzilo-menu>
+              <ul class="nav pull-right right-menu">
+                <li class="dropdown"><a href="#/settings/targets" kz-user-access="administer system" class="dropdown-toggle"><i class="icon-cog"></i><span>{{ 'GLOBAL.SETTINGS' | translate }}</span><b class="caret"></b></a>
+                  <konzilo-menu menu="settingsMenu" class="dropdown-menu"></konzilo-menu>
+                </li>
+                <li>
+                  <language-switcher></language-switcher>
+                </li>
+                <li>
+                  <user-info></user-info>
+                </li>
+                <li>
+                  <kz-logout></kz-logout>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div ng-view></div>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+
+<ng-form name="file-input-list" ng-show="show" class="file-upload-list">
+  <table ng-show="list.length" class="table-striped files">
+    <tr ng-repeat="(key, item) in list" class="item">
+      <td class="span3">
+        <file-view file="item"></file-view>
+      </td>
+      <td><a ng-click="editSettings(item)">{{ item.name }}</a></td>
+      <td>
+        <button ng-click="removeElement(item)" type="button" class="btn btn-link"><i class="icon-remove"></i></button>
+      </td>
+    </tr>
+  </table>
+  <button ng-click="addFile()" ng-show="allowUpload()" class="btn add-button"><i class="icon-plus"><span>{{ 'FILE.ADDNEW' | translate }}</span></i></button>
+</ng-form>

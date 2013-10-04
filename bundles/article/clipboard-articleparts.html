@@ -1,0 +1,24 @@
+
+<div class="articleparts">
+  <p ng-show="size == 0">{{'CLIPBOARD.DESCRIPTION' | translate}}</p>
+  <div ng-repeat="article in articles" ng-class="activeItem(article)" class="row-item">
+    <div class="pull-right"><span>{{article.publishdate | date: 'yyyy-MM-dd'}}</span>
+      <button ng-click="toggleArticle(article)" class="btn-link"><i ng-class="toggleIcon(article)"></i></button>
+    </div>
+    <div class="top">
+      <div class="article-state {{article.state}}"></div>
+      <h3 class="title">{{article.title}}</h3>
+    </div>
+    <div ng-show="active(article)" class="content">
+      <div class="inner">
+        <div class="row-item">
+          <div kntnt-add-article-part="kntnt-add-article-part" article="article"></div>
+        </div>
+        <div ng-repeat="(index, part) in article.parts" class="row-item">
+          <div class="article-state {{part.state}}"></div><a href="{{part.link}}">{{part.title}}</a>
+          <button ng-click="removeArticlePart(article, part)" class="btn-link clipboard-remove"><i class="icon-remove"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

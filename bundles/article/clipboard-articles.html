@@ -1,0 +1,51 @@
+
+<div class="clipboard-articles">
+  <div class="box pad">
+    <div class="articles unscheduled">
+      <div class="inner">
+        <div kntnt-add-article="kntnt-add-article"></div>
+        <div ng-repeat="article in unscheduled" data-id="{{article._id}}" ui-jq="draggable" ui-options="draggableOptions" class="row-item">
+          <div class="article-state {{article.state}}"></div><a href="{{link(article)}}">{{article.title}}</a>
+          <button ng-click="removeFromClipboard(article)" class="btn-link clipboard-remove"><i class="icon-remove"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="scheduled">
+      <div class="inner">
+        <div class="articles">
+          <div ui-jq="droppable" ui-options="droppableOptions" data-date="{{prevDate}}" ng-show="prevDate" class="group date-hidden">
+            <div class="top">
+              <h2>{{ prevDate }}</h2>
+            </div>
+            <div class="content"></div>
+          </div>
+        </div>
+        <div ui-sortable="options" ng-model="dates" class="articles sortable">
+          <div ng-repeat="(index, date) in dates" ui-jq="droppable" ui-options="droppableOptions" data-date="{{date}}" class="group">
+            <div class="top">
+              <h2>{{ date }}</h2>
+              <button ng-click="toggleDatePicker(date)" class="btn-link pull-right calendar-btn"><i class="icon-calendar"></i></button>
+              <div ng-show="datePickerShown(date)" ng-model="datePickerValues[index]" ng-change="newDate(index, date)" class="picker">
+                <datepicker min="today"></datepicker>
+              </div>
+            </div>
+            <div class="content">
+              <div ng-class="activeArticle(article)" ui-jq="draggable" data-id="{{article._id}}" ng-repeat="article in clipboard[date]" class="row-item">
+                <div class="article-state {{article.state}}"></div><a href="{{link(article)}}">{{article.title}}</a>
+                <button ng-click="removeFromClipboard(article)" class="btn-link clipboard-remove"><i class="icon-remove"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="articles">
+          <div ui-jq="droppable" ui-options="droppableOptions" data-date="{{nextDate}}" class="group date-hidden">
+            <div class="top">
+              <h2>{{ nextDate | placeholder: "Utan publiceringsdatum" }}</h2>
+            </div>
+          </div>
+          <div class="content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

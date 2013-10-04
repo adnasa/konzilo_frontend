@@ -1,0 +1,36 @@
+
+<form ng-submit="saveUser()" name="userForm" class="form user-form form-horizontal">
+  <div class="title">
+    <h2>{{'USER.ADDTITLE' | translate}}</h2>
+  </div>
+  <div class="control-group">
+    <label class="control-label">{{'GLOBAL.USERNAME' | translate}}</label>
+    <div class="controls">
+      <input type="text" name="name" ng-model="user.username"/>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">{{'GLOBAL.EMAIL' | translate}}</label>
+    <div class="controls">
+      <input type="email" name="email" ng-model="user.email"/>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">{{'GLOBAL.PASSWORD' | translate}}</label>
+    <div class="controls">
+      <input type="password" name="password" ng-model="user.password"/>
+      <input type="password" name="password2" ng-model="password2"/>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">{{'USER.ACTIVE' | translate}}</label>
+    <div class="controls"><i class="icon-edit pull-right"></i>
+      <label class="checkbox">
+        <input type="checkbox" name="active" ng-model="user.active"/>
+      </label>
+    </div>
+  </div>
+  <div class="form-actions">
+    <input type="submit" value="{{'USER.CREATE' | translate}}"/>
+  </div>
+</form>

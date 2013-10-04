@@ -1,0 +1,30 @@
+
+<div kntnt-article-picker="kntnt-article-picker"></div>
+<div class="container-fluid main-content">
+  <div class="row-fluid">
+    <div class="span12 right-side">
+      <div class="box pad">
+        <h2>{{ "CLIENT.TITLE" | translate }}</h2>
+        <content-table items="clients" properties="properties" id="name" operations="operations"></content-table>
+        <h3>{{ CLIENT.ADDNEW }}</h3>
+        <form name="addClientForm" ng-submit="addClient()" class="form form-horizontal">
+          <div class="control-group">
+            <label for="name" class="control-label">{{ "GLOBAL.NAME" | translate }}</label>
+            <div class="controls">
+              <input type="text" name="name" ng-model="client.name" required="required"/>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="langcode" class="control-label">{{"CLIENT.REDIRECT_URI" | translate}}</label>
+            <div class="controls">
+              <input type="text" name="redirectURI" ng-model="client.redirectURI" required="required"/>
+            </div>
+          </div>
+          <div class="form-actions">
+            <input type="submit" value="{{'GLOBAL.SAVE' | translate}}" class="btn btn-primary"/>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

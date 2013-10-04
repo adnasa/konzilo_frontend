@@ -1,0 +1,47 @@
+
+<div class="container-fluid main-content">
+  <div class="row-fluid">
+    <div ng-class="mainClass()">
+      <section class="articleinfo">
+        <div class="box pad">
+          <h2>{{"GROUP.TITLE" | translate}}</h2>
+          <content-table entity-type="Group" properties="properties" query="query"></content-table>
+          <form name="addGroupForm" ng-submit="addGroup()" class="form form-inline">
+            <input type="text" name="name" ng-model="newGroup.name" placeholder="{{ 'GROUP.CREATENEW' | translate }}" required="required"/>
+            <input type="submit" name="save" value="{{'GROUP.CREATE' | translate}}" class="btn btn-primary"/>
+          </form>
+        </div>
+      </section>
+    </div>
+    <div ng-show="group" class="span6">
+      <div class="box pad">
+        <form name="editGroupForm" class="form form-horizontal">
+          <h3>{{group.name}}</h3>
+          <div class="control-group">
+            <label for="name" class="control-label">{{ 'GLOBAL.NAME' | translate }}</label>
+            <div class="controls">
+              <input type="text" name="name" ng-model="group.name" required="required"/>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{'GLOBAL.USER' | translate}}</label>
+            <div class="controls">
+              <table class="table-striped table">
+                <tr ng-repeat="user in group.members">
+                  <td>{{user.username}}</td>
+                  <td>
+                    <button ng-click="removeUser(user)" class="btn btn-danger"><i class="icon-remove"></i><span>{{'GLOBAL.REMOVE' | translate}}</span></button>
+                  </td>
+                </tr>
+              </table>
+              <ng-form name="userInput">
+                <entity-reference entity-type="User" ng-model="newUser"></entity-reference>
+                <button ng-click="addUser()" class="btn btn-primary">{{ 'GLOBAL.APPEND' | translate }}</button>
+              </ng-form>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+
+<div class="file-upload">
+  <form id="fileupload" action="/file" method="POST" enctype="multipart/form-data" file-upload="options">
+    <input type="file" name="files[]" multiple="multiple" ng-model="files" ng-disabled="disabled"/>
+    <div ng-class="{in: active()}" class="span5 fade">
+      <div file-upload-progress="progress()" class="progress progress-success progress-striped active">
+        <div ng-style="{width: num + '%'}" class="bar">
+          <div class="progress-extended">&nbsp;</div>
+        </div>
+      </div>
+    </div>
+    <table class="table table-striped files ng-cloak">
+      <tr ng-repeat="file in queue">
+        <td>{{file.name}}</td>
+        <td>
+          <button type="button" ng-click="file.$cancel()" class="btn btn-link cancel">{{ 'GLOBAL.REMOVE' | translate }}</button>
+        </td>
+      </tr>
+    </table>
+  </form>
+  <button ng-click="submit()" class="btn btn-primary">{{'GLOBAL.UPLOAD' | translate }}</button>
+  <dl>
+    <dt>{{'FILE.ALLOWDTYPES' | translate }}</dt>
+    <dd><small ng-repeat="info in bundleInfo.types">{{ info }},</small></dd>
+  </dl>
+</div>

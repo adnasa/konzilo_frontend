@@ -1,0 +1,43 @@
+
+<div class="author-picker">
+  <ng-form name="authorPicker">
+    <div ng-show="author" class="control-group">
+      <label class="control-label">{{ 'AUTHOR.NAME' | translate }}</label>
+      <div class="controls">
+        <div ng-show="author" class="author well">
+          <div class="container author-info">
+            <div class="row-fluid">
+              <div class="image span1">
+                <file-picker ng-model="author.image" bundle="media"></file-picker>
+              </div>
+              <div class="span5">
+                <cmf-inline>
+                  <cmf-inline-preview>
+                    <h3>{{author.name}}</h3>
+                  </cmf-inline-preview>
+                  <cmf-inline-input>
+                    <input type="text" ng-model="author.name"/>
+                  </cmf-inline-input>
+                </cmf-inline>
+                <cmf-inline>
+                  <cmf-inline-preview><span>{{author.email | placeholder: "E-post"}}</span></cmf-inline-preview>
+                  <cmf-inline-input>
+                    <input type="email" ng-model="author.email"/>
+                  </cmf-inline-input>
+                </cmf-inline>
+              </div>
+            </div>
+          </div>
+          <p contenteditable="true" ng-model="author.about">{{'GLOBAL.DESCRIPTION' | translate}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">{{ 'AUTHOR.PICK' | translate }}</label>
+      <div class="controls">
+        <entity-reference entity-type="Author" ng-model="author"></entity-reference>
+        <div class="links"><a ng-click="newAuthor()">{{ 'AUTHOR.NEW' | translate }}</a></div>
+      </div>
+    </div>
+  </ng-form>
+</div>

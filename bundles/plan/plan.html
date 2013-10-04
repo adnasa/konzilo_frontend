@@ -1,0 +1,33 @@
+
+<div kntnt-article-picker="kntnt-article-picker"></div>
+<div class="container-fluid main-content">
+  <div class="row-fluid">
+    <div class="span3 left-side">
+      <div kntnt-clipboard-articles="kntnt-clipboard-articles" link-pattern="#/plan/:_id"></div>
+    </div>
+    <div ng-show="!article" class="span9">
+      <div class="box pad">
+        <h1>{{ "PLAN.TITLE" | translate }}</h1>
+        <p>{{ "PLAN.DESCRIPTION" | translate }}</p>
+      </div>
+    </div>
+    <div ng-show="article" class="span5 right-side">
+      <section class="articleinfo">
+        <div class="box pad">
+          <h2>{{ "PLAN.PLAN_TITLE" | translate }}</h2>
+          <konzilo-article-form article="article"></konzilo-article-form>
+        </div>
+      </section>
+    </div>
+    <div ng-show="article" class="span4">
+      <div class="tabbed-box">
+        <ul class="nav nav-tabs">
+          <li class="active"><a>{{ "GLOBAL.DISCUSSION" | translate }}</a></li>
+        </ul>
+        <div class="inner pad">
+          <konzilo-comments ng-model="article.comments"></konzilo-comments>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
