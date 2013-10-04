@@ -74,7 +74,7 @@ angular.module("kntnt.user",
 
     deleteSetting: (name, callback, errorCallback) ->
       @cache.removeAll()
-      http.delete("#{@url}/#{name}").then (result) ->
+      $http.delete("#{@url}/#{name}").then (result) ->
         callback(result.data) if callback
         return result.data
       , (err) ->
