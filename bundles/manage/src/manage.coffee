@@ -56,7 +56,7 @@ UserState, $http, ChannelStorage, ArticlePartStates, $location) ->
             'yyyy-MM-dd HH:mm'
 
   $scope.remove = (part) ->
-    if confirm($translate("MANAGE.CONFRMRMPARTREMOVE"))
+    if confirm($translate("MANAGE.CONFIRMPARTREMOVE"))
       ArticlePartStorage.remove(part._id).then ->
         ArticleStorage.get($routeParams.article).then (result) ->
           $scope.article = result.toObject()
