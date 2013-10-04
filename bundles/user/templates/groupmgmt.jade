@@ -1,18 +1,14 @@
 .container-fluid.main-content
   .row-fluid
-    .span6.right-side
+    div(ng-class="mainClass()")
       section.articleinfo
           .box.pad
             h2 {{"GROUP.TITLE" | translate}}
             content-table(entity-type="Group", properties="properties", query="query")
-            form.form.form-horizontal(name="addGroupForm", ng-submit="addGroup()")
-              h3 {{ "GROUP.CREATENEW" | translate }}
-              .control-group
-                label.control-label(for="name") {{ 'GLOBAL.NAME' | translate}}
-                .controls
-                  input(type="text", name="name", ng-model="newGroup.name", required)
-              .form-actions
-                input.btn.btn-primary(type="submit", name="save", value="{{'GROUP.CREATE' | translate}}")
+            form.form.form-inline(name="addGroupForm", ng-submit="addGroup()")
+              input(type="text", name="name", ng-model="newGroup.name",
+                    placeholder="{{ 'GROUP.CREATENEW' | translate }}", required)
+              input.btn.btn-primary(type="submit", name="save", value="{{'GROUP.CREATE' | translate}}")
 
     .span6(ng-show="group")
       .box.pad

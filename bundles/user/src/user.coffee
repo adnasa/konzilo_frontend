@@ -471,6 +471,7 @@ InputAutoSave, GroupStorage, $translate) ->
   $scope.addGroup = ->
     if $scope.addGroupForm.$valid
       GroupStorage.save($scope.newGroup)
+      $scope.newGroup = undefined
   return
 ])
 
