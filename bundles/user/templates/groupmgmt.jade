@@ -21,11 +21,13 @@
           .control-group
             label.control-label {{'GLOBAL.USER' | translate}}
             .controls
-              ul
-                li(ng-repeat="user in group.members")
-                  span {{user.username}}
-                  button.btn.btn-link(ng-click="removeUser(user)")
-                    i.icon-remove
+              table.table-striped.table
+                tr(ng-repeat="user in group.members")
+                  td {{user.username}}
+                  td
+                    button.btn.btn-danger(ng-click="removeUser(user)")
+                      i.icon-remove
+                      span {{'GLOBAL.REMOVE' | translate}}
 
               ng-form(name="userInput")
                 entity-reference(entity-type="User", ng-model="newUser")
