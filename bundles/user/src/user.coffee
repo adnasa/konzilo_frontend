@@ -420,6 +420,8 @@ angular.module("kntnt.user",
         oldItem.setData(item.toObject())
       updateUsers()
 
+  $scope.userGrid = ->
+    if $scope.user then "span6" else "span12"
 
   $scope.entity = entityInfo("User")
   $scope.properties =
