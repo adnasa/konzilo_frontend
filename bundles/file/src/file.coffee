@@ -213,7 +213,7 @@ angular.module("konzilo.file",
 .directive("filePreview", ["$compile", ($compile) ->
   restrict: "AE"
   scope: { file: "=" }
-  link: ["$scope", "element", "attrs", (scope, element, attrs) ->
+  link: (scope, element, attrs) ->
     update = ->
       template = "<span class=\"file-preview\">"
       if /image/i.test(scope.file.type)
@@ -227,7 +227,6 @@ angular.module("konzilo.file",
       $compile(element.contents())(scope)
     update()
     scope.$watch('file', update)
-  ]
 ])
 
 .directive("filePicker", ["fileBrowser", (fileBrowser) ->
