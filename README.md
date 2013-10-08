@@ -5,3 +5,15 @@ The konzilo frontend is the web application part of konzilo. It is meant to be u
 # Installation
 
 See [http://konzilo.github.io/](The konzilo web site) for details.
+
+# Developing
+
+Install development dependencies:
+
+    npm install
+
+Use grunt to watch the code:
+   
+    grunt watch
+    
+Grunt will create a folder called web that contains the compiled resources.
