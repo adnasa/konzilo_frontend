@@ -93,7 +93,14 @@ angular.module("konzilo.file",
   $scope.user = UserState.getInfo().info
 
   $scope.filesUploaded = (files) ->
+    mode = undefined
     $scope.files = files
+    # Check if we need to input settings for any of the files.
+    for file in files
+      fileMode = fileModes(file.type)
+      mode = fileMode
+    if not mode
+      return $scope.returnFiles()
 
   $scope.close = ->
     $modalInstance.close()
@@ -219,8 +226,7 @@ angular.module("konzilo.file",
       if /image/i.test(scope.file.type)
         template += "<img class=\"preview\" src=\"{{file.uri}}\" alt=\"{{file.name}}\"/>"
       else
-        template += "
-          <i class=\"preview icon-xlarge icon-file\"></i>"
+        template += "<i class=\"preview icon-xlarge icon-file\"></i>"
 
       template += "<span class=\"name\">{{file.name}}</span></span>"
       element.html(template)
@@ -253,6 +259,12 @@ angular.module("konzilo.file",
   scope: { ngModel: '=', ngChange: '=' }
   controller: ["$scope", "$attrs", "$modal", ($scope, $attrs, $modal) ->
     $scope.show = $attrs.bundle?
+
+    if $attrs.preview
+      $scope.limit = $scope.$eval($attrs.limit) or $attrs.preview
+    else
+      $scope.preview = true
+
     if $attrs.limit
       $scope.limit = parseInt($scope.$eval($attrs.limit) or $attrs.limit)
     else
@@ -277,15 +289,15 @@ angular.module("konzilo.file",
 
     $scope.editSettings = (item) ->
       $modal.open
-        templateUrl: 'templates/components/file-settings-modal.html'
-        controller: ($scope, $modalInstance, file) ->
+        templateUrl: 'bundles/file/file-settings-modal.html'
+        controller: ["$scope", "$modalInstance", "file",
+        ($scope, $modalInstance, file) ->
           $scope.file = file
           $scope.close = ->
-            if $scope.settingsForm.$valid
-              $modalInstance.close()
+            $modalInstance.close()
+        ]
         resolve:
           file: -> item
-
     $scope.addFile = ->
       fileBrowser
         bundle: $attrs.bundle

@@ -1,7 +1,7 @@
 ng-form.file-upload-list(name="file-input-list", ng-show="show")
     table.table-striped.files(ng-show="list.length")
       tr.item(ng-repeat="(key, item) in list")
-        td.span3
+        td.span3(ng-show="preview")
           file-view(file="item")
         td
           a(ng-click="editSettings(item)") {{ item.name }}
