@@ -36,7 +36,7 @@ angular.module "kntnt.approve",
 
     $scope.failState = "started"
     $scope.approveState = "approved"
-    $scope.$parent.title = $translate("REVIEW_TITLE")
+    $scope.$parent.title = $translate("REVIEW.TITLE")
 
     ArticlePartStorage.changed (part) ->
       state = part.get("state")
