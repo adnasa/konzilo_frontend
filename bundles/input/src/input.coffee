@@ -10,8 +10,8 @@ angular.module("cmf.input", [])
   transclude: true
   require: 'ngModel'
   templateUrl: 'bundles/input/input-list.html'
-  scope: { ngModel: '=', ngChange: '=' }
-  controller: ["$scope", ($scope) ->
+  scope: { ngModel: '=', ngChange: '=', placeholder: "@" }
+  controller: ["$scope", "$parse", "$attrs", ($scope, $parse, $attrs) ->
     # We need to clone the array to avoid losing focus
     # when updates occur.
     $scope.$watch "ngModel", ->
