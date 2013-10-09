@@ -543,6 +543,20 @@ UserState, ArticlePartStates, GroupStorage) ->
 
     pattern = $attrs.linkPattern
 
+    # Stores the previously fetched articles.
+    fetchedArticles = []
+    articleMap = {}
+
+    # We can always reference the controller this way.
+    controller = @
+
+    # Set the height of the element.
+    height = $(window).height()
+    $element.find(".scheduled > .inner").css("max-height", height - 300)
+    $(window).resize ->
+      height = $(window).height()
+      $element.find(".scheduled > .inner").css("max-height", height - 300)
+
     $scope.activeArticle = (article) ->
       if article._id == $routeParams.id then "active"
 
@@ -551,27 +565,40 @@ UserState, ArticlePartStates, GroupStorage) ->
       link = transformLink pattern, article
       link[1..]
     originalDates = []
+
+    drawClipboard = (articles) ->
+      clipboard = {}
+      $scope.unscheduled = []
+      for article in articles
+        if not article.publishdate
+          $scope.unscheduled.push(article)
+        else
+          dateString = formatDate(article.publishdate)
+          clipboard[dateString] = [] if not clipboard[dateString]
+          clipboard[dateString].push(article)
+
+      $scope.unscheduled = $scope.unscheduled.reverse()
+      $scope.clipboard = clipboard
+      $scope.dates = _.keys($scope.clipboard).sort()
+
     # Get the clipboard.
-    getClipboard = ->
-      ClipboardStorage.query().then (articles) ->
+    getClipboard = =>
+      ClipboardStorage.query().then (articles) =>
+        articleMap = {}
         if articles?.toArray
           articles = articles.toArray()
-        clipboard = {}
-        $scope.unscheduled = []
+        # Generate a map of articles that can be fetched without
+        # another request.
         for article in articles
-          if not article.publishdate
-            $scope.unscheduled.push(article)
-          else
-            dateString = formatDate(article.publishdate)
-            clipboard[dateString] = [] if not clipboard[dateString]
-            clipboard[dateString].push(article)
+          articleMap[article._id] = article
 
-        $scope.unscheduled = $scope.unscheduled.reverse()
-        $scope.clipboard = clipboard
-        $scope.dates = _.keys($scope.clipboard).sort()
+        fetchedArticles = articles
+
+        drawClipboard(articles)
         calculatePrevDate()
         # Store the original dates for comparison.
         originalDates = $scope.dates[..]
+
     getClipboard()
     calculatePrevDate = ->
       currentDate = new Date()
@@ -704,6 +731,9 @@ UserState, ArticlePartStates, GroupStorage) ->
         article and article.publishdate != $(this).attr('data-date')
       drop: (event, ui) ->
         id = $(ui.draggable).attr('data-id')
+        article = articleMap[id]
+        article.publishDate = $(@).attr('data-date')
+        drawClipboard(fetchedArticles)
         ArticleStorage.get id, (article) =>
           article = article.toObject()
           article.publishdate = $(@).attr('data-date')
