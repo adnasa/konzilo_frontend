@@ -283,8 +283,7 @@ angular.module("kntnt.article",
     getArticles = ->
       $scope.size = 0
       ClipboardStorage.query().then (articles) ->
-        articles = articles.toArray() if articles.toArray
-        for article in articles
+        for article in articles.toArray()
           article.link = linkPattern.replace(":article", article._id)
         $scope.articles = articles
         $scope.size = article.length
@@ -308,14 +307,13 @@ angular.module("kntnt.article",
     getClipboard = ->
       $scope.size = 0
       ClipboardStorage.query().then (articles) ->
-        $scope.articles = articles.toArray()
-        for article in $scope.articles
+        $scope.articles = for article in articles.toArray() when article.publishdate
           if article.parts
             for part in article.parts
               part.link = linkPattern.replace(":article", article._id)
                 .replace(":part", part._id)
-        $scope.articles = articles.toArray()
-        $scope.size = articles.length
+          article
+        $scope.size = $scope.articles.length
       return
     getClipboard()
 
