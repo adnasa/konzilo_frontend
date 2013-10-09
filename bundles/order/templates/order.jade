@@ -44,7 +44,7 @@ div(kntnt-article-picker)
           .control-group
             label.control-label(for="terms") {{ 'GLOBAL.TERMS' | translate }}
             .controls
-              file-upload-list(ng-model="part.terms", bundle="document")
+              file-upload-list(ng-model="part.terms", bundle="document", preview="false")
           .control-group
             label.control-label(for="assignment") {{ 'GLOBAL.ASSIGNMENT' | translate }}
             .controls
