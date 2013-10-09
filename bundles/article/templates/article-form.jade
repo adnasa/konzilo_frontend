@@ -12,22 +12,22 @@ form.form.article-form.form-horizontal(ng-submit="saveArticle(article)", name="a
   .control-group
     label.control-label(for="date") {{'GLOBAL.PUBLISHING' | translate}}
     .controls
-        input(type="text", ng-model="article.publishdate",
+        input.input-medium(type="text", ng-model="article.publishdate",
           placeholder="{{'GLOBAL.DATE' | translate}}",
           datepicker-popup="yyyy-MM-dd",
           class="publishdate publishdate-date")
-        input(type="text", ng-model="publishtime",
+        input.input-mini(type="text", ng-model="publishtime",
           ng-change="changeTime(publishtime, article.publishdate)",
           placeholder="{{'GLOBAL.PUBLISHTIME' | translate}}",
-          class="publishdate publishdate-time")
+          class="publishdate publishdate-time", maxlength="5")
   .control-group
     label.control-label(for="date") {{'GLOBAL.UNPUBLISHING' | translate}}
     .controls
-        input(type="text", ng-model="article.unpublishdate",
+        input.input-medium(type="text", ng-model="article.unpublishdate",
           placeholder="{{'GLOBAL.DATE' | translate}}", datepicker-popup="yyyy-MM-dd")
-        input(type="text", ng-model="unpublishtime",
+        input.input-mini(type="text", ng-model="unpublishtime",
           ng-change="changeTime(unpublishtime, article.unpublishdate)",
-          placeholder="{{'GLOBAL.UNPUBLISHTIME' | translate}}")
+          placeholder="{{'GLOBAL.UNPUBLISHTIME' | translate}}", maxlength="5")
   .control-group
     label.control-label {{'GLOBAL.CHANNEL' | translate}}
     .controls
@@ -51,10 +51,10 @@ form.form.article-form.form-horizontal(ng-submit="saveArticle(article)", name="a
       select(name="step", ng-model="article.step", ng-change="changeTarget()")
         option(ng-repeat="step in steps", value="{{ step._id }}", ng-selected="article.step == step._id") {{ step.name }}
       span.help-block(markdown="target.steps[step._id].description")
-  .control-group(ng-show="article.step")
+  .control-group
     label.control-label(for="target") {{'GLOBAL.SUBJECT' | translate}}
     .controls
-      select(name="step", ng-model="article.topic", ng-change="topicChanged(article.topic)")
+      select(name="step", ng-model="article.topic", ng-disabled="!article.step", ng-change="topicChanged(article.topic)")
         option(ng-repeat="topic in topics",
           value="{{ topic.name }}",
           ng-selected="article.topic == topic.name") {{ topic.name }}
@@ -63,8 +63,8 @@ form.form.article-form.form-horizontal(ng-submit="saveArticle(article)", name="a
   .control-group
     label.control-label {{ 'GLOBAL.KEYWORDS' | translate }}
     .controls
-      cmf-input-list(ng-model="article.keywords")
+      cmf-input-list(ng-model="article.keywords", placeholder="{{'GLOBAL.KEYWORDS' | translate}}")
   .control-group
     label.control-label(for="description") {{ 'GLOBAL.ARTICLE_IDEA' | translate}}
     .controls
-      markdown-editor(ng-model="article.description")
+      textarea.input-block-level(ng-model="article.description", name="description")
