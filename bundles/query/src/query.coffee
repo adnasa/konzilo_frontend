@@ -223,7 +223,8 @@ angular.module("konzilo.query", [])
   templateUrl: "bundles/query/filters.html"
   controller: ["$scope", "$element", "$attrs", ($scope, $element, $attrs) ->
     $scope.groups = $scope.builder.groups
-    $scope.filters = _.toArray($scope.builder.filterInstances)
+    originalFilters = _.toArray($scope.builder.filterInstances)
+    $scope.filters = _.clone(originalFilters)
 
     queryFilter = null
     for filter in $scope.filters
@@ -238,10 +239,13 @@ angular.module("konzilo.query", [])
     $scope.filterOptions = (filter) ->
       filter.options or {}
 
+    # Get saved settings from the user settings.
     UserState.getInfo().getSetting "queryfilters", (result) ->
       $scope.builder.unserialize result, ->
         for group in  $scope.builder.groups when group.filters.length > 0
           group.filter = group.filters[0].filter
+        for group in $scope.groups
+          $scope.filters = _.without($scope.filters, group.filter)
         $scope.builder.execute()
 
     $scope.addGroup = (filter, item) ->
@@ -250,6 +254,7 @@ angular.module("konzilo.query", [])
       group.filter = filter
       if item
         group.addFilter filter, item, ->
+          $scope.filters = _.without($scope.filters, filter)
           $scope.builder.execute()
           UserState.getInfo().saveSetting("queryfilters", $scope.builder.serialize())
       else
@@ -260,10 +265,15 @@ angular.module("konzilo.query", [])
         .result.then (value) ->
           if not _.isEmpty(value)
             group.addFilter filter, value, ->
+              $scope.filters = _.without($scope.filters, filter)
               $scope.builder.execute()
               UserState.getInfo().saveSetting("queryfilters", $scope.builder.serialize())
 
     $scope.removeGroup = (group) ->
+      $scope.filters.push(group.filter)
+      # Ensure order
+      $scope.filters = for filter in originalFilters when filter in $scope.filters
+        filter
       $scope.builder.groups = _.without($scope.builder.groups, group)
       $scope.groups = $scope.builder.groups
       $scope.builder.execute()
