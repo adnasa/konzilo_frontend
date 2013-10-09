@@ -336,24 +336,25 @@ angular.module("kntnt.article",
     setSelected()
     $scope.$watch("selected", setSelected)
 
+    # @todo generalize this code into a common directive.
     $scope.toggleArticle = (article) ->
-      if not articlesToggled[article._id]?
-        articlesToggled[article._id] = true
+      if $scope.openArticle == article
+        $scope.openArticle = null
       else
-        articlesToggled[article._id] = !articlesToggled[article._id]
+        $scope.openArticle = article
 
     $scope.toggleIcon = (article) ->
-      if not articlesToggled[article._id]
+      if $scope.openArticle != article
         "icon-chevron-right"
       else
         "icon-chevron-down"
 
     $scope.activeItem = (article) ->
-      if articlesToggled[article._id]
+      if $scope.openArticle == article
         "active"
       else
         ""
-    $scope.active = (article) -> articlesToggled[article._id]
+    $scope.active = (article) -> $scope.openArticle == article
   ]
   templateUrl: "bundles/article/clipboard-articleparts.html"
 ])
@@ -395,23 +396,23 @@ angular.module("kntnt.article",
     $scope.$watch("selected", setSelected)
 
     $scope.toggleArticle = (article) ->
-      if not articlesToggled[article._id]?
-        articlesToggled[article._id] = true
+      if $scope.openArticle == article
+        $scope.openArticle = null
       else
-        articlesToggled[article._id] = !articlesToggled[article._id]
+        $scope.openArticle = article
 
     $scope.toggleIcon = (article) ->
-      if not articlesToggled[article._id]
+      if $scope.openArticle != article
         "icon-chevron-right"
       else
         "icon-chevron-down"
 
     $scope.activeItem = (article) ->
-      if articlesToggled[article._id]
+      if $scope.openArticle == article
         "active"
       else
         ""
-    $scope.active = (article) -> articlesToggled[article._id]
+    $scope.active = (article) -> $scope.openArticle == article
   ]
   templateUrl: "bundles/article/clipboard-articleparts.html"
 ])
