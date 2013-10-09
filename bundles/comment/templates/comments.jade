@@ -3,8 +3,6 @@
     .icon-profile
   .comment-wrapper(ng-repeat="(index, comment) in ngModel")
     .inner
-      .image
-        i.icon-user
       .info
         span.created
           span {{ 'COMMENT.WRITTENBY' | translate }} {{comment.username}}
@@ -14,8 +12,6 @@
   form.form(ng-submit="newComment()")
     .comment-wrapper
       .inner
-        .image
-          i.icon-user
         .info
           a.count.pull-right \#{{ngModel.length + 1}}
           textarea.comment.input-block-level(placeholder="{{'COMMENT.WRITE' | translate}}", ng-model="comment")
