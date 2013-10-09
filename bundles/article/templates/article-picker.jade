@@ -48,10 +48,10 @@
               td {{article.title}}
               td {{article.publishdate | date: "yyyy-MM-dd" }}
               td {{article.responsible.label }}
-           .pagination
-             ul
-               li(ng-repeat="page in pages")
-                 button.btn-link(ng-click="getPage(page)") {{page + 1}}
+         .pagination
+           ul
+             li(ng-repeat="page in pages")
+               button.btn-link(ng-click="getPage(page)") {{page + 1}}
 
   .picker(ng-class="collapseClass()")
     button.btn.picker-btn(ng-click="isCollapsed = !isCollapsed")
