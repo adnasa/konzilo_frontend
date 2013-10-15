@@ -1,19 +1,21 @@
 .articleparts
   p(ng-show="size == 0") {{'CLIPBOARD.DESCRIPTION' | translate}}
   .row-item(ng-repeat="article in articles", ng-class="activeItem(article)")
-    .pull-right
-      span {{article.publishdate | date: 'yyyy-MM-dd'}}
-      button.btn-link(ng-click="toggleArticle(article)")
-        i(ng-class="toggleIcon(article)")
-    .top
-      div(class="article-state {{article.state}}")
-      h3.title {{article.title}}
+    a.link-block(ng-click="toggleArticle(article)")
+      .pull-right
+        span {{article.publishdate | date: 'yyyy-MM-dd'}}
+        button.btn-link
+          i(ng-class="toggleIcon(article)")
+      .top
+        div(class="article-state {{article.state}}")
+        h3.title {{article.title}}
     .content(ng-show="active(article)")
       .inner
         .row-item
-          div(kntnt-add-article-part, article="article")
-        .row-item(ng-repeat="(index, part) in article.parts")
-          div(class="article-state {{part.state}}")
-          a(href="{{part.link}}") {{part.title}}
-          button.btn-link.clipboard-remove(ng-click="removeArticlePart(article, part)")
-            i.icon-remove
+          div(kntnt-add-article-part, article="article", part-created="partCreated")
+        .items(ui-sortable="options", ng-model="article.parts")
+          .row-item(ng-repeat="(index, part) in article.parts", data-id="{{article._id}}")
+            div(class="article-state {{part.state}}")
+            a(ng-href="{{part.link}}") {{part.title}}
+            button.btn-link.clipboard-remove(ng-click="removeArticlePart(article, part)")
+              i.icon-remove

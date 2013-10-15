@@ -228,11 +228,15 @@ angular.module("kntnt.article",
 .directive("kntntAddArticle",
 ["ClipboardStorage", "ArticleStorage", (ClipboardStorage, ArticleStorage) ->
   restrict: 'AE'
-  scope: defaults: "="
+  scope: defaults: "=", articleCreated: "="
   controller: ["$scope", "$element", "$attrs", "UserState",
   ($scope, $element, $attrs, UserState) ->
     defaults = $scope.defaults or {}
     info = UserState.getInfo().info
+
+    # Put focus on this element by default.
+    $element.find("input").focus()
+
     $scope.addArticle = ->
       if $scope.articleTitle
         article =
@@ -241,6 +245,8 @@ angular.module("kntnt.article",
           responsible: info._id
         article = _.defaults(article, defaults)
         ArticleStorage.save article, (result) ->
+          if $scope.articleCreated
+            $scope.articleCreated(result)
           ClipboardStorage.add(result._id)
           $scope.articleTitle = ''
   ]
@@ -251,7 +257,7 @@ angular.module("kntnt.article",
 ["ArticleStorage", "UserState", "KonziloConfig",
 (ArticleStorage, UserState, KonziloConfig) ->
   restrict: 'AE'
-  scope: { article: "=" }
+  scope: { article: "=", partCreated: "=" }
   controller: ["$scope", "$element", "$attrs", ($scope, $element, $attrs) ->
     $scope.addArticlePart = ->
       article = $scope.article
@@ -267,7 +273,9 @@ angular.module("kntnt.article",
             articlePart.language = defaultLang.langcode if defaultLang
             article.parts = article.parts or []
             article.parts.push(articlePart)
-            ArticleStorage.save article, (results) ->
+            ArticleStorage.save article, (result) ->
+              if $scope.partCreated
+                $scope.partCreated(result, result.parts[result.parts.length-1])
               $scope.articlePartTitle = ""
   ]
   templateUrl: "bundles/article/add-article-part.html"
@@ -283,9 +291,9 @@ angular.module("kntnt.article",
     getArticles = ->
       $scope.size = 0
       ClipboardStorage.query().then (articles) ->
-        for article in articles.toArray()
+        $scope.articles = for article in articles.toArray()
           article.link = linkPattern.replace(":article", article._id)
-        $scope.articles = articles
+          article
         $scope.size = article.length
         return
     getArticles()
@@ -300,14 +308,16 @@ angular.module("kntnt.article",
 ["ClipboardStorage", "ArticleStorage", "ArticlePartStorage", "$translate",
 (ClipboardStorage, ArticleStorage, ArticlePartStorage, $translate) ->
   restrict: "AE",
-  scope: { selected: "=", linkPattern: "@" }
+  scope: { selected: "=", linkPattern: "@", partCreated: "=" }
   controller: ["$scope", "$attrs", ($scope, $attrs) ->
-    articlesToggled = {}
+    articleMap = {}
     linkPattern = $attrs.linkPattern
     getClipboard = ->
       $scope.size = 0
       ClipboardStorage.query().then (articles) ->
+        articleMap = {}
         $scope.articles = for article in articles.toArray() when article.publishdate
+          articleMap[article._id] = article
           if article.parts
             for part in article.parts
               part.link = linkPattern.replace(":article", article._id)
@@ -316,6 +326,11 @@ angular.module("kntnt.article",
         $scope.size = $scope.articles.length
       return
     getClipboard()
+
+    $scope.options =
+      stop: (event, ui) ->
+        id = ui.item.attr("data-id")
+        ArticleStorage.save(articleMap[id]) if articleMap[id]
 
     $scope.removeArticlePart = (article, part) ->
       if confirm($translate("MANAGE.CONFIRMPARTREMOVE"))
@@ -331,30 +346,30 @@ angular.module("kntnt.article",
 
     setSelected = ->
       if $scope.selected
-        articlesToggled[$scope.selected._id] = true
+        $scope.openArticle = $scope.selected
 
     setSelected()
     $scope.$watch("selected", setSelected)
 
     # @todo generalize this code into a common directive.
     $scope.toggleArticle = (article) ->
-      if $scope.openArticle == article
+      if $scope.openArticle?._id == article._id
         $scope.openArticle = null
       else
         $scope.openArticle = article
 
     $scope.toggleIcon = (article) ->
-      if $scope.openArticle != article
+      if $scope.openArticle?._id != article._id
         "icon-chevron-right"
       else
         "icon-chevron-down"
 
     $scope.activeItem = (article) ->
-      if $scope.openArticle == article
+      if $scope.openArticle?._id == article._id
         "active"
       else
         ""
-    $scope.active = (article) -> $scope.openArticle == article
+    $scope.active = (article) -> $scope.openArticle?._id == article._id
   ]
   templateUrl: "bundles/article/clipboard-articleparts.html"
 ])
@@ -390,7 +405,7 @@ angular.module("kntnt.article",
 
     setSelected = ->
       if $scope.selected
-        articlesToggled[$scope.selected._id] = true
+        $scope.openArticle = $scope.selected
 
     setSelected()
     $scope.$watch("selected", setSelected)
@@ -534,6 +549,7 @@ UserState, ArticlePartStates, GroupStorage) ->
 ["ClipboardStorage", "ArticleStorage", "$routeParams", "formatDate",
 (ClipboardStorage, ArticleStorage, $routeParams, formatDate) ->
   restrict: 'A',
+  scope: firstArticle: "=", articleCreated: "="
   controller:  ["$scope", "$element", "$attrs", ($scope, $element, $attrs) ->
     transformLink = (pattern, article) ->
       link = pattern
@@ -546,9 +562,6 @@ UserState, ArticlePartStates, GroupStorage) ->
     # Stores the previously fetched articles.
     fetchedArticles = []
     articleMap = {}
-
-    # We can always reference the controller this way.
-    controller = @
 
     # Set the height of the element.
     height = $(window).height()
@@ -578,6 +591,11 @@ UserState, ArticlePartStates, GroupStorage) ->
           clipboard[dateString].push(article)
 
       $scope.unscheduled = $scope.unscheduled.reverse()
+      # Set the first article variable if we have more than one
+      # unscheduled article.
+      if $scope.unscheduled.length > 0
+        $scope.firstArticle = $scope.unscheduled[0]
+
       $scope.clipboard = clipboard
       $scope.dates = _.keys($scope.clipboard).sort()
 
@@ -685,6 +703,7 @@ UserState, ArticlePartStates, GroupStorage) ->
         article.publishdate = newDate
         ArticleStorage.save article
       calculatePrevDate()
+
     # Handle date pickers.
     datePickers = {}
     $scope.datePickerValues = {}

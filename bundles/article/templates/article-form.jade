@@ -68,3 +68,4 @@ form.form.article-form.form-horizontal(ng-submit="saveArticle(article)", name="a
     label.control-label(for="description") {{ 'GLOBAL.ARTICLE_IDEA' | translate}}
     .controls
       textarea.input-block-level(ng-model="article.description", name="description")
+  kz-vocabulary-input(ng-model="article.vocabularies")

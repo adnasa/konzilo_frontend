@@ -2,13 +2,14 @@
   .box.pad
     .articles.unscheduled
       .inner
-        div(kntnt-add-article)
-        .row-item(ng-repeat="article in unscheduled"
+        div(kntnt-add-article, article-created="articleCreated")
+        a.row-item(ng-repeat="article in unscheduled"
+          href="{{link(article)}}"
           data-id="{{article._id}}"
           ui-jq="draggable"
           ui-options="draggableOptions")
-            div(class="article-state {{article.state}}")
-            a(href="{{link(article)}}") {{article.title}}
+            span(class="article-state {{article.state}}")
+            span {{article.title}}
             button.btn-link.clipboard-remove(ng-click="removeFromClipboard(article)")
               i.icon-remove
     .scheduled
@@ -33,9 +34,13 @@
                 datepicker(min="today")
 
             .content
-              .row-item(ng-class="activeArticle(article)", ui-jq="draggable", data-id="{{article._id}}", ng-repeat="article in clipboard[date]")
-                div(class="article-state {{article.state}}")
-                a(href="{{link(article)}}") {{article.title}}
+              a.row-item(ng-class="activeArticle(article)",
+                ui-jq="draggable",
+                data-id="{{article._id}}",
+                href="{{link(article)}}",
+                ng-repeat="article in clipboard[date]")
+                span(class="article-state {{article.state}}")
+                span() {{article.title}}
                 button.btn-link.clipboard-remove(ng-click="removeFromClipboard(article)")
                     i.icon-remove
         .articles
