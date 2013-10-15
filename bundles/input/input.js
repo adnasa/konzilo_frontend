@@ -11,10 +11,11 @@
       templateUrl: 'bundles/input/input-list.html',
       scope: {
         ngModel: '=',
-        ngChange: '='
+        ngChange: '=',
+        placeholder: "@"
       },
       controller: [
-        "$scope", function($scope) {
+        "$scope", "$parse", "$attrs", function($scope, $parse, $attrs) {
           var _this = this;
           $scope.$watch("ngModel", function() {
             $scope.list = _.clone($scope.ngModel);

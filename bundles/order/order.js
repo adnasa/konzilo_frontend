@@ -27,7 +27,7 @@
       });
     }
   ]).controller("OrderController", [
-    "$scope", "ArticleStorage", "$routeParams", "UserStorage", "$q", "articleParts", "KonziloConfig", "TargetStorage", "InputAutoSave", "StepStorage", "ArticlePartStorage", "ChannelStorage", "$filter", "kzAnalysisDialog", function($scope, ArticleStorage, $routeParams, UserStorage, $q, articleParts, KonziloConfig, TargetStorage, InputAutoSave, StepStorage, ArticlePartStorage, ChannelStorage, $filter, kzAnalysisDialog) {
+    "$scope", "ArticleStorage", "$routeParams", "UserStorage", "$q", "articleParts", "KonziloConfig", "TargetStorage", "InputAutoSave", "StepStorage", "ArticlePartStorage", "ChannelStorage", "$filter", "kzAnalysisDialog", "$location", function($scope, ArticleStorage, $routeParams, UserStorage, $q, articleParts, KonziloConfig, TargetStorage, InputAutoSave, StepStorage, ArticlePartStorage, ChannelStorage, $filter, kzAnalysisDialog, $location) {
       $scope.savePart = function() {
         ArticlePartStorage.save($scope.part);
       };
@@ -100,6 +100,9 @@
           return deferred.resolve(results.toArray());
         });
         return deferred.promise;
+      };
+      $scope.partCreated = function(article, part) {
+        return $location.path("order/" + article._id + "/" + part._id);
       };
       $scope.types = articleParts.labels();
       return $scope.languages = KonziloConfig.get("languages").listAll();

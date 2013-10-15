@@ -294,13 +294,15 @@
       return {
         restrict: 'AE',
         scope: {
-          defaults: "="
+          defaults: "=",
+          articleCreated: "="
         },
         controller: [
           "$scope", "$element", "$attrs", "UserState", function($scope, $element, $attrs, UserState) {
             var defaults, info;
             defaults = $scope.defaults || {};
             info = UserState.getInfo().info;
+            $element.find("input").focus();
             return $scope.addArticle = function() {
               var article;
               if ($scope.articleTitle) {
@@ -311,6 +313,9 @@
                 };
                 article = _.defaults(article, defaults);
                 return ArticleStorage.save(article, function(result) {
+                  if ($scope.articleCreated) {
+                    $scope.articleCreated(result);
+                  }
                   ClipboardStorage.add(result._id);
                   return $scope.articleTitle = '';
                 });
@@ -326,7 +331,8 @@
       return {
         restrict: 'AE',
         scope: {
-          article: "="
+          article: "=",
+          partCreated: "="
         },
         controller: [
           "$scope", "$element", "$attrs", function($scope, $element, $attrs) {
@@ -351,7 +357,10 @@
                     }
                     article.parts = article.parts || [];
                     article.parts.push(articlePart);
-                    return ArticleStorage.save(article, function(results) {
+                    return ArticleStorage.save(article, function(result) {
+                      if ($scope.partCreated) {
+                        $scope.partCreated(result, result.parts[result.parts.length - 1]);
+                      }
                       return $scope.articlePartTitle = "";
                     });
                   });
@@ -377,15 +386,18 @@
             getArticles = function() {
               $scope.size = 0;
               return ClipboardStorage.query().then(function(articles) {
-                var article, _i, _len;
-                if (articles.toArray) {
-                  articles = articles.toArray();
-                }
-                for (_i = 0, _len = articles.length; _i < _len; _i++) {
-                  article = articles[_i];
-                  article.link = linkPattern.replace(":article", article._id);
-                }
-                $scope.articles = articles;
+                var article;
+                $scope.articles = (function() {
+                  var _i, _len, _ref, _results;
+                  _ref = articles.toArray();
+                  _results = [];
+                  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    article = _ref[_i];
+                    article.link = linkPattern.replace(":article", article._id);
+                    _results.push(article);
+                  }
+                  return _results;
+                })();
                 $scope.size = article.length;
               });
             };
@@ -403,34 +415,53 @@
         restrict: "AE",
         scope: {
           selected: "=",
-          linkPattern: "@"
+          linkPattern: "@",
+          partCreated: "="
         },
         controller: [
           "$scope", "$attrs", function($scope, $attrs) {
-            var articlesToggled, getClipboard, linkPattern, setSelected;
-            articlesToggled = {};
+            var articleMap, getClipboard, linkPattern, setSelected;
+            articleMap = {};
             linkPattern = $attrs.linkPattern;
             getClipboard = function() {
               $scope.size = 0;
               ClipboardStorage.query().then(function(articles) {
-                var article, part, _i, _j, _len, _len1, _ref, _ref1;
-                $scope.articles = articles.toArray();
-                _ref = $scope.articles;
-                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                  article = _ref[_i];
-                  if (article.parts) {
-                    _ref1 = article.parts;
-                    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-                      part = _ref1[_j];
-                      part.link = linkPattern.replace(":article", article._id).replace(":part", part._id);
+                var article, part;
+                articleMap = {};
+                $scope.articles = (function() {
+                  var _i, _j, _len, _len1, _ref, _ref1, _results;
+                  _ref = articles.toArray();
+                  _results = [];
+                  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    article = _ref[_i];
+                    if (!article.publishdate) {
+                      continue;
                     }
+                    articleMap[article._id] = article;
+                    if (article.parts) {
+                      _ref1 = article.parts;
+                      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                        part = _ref1[_j];
+                        part.link = linkPattern.replace(":article", article._id).replace(":part", part._id);
+                      }
+                    }
+                    _results.push(article);
                   }
-                }
-                $scope.articles = articles.toArray();
-                return $scope.size = articles.length;
+                  return _results;
+                })();
+                return $scope.size = $scope.articles.length;
               });
             };
             getClipboard();
+            $scope.options = {
+              stop: function(event, ui) {
+                var id;
+                id = ui.item.attr("data-id");
+                if (articleMap[id]) {
+                  return ArticleStorage.save(articleMap[id]);
+                }
+              }
+            };
             $scope.removeArticlePart = function(article, part) {
               if (confirm($translate("MANAGE.CONFIRMPARTREMOVE"))) {
                 article.parts = _.without(article.parts, part);
@@ -446,34 +477,38 @@
             ClipboardStorage.changed(getClipboard);
             setSelected = function() {
               if ($scope.selected) {
-                return articlesToggled[$scope.selected._id] = true;
+                return $scope.openArticle = $scope.selected;
               }
             };
             setSelected();
             $scope.$watch("selected", setSelected);
             $scope.toggleArticle = function(article) {
-              if (articlesToggled[article._id] == null) {
-                return articlesToggled[article._id] = true;
+              var _ref;
+              if (((_ref = $scope.openArticle) != null ? _ref._id : void 0) === article._id) {
+                return $scope.openArticle = null;
               } else {
-                return articlesToggled[article._id] = !articlesToggled[article._id];
+                return $scope.openArticle = article;
               }
             };
             $scope.toggleIcon = function(article) {
-              if (!articlesToggled[article._id]) {
+              var _ref;
+              if (((_ref = $scope.openArticle) != null ? _ref._id : void 0) !== article._id) {
                 return "icon-chevron-right";
               } else {
                 return "icon-chevron-down";
               }
             };
             $scope.activeItem = function(article) {
-              if (articlesToggled[article._id]) {
+              var _ref;
+              if (((_ref = $scope.openArticle) != null ? _ref._id : void 0) === article._id) {
                 return "active";
               } else {
                 return "";
               }
             };
             return $scope.active = function(article) {
-              return articlesToggled[article._id];
+              var _ref;
+              return ((_ref = $scope.openArticle) != null ? _ref._id : void 0) === article._id;
             };
           }
         ],
@@ -522,34 +557,34 @@
             ArticlePartStorage.changed(getArticles);
             setSelected = function() {
               if ($scope.selected) {
-                return articlesToggled[$scope.selected._id] = true;
+                return $scope.openArticle = $scope.selected;
               }
             };
             setSelected();
             $scope.$watch("selected", setSelected);
             $scope.toggleArticle = function(article) {
-              if (articlesToggled[article._id] == null) {
-                return articlesToggled[article._id] = true;
+              if ($scope.openArticle === article) {
+                return $scope.openArticle = null;
               } else {
-                return articlesToggled[article._id] = !articlesToggled[article._id];
+                return $scope.openArticle = article;
               }
             };
             $scope.toggleIcon = function(article) {
-              if (!articlesToggled[article._id]) {
+              if ($scope.openArticle !== article) {
                 return "icon-chevron-right";
               } else {
                 return "icon-chevron-down";
               }
             };
             $scope.activeItem = function(article) {
-              if (articlesToggled[article._id]) {
+              if ($scope.openArticle === article) {
                 return "active";
               } else {
                 return "";
               }
             };
             return $scope.active = function(article) {
-              return articlesToggled[article._id];
+              return $scope.openArticle === article;
             };
           }
         ],
@@ -739,9 +774,14 @@
     "ClipboardStorage", "ArticleStorage", "$routeParams", "formatDate", function(ClipboardStorage, ArticleStorage, $routeParams, formatDate) {
       return {
         restrict: 'A',
+        scope: {
+          firstArticle: "=",
+          articleCreated: "="
+        },
         controller: [
           "$scope", "$element", "$attrs", function($scope, $element, $attrs) {
-            var calculateNewDate, calculatePrevDate, datePickers, getClipboard, originalDates, pattern, switchDate, transformLink;
+            var articleMap, calculateNewDate, calculatePrevDate, datePickers, drawClipboard, fetchedArticles, getClipboard, height, originalDates, pattern, switchDate, transformLink,
+              _this = this;
             transformLink = function(pattern, article) {
               var key, link, value;
               link = pattern;
@@ -752,6 +792,14 @@
               return link;
             };
             pattern = $attrs.linkPattern;
+            fetchedArticles = [];
+            articleMap = {};
+            height = $(window).height();
+            $element.find(".scheduled > .inner").css("max-height", height - 300);
+            $(window).resize(function() {
+              height = $(window).height();
+              return $element.find(".scheduled > .inner").css("max-height", height - 300);
+            });
             $scope.activeArticle = function(article) {
               if (article._id === $routeParams.id) {
                 return "active";
@@ -766,29 +814,42 @@
               return link.slice(1);
             };
             originalDates = [];
+            drawClipboard = function(articles) {
+              var article, clipboard, dateString, _i, _len;
+              clipboard = {};
+              $scope.unscheduled = [];
+              for (_i = 0, _len = articles.length; _i < _len; _i++) {
+                article = articles[_i];
+                if (!article.publishdate) {
+                  $scope.unscheduled.push(article);
+                } else {
+                  dateString = formatDate(article.publishdate);
+                  if (!clipboard[dateString]) {
+                    clipboard[dateString] = [];
+                  }
+                  clipboard[dateString].push(article);
+                }
+              }
+              $scope.unscheduled = $scope.unscheduled.reverse();
+              if ($scope.unscheduled.length > 0) {
+                $scope.firstArticle = $scope.unscheduled[0];
+              }
+              $scope.clipboard = clipboard;
+              return $scope.dates = _.keys($scope.clipboard).sort();
+            };
             getClipboard = function() {
               return ClipboardStorage.query().then(function(articles) {
-                var article, clipboard, dateString, _i, _len;
+                var article, _i, _len;
+                articleMap = {};
                 if (articles != null ? articles.toArray : void 0) {
                   articles = articles.toArray();
                 }
-                clipboard = {};
-                $scope.unscheduled = [];
                 for (_i = 0, _len = articles.length; _i < _len; _i++) {
                   article = articles[_i];
-                  if (!article.publishdate) {
-                    $scope.unscheduled.push(article);
-                  } else {
-                    dateString = formatDate(article.publishdate);
-                    if (!clipboard[dateString]) {
-                      clipboard[dateString] = [];
-                    }
-                    clipboard[dateString].push(article);
-                  }
+                  articleMap[article._id] = article;
                 }
-                $scope.unscheduled = $scope.unscheduled.reverse();
-                $scope.clipboard = clipboard;
-                $scope.dates = _.keys($scope.clipboard).sort();
+                fetchedArticles = articles;
+                drawClipboard(articles);
                 calculatePrevDate();
                 return originalDates = $scope.dates.slice(0);
               });
@@ -888,9 +949,12 @@
                 return article && article.publishdate !== $(this).attr('data-date');
               },
               drop: function(event, ui) {
-                var id,
+                var article, id,
                   _this = this;
                 id = $(ui.draggable).attr('data-id');
+                article = articleMap[id];
+                article.publishDate = $(this).attr('data-date');
+                drawClipboard(fetchedArticles);
                 return ArticleStorage.get(id, function(article) {
                   article = article.toObject();
                   article.publishdate = $(_this).attr('data-date');

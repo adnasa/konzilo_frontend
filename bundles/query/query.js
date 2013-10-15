@@ -1,5 +1,6 @@
 (function() {
-  var __hasProp = {}.hasOwnProperty,
+  var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
+    __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   angular.module("konzilo.query", []).constant("queryOperators", {
@@ -403,9 +404,10 @@
         templateUrl: "bundles/query/filters.html",
         controller: [
           "$scope", "$element", "$attrs", function($scope, $element, $attrs) {
-            var filter, _i, _len, _ref;
+            var filter, originalFilters, _i, _len, _ref;
             $scope.groups = $scope.builder.groups;
-            $scope.filters = _.toArray($scope.builder.filterInstances);
+            originalFilters = _.toArray($scope.builder.filterInstances);
+            $scope.filters = _.clone(originalFilters);
             queryFilter = null;
             _ref = $scope.filters;
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -428,13 +430,18 @@
             };
             UserState.getInfo().getSetting("queryfilters", function(result) {
               return $scope.builder.unserialize(result, function() {
-                var group, _j, _len1, _ref1;
+                var group, _j, _k, _len1, _len2, _ref1, _ref2;
                 _ref1 = $scope.builder.groups;
                 for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
                   group = _ref1[_j];
                   if (group.filters.length > 0) {
                     group.filter = group.filters[0].filter;
                   }
+                }
+                _ref2 = $scope.groups;
+                for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+                  group = _ref2[_k];
+                  $scope.filters = _.without($scope.filters, group.filter);
                 }
                 return $scope.builder.execute();
               });
@@ -446,6 +453,7 @@
               group.filter = filter;
               if (item) {
                 return group.addFilter(filter, item, function() {
+                  $scope.filters = _.without($scope.filters, filter);
                   $scope.builder.execute();
                   return UserState.getInfo().saveSetting("queryfilters", $scope.builder.serialize());
                 });
@@ -461,6 +469,7 @@
                 }).result.then(function(value) {
                   if (!_.isEmpty(value)) {
                     return group.addFilter(filter, value, function() {
+                      $scope.filters = _.without($scope.filters, filter);
                       $scope.builder.execute();
                       return UserState.getInfo().saveSetting("queryfilters", $scope.builder.serialize());
                     });
@@ -469,6 +478,18 @@
               }
             };
             $scope.removeGroup = function(group) {
+              $scope.filters.push(group.filter);
+              $scope.filters = (function() {
+                var _j, _len1, _results;
+                _results = [];
+                for (_j = 0, _len1 = originalFilters.length; _j < _len1; _j++) {
+                  filter = originalFilters[_j];
+                  if (__indexOf.call($scope.filters, filter) >= 0) {
+                    _results.push(filter);
+                  }
+                }
+                return _results;
+              })();
               $scope.builder.groups = _.without($scope.builder.groups, group);
               $scope.groups = $scope.builder.groups;
               $scope.builder.execute();

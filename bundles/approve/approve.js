@@ -32,10 +32,12 @@
       };
       $scope.failState = "started";
       $scope.approveState = "approved";
-      $scope.$parent.title = $translate("REVIEW_TITLE");
+      $scope.$parent.title = $translate("REVIEW.TITLE");
       ArticlePartStorage.changed(function(part) {
         var state;
-        state = part.get("state");
+        if ($location.path().indexOf("approve")) {
+          state = part.get("state");
+        }
         if ($routeParams.id === part.id() && (state === $scope.failState || state === $scope.approveState)) {
           return $location.url("/approve");
         }

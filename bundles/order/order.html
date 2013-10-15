@@ -4,7 +4,7 @@
   <div class="row-fluid content">
     <div class="span3">
       <div class="box pad">
-        <div kntnt-clipboard-article-parts="kntnt-clipboard-article-parts" selected="article" link-pattern="#/order/:article/:part"></div>
+        <div kntnt-clipboard-article-parts="kntnt-clipboard-article-parts" selected="article" link-pattern="#/order/:article/:part" part-created="partCreated"></div>
       </div>
     </div>
     <div ng-show="!part" class="span9">
@@ -60,7 +60,7 @@
           <div class="control-group">
             <label for="terms" class="control-label">{{ 'GLOBAL.TERMS' | translate }}</label>
             <div class="controls">
-              <file-upload-list ng-model="part.terms" bundle="document"></file-upload-list>
+              <file-upload-list ng-model="part.terms" bundle="document" preview="false"></file-upload-list>
             </div>
           </div>
           <div class="control-group">

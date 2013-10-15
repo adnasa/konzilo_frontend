@@ -132,7 +132,17 @@
       $scope.bundle = options.bundle;
       $scope.user = UserState.getInfo().info;
       $scope.filesUploaded = function(files) {
-        return $scope.files = files;
+        var file, fileMode, mode, _i, _len;
+        mode = void 0;
+        $scope.files = files;
+        for (_i = 0, _len = files.length; _i < _len; _i++) {
+          file = files[_i];
+          fileMode = fileModes(file.type);
+          mode = fileMode;
+        }
+        if (!mode) {
+          return $scope.returnFiles();
+        }
       };
       $scope.close = function() {
         return $modalInstance.close();
@@ -321,25 +331,23 @@
         scope: {
           file: "="
         },
-        link: [
-          "$scope", "element", "attrs", function(scope, element, attrs) {
-            var update;
-            update = function() {
-              var template;
-              template = "<span class=\"file-preview\">";
-              if (/image/i.test(scope.file.type)) {
-                template += "<img class=\"preview\" src=\"{{file.uri}}\" alt=\"{{file.name}}\"/>";
-              } else {
-                template += "          <i class=\"preview icon-xlarge icon-file\"></i>";
-              }
-              template += "<span class=\"name\">{{file.name}}</span></span>";
-              element.html(template);
-              return $compile(element.contents())(scope);
-            };
-            update();
-            return scope.$watch('file', update);
-          }
-        ]
+        link: function(scope, element, attrs) {
+          var update;
+          update = function() {
+            var template;
+            template = "<span class=\"file-preview\">";
+            if (/image/i.test(scope.file.type)) {
+              template += "<img class=\"preview\" src=\"{{file.uri}}\" alt=\"{{file.name}}\"/>";
+            } else {
+              template += "<i class=\"preview icon-xlarge icon-file\"></i>";
+            }
+            template += "<span class=\"name\">{{file.name}}</span></span>";
+            element.html(template);
+            return $compile(element.contents())(scope);
+          };
+          update();
+          return scope.$watch('file', update);
+        }
       };
     }
   ]).directive("filePicker", [
@@ -382,6 +390,11 @@
         controller: [
           "$scope", "$attrs", "$modal", function($scope, $attrs, $modal) {
             $scope.show = $attrs.bundle != null;
+            if ($attrs.preview) {
+              $scope.limit = $scope.$eval($attrs.limit) || $attrs.preview;
+            } else {
+              $scope.preview = true;
+            }
             if ($attrs.limit) {
               $scope.limit = parseInt($scope.$eval($attrs.limit) || $attrs.limit);
             } else {
@@ -404,15 +417,15 @@
             };
             $scope.editSettings = function(item) {
               return $modal.open({
-                templateUrl: 'templates/components/file-settings-modal.html',
-                controller: function($scope, $modalInstance, file) {
-                  $scope.file = file;
-                  return $scope.close = function() {
-                    if ($scope.settingsForm.$valid) {
+                templateUrl: 'bundles/file/file-settings-modal.html',
+                controller: [
+                  "$scope", "$modalInstance", "file", function($scope, $modalInstance, file) {
+                    $scope.file = file;
+                    return $scope.close = function() {
                       return $modalInstance.close();
-                    }
-                  };
-                },
+                    };
+                  }
+                ],
                 resolve: {
                   file: function() {
                     return item;

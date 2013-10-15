@@ -18,15 +18,15 @@
   <div class="control-group">
     <label for="date" class="control-label">{{'GLOBAL.PUBLISHING' | translate}}</label>
     <div class="controls">
-      <input type="text" ng-model="article.publishdate" placeholder="{{'GLOBAL.DATE' | translate}}" datepicker-popup="yyyy-MM-dd" class="publishdate publishdate-date"/>
-      <input type="text" ng-model="publishtime" ng-change="changeTime(publishtime, article.publishdate)" placeholder="{{'GLOBAL.PUBLISHTIME' | translate}}" class="publishdate publishdate-time"/>
+      <input type="text" ng-model="article.publishdate" placeholder="{{'GLOBAL.DATE' | translate}}" datepicker-popup="yyyy-MM-dd" class="input-medium publishdate publishdate-date"/>
+      <input type="text" ng-model="publishtime" ng-change="changeTime(publishtime, article.publishdate)" placeholder="{{'GLOBAL.PUBLISHTIME' | translate}}" maxlength="5" class="input-mini publishdate publishdate-time"/>
     </div>
   </div>
   <div class="control-group">
     <label for="date" class="control-label">{{'GLOBAL.UNPUBLISHING' | translate}}</label>
     <div class="controls">
-      <input type="text" ng-model="article.unpublishdate" placeholder="{{'GLOBAL.DATE' | translate}}" datepicker-popup="yyyy-MM-dd"/>
-      <input type="text" ng-model="unpublishtime" ng-change="changeTime(unpublishtime, article.unpublishdate)" placeholder="{{'GLOBAL.UNPUBLISHTIME' | translate}}"/>
+      <input type="text" ng-model="article.unpublishdate" placeholder="{{'GLOBAL.DATE' | translate}}" datepicker-popup="yyyy-MM-dd" class="input-medium"/>
+      <input type="text" ng-model="unpublishtime" ng-change="changeTime(unpublishtime, article.unpublishdate)" placeholder="{{'GLOBAL.UNPUBLISHTIME' | translate}}" maxlength="5" class="input-mini"/>
     </div>
   </div>
   <div class="control-group">
@@ -53,10 +53,10 @@
       </select><span markdown="target.steps[step._id].description" class="help-block"></span>
     </div>
   </div>
-  <div ng-show="article.step" class="control-group">
+  <div class="control-group">
     <label for="target" class="control-label">{{'GLOBAL.SUBJECT' | translate}}</label>
     <div class="controls">
-      <select name="step" ng-model="article.topic" ng-change="topicChanged(article.topic)">
+      <select name="step" ng-model="article.topic" ng-disabled="!article.step" ng-change="topicChanged(article.topic)">
         <option ng-repeat="topic in topics" value="{{ topic.name }}" ng-selected="article.topic == topic.name">{{ topic.name }}</option>
       </select><span ng-show="article.topic" class="help-block">{{'GLOBAL.TARGET_TOPIC_SPEC' | translate: translations}}</span>
     </div>
@@ -64,13 +64,14 @@
   <div class="control-group">
     <label class="control-label">{{ 'GLOBAL.KEYWORDS' | translate }}</label>
     <div class="controls">
-      <cmf-input-list ng-model="article.keywords"></cmf-input-list>
+      <cmf-input-list ng-model="article.keywords" placeholder="{{'GLOBAL.KEYWORDS' | translate}}"></cmf-input-list>
     </div>
   </div>
   <div class="control-group">
     <label for="description" class="control-label">{{ 'GLOBAL.ARTICLE_IDEA' | translate}}</label>
     <div class="controls">
-      <markdown-editor ng-model="article.description"></markdown-editor>
+      <textarea ng-model="article.description" name="description" class="input-block-level"></textarea>
     </div>
   </div>
+  <kz-vocabulary-input ng-model="article.vocabularies"></kz-vocabulary-input>
 </form>
