@@ -3,7 +3,7 @@ div(kntnt-article-picker)
   .row-fluid.content
     .span3
       .box.pad
-        div(kntnt-clipboard-article-parts, selected="article", link-pattern="#/order/:article/:part")
+        div(kntnt-clipboard-article-parts, selected="article", link-pattern="#/order/:article/:part", part-created="partCreated")
     .span9(ng-show="!part")
       .box.pad
         h1 {{ "ORDER.TITLE" | translate }}

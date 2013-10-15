@@ -2,7 +2,7 @@ div(kntnt-article-picker)
 .container-fluid.main-content
   .row-fluid
     .span3.left-side
-      div(kntnt-clipboard-articles, link-pattern="#/plan/:_id")
+      div(kntnt-clipboard-articles, link-pattern="#/plan/:_id", first-article="firstArticle", article-created="articleCreated")
     .span9(ng-show="!article")
       .box.pad
         h1 {{ "PLAN.TITLE" | translate }}

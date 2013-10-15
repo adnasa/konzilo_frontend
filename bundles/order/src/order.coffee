@@ -32,11 +32,11 @@ angular.module("konzilo.order", ["konzilo.menu"])
 "UserStorage", "$q", "articleParts", "KonziloConfig",
 "TargetStorage", "InputAutoSave", "StepStorage",
 "ArticlePartStorage", "ChannelStorage", "$filter",
-"kzAnalysisDialog",
+"kzAnalysisDialog", "$location",
 ($scope, ArticleStorage, $routeParams,
 UserStorage, $q, articleParts, KonziloConfig,
 TargetStorage, InputAutoSave, StepStorage,
-ArticlePartStorage, ChannelStorage, $filter, kzAnalysisDialog) ->
+ArticlePartStorage, ChannelStorage, $filter, kzAnalysisDialog, $location) ->
   $scope.savePart = ->
     ArticlePartStorage.save $scope.part
     return
@@ -96,6 +96,9 @@ ArticlePartStorage, ChannelStorage, $filter, kzAnalysisDialog) ->
     UserStorage.query {}, (results) ->
       deferred.resolve results.toArray()
     deferred.promise
+
+  $scope.partCreated = (article, part) ->
+    $location.path("order/#{article._id}/#{part._id}")
 
   $scope.types = articleParts.labels()
   $scope.languages = KonziloConfig.get("languages").listAll()

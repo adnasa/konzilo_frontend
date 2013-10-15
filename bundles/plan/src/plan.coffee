@@ -36,14 +36,21 @@ angular.module("kntnt.plan",
 ])
 
 .controller("PlanController",
-["$scope", "ArticleStorage", "$routeParams", "$translate",
-($scope, ArticleStorage, $routeParams, $translate) ->
+["$scope", "ArticleStorage", "$routeParams", "$translate", "$location",
+($scope, ArticleStorage, $routeParams, $translate, $location) ->
   $scope.$parent.title = $translate("PLAN.TITLE")
   # Options for sortable.
   $scope.options =
     stop: ->
       TargetStorage.sort $scope.articlesSorted, "weight"
     placeholder: "ui-placeholder box pad"
+
+  $scope.$watch "firstArticle", ->
+   if $scope.firstArticle and not $routeParams.id
+     $location.path("/plan/#{$scope.firstArticle._id}")
+
+  $scope.articleCreated = (article) ->
+    $location.path("/plan/#{article._id}")
 
   if $routeParams.id
     ArticleStorage.get $routeParams.id, (article) ->
