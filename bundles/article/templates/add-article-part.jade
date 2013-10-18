@@ -1,6 +1,5 @@
 form.form-inline.add-part-form(ng-submit="addArticlePart()",
   name="addArticlePartForm")
-  input(type="text", name="name", ng-model="articlePartTitle",
-    required, placeholder="{{ 'GLOBAL.NEWPART' | translate }}")
+  select(name="type", ng-model="type", ng-options="key as value for (key, value) in types", required)
   button.btn.btn-link
     i.icon-plus

@@ -172,16 +172,19 @@
   "IMAGEPART": {
     "TITLE": "Leverera bilder",
     "UPLOADFILES": "Ladda upp filer",
-    "LABEL": "En eller flera bilder"
+    "LABEL": "En eller flera bilder",
+    "DEFAULTNAME": "Bild"
   },
   "MEDIAPART": {
     "TITLE": "Leverera media",
     "MEDIA": "Media",
-    "LABEL": "Inbäddad media"
+    "LABEL": "Inbäddad media",
+    "DEFAULTNAME": "Media"
   },
   "TEXTPART": {
     "TITLE": "Leverera text",
-    "LABEL": "Text som matas in"
+    "LABEL": "Text som matas in",
+    "DEFAULTNAME": "Text"
   },
   "ARTICLEPICKER": {
     "TITLE": "Lägg till artiklar",

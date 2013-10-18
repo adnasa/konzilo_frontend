@@ -173,16 +173,19 @@
   "IMAGEPART": {
     "TITLE": "Deliver images",
     "UPLOADFILES": "Upload files",
-    "LABEL": "One or more images"
+    "LABEL": "One or more images",
+    "DEFAULTNAME": "Image"
   },
   "MEDIAPART": {
     "TITLE": "Deliver media",
     "MEDIA": "Media",
-    "LABEL": "Embedded media"
+    "LABEL": "Embedded media",
+    "DEFAULTNAME": "Media"
   },
   "TEXTPART": {
     "TITLE": "Deliver text",
-    "LABEL": "Text"
+    "LABEL": "Text",
+    "DEFAULTNAME": "Text"
   },
   "ARTICLEPICKER": {
     "TITLE": "Add articles",

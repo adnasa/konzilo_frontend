@@ -23,6 +23,7 @@ angular.module("kntnt.article",
   providers:
     text: ["$translate", ($translate) ->
       label: $translate("TEXTPART.LABEL")
+      defaultName: $translate("TEXTPART.DEFAULTNAME")
       controller: ["$scope", "articlePart",
       "InputAutoSave", "useAutoSave",
       ($scope, articlePart, InputAutoSave, useAutoSave) ->
@@ -41,6 +42,7 @@ angular.module("kntnt.article",
     ]
     media: ["$translate", ($translate) ->
       label: $translate("MEDIAPART.LABEL")
+      defaultName: $translate("MEDIAPART.DEFAULTNAME")
       controller: ["$scope", "articlePart",
       "InputAutoSave", "useAutoSave", "$http",
       ($scope, articlePart, InputAutoSave, useAutoSave, $http) ->
@@ -80,6 +82,7 @@ angular.module("kntnt.article",
     ]
     image: ["$translate", ($translate) ->
       label: $translate("IMAGEPART.LABEL")
+      defaultName: $translate("IMAGEPART.DEFAULTNAME")
       controller: ["$scope", "articlePart",
       "InputAutoSave", "UserStorage", "$q", "useAutoSave"
       ($scope, articlePart,
@@ -112,6 +115,15 @@ angular.module("kntnt.article",
         else
           labels[name] = $injector.invoke(definition).label
       return labels
+    # Get all default names
+    fn.defaultNames = =>
+      names = {}
+      for name, definition of @providers
+        if _.isPlainObject(definition)
+          names[name] = definition.defaultName
+        else
+          names[name] = $injector.invoke(definition).defaultName
+      return names
     return fn
 
   getProviders: -> @providers
@@ -254,11 +266,15 @@ angular.module("kntnt.article",
 ])
 
 .directive("kntntAddArticlePart",
-["ArticleStorage", "UserState", "KonziloConfig",
-(ArticleStorage, UserState, KonziloConfig) ->
+["ArticleStorage", "UserState", "KonziloConfig", "articleParts"
+(ArticleStorage, UserState, KonziloConfig, articleParts) ->
   restrict: 'AE'
   scope: { article: "=", partCreated: "=" }
   controller: ["$scope", "$element", "$attrs", ($scope, $element, $attrs) ->
+
+    $scope.types = articleParts.labels()
+    defaultNames = articleParts.defaultNames()
+
     $scope.addArticlePart = ->
       article = $scope.article
       user = UserState.getInfo().info
@@ -267,12 +283,18 @@ angular.module("kntnt.article",
           KonziloConfig.get("languages").listAll().then (languages) ->
             defaultLang = _.find(languages, default: true)
             articlePart =
-              title: $scope.articlePartTitle
+              title: defaultNames[$scope.type]
               state: "notstarted"
+              type: $scope.type
               submitter: user._id
             articlePart.language = defaultLang.langcode if defaultLang
             article.parts = article.parts or []
             article.parts.push(articlePart)
+            # Generate a unique name by iterating over the number of parts
+            # of the same type.
+            count = _.filter(article.parts, type: articlePart.type).length
+            articlePart.title += " #{count}" if count > 1
+
             ArticleStorage.save article, (result) ->
               if $scope.partCreated
                 $scope.partCreated(result, result.parts[result.parts.length-1])
