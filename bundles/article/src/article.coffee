@@ -611,15 +611,31 @@ UserState, ArticlePartStates, GroupStorage) ->
           dateString = formatDate(article.publishdate)
           clipboard[dateString] = [] if not clipboard[dateString]
           clipboard[dateString].push(article)
-
       $scope.unscheduled = $scope.unscheduled.reverse()
       # Set the first article variable if we have more than one
       # unscheduled article.
       if $scope.unscheduled.length > 0
         $scope.firstArticle = $scope.unscheduled[0]
 
+      dates = _.keys($scope.clipboard).sort()
+      lastDate = new Date(dates[dates.length-1])
+      date = new Date(dates[0])
+      while date < lastDate
+        formattedDate = formatDate(date)
+        if not clipboard[formattedDate]
+          clipboard[formattedDate] = []
+        date = new Date(date.getFullYear(),
+          date.getMonth(),
+          date.getDate() + 1)
+
+      # Create a placeholder for today if it doesn't already exist.
+      formattedToday = formatDate(new Date())
+      if not clipboard[formattedToday]
+        clipboard[formattedToday] = []
+
       $scope.clipboard = clipboard
       $scope.dates = _.keys($scope.clipboard).sort()
+
 
     # Get the clipboard.
     getClipboard = =>
@@ -743,6 +759,9 @@ UserState, ArticlePartStates, GroupStorage) ->
     # Determine if a date picker should be shown.
     $scope.datePickerShown = (date) ->
       datePickers[date]
+
+    $scope.groupClass = (group) ->
+      if group.length > 0 then "open" else "closed"
 
     # Options for sortable.
     $scope.options =

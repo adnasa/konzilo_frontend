@@ -330,13 +330,28 @@ a.new-target {
   border: 1px solid #464646;
   margin-bottom: 20px;
 
+  &.empty:not(.droppable-hover) {
+    margin-bottom: 0;
+    visibility: hidden;
+    border: none;
+    height: 20px;
+    .content {
+      padding: 0;
+      min-height: 0px;
+    }
+  }
+
   &.droppable-hover {
     border: 1px solid @kntntGreen;
+    .top {
+      background: @kntntGreen;
+    }
   }
 
   .content {
     background: @white;
     padding: 5px;
+    min-height: 40px;
   }
 
   .top {
@@ -345,8 +360,6 @@ a.new-target {
     color: @white;
     position: relative;
     background: #464646;
-    border-top: 1px solid #464646;
-    border-bottom: 1px solid #464646;
     overflow: hidden;
     h2 {
       font-size: 0.9em;

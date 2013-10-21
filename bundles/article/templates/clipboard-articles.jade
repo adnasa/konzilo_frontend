@@ -14,21 +14,12 @@
               i.icon-remove
     .scheduled
       .inner
-        .articles
-          .group.date-hidden(
-            ui-jq="droppable"
-            ui-options="droppableOptions"
-            data-date="{{prevDate}}",
-            ng-show="prevDate")
-            .top
-              h2 {{ prevDate }}
-            .content
-
         .articles.sortable(ui-sortable="options", ng-model="dates")
-          .group(ng-repeat="(index, date) in dates", ui-jq="droppable", ui-options="droppableOptions", data-date="{{date}}")
+          .group(ng-repeat="(index, date) in dates", ui-jq="droppable",
+            ng-class="{empty: !clipboard[date].length }", ui-options="droppableOptions", data-date="{{date}}")
             .top
               h2 {{ date }}
-              button.btn-link.pull-right.calendar-btn(ng-click="toggleDatePicker(date)")
+              button.btn-link.pull-right.calendar-btn(ng-click="toggleDatePicker(date)", ng-show="clipboard[date].length")
                 i.icon-calendar
               .picker(ng-show="datePickerShown(date)", ng-model="datePickerValues[index]", ng-change="newDate(index, date)")
                 datepicker(min="today")
@@ -43,11 +34,3 @@
                 span() {{article.title}}
                 button.btn-link.clipboard-remove(ng-click="removeFromClipboard(article)")
                     i.icon-remove
-        .articles
-          .group.date-hidden(
-            ui-jq="droppable"
-            ui-options="droppableOptions"
-            data-date="{{nextDate}}")
-            .top
-              h2 {{ nextDate | placeholder: "Utan publiceringsdatum" }}
-          .content
