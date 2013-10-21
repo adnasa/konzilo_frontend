@@ -2,7 +2,7 @@ bowerFolder = "bower_components"
 bundleFolder = "bundles"
 # Main files for inclusion.
 dependencies = [
-  "lodash/lodash.js"
+  "lodash/dist/lodash.js"
   "jquery/jquery.js"
   "jquery-ui/ui/jquery.ui.core.js"
   "jquery-ui/ui/jquery.ui.widget.js"
