@@ -52,3 +52,5 @@
             .top
               h2 {{ nextDate | placeholder: "Utan publiceringsdatum" }}
           .content
+        .fetchmore
+          a(ng-click="nextPage()", ng-show="skip + 20  <= count") Hämta fler

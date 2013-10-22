@@ -4,7 +4,7 @@ angular.module("kntnt.clipboard", [])
 ["ArticleStorage", "UserState", "$q", (ArticleStorage, UserState, $q) ->
   info = UserState.getInfo()
 
-  query: -> @get()
+  query: (options = {}) -> @get(options)
 
   add: (id) ->
     if not _.isString(id)
@@ -29,11 +29,11 @@ angular.module("kntnt.clipboard", [])
       deferred.resolve([])
     return deferred.promise
 
-  get: ->
+  get: (options = {}) ->
     deferred = $q.defer()
     info.getSetting 'clipboard', (ids) =>
-      ArticleStorage.query
-        q: _id: $in: ids
+      options = _.defaults(options, q: _id: $in: ids)
+      ArticleStorage.query(options)
       .then (result) ->
         deferred.resolve(result)
       , (err) ->

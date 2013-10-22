@@ -593,6 +593,9 @@ UserState, ArticlePartStates, GroupStorage) ->
         link = link.replace(":" + key, value)
       link
 
+    $scope.skip = 0
+    $scope.count = 0
+
     pattern = $attrs.linkPattern
 
     # Stores the previously fetched articles.
@@ -601,10 +604,11 @@ UserState, ArticlePartStates, GroupStorage) ->
 
     # Set the height of the element.
     height = $(window).height()
-    $element.find(".scheduled > .inner").css("max-height", height - 300)
+    scrollableElement = $element.find(".scheduled > .inner")
+    scrollableElement.css("max-height", height - 300)
     $(window).resize ->
       height = $(window).height()
-      $element.find(".scheduled > .inner").css("max-height", height - 300)
+      scrollableElement.css("max-height", height - 300)
 
     $scope.activeArticle = (article) ->
       if article._id == $routeParams.id then "active"
@@ -636,9 +640,10 @@ UserState, ArticlePartStates, GroupStorage) ->
       $scope.dates = _.keys($scope.clipboard).sort()
 
     # Get the clipboard.
-    getClipboard = =>
-      ClipboardStorage.query().then (articles) =>
+    getClipboard = (skip = 0) =>
+      ClipboardStorage.query(sort: { publishdate: "asc" }, skip: skip).then (articles) =>
         articleMap = {}
+        $scope.count = articles.count
         if articles?.toArray
           articles = articles.toArray()
         # Generate a map of articles that can be fetched without
@@ -653,7 +658,25 @@ UserState, ArticlePartStates, GroupStorage) ->
         # Store the original dates for comparison.
         originalDates = $scope.dates[..]
 
+    # Append more articles to the list of articles.
+    appendPage = (skip = 0) ->
+      ClipboardStorage.query(sort: { publishdate: "asc" }, skip: skip).then (articles) =>
+        if articles?.toArray
+          articles = articles.toArray()
+        # Generate a map of articles that can be fetched without
+        # another request.
+        for article in articles
+          articleMap[article._id] = article
+          fetchedArticles.push(article)
+        drawClipboard(fetchedArticles)
+
     getClipboard()
+
+    # Get the next page and append it.
+    $scope.nextPage = ->
+      $scope.skip += 20
+      appendPage($scope.skip)
+
     calculatePrevDate = ->
       currentDate = new Date()
       currentDate = new Date(
