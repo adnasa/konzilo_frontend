@@ -263,7 +263,10 @@
     "BACKTOSTARTED": "Fortsätt arbeta med artikeln",
     "POSTFORREVIEW": "Skicka till godkännande",
     "STARTWORKING": "Börja arbeta",
-    "APPROVE": "Godkänn"
+    "APPROVE": "Godkänn",
+    "PICKFILTERED": "Välj bland filtrerade artiklar",
+    "PICKALL": "Välj alla artiklar",
+    "FILTERCOUNT": "Ditt val matchar {{count}} artiklar."
   },
   "ENDPOINT": {
     "REMOVE": "Ta bort publiceringsmål",

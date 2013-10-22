@@ -264,7 +264,10 @@
     "BACKTOSTARTED": "Continue working",
     "POSTFORREVIEW": "Send for review",
     "STARTWORKING": "Start working",
-    "APPROVE": "Approve"
+    "APPROVE": "Approve",
+    "PICKFILTERED": "Pick among the filtered articles",
+    "PICKALL": "Pick all articles",
+    "FILTERCOUNT": "Your choice matches {{count}} articles."
   },
   "ENDPOINT": {
     "REMOVE": "Remove endpoint",

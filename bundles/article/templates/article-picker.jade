@@ -24,37 +24,43 @@
               description="{{ 'ARTICLEPICKER.SHOWARTICLES' | translate }}")
 
       .row-fluid
-        .span12
-          form.form.pick-form(ng-show="articles")
+        .span12.selection
+          .article-info
+            span {{ 'ARTICLE.FILTERCOUNT' | translate: translations }}
+            button.btn.btn-link(ng-click="showTable()") {{ pickLabel | translate }}
+          form.form.pick-form(ng-show="tableShown")
             .control-group
               .controls
                 input(type="text", name="search", ng-model="search", placeholder="{{'ARTICLEPICKER.SEARCHARTICLES' | translate}}")
-            .control-group.actions
-              .controls
-                button.btn-primary.btn(ng-click="addArticles()") {{'ARTICLEPICKER.ADDSELECTED' | translate}}
+            table.articles.table.table-striped(ng-show="articles && tableShown")
+              tr
+                th
+                  input(type="checkbox", name="selectall", ng-model="selectall", ng-change="toggleSelect()")
+                th {{ 'GLOBAL.TITLE' | translate }}
+                th {{ 'GLOBAL.PUBLISHDATE' | translate }}
+                th {{ 'GLOBAL.RESPONSIBLE' | translate }}
+              tr.article(ng-repeat="article in articles | filter: search")
+                td
+                  input(type="checkbox", name="selected", ng-model="selected[article._id]")
+                td {{article.title}}
+                td {{article.publishdate | date: "yyyy-MM-dd" }}
+                td {{article.responsible.label }}
+
+           .pagination(ng-show="tableShown")
+             ul
+               li(ng-repeat="page in pages")
+                 button.btn-link(ng-click="getPage(page)") {{page + 1}}
+
+           .control-group.actions
+             .controls
+                button.btn-primary.btn(ng-click="addArticles()", ng-disabled="count == 0") {{'ARTICLEPICKER.ADDSELECTED' | translate}}
                 label.checkbox
-                  input(type="checkbox", name="purge", ng-model="purge")
+                  input(type="checkbox", name="purge", ng-model="purge", ng-disabled="count == 0")
                   span {{ 'ARTICLEPICKER.EMPTYBEFORE' | translate }}
-          table.articles.table.table-striped(ng-show="articles")
-            tr
-              th
-                input(type="checkbox", name="selectall", ng-model="selectall", ng-change="toggleSelect()")
-              th {{ 'GLOBAL.TITLE' | translate }}
-              th {{ 'GLOBAL.PUBLISHDATE' | translate }}
-              th {{ 'GLOBAL.RESPONSIBLE' | translate }}
-            tr.article(ng-repeat="article in articles | filter: search")
-              td
-                input(type="checkbox", name="selected", ng-model="selected[article._id]")
-              td {{article.title}}
-              td {{article.publishdate | date: "yyyy-MM-dd" }}
-              td {{article.responsible.label }}
-         .pagination
-           ul
-             li(ng-repeat="page in pages")
-               button.btn-link(ng-click="getPage(page)") {{page + 1}}
+
 
   .picker(ng-class="collapseClass()")
     button.btn.picker-btn(ng-click="isCollapsed = !isCollapsed")
       .inner
         span {{'ARTICLEPICKER.PICKER' | translate }}
-        i.icon.icon-circle-arrow-down
+        i.icon(ng-class="{'icon-circle-arrow-down': isCollapsed, 'icon-circle-arrow-up': !isCollapsed}")

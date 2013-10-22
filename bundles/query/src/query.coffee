@@ -144,6 +144,8 @@ angular.module("konzilo.query", [])
       @groupNames = {}
       @groups = []
       @listeners = []
+      @limit = 10
+      @offset = 0
       @resource.changed =>
         @execute()
       @filterInstances = {}
@@ -202,7 +204,7 @@ angular.module("konzilo.query", [])
       # ((property1 = 2 or property2 = 3) and (property3 = 4))
       if _.size(resultQuery) == 1 and _.size(_.toArray(resultQuery)[0]) == 1
         resultQuery = _.first(_.toArray(resultQuery)[0])
-      @resource.query { q: resultQuery, limit: 10 }, (result) =>
+      @resource.query { q: resultQuery, limit: @limit }, (result) =>
         eventCallback(result) for eventCallback in @listeners
         callback(result) if callback
 ])

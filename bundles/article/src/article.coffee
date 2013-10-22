@@ -821,6 +821,16 @@ ChannelStorage, $filter, ArticleStates, ProviderStorage, $translate) ->
     $scope.purge = false
     collection = null
 
+    $scope.tableShown = false
+    $scope.pickLabel = 'ARTICLE.PICKFILTERED'
+
+    $scope.showTable = ->
+      $scope.tableShown = !$scope.tableShown
+      if $scope.tableShown
+        $scope.pickLabel = 'ARTICLE.PICKALL'
+      else
+        $scope.pickLabel = 'ARTICLE.PICKFILTERED'
+
     stepFilter = new (queryFilter("ReferenceFilter"))("step",
       $translate('GLOBAL.STEP'),
       $translate("ARTICLEPICKER.STEPDESC"), StepStorage, "name", "_id")
@@ -859,14 +869,16 @@ ChannelStorage, $filter, ArticleStates, ProviderStorage, $translate) ->
       if not advancedCallback
         $scope.showArticles()
       advancedCallback articles
+
     selectors =
       all: (callback) ->
         ArticleStorage.query {}, (result) ->
           callback(result)
+
       recommended: (callback) ->
         ArticleStorage.query
           q:
-            $or: [{done: $exists: false}, { done: false }]
+            $or: [{ready: $exists: false}, { ready: false }]
           sort: publishdate: "asc"
         .then (result) ->
           callback(result)
@@ -886,6 +898,10 @@ ChannelStorage, $filter, ArticleStates, ProviderStorage, $translate) ->
           $scope.pages = undefined
         $scope.articles = articles.toArray()
         collection = articles
+        $scope.count = collection.count
+        $scope.translations =
+          count: $scope.count
+
         $scope.selected = {}
         $scope.selectall = false
 
@@ -896,16 +912,44 @@ ChannelStorage, $filter, ArticleStates, ProviderStorage, $translate) ->
           $scope.articles = collection.toArray()
 
     $scope.addArticles = ->
-      save = ->
-        ClipboardStorage.getIds().then (ids) ->
-          for id, selected of $scope.selected when selected
-            ids.push id if id not in ids
-          ClipboardStorage.save(ids)
+      return if not collection.count
+      # We want everything if we are not picking from the table.
+      if not $scope.tableShown
+        return if not $scope.selector or not selectors[$scope.selector]
+        # Save all the results from whatever query builder we are using.
+        save = (articles) ->
+          saveData = ->
+            ClipboardStorage.getIds().then (ids) ->
+              for article in articles.toArray()
+                ids.push article._id if article._id not in ids
+              ClipboardStorage.save(ids)
+          if $scope.purge
+            ClipboardStorage.truncate().then(saveData)
+          else
+            saveData()
 
-      if $scope.purge
-        ClipboardStorage.truncate().then(save)
+        selector = $scope.selector
+        # @todo this could be done more cleanly.
+        if selector == "advanced"
+          $scope.builder.limit = collection.count
+          $scope.builder.execute(save)
+        else if selector == "all"
+          ArticleStorage.query({ limit: collection.count }).then(save)
+        else
+          selectors[selector](save)
+        selector = selectors[$scope.selector]
       else
-        save()
+        # Save all selected articles.
+        save = ->
+          ClipboardStorage.getIds().then (ids) ->
+            for id, selected of $scope.selected when selected
+              ids.push id if id not in ids
+            ClipboardStorage.save(ids)
+
+        if $scope.purge
+          ClipboardStorage.truncate().then(save)
+        else
+          save()
 
     $scope.collapseClass = ->
       if $scope.isCollapsed then "collapsed" else "open"

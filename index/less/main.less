@@ -322,7 +322,7 @@ a.new-target {
 }
 
 .clipboard-remove {
-    float: right;
+  float: right;
 }
 
 .group {
@@ -482,6 +482,12 @@ a.new-target {
   .picker-body {
     background: @white;
   }
+
+  .selection {
+    margin-top: 20px;
+    padding-left: 10px;
+  }
+
   .picker-form {
     border-bottom: 2px solid @grayLighter;
     .control-group {
@@ -536,13 +542,16 @@ a.new-target {
   }
   .pick-form {
     margin-top: 20px;
-    .control-group {
-      float: left;
-      margin-left: 20px;
-      &.actions {
-	.checkbox {
-	  padding-top: 10px;
-	}
+  }
+  .control-group {
+    border: none;
+    &.actions {
+      margin-top: 20px;
+      label {
+	font-weight: normal;
+      }
+      .checkbox {
+	padding-top: 10px;
       }
     }
   }
