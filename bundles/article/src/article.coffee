@@ -30,6 +30,7 @@ angular.module("kntnt.article",
         $scope.part = articlePart.toObject()
         $scope.part.content = $scope.part.content or {}
         $scope.content = $scope.part.content
+        $scope.part.vocabularies = $scope.part.vocabularies or {}
         savePart = ->
           articlePart.set("byline", $scope.part.byline)
           articlePart.set("content", $scope.content)
@@ -47,6 +48,7 @@ angular.module("kntnt.article",
       "InputAutoSave", "useAutoSave", "$http",
       ($scope, articlePart, InputAutoSave, useAutoSave, $http) ->
         $scope.part = articlePart.toObject()
+        $scope.part.vocabularies = $scope.part.vocabularies or {}
         $scope.part.content = $scope.part.content or {}
         $scope.content = $scope.part.content
         savePart = ->
@@ -89,6 +91,8 @@ angular.module("kntnt.article",
         InputAutoSave, UserStorage, $q, useAutoSave) ->
         $scope.part = articlePart.toObject()
         $scope.part.content = $scope.part.content or {}
+        $scope.part.vocabularies = $scope.part.vocabularies or {}
+
         $scope.content = $scope.part.content
         $scope.content.images = [] if not $scope.content.images
         savePart = ->

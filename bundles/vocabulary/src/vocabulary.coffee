@@ -120,16 +120,20 @@ TermStorage, InputAutoSave, $translate) ->
   controller: ["$scope", "$element", "$attrs",
   "KonziloConfig", "TermStorage", "$q",
   ($scope, $element, $attrs, KonziloConfig, TermStorage, $q) ->
-    $scope.ngModel = {} if not $scope.ngModel
-    $scope.vocabularies = {}
-    config = KonziloConfig.get("vocabularies")
-    $scope.terms = {}
-    config.listAll().then (vocabularies) ->
-      $scope.vocabularies = vocabularies
-      for vocabulary of vocabularies
-        $scope.terms[vocabulary] = TermStorage.query
-          q: vocabulary: vocabulary
-        .then (result) -> result.toArray()
+    update = ->
+      return if not $scope.ngModel
+      $scope.vocabularies = {}
+      config = KonziloConfig.get("vocabularies")
+      $scope.terms = {}
+      config.listAll().then (vocabularies) ->
+        $scope.vocabularies = vocabularies
+        for vocabulary of vocabularies
+          $scope.terms[vocabulary] = TermStorage.query
+            q: vocabulary: vocabulary
+          .then (result) -> result.toArray()
+
+    update()
+    $scope.$watch("ngModel", update)
   ]
   templateUrl: "bundles/vocabulary/vocabulary-input.html"
 )
