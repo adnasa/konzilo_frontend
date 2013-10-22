@@ -67,10 +67,12 @@ angular.module("cmf.input", [])
 
 .factory("InlinePreview", ->
   class InlinePreview
-    # If we use display: none, the browser will
-    # skip the element when tabbing. We use zero
-    # height to avoid this problem.
+    constructor: (@model) ->
+
     hideInput: ->
+      # If we use display: none, the browser will
+      # skip the element when tabbing. We use zero
+      # height to avoid this problem.
       $(@input).height(0)
       $(@input).css('overflow', 'hidden')
 
@@ -79,6 +81,9 @@ angular.module("cmf.input", [])
 
     setPreviewElement: (previewElement) =>
       @preview = previewElement
+      if not @model or @model.length == 0
+        $(@preview).hide()
+
       $(@preview).click =>
         $(@preview).hide()
         $("*", @input).focus()
@@ -86,18 +91,33 @@ angular.module("cmf.input", [])
 
     setInputElement: (inputElement, focusElement) =>
       @input = inputElement
-      @hideInput()
+      if @model and @model.length > 0
+        @hideInput()
       @input.focus =>
         $(@preview).hide()
         @showInput()
       @input.find("input, textarea").focus =>
+        @focused = true
         $(@preview).hide()
         @showInput()
         # Set focus to the proper element.
 
       @input.find("input, textarea").blur =>
-        @hideInput()
+        @focused = false
+        if @model and @model.length > 0
+          @hideInput()
+          $(@preview).show()
+        else
+          $(@preview).hide()
+
+    updateModel: (@model) ->
+      if not @model or @model.length == 0
+        $(@preview).hide()
+        @showInput()
+      else if not @focused
         $(@preview).show()
+        @hideInput()
+
 )
 
 # Creates an "inline" experience by showing the data, and make it
@@ -105,12 +125,14 @@ angular.module("cmf.input", [])
 # @todo This is not very angularian. It could probably be fixed
 # with more knowledge about how the $digest loop works.
 .directive("cmfInline", ["InlinePreview", (InlinePreview) ->
-  restrict: "E",
+  restrict: "E"
   transclude: true
   replace: true
   template: "<div class=\"inline\" ng-transclude></div>"
+  scope: ngModel: "="
   controller: ["$scope", ($scope) ->
-    @preview = new InlinePreview()
+    @preview = new InlinePreview($scope.ngModel)
+    $scope.$watch "ngModel", => @preview.updateModel($scope.ngModel)
     return this
   ]
 ])

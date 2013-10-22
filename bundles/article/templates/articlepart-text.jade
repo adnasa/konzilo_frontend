@@ -5,7 +5,7 @@ ng-form.form.form-horizontal(name="partForm")
   .control-group
     label.control-label {{'GLOBAL.TOPHEADLINE' | translate}}
     .controls
-      cmf-inline
+      cmf-inline(ng-model="content.topheadline")
         cmf-inline-preview
           i.icon-edit.pull-right
           span {{content.topheadline}}
@@ -14,7 +14,7 @@ ng-form.form.form-horizontal(name="partForm")
   .control-group
     label.control-label {{ 'GLOBAL.HEADLINE' | translate }}
     .controls
-      cmf-inline
+      cmf-inline(ng-model="content.headline")
         cmf-inline-preview
           i.icon-edit.pull-right
           h1 {{content.headline}}
@@ -23,7 +23,7 @@ ng-form.form.form-horizontal(name="partForm")
   .control-group
     label.control-label {{ 'GLOBAL.KICKER' | translate }}
     .controls
-      cmf-inline
+      cmf-inline(ng-model="content.kicker")
         cmf-inline-preview
           i.icon-edit.pull-right
           strong {{content.kicker}}
@@ -32,7 +32,7 @@ ng-form.form.form-horizontal(name="partForm")
   .control-group
     label.control-label {{ 'GLOBAL.LEAD' | translate }}
     .controls
-      cmf-inline
+      cmf-inline(ng-model="content.lead")
         cmf-inline-preview
           i.icon-edit.pull-right
           strong {{content.lead}}

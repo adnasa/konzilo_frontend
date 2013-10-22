@@ -5,7 +5,7 @@ ng-form.form.form-horizontal(name="partForm")
   .control-group
     label.control-label {{ 'MEDIAPART.MEDIA' | translate }}
     .controls
-      cmf-inline
+      cmf-inline(ng-model="content.media")
         cmf-inline-preview
           // @todo This needs to be redone in a safer way.
           .video(ng-bind-html-unsafe="video", ng-show="video")
@@ -15,7 +15,7 @@ ng-form.form.form-horizontal(name="partForm")
   .control-group
     label.control-label {{ 'GLOBAL.TITLE' | translate }}
     .controls
-      cmf-inline
+      cmf-inline(ng-model="content.title")
         cmf-inline-preview
           i.icon-edit.pull-right
           h1 {{content.title}}
@@ -24,7 +24,7 @@ ng-form.form.form-horizontal(name="partForm")
   .control-group
     label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
     .controls
-      cmf-inline
+      cmf-inline(ng-model="content.description")
         cmf-inline-preview
           i.icon-edit.pull-right
           strong {{content.description}}

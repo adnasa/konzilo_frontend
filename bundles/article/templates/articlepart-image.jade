@@ -9,7 +9,7 @@ ng-form.form.form-horizontal(name="partForm")
   .control-group
     label.control-label {{ 'GLOBAL.HEADLINE' | translate }}
     .controls
-      cmf-inline
+      cmf-inline(ng-model="content.headline")
         cmf-inline-preview
           i.icon-edit.pull-right
           h1 {{content.headline}}
@@ -18,7 +18,7 @@ ng-form.form.form-horizontal(name="partForm")
   .control-group
     label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
     .controls
-      cmf-inline
+      cmf-inline(ng-model="content.description")
         cmf-inline-preview
           i.icon-edit.pull-right
           span {{content.description}}

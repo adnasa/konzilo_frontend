@@ -122,7 +122,13 @@ angular.module('konzilo.markdown', ["konzilo.file"])
     preview = element.find('.preview')
     textarea = element.find('textarea')
     editorFocused = false
-    editor.height(0)
+
+    # Show the actual input if we have some text in the editor.
+    if scope.ngModel and scope.ngModel > 0
+      editor.height(0)
+    else
+      preview.hide()
+
     editor.css('overflow', "hidden")
     showInput = ->
       editor.height("auto")
@@ -138,9 +144,18 @@ angular.module('konzilo.markdown', ["konzilo.file"])
     preview.focus(focusTextArea)
     preview.click(focusTextArea)
     $('*').focus ->
-      if element.find(this).length is 0
+      if element.find(this).length == 0 and scope.ngModel and
+      scope.ngModel.length > 0
         editor.height(0)
         preview.show()
+
+    scope.$watch "ngModel", ->
+      if not scope.ngModel or scope.ngModel.length == 0
+        preview.hide()
+        editor.height("auto")
+      else if not editorFocused
+        preview.show()
+        editor.height(0)
 
   controller: ["$scope", "$attrs", "$element", ($scope, $attrs, $element) ->
     $scope.tools = []

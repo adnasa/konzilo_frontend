@@ -9,17 +9,21 @@
               .image.span1
                 file-picker(ng-model="author.image", bundle="media")
               .span5
-                cmf-inline
+                cmf-inline(ng-model="author.name")
                   cmf-inline-preview
                     h3 {{author.name}}
                   cmf-inline-input
                     input(type="text", ng-model="author.name")
-                cmf-inline
+                cmf-inline(ng-model="author.email")
                   cmf-inline-preview
                     span {{author.email | placeholder: "E-post"}}
                   cmf-inline-input
                     input(type="email", ng-model="author.email")
-          p(contenteditable="true", ng-model="author.about") {{'GLOBAL.DESCRIPTION' | translate}}
+          cmf-inline(ng-model="author.about")
+            cmf-inline-preview
+              p {{author.about}}
+            cmf-inline-input
+              textarea.input-block-level(ng-model="author.about", name="about")
     .control-group
       label.control-label {{ 'AUTHOR.PICK' | translate }}
       .controls
