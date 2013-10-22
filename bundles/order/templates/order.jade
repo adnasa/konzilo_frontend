@@ -48,7 +48,7 @@ div(kntnt-article-picker)
           .control-group
             label.control-label(for="assignment") {{ 'GLOBAL.ASSIGNMENT' | translate }}
             .controls
-              markdown-editor(ng-model="part.assignment", placeholder="Beskriv uppdraget här.")
+              textarea.input-block-level(ng-model="part.assignment", placeholder="Beskriv uppdraget här.")
           .control-group
             label.control-label(for="teaser") {{ 'GLOBAL.DISPLAY' | translate }}
             .controls
