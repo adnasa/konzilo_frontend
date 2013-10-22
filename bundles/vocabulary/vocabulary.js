@@ -136,28 +136,33 @@
       },
       controller: [
         "$scope", "$element", "$attrs", "KonziloConfig", "TermStorage", "$q", function($scope, $element, $attrs, KonziloConfig, TermStorage, $q) {
-          var config;
-          if (!$scope.ngModel) {
-            $scope.ngModel = {};
-          }
-          $scope.vocabularies = {};
-          config = KonziloConfig.get("vocabularies");
-          $scope.terms = {};
-          return config.listAll().then(function(vocabularies) {
-            var vocabulary, _results;
-            $scope.vocabularies = vocabularies;
-            _results = [];
-            for (vocabulary in vocabularies) {
-              _results.push($scope.terms[vocabulary] = TermStorage.query({
-                q: {
-                  vocabulary: vocabulary
-                }
-              }).then(function(result) {
-                return result.toArray();
-              }));
+          var update;
+          update = function() {
+            var config;
+            if (!$scope.ngModel) {
+              return;
             }
-            return _results;
-          });
+            $scope.vocabularies = {};
+            config = KonziloConfig.get("vocabularies");
+            $scope.terms = {};
+            return config.listAll().then(function(vocabularies) {
+              var vocabulary, _results;
+              $scope.vocabularies = vocabularies;
+              _results = [];
+              for (vocabulary in vocabularies) {
+                _results.push($scope.terms[vocabulary] = TermStorage.query({
+                  q: {
+                    vocabulary: vocabulary
+                  }
+                }).then(function(result) {
+                  return result.toArray();
+                }));
+              }
+              return _results;
+            });
+          };
+          update();
+          return $scope.$watch("ngModel", update);
         }
       ],
       templateUrl: "bundles/vocabulary/vocabulary-input.html"

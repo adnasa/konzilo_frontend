@@ -7,7 +7,7 @@
   <div class="control-group">
     <label class="control-label">{{ 'MEDIAPART.MEDIA' | translate }}</label>
     <div class="controls">
-      <cmf-inline>
+      <cmf-inline ng-model="content.media">
         <cmf-inline-preview>
           <!-- @todo This needs to be redone in a safer way.-->
           <div ng-bind-html-unsafe="video" ng-show="video" class="video"></div><img src="{{photo}}" ng-show="photo"/>
@@ -21,7 +21,7 @@
   <div class="control-group">
     <label class="control-label">{{ 'GLOBAL.TITLE' | translate }}</label>
     <div class="controls">
-      <cmf-inline>
+      <cmf-inline ng-model="content.title">
         <cmf-inline-preview><i class="icon-edit pull-right"></i>
           <h1>{{content.title}}</h1>
         </cmf-inline-preview>
@@ -34,7 +34,7 @@
   <div class="control-group">
     <label class="control-label">{{ 'GLOBAL.DESCRIPTION' | translate }}</label>
     <div class="controls">
-      <cmf-inline>
+      <cmf-inline ng-model="content.description">
         <cmf-inline-preview><i class="icon-edit pull-right"></i><strong>{{content.description}}</strong></cmf-inline-preview>
         <cmf-inline-input>
           <textarea type="text" name="description" ng-model="content.description" class="input-block-level"></textarea>

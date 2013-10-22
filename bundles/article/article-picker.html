@@ -30,54 +30,57 @@
         </div>
       </div>
       <div class="row-fluid">
-        <div class="span12">
-          <form ng-show="articles" class="form pick-form">
+        <div class="span12 selection">
+          <div class="article-info"><span>{{ 'ARTICLE.FILTERCOUNT' | translate: translations }}</span>
+            <button ng-click="showTable()" class="btn btn-link">{{ pickLabel | translate }}</button>
+          </div>
+          <form ng-show="tableShown" class="form pick-form">
             <div class="control-group">
               <div class="controls">
                 <input type="text" name="search" ng-model="search" placeholder="{{'ARTICLEPICKER.SEARCHARTICLES' | translate}}"/>
               </div>
             </div>
-            <div class="control-group actions">
-              <div class="controls">
-                <button ng-click="addArticles()" class="btn-primary btn">{{'ARTICLEPICKER.ADDSELECTED' | translate}}</button>
-                <label class="checkbox">
-                  <input type="checkbox" name="purge" ng-model="purge"/><span>{{ 'ARTICLEPICKER.EMPTYBEFORE' | translate }}</span>
-                </label>
-              </div>
-            </div>
+            <table ng-show="articles &amp;&amp; tableShown" class="articles table table-striped">
+              <tr>
+                <th>
+                  <input type="checkbox" name="selectall" ng-model="selectall" ng-change="toggleSelect()"/>
+                </th>
+                <th>{{ 'GLOBAL.TITLE' | translate }}</th>
+                <th>{{ 'GLOBAL.PUBLISHDATE' | translate }}</th>
+                <th>{{ 'GLOBAL.RESPONSIBLE' | translate }}</th>
+              </tr>
+              <tr ng-repeat="article in articles | filter: search" class="article">
+                <td>
+                  <input type="checkbox" name="selected" ng-model="selected[article._id]"/>
+                </td>
+                <td>{{article.title}}</td>
+                <td>{{article.publishdate | date: "yyyy-MM-dd" }}</td>
+                <td>{{article.responsible.label }}</td>
+              </tr>
+            </table>
           </form>
-          <table ng-show="articles" class="articles table table-striped">
-            <tr>
-              <th>
-                <input type="checkbox" name="selectall" ng-model="selectall" ng-change="toggleSelect()"/>
-              </th>
-              <th>{{ 'GLOBAL.TITLE' | translate }}</th>
-              <th>{{ 'GLOBAL.PUBLISHDATE' | translate }}</th>
-              <th>{{ 'GLOBAL.RESPONSIBLE' | translate }}</th>
-            </tr>
-            <tr ng-repeat="article in articles | filter: search" class="article">
-              <td>
-                <input type="checkbox" name="selected" ng-model="selected[article._id]"/>
-              </td>
-              <td>{{article.title}}</td>
-              <td>{{article.publishdate | date: "yyyy-MM-dd" }}</td>
-              <td>{{article.responsible.label }}</td>
-            </tr>
-          </table>
-        </div>
-        <div class="pagination">
-          <ul>
-            <li ng-repeat="page in pages">
-              <button ng-click="getPage(page)" class="btn-link">{{page + 1}}</button>
-            </li>
-          </ul>
+          <div ng-show="tableShown" class="pagination">
+            <ul>
+              <li ng-repeat="page in pages">
+                <button ng-click="getPage(page)" class="btn-link">{{page + 1}}</button>
+              </li>
+            </ul>
+          </div>
+          <div class="control-group actions">
+            <div class="controls">
+              <button ng-click="addArticles()" ng-disabled="count == 0" class="btn-primary btn">{{'ARTICLEPICKER.ADDSELECTED' | translate}}</button>
+              <label class="checkbox">
+                <input type="checkbox" name="purge" ng-model="purge" ng-disabled="count == 0"/><span>{{ 'ARTICLEPICKER.EMPTYBEFORE' | translate }}</span>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div ng-class="collapseClass()" class="picker">
     <button ng-click="isCollapsed = !isCollapsed" class="btn picker-btn">
-      <div class="inner"><span>{{'ARTICLEPICKER.PICKER' | translate }}</span><i class="icon icon-circle-arrow-down"></i></div>
+      <div class="inner"><span>{{'ARTICLEPICKER.PICKER' | translate }}</span><i ng-class="{'icon-circle-arrow-down': isCollapsed, 'icon-circle-arrow-up': !isCollapsed}" class="icon"></i></div>
     </button>
   </div>
 </div>

@@ -85,7 +85,8 @@
   }).factory("InlinePreview", function() {
     var InlinePreview;
     return InlinePreview = (function() {
-      function InlinePreview() {
+      function InlinePreview(model) {
+        this.model = model;
         this.setInputElement = __bind(this.setInputElement, this);
         this.setPreviewElement = __bind(this.setPreviewElement, this);
       }
@@ -102,6 +103,9 @@
       InlinePreview.prototype.setPreviewElement = function(previewElement) {
         var _this = this;
         this.preview = previewElement;
+        if (!this.model || this.model.length === 0) {
+          $(this.preview).hide();
+        }
         return $(this.preview).click(function() {
           $(_this.preview).hide();
           $("*", _this.input).focus();
@@ -112,19 +116,38 @@
       InlinePreview.prototype.setInputElement = function(inputElement, focusElement) {
         var _this = this;
         this.input = inputElement;
-        this.hideInput();
+        if (this.model && this.model.length > 0) {
+          this.hideInput();
+        }
         this.input.focus(function() {
           $(_this.preview).hide();
           return _this.showInput();
         });
         this.input.find("input, textarea").focus(function() {
+          _this.focused = true;
           $(_this.preview).hide();
           return _this.showInput();
         });
         return this.input.find("input, textarea").blur(function() {
-          _this.hideInput();
-          return $(_this.preview).show();
+          _this.focused = false;
+          if (_this.model && _this.model.length > 0) {
+            _this.hideInput();
+            return $(_this.preview).show();
+          } else {
+            return $(_this.preview).hide();
+          }
         });
+      };
+
+      InlinePreview.prototype.updateModel = function(model) {
+        this.model = model;
+        if (!this.model || this.model.length === 0) {
+          $(this.preview).hide();
+          return this.showInput();
+        } else if (!this.focused) {
+          $(this.preview).show();
+          return this.hideInput();
+        }
       };
 
       return InlinePreview;
@@ -137,9 +160,16 @@
         transclude: true,
         replace: true,
         template: "<div class=\"inline\" ng-transclude></div>",
+        scope: {
+          ngModel: "="
+        },
         controller: [
           "$scope", function($scope) {
-            this.preview = new InlinePreview();
+            var _this = this;
+            this.preview = new InlinePreview($scope.ngModel);
+            $scope.$watch("ngModel", function() {
+              return _this.preview.updateModel($scope.ngModel);
+            });
             return this;
           }
         ]

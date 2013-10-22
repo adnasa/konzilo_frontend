@@ -3,7 +3,7 @@
   <div class="row-fluid">
     <div class="span3">
       <div class="box pad">
-        <div kntnt-article-deliver="kntnt-article-deliver" link-pattern="#/deliver/:part" states="states" part="articlePart"></div>
+        <div kntnt-article-deliver="kntnt-article-deliver" link-pattern="#/deliver/:part" states="states" selected="articlePart"></div>
       </div>
     </div>
     <div ng-show="!articlePart" class="span9">
@@ -17,6 +17,9 @@
         <div class="box pad articleinfo">
           <div class="inner">
             <konzilo-articlepart-form article-part="articlePart" use-auto-save="useSave"></konzilo-articlepart-form>
+            <div class="well">
+              <konzilo-articlepart-change-state article-part="articlePart"></konzilo-articlepart-change-state>
+            </div>
           </div>
         </div>
       </section>

@@ -3,26 +3,23 @@
   <div ng-repeat="state in states" class="state">
     <div ui-jq="droppable" ui-options="droppableOptions" data-state="{{state.name}}" class="group">
       <div class="top">
-        <h2 class="title">{{state.label}}</h2>
+        <h2 class="title">{{state.label | translate}}</h2>
       </div>
       <div class="articleparts content">
         <div ng-repeat="article in articles[state.name]" class="row-item">
           <div class="header">
             <div class="pull-right"><span>{{article.publishdate | date: 'yyyy-MM-dd' }}</span>
-              <button ng-click="toggleArticle(article)" class="btn-link"><i ng-class="toggleIcon(article)"></i></button>
+              <button ng-click="toggleArticle(article)" class="btn-link"><i ng-class="{'icon-chevron-down': selectedArticle == article._id, 'icon-chevron-right': selectedArticle != article._id}"></i></button>
             </div>
             <div class="header-content">
               <div class="article-state {{article.state}}"></div>
               <h3 class="title">{{article.title}}</h3>
             </div>
           </div>
-          <div ng-show="collapsed(article)" class="content">
-            <div class="inner">
-              <div ng-repeat="(index, part) in article.items" ui-jq="draggable" data-id="{{part._id}}" class="row-item">
-                <div class="article-state {{part.state}}"></div><a href="{{part.link}}">{{part.title}}</a>
-                <div class="status">{{ part.status }}</div>
-              </div>
-            </div>
+          <div ng-show="selectedArticle == article._id" class="content">
+            <div class="inner"><a href="{{part.link}}" ng-class="{active: selectedPart == part._id}" ui-jq="draggable" ng-repeat="(index, part) in article.items" data-id="{{part._id}}" class="row-item">
+                <div class="article-state {{part.state}}"></div><span>{{part.title}}</span>
+                <div class="status">{{ part.status }}</div></a></div>
           </div>
         </div>
       </div>

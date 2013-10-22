@@ -72,7 +72,8 @@
     "TYPE": "Typ",
     "SETTINGS": "Inställningar",
     "LOGOUT": "Logga ut",
-    "BACK": "Tillbaka"
+    "BACK": "Tillbaka",
+    "HIDE": "Dölj"
   },
   "CHANNEL": {
     "TITLE": "Kanaler",
@@ -172,16 +173,19 @@
   "IMAGEPART": {
     "TITLE": "Leverera bilder",
     "UPLOADFILES": "Ladda upp filer",
-    "LABEL": "En eller flera bilder"
+    "LABEL": "En eller flera bilder",
+    "DEFAULTNAME": "Bild"
   },
   "MEDIAPART": {
     "TITLE": "Leverera media",
     "MEDIA": "Media",
-    "LABEL": "Inbäddad media"
+    "LABEL": "Inbäddad media",
+    "DEFAULTNAME": "Media"
   },
   "TEXTPART": {
     "TITLE": "Leverera text",
-    "LABEL": "Text som matas in"
+    "LABEL": "Text som matas in",
+    "DEFAULTNAME": "Text"
   },
   "ARTICLEPICKER": {
     "TITLE": "Lägg till artiklar",
@@ -254,7 +258,15 @@
     "STARTED": "Arbete pågår",
     "NEEDSREVIEW": "Levererat till granskning",
     "APPROVED": "Godkänd",
-    "NEWVERSION": "Ny version"
+    "NEWVERSION": "Ny version",
+    "BACKTONOTSTARTED": "Sluta arbeta",
+    "BACKTOSTARTED": "Fortsätt arbeta med artikeln",
+    "POSTFORREVIEW": "Skicka till godkännande",
+    "STARTWORKING": "Börja arbeta",
+    "APPROVE": "Godkänn",
+    "PICKFILTERED": "Välj bland filtrerade artiklar",
+    "PICKALL": "Välj alla artiklar",
+    "FILTERCOUNT": "Ditt val matchar {{count}} artiklar."
   },
   "ENDPOINT": {
     "REMOVE": "Ta bort publiceringsmål",

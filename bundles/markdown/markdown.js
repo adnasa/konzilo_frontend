@@ -197,7 +197,11 @@
           preview = element.find('.preview');
           textarea = element.find('textarea');
           editorFocused = false;
-          editor.height(0);
+          if (scope.ngModel && scope.ngModel > 0) {
+            editor.height(0);
+          } else {
+            preview.hide();
+          }
           editor.css('overflow', "hidden");
           showInput = function() {
             editor.height("auto");
@@ -214,10 +218,19 @@
           element.focus(focusTextArea);
           preview.focus(focusTextArea);
           preview.click(focusTextArea);
-          return $('*').focus(function() {
-            if (element.find(this).length === 0) {
+          $('*').focus(function() {
+            if (element.find(this).length === 0 && scope.ngModel && scope.ngModel.length > 0) {
               editor.height(0);
               return preview.show();
+            }
+          });
+          return scope.$watch("ngModel", function() {
+            if (!scope.ngModel || scope.ngModel.length === 0) {
+              preview.hide();
+              return editor.height("auto");
+            } else if (!editorFocused) {
+              preview.show();
+              return editor.height(0);
             }
           });
         },

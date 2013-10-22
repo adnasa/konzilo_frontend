@@ -72,7 +72,8 @@
     "TYPE": "Type",
     "SETTINGS": "Settings",
     "LOGOUT": "Log out",
-    "BACK": "Back"
+    "BACK": "Back",
+    "HIDE": "Dölj"
   },
   "CHANNEL": {
     "TITLE": "Channels",
@@ -173,16 +174,19 @@
   "IMAGEPART": {
     "TITLE": "Deliver images",
     "UPLOADFILES": "Upload files",
-    "LABEL": "One or more images"
+    "LABEL": "One or more images",
+    "DEFAULTNAME": "Image"
   },
   "MEDIAPART": {
     "TITLE": "Deliver media",
     "MEDIA": "Media",
-    "LABEL": "Embedded media"
+    "LABEL": "Embedded media",
+    "DEFAULTNAME": "Media"
   },
   "TEXTPART": {
     "TITLE": "Deliver text",
-    "LABEL": "Text"
+    "LABEL": "Text",
+    "DEFAULTNAME": "Text"
   },
   "ARTICLEPICKER": {
     "TITLE": "Add articles",
@@ -255,7 +259,15 @@
     "STARTED": "Workin in progress",
     "NEEDSREVIEW": "Delivered for review",
     "APPROVED": "Approved",
-    "NEWVERSION": "New version"
+    "NEWVERSION": "New version",
+    "BACKTONOTSTARTED": "Stop working",
+    "BACKTOSTARTED": "Continue working",
+    "POSTFORREVIEW": "Send for review",
+    "STARTWORKING": "Start working",
+    "APPROVE": "Approve",
+    "PICKFILTERED": "Pick among the filtered articles",
+    "PICKALL": "Pick all articles",
+    "FILTERCOUNT": "Your choice matches {{count}} articles."
   },
   "ENDPOINT": {
     "REMOVE": "Remove endpoint",

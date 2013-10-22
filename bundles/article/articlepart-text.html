@@ -7,7 +7,7 @@
   <div class="control-group">
     <label class="control-label">{{'GLOBAL.TOPHEADLINE' | translate}}</label>
     <div class="controls">
-      <cmf-inline>
+      <cmf-inline ng-model="content.topheadline">
         <cmf-inline-preview><i class="icon-edit pull-right"></i><span>{{content.topheadline}}</span></cmf-inline-preview>
         <cmf-inline-input>
           <input type="text" name="title" ng-model="content.topheadline"/>
@@ -18,7 +18,7 @@
   <div class="control-group">
     <label class="control-label">{{ 'GLOBAL.HEADLINE' | translate }}</label>
     <div class="controls">
-      <cmf-inline>
+      <cmf-inline ng-model="content.headline">
         <cmf-inline-preview><i class="icon-edit pull-right"></i>
           <h1>{{content.headline}}</h1>
         </cmf-inline-preview>
@@ -31,7 +31,7 @@
   <div class="control-group">
     <label class="control-label">{{ 'GLOBAL.KICKER' | translate }}</label>
     <div class="controls">
-      <cmf-inline>
+      <cmf-inline ng-model="content.kicker">
         <cmf-inline-preview><i class="icon-edit pull-right"></i><strong>{{content.kicker}}</strong></cmf-inline-preview>
         <cmf-inline-input>
           <input type="text" name="headline" ng-model="content.kicker"/>
@@ -42,7 +42,7 @@
   <div class="control-group">
     <label class="control-label">{{ 'GLOBAL.LEAD' | translate }}</label>
     <div class="controls">
-      <cmf-inline>
+      <cmf-inline ng-model="content.lead">
         <cmf-inline-preview><i class="icon-edit pull-right"></i><strong>{{content.lead}}</strong></cmf-inline-preview>
         <cmf-inline-input>
           <textarea type="text" name="lead" ng-model="content.lead" class="input-block-level"></textarea>

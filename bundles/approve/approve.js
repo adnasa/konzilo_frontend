@@ -35,11 +35,11 @@
       $scope.$parent.title = $translate("REVIEW.TITLE");
       ArticlePartStorage.changed(function(part) {
         var state;
-        if ($location.path().indexOf("approve")) {
+        if ($location.path().indexOf("approve") !== -1) {
           state = part.get("state");
-        }
-        if ($routeParams.id === part.id() && (state === $scope.failState || state === $scope.approveState)) {
-          return $location.url("/approve");
+          if ($routeParams.id === part.id() && (state === $scope.failState || state === $scope.approveState)) {
+            return $location.url("/approve");
+          }
         }
       });
       if ($routeParams.id) {

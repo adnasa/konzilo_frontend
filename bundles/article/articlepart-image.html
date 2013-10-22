@@ -13,7 +13,7 @@
   <div class="control-group">
     <label class="control-label">{{ 'GLOBAL.HEADLINE' | translate }}</label>
     <div class="controls">
-      <cmf-inline>
+      <cmf-inline ng-model="content.headline">
         <cmf-inline-preview><i class="icon-edit pull-right"></i>
           <h1>{{content.headline}}</h1>
         </cmf-inline-preview>
@@ -26,7 +26,7 @@
   <div class="control-group">
     <label class="control-label">{{ 'GLOBAL.DESCRIPTION' | translate }}</label>
     <div class="controls">
-      <cmf-inline>
+      <cmf-inline ng-model="content.description">
         <cmf-inline-preview><i class="icon-edit pull-right"></i><span>{{content.description}}</span></cmf-inline-preview>
         <cmf-inline-input>
           <textarea type="text" name="description" ng-model="content.description" class="input-block-level"></textarea>

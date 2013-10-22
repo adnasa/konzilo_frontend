@@ -1,0 +1,5 @@
+
+<div ng-class="{'btn-group': backLabel}">
+  <button ng-click="nextState()" ng-show="nextLabel" class="btn btn-primary">{{ nextLabel | translate }}</button>
+  <button ng-click="prevState()" ng-show="backLabel" class="btn btn">{{ backLabel | translate }}</button>
+</div>

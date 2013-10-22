@@ -6,8 +6,11 @@
       var info;
       info = UserState.getInfo();
       return {
-        query: function() {
-          return this.get();
+        query: function(options) {
+          if (options == null) {
+            options = {};
+          }
+          return this.get(options);
         },
         add: function(id) {
           var _this = this;
@@ -49,18 +52,22 @@
           });
           return deferred.promise;
         },
-        get: function() {
+        get: function(options) {
           var deferred,
             _this = this;
+          if (options == null) {
+            options = {};
+          }
           deferred = $q.defer();
           info.getSetting('clipboard', function(ids) {
-            return ArticleStorage.query({
+            options = _.defaults(options, {
               q: {
                 _id: {
                   $in: ids
                 }
               }
-            }).then(function(result) {
+            });
+            return ArticleStorage.query(options).then(function(result) {
               return deferred.resolve(result);
             }, function(err) {
               return deferred.resolve([]);

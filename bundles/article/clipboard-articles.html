@@ -4,7 +4,7 @@
     <div class="articles unscheduled">
       <div class="inner">
         <div kntnt-add-article="kntnt-add-article" article-created="articleCreated"></div><a ng-repeat="article in unscheduled" href="{{link(article)}}" data-id="{{article._id}}" ui-jq="draggable" ui-options="draggableOptions" class="row-item"><span class="article-state {{article.state}}"></span><span>{{article.title}}</span>
-          <button ng-click="removeFromClipboard(article)" class="btn-link clipboard-remove"><i class="icon-remove"></i></button></a>
+          <button ng-click="removeFromClipboard(article)" class="btn-link clipboard-remove"><span>{{'GLOBAL.HIDE' | translate}}</span></button></a>
       </div>
     </div>
     <div class="scheduled">
@@ -27,7 +27,7 @@
               </div>
             </div>
             <div class="content"><a ng-class="activeArticle(article)" ui-jq="draggable" data-id="{{article._id}}" href="{{link(article)}}" ng-repeat="article in clipboard[date]" class="row-item"><span class="article-state {{article.state}}"></span><span>{{article.title}}</span>
-                <button ng-click="removeFromClipboard(article)" class="btn-link clipboard-remove"><i class="icon-remove"></i></button></a></div>
+                <button ng-click="removeFromClipboard(article)" class="btn-link clipboard-remove"><span>{{'GLOBAL.HIDE' | translate}}</span></button></a></div>
           </div>
         </div>
         <div class="articles">
@@ -38,6 +38,7 @@
           </div>
           <div class="content"></div>
         </div>
+        <div class="fetchmore"><a ng-click="nextPage()" ng-show="skip + 20  &lt;= count">Hämta fler</a></div>
       </div>
     </div>
   </div>

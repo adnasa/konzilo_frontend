@@ -255,6 +255,8 @@
           this.groupNames = {};
           this.groups = [];
           this.listeners = [];
+          this.limit = 10;
+          this.offset = 0;
           this.resource.changed(function() {
             return _this.execute();
           });
@@ -365,7 +367,7 @@
           }
           return this.resource.query({
             q: resultQuery,
-            limit: 10
+            limit: this.limit
           }, function(result) {
             var eventCallback, _k, _len2, _ref2;
             _ref2 = _this.listeners;

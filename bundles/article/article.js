@@ -12,12 +12,14 @@
           "$translate", function($translate) {
             return {
               label: $translate("TEXTPART.LABEL"),
+              defaultName: $translate("TEXTPART.DEFAULTNAME"),
               controller: [
                 "$scope", "articlePart", "InputAutoSave", "useAutoSave", function($scope, articlePart, InputAutoSave, useAutoSave) {
                   var clean, savePart;
                   $scope.part = articlePart.toObject();
                   $scope.part.content = $scope.part.content || {};
                   $scope.content = $scope.part.content;
+                  $scope.part.vocabularies = $scope.part.vocabularies || {};
                   savePart = function() {
                     articlePart.set("byline", $scope.part.byline);
                     articlePart.set("content", $scope.content);
@@ -39,10 +41,12 @@
           "$translate", function($translate) {
             return {
               label: $translate("MEDIAPART.LABEL"),
+              defaultName: $translate("MEDIAPART.DEFAULTNAME"),
               controller: [
                 "$scope", "articlePart", "InputAutoSave", "useAutoSave", "$http", function($scope, articlePart, InputAutoSave, useAutoSave, $http) {
                   var clean, savePart;
                   $scope.part = articlePart.toObject();
+                  $scope.part.vocabularies = $scope.part.vocabularies || {};
                   $scope.part.content = $scope.part.content || {};
                   $scope.content = $scope.part.content;
                   savePart = function() {
@@ -96,11 +100,13 @@
           "$translate", function($translate) {
             return {
               label: $translate("IMAGEPART.LABEL"),
+              defaultName: $translate("IMAGEPART.DEFAULTNAME"),
               controller: [
                 "$scope", "articlePart", "InputAutoSave", "UserStorage", "$q", "useAutoSave", function($scope, articlePart, InputAutoSave, UserStorage, $q, useAutoSave) {
                   var clean, savePart;
                   $scope.part = articlePart.toObject();
                   $scope.part.content = $scope.part.content || {};
+                  $scope.part.vocabularies = $scope.part.vocabularies || {};
                   $scope.content = $scope.part.content;
                   if (!$scope.content.images) {
                     $scope.content.images = [];
@@ -145,6 +151,20 @@
             }
           }
           return labels;
+        };
+        fn.defaultNames = function() {
+          var definition, name, names, _ref;
+          names = {};
+          _ref = _this.providers;
+          for (name in _ref) {
+            definition = _ref[name];
+            if (_.isPlainObject(definition)) {
+              names[name] = definition.defaultName;
+            } else {
+              names[name] = $injector.invoke(definition).defaultName;
+            }
+          }
+          return names;
         };
         return fn;
       },
@@ -327,7 +347,7 @@
       };
     }
   ]).directive("kntntAddArticlePart", [
-    "ArticleStorage", "UserState", "KonziloConfig", function(ArticleStorage, UserState, KonziloConfig) {
+    "ArticleStorage", "UserState", "KonziloConfig", "articleParts", function(ArticleStorage, UserState, KonziloConfig, articleParts) {
       return {
         restrict: 'AE',
         scope: {
@@ -336,6 +356,9 @@
         },
         controller: [
           "$scope", "$element", "$attrs", function($scope, $element, $attrs) {
+            var defaultNames;
+            $scope.types = articleParts.labels();
+            defaultNames = articleParts.defaultNames();
             return $scope.addArticlePart = function() {
               var article, user;
               article = $scope.article;
@@ -343,13 +366,14 @@
               return $scope.addArticlePart = function() {
                 if ($scope.addArticlePartForm.$valid) {
                   return KonziloConfig.get("languages").listAll().then(function(languages) {
-                    var articlePart, defaultLang;
+                    var articlePart, count, defaultLang;
                     defaultLang = _.find(languages, {
                       "default": true
                     });
                     articlePart = {
-                      title: $scope.articlePartTitle,
+                      title: defaultNames[$scope.type],
                       state: "notstarted",
+                      type: $scope.type,
                       submitter: user._id
                     };
                     if (defaultLang) {
@@ -357,6 +381,12 @@
                     }
                     article.parts = article.parts || [];
                     article.parts.push(articlePart);
+                    count = _.filter(article.parts, {
+                      type: articlePart.type
+                    }).length;
+                    if (count > 1) {
+                      articlePart.title += " " + count;
+                    }
                     return ArticleStorage.save(article, function(result) {
                       if ($scope.partCreated) {
                         $scope.partCreated(result, result.parts[result.parts.length - 1]);
@@ -599,25 +629,28 @@
         ready: $translate("ARTICLE.READY")
       };
     }
-  ]).factory("ArticlePartStates", [
-    "$translate", function($translate) {
-      return [
-        {
-          name: "notstarted",
-          label: $translate("ARTICLE.NOTSTARTED")
-        }, {
-          name: "started",
-          label: $translate("ARTICLE.STARTED")
-        }, {
-          name: "needsreview",
-          label: $translate("ARTICLE.NEEDSREVIEW")
-        }, {
-          name: "approved",
-          label: $translate("ARTICLE.APPROVED")
-        }
-      ];
-    }
-  ]).directive("kntntArticleDeliver", [
+  ]).factory("ArticlePartStates", function() {
+    return [
+      {
+        name: "notstarted",
+        label: "ARTICLE.NOTSTARTED",
+        backLabel: "ARTICLE.BACKTONOTSTARTED"
+      }, {
+        name: "started",
+        label: "ARTICLE.STARTED",
+        transitionLabel: "ARTICLE.STARTWORKING",
+        backLabel: "ARTICLE.BACKTOSTARTED"
+      }, {
+        name: "needsreview",
+        label: "ARTICLE.NEEDSREVIEW",
+        transitionLabel: "ARTICLE.POSTFORREVIEW"
+      }, {
+        name: "approved",
+        label: "ARTICLE.APPROVED",
+        transitionLabel: "ARTICLE.APPROVE"
+      }
+    ];
+  }).directive("kntntArticleDeliver", [
     "ClipboardStorage", "ArticlePartStorage", "UserState", "ArticlePartStates", "GroupStorage", function(ClipboardStorage, ArticlePartStorage, UserState, ArticlePartStates, GroupStorage) {
       return {
         restrict: "AE",
@@ -629,7 +662,7 @@
         },
         controller: [
           "$scope", function($scope) {
-            var articlesToggled, availableParts, groupParts, ids, info, state, states;
+            var articlesToggled, availableParts, fetchParts, groupParts, info, state, states;
             info = UserState.getInfo().info;
             articlesToggled = {};
             states = ArticlePartStates;
@@ -695,73 +728,65 @@
                     items: []
                   };
                 }
-                if ($scope.part && articlePart._id === $scope.part.id() && article._id === $scope.part.get("article")._id) {
-                  articlesToggled[article._id] = true;
-                }
                 groupedResults[articlePart.state][article._id].items.push(articlePart);
               }
               return $scope.articles = groupedResults;
             };
-            ids = [info._id];
-            GroupStorage.query({
-              q: {
-                members: {
-                  $all: [info._id]
-                }
-              }
-            }).then(function(result) {
-              var group;
-              return ids.concat((function() {
-                var _i, _len, _ref, _results;
-                _ref = result.toArray();
-                _results = [];
-                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                  group = _ref[_i];
-                  _results.push(group._id);
-                }
-                return _results;
-              })());
-            }).then(function(providers) {
-              return ArticlePartStorage.query({
+            fetchParts = function() {
+              var ids;
+              ids = [info._id];
+              return GroupStorage.query({
                 q: {
-                  provider: {
-                    $in: providers
-                  },
-                  state: {
-                    $ne: "approved"
-                  },
-                  type: {
-                    $exists: true
+                  members: {
+                    $all: [info._id]
                   }
                 }
+              }).then(function(result) {
+                var group;
+                return ids.concat((function() {
+                  var _i, _len, _ref, _results;
+                  _ref = result.toArray();
+                  _results = [];
+                  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    group = _ref[_i];
+                    _results.push(group._id);
+                  }
+                  return _results;
+                })());
+              }).then(function(providers) {
+                return ArticlePartStorage.query({
+                  q: {
+                    provider: {
+                      $in: providers
+                    },
+                    state: {
+                      $ne: "approved"
+                    },
+                    type: {
+                      $exists: true
+                    }
+                  }
+                });
+              }).then(function(result) {
+                return groupParts(result.toArray());
               });
-            }).then(function(result) {
-              return groupParts(result.toArray());
-            });
-            if ($scope.selected) {
-              articlesToggled[$scope.selected._id] = true;
-            }
+            };
+            fetchParts();
             $scope.toggleArticle = function(article) {
-              if (articlesToggled[article._id] == null) {
-                return articlesToggled[article._id] = true;
+              if ($scope.selectedArticle === article._id) {
+                return $scope.selectedArticle = void 0;
               } else {
-                return articlesToggled[article._id] = !articlesToggled[article._id];
+                return $scope.selectedArticle = article._id;
               }
             };
-            $scope.toggleIcon = function(article) {
-              if (!articlesToggled[article._id]) {
-                return "icon-chevron-right";
-              } else {
-                return "icon-chevron-down";
+            ArticlePartStorage.changed(fetchParts);
+            $scope.$watch("selected", function() {
+              if (!$scope.selected) {
+                return;
               }
-            };
-            $scope.activeItem = function(article) {
-              if (articlesToggled[article._id]) {
-                return "active";
-              } else {
-                return "";
-              }
-            };
+              $scope.selectedPart = $scope.selected.id();
+              return $scope.selectedArticle = $scope.selected.get("article")._id;
+            });
             return $scope.collapsed = function(article) {
               return articlesToggled[article._id];
             };
@@ -780,7 +805,7 @@
         },
         controller: [
           "$scope", "$element", "$attrs", function($scope, $element, $attrs) {
-            var articleMap, calculateNewDate, calculatePrevDate, datePickers, drawClipboard, fetchedArticles, getClipboard, height, originalDates, pattern, switchDate, transformLink,
+            var appendPage, articleMap, calculateNewDate, calculatePrevDate, datePickers, drawClipboard, fetchedArticles, getClipboard, height, originalDates, pattern, scrollableElement, switchDate, transformLink,
               _this = this;
             transformLink = function(pattern, article) {
               var key, link, value;
@@ -791,14 +816,17 @@
               }
               return link;
             };
+            $scope.skip = 0;
+            $scope.count = 0;
             pattern = $attrs.linkPattern;
             fetchedArticles = [];
             articleMap = {};
             height = $(window).height();
-            $element.find(".scheduled > .inner").css("max-height", height - 300);
+            scrollableElement = $element.find(".scheduled > .inner");
+            scrollableElement.css("max-height", height - 300);
             $(window).resize(function() {
               height = $(window).height();
-              return $element.find(".scheduled > .inner").css("max-height", height - 300);
+              return scrollableElement.css("max-height", height - 300);
             });
             $scope.activeArticle = function(article) {
               if (article._id === $routeParams.id) {
@@ -837,10 +865,19 @@
               $scope.clipboard = clipboard;
               return $scope.dates = _.keys($scope.clipboard).sort();
             };
-            getClipboard = function() {
-              return ClipboardStorage.query().then(function(articles) {
+            getClipboard = function(skip) {
+              if (skip == null) {
+                skip = 0;
+              }
+              return ClipboardStorage.query({
+                sort: {
+                  publishdate: "asc"
+                },
+                skip: skip
+              }).then(function(articles) {
                 var article, _i, _len;
                 articleMap = {};
+                $scope.count = articles.count;
                 if (articles != null ? articles.toArray : void 0) {
                   articles = articles.toArray();
                 }
@@ -854,7 +891,34 @@
                 return originalDates = $scope.dates.slice(0);
               });
             };
+            appendPage = function(skip) {
+              var _this = this;
+              if (skip == null) {
+                skip = 0;
+              }
+              return ClipboardStorage.query({
+                sort: {
+                  publishdate: "asc"
+                },
+                skip: skip
+              }).then(function(articles) {
+                var article, _i, _len;
+                if (articles != null ? articles.toArray : void 0) {
+                  articles = articles.toArray();
+                }
+                for (_i = 0, _len = articles.length; _i < _len; _i++) {
+                  article = articles[_i];
+                  articleMap[article._id] = article;
+                  fetchedArticles.push(article);
+                }
+                return drawClipboard(fetchedArticles);
+              });
+            };
             getClipboard();
+            $scope.nextPage = function() {
+              $scope.skip += 20;
+              return appendPage($scope.skip);
+            };
             calculatePrevDate = function() {
               var currentDate, firstDate, lastDate, prevDate;
               currentDate = new Date();
@@ -985,6 +1049,16 @@
             $scope.isCollapsed = true;
             $scope.purge = false;
             collection = null;
+            $scope.tableShown = false;
+            $scope.pickLabel = 'ARTICLE.PICKFILTERED';
+            $scope.showTable = function() {
+              $scope.tableShown = !$scope.tableShown;
+              if ($scope.tableShown) {
+                return $scope.pickLabel = 'ARTICLE.PICKALL';
+              } else {
+                return $scope.pickLabel = 'ARTICLE.PICKFILTERED';
+              }
+            };
             stepFilter = new (queryFilter("ReferenceFilter"))("step", $translate('GLOBAL.STEP'), $translate("ARTICLEPICKER.STEPDESC"), StepStorage, "name", "_id");
             channelFilter = new (queryFilter("ReferenceFilter"))("channel", $translate("GLOBAL.CHANNEL"), $translate("ARTICLEPICKER.PUBLISHDESC"), ChannelStorage, "name", "_id");
             filters = [new (queryFilter("ReferenceFilter"))("target", $translate("GLOBAL.TARGET"), $translate("ARTICLEPICKER.TARGETDESC"), TargetStorage, "name", "_id"), new (queryFilter("ReferenceFilter"))("responsible", $translate("GLOBAL.RESPONSIBLE"), $translate("ARTICLEPICKER.RESPONSIBLEDESC"), ProviderStorage, "label", "_id"), new (queryFilter("OptionsFilter"))("state", $translate("GLOBAL.STATUS"), $translate("ARTICLEPICKER.STATUSDESC"), ArticleStates), stepFilter, channelFilter, new (queryFilter("MatchFilter"))("title", $translate("ARTICLEPICKER.MATCHES"), $translate("ARTICLEPICKER.MATCHESDESC"))];
@@ -1008,11 +1082,11 @@
                   q: {
                     $or: [
                       {
-                        done: {
+                        ready: {
                           $exists: false
                         }
                       }, {
-                        done: false
+                        ready: false
                       }
                     ]
                   },
@@ -1049,6 +1123,10 @@
                 }
                 $scope.articles = articles.toArray();
                 collection = articles;
+                $scope.count = collection.count;
+                $scope.translations = {
+                  count: $scope.count
+                };
                 $scope.selected = {};
                 return $scope.selectall = false;
               });
@@ -1062,26 +1140,68 @@
               }
             };
             $scope.addArticles = function() {
-              var save;
-              save = function() {
-                return ClipboardStorage.getIds().then(function(ids) {
-                  var id, selected, _ref;
-                  _ref = $scope.selected;
-                  for (id in _ref) {
-                    selected = _ref[id];
-                    if (selected) {
-                      if (__indexOf.call(ids, id) < 0) {
-                        ids.push(id);
+              var save, selector;
+              if (!collection.count) {
+                return;
+              }
+              if (!$scope.tableShown) {
+                if (!$scope.selector || !selectors[$scope.selector]) {
+                  return;
+                }
+                save = function(articles) {
+                  var saveData;
+                  saveData = function() {
+                    return ClipboardStorage.getIds().then(function(ids) {
+                      var article, _i, _len, _ref, _ref1;
+                      _ref = articles.toArray();
+                      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                        article = _ref[_i];
+                        if (_ref1 = article._id, __indexOf.call(ids, _ref1) < 0) {
+                          ids.push(article._id);
+                        }
+                      }
+                      return ClipboardStorage.save(ids);
+                    });
+                  };
+                  if ($scope.purge) {
+                    return ClipboardStorage.truncate().then(saveData);
+                  } else {
+                    return saveData();
+                  }
+                };
+                selector = $scope.selector;
+                if (selector === "advanced") {
+                  $scope.builder.limit = collection.count;
+                  $scope.builder.execute(save);
+                } else if (selector === "all") {
+                  ArticleStorage.query({
+                    limit: collection.count
+                  }).then(save);
+                } else {
+                  selectors[selector](save);
+                }
+                return selector = selectors[$scope.selector];
+              } else {
+                save = function() {
+                  return ClipboardStorage.getIds().then(function(ids) {
+                    var id, selected, _ref;
+                    _ref = $scope.selected;
+                    for (id in _ref) {
+                      selected = _ref[id];
+                      if (selected) {
+                        if (__indexOf.call(ids, id) < 0) {
+                          ids.push(id);
+                        }
                       }
                     }
-                  }
-                  return ClipboardStorage.save(ids);
-                });
-              };
-              if ($scope.purge) {
-                return ClipboardStorage.truncate().then(save);
-              } else {
-                return save();
+                    return ClipboardStorage.save(ids);
+                  });
+                };
+                if ($scope.purge) {
+                  return ClipboardStorage.truncate().then(save);
+                } else {
+                  return save();
+                }
               }
             };
             $scope.collapseClass = function() {
@@ -1188,6 +1308,63 @@
         templateUrl: "bundles/article/articlepart-approve.html"
       };
     }
+  ]).directive("konziloArticlepartChangeState", [
+    "ArticlePartStorage", "ArticlePartStates", "userAccess", function(ArticlePartStorage, ArticlePartStates, userAccess) {
+      return {
+        restrict: "AE",
+        scope: {
+          articlePart: "="
+        },
+        controller: [
+          "$scope", function($scope) {
+            var nextState, prevState, update;
+            prevState = null;
+            nextState = null;
+            update = function() {
+              var currentState, index, _ref, _ref1, _ref2;
+              if (!$scope.articlePart) {
+                return;
+              }
+              currentState = $scope.articlePart.get("state");
+              if (!currentState || currentState === ArticlePartStates[0].name) {
+                index = 0;
+              } else {
+                index = _.findIndex(ArticlePartStates, {
+                  name: currentState
+                });
+              }
+              nextState = (_ref = ArticlePartStates[index + 1]) != null ? _ref.name : void 0;
+              if (index > 0) {
+                prevState = ArticlePartStates[index - 1].name;
+              }
+              $scope.backLabel = (_ref1 = ArticlePartStates[index - 1]) != null ? _ref1.backLabel : void 0;
+              if (nextState !== "approved") {
+                return $scope.nextLabel = (_ref2 = ArticlePartStates[index + 1]) != null ? _ref2.transitionLabel : void 0;
+              } else {
+                return userAccess("update articles").then(function() {
+                  var _ref3;
+                  return $scope.nextLabel = (_ref3 = ArticlePartStates[index + 1]) != null ? _ref3.transitionLabel : void 0;
+                }, function() {
+                  return $scope.nextLabel = void 0;
+                });
+              }
+            };
+            $scope.nextState = function() {
+              $scope.articlePart.set("state", nextState);
+              return $scope.articlePart.save().then(update);
+            };
+            $scope.prevState = function() {
+              if (prevState) {
+                $scope.articlePart.set("state", prevState);
+                return $scope.articlePart.save().then(update);
+              }
+            };
+            return $scope.$watch("articlePart", update);
+          }
+        ],
+        templateUrl: "bundles/article/articlepart-change-state.html"
+      };
+    }
   ]).directive("kntntArticleList", [
     "ArticleStorage", function(ArticleStorage) {
       return {
@@ -1285,6 +1462,9 @@
             update = function() {
               if (!$scope.article) {
                 return;
+              }
+              if (!$scope.article.vocabularies) {
+                $scope.article.vocabularies = {};
               }
               if ($scope.article.publishdate) {
                 $scope.publishtime = $filter('date')($scope.article.publishdate, "HH:mm");
