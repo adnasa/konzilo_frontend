@@ -72,7 +72,8 @@
     "TYPE": "Typ",
     "SETTINGS": "Inställningar",
     "LOGOUT": "Logga ut",
-    "BACK": "Tillbaka"
+    "BACK": "Tillbaka",
+    "HIDE": "Dölj"
   },
   "CHANNEL": {
     "TITLE": "Kanaler",
@@ -257,7 +258,12 @@
     "STARTED": "Arbete pågår",
     "NEEDSREVIEW": "Levererat till granskning",
     "APPROVED": "Godkänd",
-    "NEWVERSION": "Ny version"
+    "NEWVERSION": "Ny version",
+    "BACKTONOTSTARTED": "Sluta arbeta",
+    "BACKTOSTARTED": "Fortsätt arbeta med artikeln",
+    "POSTFORREVIEW": "Skicka till godkännande",
+    "STARTWORKING": "Börja arbeta",
+    "APPROVE": "Godkänn"
   },
   "ENDPOINT": {
     "REMOVE": "Ta bort publiceringsmål",

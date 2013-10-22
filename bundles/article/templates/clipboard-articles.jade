@@ -11,7 +11,8 @@
             span(class="article-state {{article.state}}")
             span {{article.title}}
             button.btn-link.clipboard-remove(ng-click="removeFromClipboard(article)")
-              i.icon-remove
+              span {{'GLOBAL.HIDE' | translate}}
+
     .scheduled
       .inner
         .articles
@@ -42,7 +43,7 @@
                 span(class="article-state {{article.state}}")
                 span() {{article.title}}
                 button.btn-link.clipboard-remove(ng-click="removeFromClipboard(article)")
-                    i.icon-remove
+                    span {{'GLOBAL.HIDE' | translate}}
         .articles
           .group.date-hidden(
             ui-jq="droppable"

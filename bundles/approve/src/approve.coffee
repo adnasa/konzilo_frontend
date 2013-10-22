@@ -39,12 +39,12 @@ angular.module "kntnt.approve",
     $scope.$parent.title = $translate("REVIEW.TITLE")
 
     ArticlePartStorage.changed (part) ->
-      if $location.path().indexOf("approve")
+      if $location.path().indexOf("approve") != -1
         state = part.get("state")
 
-      if $routeParams.id == part.id() and
-      (state == $scope.failState or state == $scope.approveState)
-        $location.url("/approve")
+        if $routeParams.id == part.id() and
+        (state == $scope.failState or state == $scope.approveState)
+          $location.url("/approve")
 
     if $routeParams.id
       ArticlePartStorage.get $routeParams.id, (articlePart) ->

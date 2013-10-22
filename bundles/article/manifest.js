@@ -12,5 +12,6 @@ exports.jade = {
   "articlepart-text.html": "templates/articlepart-text.jade",
   "article-picker.html": "templates/article-picker.jade",
   "clipboard-articleparts.html": "templates/clipboard-articleparts.jade",
-  "clipboard-articles.html": "templates/clipboard-articles.jade"
+  "clipboard-articles.html": "templates/clipboard-articles.jade",
+  "articlepart-change-state.html": "templates/articlepart-change-state.jade"
 };

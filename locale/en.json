@@ -72,7 +72,8 @@
     "TYPE": "Type",
     "SETTINGS": "Settings",
     "LOGOUT": "Log out",
-    "BACK": "Back"
+    "BACK": "Back",
+    "HIDE": "Dölj"
   },
   "CHANNEL": {
     "TITLE": "Channels",
@@ -258,7 +259,12 @@
     "STARTED": "Workin in progress",
     "NEEDSREVIEW": "Delivered for review",
     "APPROVED": "Approved",
-    "NEWVERSION": "New version"
+    "NEWVERSION": "New version",
+    "BACKTONOTSTARTED": "Stop working",
+    "BACKTOSTARTED": "Continue working",
+    "POSTFORREVIEW": "Send for review",
+    "STARTWORKING": "Start working",
+    "APPROVE": "Approve"
   },
   "ENDPOINT": {
     "REMOVE": "Remove endpoint",

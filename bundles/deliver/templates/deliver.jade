@@ -2,7 +2,7 @@
   .row-fluid
     .span3
       .box.pad
-        div(kntnt-article-deliver, link-pattern="#/deliver/:part", states="states", part="articlePart")
+        div(kntnt-article-deliver, link-pattern="#/deliver/:part", states="states", selected="articlePart")
     .span9(ng-show="!articlePart")
       .box.pad
         h1 {{'DELIVER.TITLE' | translate}}
@@ -12,6 +12,8 @@
         .box.pad.articleinfo
           .inner
             konzilo-articlepart-form(article-part="articlePart", use-auto-save="useSave")
+            .well
+              konzilo-articlepart-change-state(article-part="articlePart")
     .span4(ng-show="articlePart")
       .tabbed-box
         tabset

@@ -410,7 +410,6 @@ angular.module("kntnt.article",
         $scope.articles = {}
         for articlePart in result.toArray()
           article = articlePart.article
-
           if $scope.part and $scope.part.id() is articlePart._id and
 
           article._id is $scope.part.get("article")._id
@@ -464,14 +463,32 @@ angular.module("kntnt.article",
   ready: $translate("ARTICLE.READY")
 ])
 
-.factory("ArticlePartStates", ["$translate", ($translate) ->
+.factory("ArticlePartStates", ->
   [
-    { name: "notstarted", label: $translate("ARTICLE.NOTSTARTED") }
-    { name: "started", label: $translate("ARTICLE.STARTED") }
-    { name: "needsreview", label: $translate("ARTICLE.NEEDSREVIEW") }
-    { name: "approved", label: $translate("ARTICLE.APPROVED") }
+    {
+      name: "notstarted",
+      label: "ARTICLE.NOTSTARTED"
+      backLabel: "ARTICLE.BACKTONOTSTARTED"
+    }
+    {
+      name: "started",
+      label: "ARTICLE.STARTED"
+      transitionLabel: "ARTICLE.STARTWORKING"
+      backLabel: "ARTICLE.BACKTOSTARTED"
+
+    }
+    {
+      name: "needsreview",
+      label: "ARTICLE.NEEDSREVIEW"
+      transitionLabel: "ARTICLE.POSTFORREVIEW"
+    }
+    {
+      name: "approved",
+      label: "ARTICLE.APPROVED"
+      transitionLabel: "ARTICLE.APPROVE"
+    }
   ]
-])
+)
 
 .directive("kntntArticleDeliver",
 ["ClipboardStorage", "ArticlePartStorage",
@@ -522,48 +539,41 @@ UserState, ArticlePartStates, GroupStorage) ->
             publishdate: article.publishdate
             title: article.title
             items: []
-        if $scope.part and articlePart._id is $scope.part.id() and
-        article._id is $scope.part.get("article")._id
-          articlesToggled[article._id] = true
 
         groupedResults[articlePart.state][article._id].items.push(articlePart)
 
       $scope.articles = groupedResults
 
-    ids = [ info._id ]
-    GroupStorage.query
-      q:
-        members: { $all: [ info._id ] }
-    .then (result) ->
-      ids.concat(group._id for group in result.toArray())
-    .then (providers) ->
-      ArticlePartStorage.query
+    fetchParts = ->
+      ids = [ info._id ]
+      GroupStorage.query
         q:
-          provider: { $in: providers }
-          state: { $ne: "approved" }
-          type: { $exists: true }
-    .then (result) -> groupParts(result.toArray())
+          members: { $all: [ info._id ] }
+      .then (result) ->
+        ids.concat(group._id for group in result.toArray())
+      .then (providers) ->
+        ArticlePartStorage.query
+          q:
+            provider: { $in: providers }
+            state: { $ne: "approved" }
+            type: { $exists: true }
+      .then (result) -> groupParts(result.toArray())
 
-    if $scope.selected
-      articlesToggled[$scope.selected._id] = true
+    fetchParts()
 
     $scope.toggleArticle = (article) ->
-      if not articlesToggled[article._id]?
-        articlesToggled[article._id] = true
+      if $scope.selectedArticle == article._id
+        $scope.selectedArticle = undefined
       else
-        articlesToggled[article._id] = !articlesToggled[article._id]
+        $scope.selectedArticle = article._id
 
-    $scope.toggleIcon = (article) ->
-      if not articlesToggled[article._id]
-        "icon-chevron-right"
-      else
-        "icon-chevron-down"
 
-    $scope.activeItem = (article) ->
-      if articlesToggled[article._id]
-        "active"
-      else
-        ""
+    ArticlePartStorage.changed(fetchParts)
+
+    $scope.$watch "selected", ->
+      return if not $scope.selected
+      $scope.selectedPart = $scope.selected.id()
+      $scope.selectedArticle = $scope.selected.get("article")._id
 
     $scope.collapsed = (article) -> articlesToggled[article._id]
   ]
@@ -969,6 +979,54 @@ $http, $templateCache, KonziloEntity) ->
   templateUrl: "bundles/article/articlepart-approve.html"
 ])
 
+.directive("konziloArticlepartChangeState",
+["ArticlePartStorage", "ArticlePartStates", "userAccess"
+(ArticlePartStorage, ArticlePartStates, userAccess) ->
+  restrict: "AE",
+  scope:
+    articlePart: "="
+  controller: ["$scope", ($scope) ->
+    prevState = null
+    nextState = null
+    update = ->
+      return if not $scope.articlePart
+      currentState = $scope.articlePart.get("state")
+
+      if not currentState or currentState == ArticlePartStates[0].name
+        index = 0
+      else
+        index = _.findIndex(ArticlePartStates, name: currentState)
+
+      nextState = ArticlePartStates[index+1]?.name
+
+      if index > 0
+        prevState = ArticlePartStates[index-1].name
+
+      $scope.backLabel = ArticlePartStates[index-1]?.backLabel
+
+      if nextState != "approved"
+        $scope.nextLabel = ArticlePartStates[index+1]?.transitionLabel
+      else
+        # You need to be able to update articles in order to approve things.
+        userAccess("update articles").then ->
+          $scope.nextLabel = ArticlePartStates[index+1]?.transitionLabel
+        , ->
+          $scope.nextLabel = undefined
+
+    $scope.nextState = ->
+        $scope.articlePart.set("state", nextState)
+        $scope.articlePart.save().then(update)
+
+    $scope.prevState = ->
+        if prevState
+          $scope.articlePart.set("state", prevState)
+          $scope.articlePart.save().then(update)
+
+    $scope.$watch("articlePart", update)
+  ]
+  templateUrl: "bundles/article/articlepart-change-state.html"
+])
+
 .directive("kntntArticleList",
 ["ArticleStorage", (ArticleStorage) ->
   restrict: "AE",
@@ -1042,6 +1100,7 @@ ChannelStorage, StepStorage, $filter, $q, $translate) ->
     # Set the active article.
     update = ->
       return if not $scope.article
+      $scope.article.vocabularies = {} if not $scope.article.vocabularies
       if $scope.article.publishdate
         $scope.publishtime = $filter('date')($scope.article.publishdate, "HH:mm")
       if $scope.article.unpublishdate
