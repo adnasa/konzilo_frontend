@@ -361,12 +361,21 @@ angular.module("cmf.input", [])
     constructor: (@obj, @saveCallback, @validCallback, @timeout = 1500) ->
       @originalObj = _.cloneDeep(@obj)
       @saveCallbacks = []
+      @errorCallbacks = []
       @callback = =>
         if @dirty() and @validCallback(@obj) and not @stopSaving
-          @saveCallback(@obj)
-          callback(@obj) for callback in @saveCallbacks
-          delete @originalObj
-          @originalObj = _.cloneDeep(@obj)
+          result = @saveCallback(@obj)
+          if result.then
+            result.then =>
+              callback(@obj) for callback in @saveCallbacks
+              delete @originalObj
+              @originalObj = _.cloneDeep(@obj)
+            , (err) =>
+              @originalObj = _.cloneDeep(@obj)
+              callback(err) for callback in @errorCallbacks
+          else
+            callback(@obj) for callback in @saveCallbacks
+
         if not @stopSaving
           $timeout @callback, @timeout
         return
@@ -383,6 +392,9 @@ angular.module("cmf.input", [])
 
     onSave: (callback) ->
       @saveCallbacks.push(callback)
+
+    onError: (callback) ->
+      @errorCallbacks.push(callback)
 ])
 
 .directive("contenteditable", ->
@@ -394,8 +406,6 @@ angular.module("cmf.input", [])
 
     ctrl.$render = () ->
       elm.html(@$viewValue)
-
-   #ctrl.$setViewValue(elm.html())
 )
 
 .directive("cmfAutosaveStatus", ["$timeout", ($timeout) ->
@@ -417,6 +427,7 @@ angular.module("cmf.input", [])
 
     reset = ->
       $scope.statusMessage = null
+
     oldStatus = null
     updateStatus = ->
       status = $scope.status
@@ -424,11 +435,17 @@ angular.module("cmf.input", [])
         oldStatus = status
         status.onSave ->
           currentDate = new Date()
-          $scope.statusMessage = getDateString()
+          $scope.statusMessage = "GLOBAL.SAVED"
+          $scope.translations = date: getDateString()
           $timeout(reset, 2000)
+          $scope.error = false
           return
+        status.onError (err) ->
+          $scope.error = true
+          $scope.statusMessage = err.data.message
     updateStatus()
     $scope.$watch('status', updateStatus)
   ]
-  template: "<div class=\"save-status\" ng-show=\"statusMessage\">{{'GLOBAL.SAVED' | translate}} {{statusMessage}}</div>"
+  template: "<div class=\"save-status\" ng-class=\"{error: error}\"
+    ng-show=\"statusMessage\">{{statusMessage | translate: translations}}</div>"
 ])

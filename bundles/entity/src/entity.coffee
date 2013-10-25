@@ -50,6 +50,7 @@ angular.module("konzilo.entity", ["ngResource"])
       else
         @data[name] = data
       @dirty = true
+      return @
 
     id: -> @data[@info.idProperty]
 
@@ -159,6 +160,7 @@ entityInfo, $q, $http, $cacheFactory) ->
       @cache.removeAll()
       deferred = $q.defer()
       data = if item.toObject then item.toObject() else item
+
       if data._id
         method = @resource.update
       else
@@ -176,7 +178,7 @@ entityInfo, $q, $http, $cacheFactory) ->
         deferred.resolve result
       , (result) ->
         errorCallback(result) if errorCallback
-        deferred.reject result
+        deferred.reject(result)
 
       deferred.promise
 

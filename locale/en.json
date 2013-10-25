@@ -29,7 +29,7 @@
     "NAME": "Name",
     "DESCRIPTION": "Description",
     "SAVE": "Save",
-    "SAVED": "Saved",
+    "SAVED": "Saved {{date}}",
     "SEARCH": "Search",
     "REMOVE": "Remove",
     "USER": "User",
@@ -267,7 +267,9 @@
     "APPROVE": "Approve",
     "PICKFILTERED": "Pick among the filtered articles",
     "PICKALL": "Pick all articles",
-    "FILTERCOUNT": "Your choice matches {{count}} articles."
+    "FILTERCOUNT": "Your choice matches {{count}} articles.",
+    "LOCKEDTEXT": "The article part is being edited by {{user}}.",
+    "UNLOCK": "Unlock"
   },
   "ENDPOINT": {
     "REMOVE": "Remove endpoint",

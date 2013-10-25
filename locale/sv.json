@@ -29,7 +29,7 @@
     "NAME": "Namn",
     "DESCRIPTION": "Beskrivning",
     "SAVE": "Spara",
-    "SAVED": "Sparad",
+    "SAVED": "Sparad {{date}}",
     "SEARCH": "Sök",
     "REMOVE": "Ta bort",
     "USER": "Användare",
@@ -266,7 +266,9 @@
     "APPROVE": "Godkänn",
     "PICKFILTERED": "Välj bland filtrerade artiklar",
     "PICKALL": "Välj alla artiklar",
-    "FILTERCOUNT": "Ditt val matchar {{count}} artiklar."
+    "FILTERCOUNT": "Ditt val matchar {{count}} artiklar.",
+    "LOCKEDTEXT": "Artikeldelen redigeras av {{user}}.",
+    "UNLOCK": "Lås upp"
   },
   "ENDPOINT": {
     "REMOVE": "Ta bort publiceringsmål",

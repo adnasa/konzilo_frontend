@@ -31,12 +31,20 @@ angular.module("kntnt.deliver",
 .controller("DeliverController",
 ["$scope", "ClipboardStorage", "ArticlePartStorage", "$routeParams",
 "TargetStorage", "StepStorage", "ChannelStorage",
-"kzAnalysisDialog", "$translate",
+"kzAnalysisDialog", "$translate", "UserState",
 ($scope, ClipboardStorage, ArticlePartStorage, $routeParams,
-TargetStorage, StepStorage, ChannelStorage, kzAnalysisDialog, $translate) ->
+TargetStorage, StepStorage, ChannelStorage,
+kzAnalysisDialog, $translate, UserState) ->
   $scope.states = [ "notstarted", "started", "needsreview" ]
   $scope.useSave = true
   $scope.translations = {}
+  userId = UserState.getInfo().info._id
+
+  $scope.isLocked = (part) -> part?.locked != userId
+
+  $scope.unlockPart = (part) ->
+    part.locked = userId
+
   $scope.$parent.title = $translate("DELIVER.TITLE")
   if $routeParams.id
     ArticlePartStorage.get $routeParams.id, (articlePart) ->

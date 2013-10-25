@@ -25,7 +25,7 @@ angular.module("kntnt.article",
       label: $translate("TEXTPART.LABEL")
       defaultName: $translate("TEXTPART.DEFAULTNAME")
       controller: ["$scope", "articlePart",
-      "InputAutoSave", "useAutoSave",
+      "InputAutoSave", "useAutoSave"
       ($scope, articlePart, InputAutoSave, useAutoSave) ->
         $scope.part = articlePart.toObject()
         $scope.part.content = $scope.part.content or {}
@@ -35,6 +35,7 @@ angular.module("kntnt.article",
           articlePart.set("byline", $scope.part.byline)
           articlePart.set("content", $scope.content)
           articlePart.save()
+
         clean = -> $scope.partForm.$valid
         if useAutoSave
           $scope.autosave = new InputAutoSave($scope.part, savePart, clean)
@@ -55,7 +56,6 @@ angular.module("kntnt.article",
           articlePart.set("byline", $scope.part.byline)
           articlePart.set("content", $scope.content)
           articlePart.save()
-          return
 
         clean = -> $scope.partForm.$valid
         $scope.showMedia = ->
@@ -78,7 +78,7 @@ angular.module("kntnt.article",
               $scope.preview = false
         $scope.showMedia()
         if useAutoSave
-          $scope.autosave = new InputAutoSave($scope.part, savePart, clean)
+          $scope.autosave = new InputAutoSave($scope.part.content, savePart, clean)
       ]
       templateUrl: "bundles/article/articlepart-media.html"
     ]
@@ -521,7 +521,6 @@ UserState, ArticlePartStates, GroupStorage) ->
         currentPart.state = state
         ArticlePartStorage.get(id).then (part) ->
           part.set("state", state)
-          part.set("provider", info._id)
           ArticlePartStorage.save part, ->
             groupParts(_.toArray(availableParts))
 
@@ -987,20 +986,18 @@ ChannelStorage, $filter, ArticleStates, ProviderStorage, $translate) ->
 
 .directive("konziloArticlepartForm",
 ["articleParts", "$compile", "$controller", "$injector",
-"$http", "$templateCache", "KonziloEntity",
+"$http", "$templateCache", "KonziloEntity", "UserState",
 (articleParts, $compile, $controller, $injector,
-$http, $templateCache, KonziloEntity) ->
+$http, $templateCache, KonziloEntity, UserState) ->
   restrict: "AE",
   scope:
     articlePart: "="
     useAutoSave: "="
   link: (scope, element, attrs) ->
     currentPart = null
+    userId = UserState.getInfo().info._id
     getPartForm = ->
-      articlePart = scope.articlePart
-      if articlePart and (not currentPart or not _.isEqual(articlePart, currentPart))
-        if not articlePart.toObject
-          articlePart = new KonziloEntity('ArticlePart', articlePart)
+      loadPartForm = ->
         type = articlePart.get('type')
         definition = articleParts(type)
         # This is an invalid type. Let's bail.
@@ -1011,16 +1008,48 @@ $http, $templateCache, KonziloEntity) ->
         if definition.template
           templatePromise = $q.when(definition.template)
         else if definition.templateUrl
-          templatePromise = $http.get(definition.templateUrl, { cache: $templateCache })
-          .then (response) -> return response.data
+          templatePromise = $http.get(definition.templateUrl,
+            { cache: $templateCache }).then (response) -> return response.data
 
         templatePromise.then (template) ->
           if definition.controller
             $controller definition.controller,
-            { "$scope": scope, "articlePart": articlePart, useAutoSave: scope.useAutoSave }
+              $scope: scope,
+              articlePart: articlePart
+              useAutoSave: scope.useAutoSave
+
           element.html(template)
           $compile(element.contents())(scope)
+      articlePart = scope.articlePart
+      if articlePart and
+      (not currentPart or not _.isEqual(articlePart, currentPart))
+        # We only want to deal with wrapped entities.
+        if not articlePart.toObject
+          articlePart = new KonziloEntity('ArticlePart', articlePart)
+
         currentPart = articlePart
+        # Show a locked message if this part is locked to someone else.
+        locked = articlePart.get('locked')
+        if locked and userId != locked._id
+          scope.translations =
+            user: locked.username
+
+          template = "<div class=\"well locked\">
+            <p>{{'ARTICLE.LOCKEDTEXT' | translate: translations }}</p>
+            <button class=\"btn\" ng-click=\"unlockPart()\">
+            <i class=\"icon-unlock\"></i>
+            <span>{{'ARTICLE.UNLOCK' | translate}}</span></button></div>"
+          element.html(template)
+
+          scope.unlockPart = ->
+            articlePart.set("unlock", true).save().then ->
+              articlePart.set("unlock", false)
+              loadPartForm()
+
+          $compile(element.contents())(scope)
+        else
+          loadPartForm()
+
     getPartForm()
     scope.$watch("articlePart", getPartForm)
 ])
@@ -1232,6 +1261,20 @@ ChannelStorage, StepStorage, $filter, $q, $translate) ->
         ArticlePartStorage.save part
   ]
   template: "<button class=\"btn btn-primary\" ng-click=\"newVersion()\">#{$translate("ARTICLE.NEWVERSION")}</button>"
+])
+
+.directive("kzLocked",
+["UserState", (UserState) ->
+  restrict: "A"
+  scope:
+    kzLocked: "="
+  link: (scope, element, attrs) ->
+    userId = UserState.getInfo().info._id
+    scope.$watch "kzLocked", ->
+      if scope.kzLocked?.locked == userId
+        element.removeAttr("disabled")
+      else
+        element.attr("disabled", "disabled")
 ])
 
 .directive("konziloArticlePartSetActive",
