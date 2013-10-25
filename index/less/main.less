@@ -330,8 +330,35 @@ a.new-target {
   border: 1px solid #464646;
   margin-bottom: 20px;
 
+  .empty-text {
+    color: @white;
+    text-align: center;
+    padding: 20px 0;
+    font-weight: bold;
+  }
+
+  &.empty {
+    padding-bottom: 0px;
+    &:not(.droppable-hover) {
+      border: 1px solid @grayLighter;
+      .top {
+	background: @grayLighter;
+      }
+      .content {
+	background: @grayLighter;
+      }
+    }
+    .picker {
+      display: none;
+    }
+  }
+
   &.droppable-hover {
     border: 1px solid @kntntGreen;
+    .content {
+      padding-bottom: 60px;
+      background: @kntntGreen;
+    }
     .top {
       background: @kntntGreen;
     }
