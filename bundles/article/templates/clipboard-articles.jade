@@ -3,11 +3,7 @@
     .articles.unscheduled
       .inner
         div(kntnt-add-article, article-created="articleCreated")
-        a.row-item(ng-repeat="article in unscheduled"
-          href="{{link(article)}}"
-          data-id="{{article._id}}"
-          ui-jq="draggable"
-          ui-options="draggableOptions")
+        a.row-item(ng-repeat="article in unscheduled", href="{{link(article)}}", ng-class="activeArticle(article)")
             span(class="article-state {{article.state}}")
             span {{article.title}}
             button.btn-link.clipboard-remove(ng-click="removeFromClipboard(article)")
@@ -15,42 +11,19 @@
 
     .scheduled
       .inner
-        .articles
-          .group.date-hidden(
-            ui-jq="droppable"
-            ui-options="droppableOptions"
-            data-date="{{prevDate}}",
-            ng-show="prevDate")
-            .top
-              h2 {{ prevDate }}
-            .content
-
-        .articles.sortable(ui-sortable="options", ng-model="dates")
-          .group(ng-repeat="(index, date) in dates", ui-jq="droppable", ui-options="droppableOptions", data-date="{{date}}")
-            .top
-              h2 {{ date }}
-              button.btn-link.pull-right.calendar-btn(ng-click="toggleDatePicker(date)")
-                i.icon-calendar
-              .picker(ng-show="datePickerShown(date)", ng-model="datePickerValues[index]", ng-change="newDate(index, date)")
-                datepicker(min="today")
-
-            .content
+        .articles.sortable
+          .period(ng-repeat="(index, date) in dates")
+            a.toggle-period(ng-click="toggleMonth(date)")
+              h3
+                i(ng-class="{'icon-chevron-down': !monthHidden[date], 'icon-chevron-right': monthHidden[date]}")
+                span {{ getDate(date) | date: 'MMMM' }}
+            .content(ng-show="!monthHidden[date]")
               a.row-item(ng-class="activeArticle(article)",
-                ui-jq="draggable",
-                data-id="{{article._id}}",
                 href="{{link(article)}}",
                 ng-repeat="article in clipboard[date]")
                 span(class="article-state {{article.state}}")
-                span() {{article.title}}
+                span {{article.title}}
                 button.btn-link.clipboard-remove(ng-click="removeFromClipboard(article)")
                     span {{'GLOBAL.HIDE' | translate}}
-        .articles
-          .group.date-hidden(
-            ui-jq="droppable"
-            ui-options="droppableOptions"
-            data-date="{{nextDate}}")
-            .top
-              h2 {{ nextDate | placeholder: "Utan publiceringsdatum" }}
-          .content
         .fetchmore
           a(ng-click="nextPage()", ng-show="skip + 20  <= count") Hämta fler

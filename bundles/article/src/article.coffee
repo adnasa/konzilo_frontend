@@ -581,11 +581,13 @@ UserState, ArticlePartStates, GroupStorage) ->
 
 # View the articles on the clipboard.
 .directive("kntntClipboardArticles",
-["ClipboardStorage", "ArticleStorage", "$routeParams", "formatDate",
-(ClipboardStorage, ArticleStorage, $routeParams, formatDate) ->
+["ClipboardStorage", "ArticleStorage", "$routeParams", "$filter",
+(ClipboardStorage, ArticleStorage, $routeParams, $filter) ->
   restrict: 'A',
   scope: firstArticle: "=", articleCreated: "="
   controller:  ["$scope", "$element", "$attrs", ($scope, $element, $attrs) ->
+    formatDate = (date) -> $filter('date')(date, 'yyyy-MM')
+
     transformLink = (pattern, article) ->
       link = pattern
       for key, value of article
@@ -594,6 +596,12 @@ UserState, ArticlePartStates, GroupStorage) ->
 
     $scope.skip = 0
     $scope.count = 0
+    $scope.getDate = (dateString) -> new Date(dateString)
+
+    $scope.monthHidden = {}
+
+    $scope.toggleMonth = (date) ->
+      $scope.monthHidden[date] = !$scope.monthHidden[date]
 
     pattern = $attrs.linkPattern
 
@@ -653,7 +661,6 @@ UserState, ArticlePartStates, GroupStorage) ->
         fetchedArticles = articles
 
         drawClipboard(articles)
-        calculatePrevDate()
         # Store the original dates for comparison.
         originalDates = $scope.dates[..]
 
@@ -675,149 +682,6 @@ UserState, ArticlePartStates, GroupStorage) ->
     $scope.nextPage = ->
       $scope.skip += 20
       appendPage($scope.skip)
-
-    calculatePrevDate = ->
-      currentDate = new Date()
-      currentDate = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        currentDate.getDate(),
-        currentDate.getHours(),
-        currentDate.getMinutes()
-      )
-      if $scope.dates.length > 0
-        firstDate = new Date($scope.dates[0])
-        lastDate = new Date(_.last($scope.dates))
-        prevDate = new Date(
-          firstDate.getFullYear(),
-          firstDate.getMonth(),
-          firstDate.getDate() - 1,
-          firstDate.getHours(),
-          firstDate.getMinutes()
-        )
-        if prevDate >= currentDate
-          $scope.prevDate = formatDate(prevDate)
-        else
-          $scope.prevDate = null
-        $scope.nextDate = formatDate(
-          new Date(
-            lastDate.getFullYear(),
-            lastDate.getMonth(),
-            lastDate.getDate() + 1,
-            lastDate.getHours(),
-            lastDate.getMinutes()
-          )
-        )
-      else
-        $scope.prevDate = formatDate(currentDate)
-        $scope.nextDDate = formatDate(
-          new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth(),
-            currentDate.getDate() + 1,
-            currentDate.getHours(),
-            currentDate.getMinutes()
-          )
-        )
-
-    # Calculate a new date after a group of articles has been moved.
-    calculateNewDate = (originalDate, index) ->
-      if index > 0
-        prevDate = new Date($scope.dates[index-1])
-      if index < $scope.dates.length - 1
-        nextDate = new Date($scope.dates[index+1])
-      if prevDate and nextDate
-        tempDate = new Date(nextDate - (nextDate - prevDate))
-        if tempDate == new Date(
-          nextDate.getFullYear(),
-          nextDate.getMonth(),
-          nextDate.getDate() - 1,
-          nextDate.getHours(),
-          nextDate.getMinutes()
-        ) and tempDate != prevDate
-          newDate = new Date(nextDate - (nextDate - prevDate))
-      else if nextDate
-        newDate = new Date(
-          nextDate.getFullYear(),
-          nextDate.getMonth(),
-          nextDate.getDate() - 1,
-          nextDate.getHours(),
-          nextDate.getMinutes()
-
-        )
-      else if prevDate and prevDate > originalDate
-        newDate = new Date(
-          prevDate.getFullYear(),
-          prevDate.getMonth(),
-          prevDate.getDate() + 1,
-          prevDate.getHours(),
-          prevDate.getMinutes()
-        )
-      newDate
-
-    # Switch date for a group of articles.
-    switchDate = (oldDate, newDate) ->
-      for article in $scope.clipboard[oldDate]
-        article.publishdate = newDate
-        ArticleStorage.save article
-      calculatePrevDate()
-
-    # Handle date pickers.
-    datePickers = {}
-    $scope.datePickerValues = {}
-    $scope.today = new Date()
-    # This function handles setting a new date from the
-    # value of a date picker.
-    $scope.newDate = (index) ->
-      currentDate = $scope.dates[index]
-      switchDate(currentDate, $scope.datePickerValues[index])
-      datePickers = {}
-    # Toggle a date picker on or off.
-    $scope.toggleDatePicker = (date) ->
-      datePickers[date] = if datePickers[date] then !datePickers[date] else true
-
-    # Determine if a date picker should be shown.
-    $scope.datePickerShown = (date) ->
-      datePickers[date]
-
-    # Options for sortable.
-    $scope.options =
-      stop: (event, ui) ->
-        date = originalDates[ui.item.sortable.index]
-        index = _.indexOf($scope.dates, date)
-        originalDate = new Date(date)
-        newDate = calculateNewDate originalDate, index
-        if newDate
-          newDateString = formatDate(newDate)
-          switchDate(date, newDateString)
-          originalDates = $scope.dates[..]
-          calculatePrevDate()
-        else
-          getClipboard()
-      placeholder: "ui-placeholder box pad"
-
-    # Options for draggable and droppable
-    $scope.droppableOptions =
-      hoverClass: "droppable-hover"
-      activeClass: "droppable-active"
-      containment: ".scheduled"
-      axis: "y"
-      accept: (item) ->
-        id = item.attr('data-id')
-        article = ClipboardStorage.get(id)
-        article and article.publishdate != $(this).attr('data-date')
-      drop: (event, ui) ->
-        id = $(ui.draggable).attr('data-id')
-        article = articleMap[id]
-        article.publishDate = $(@).attr('data-date')
-        drawClipboard(fetchedArticles)
-        ArticleStorage.get id, (article) =>
-          article = article.toObject()
-          article.publishdate = $(@).attr('data-date')
-          ArticleStorage.save article, (result) ->
-            calculatePrevDate()
-
-    $scope.draggableOptions = {}
 
     ArticleStorage.changed(getClipboard)
     ClipboardStorage.changed(getClipboard)
