@@ -1,5 +1,5 @@
 ul
-  li(ng-repeat="(index, item) in items", ng-show="item")
+  li(ng-repeat="(index, item) in items", class="{{active(item)}}", ng-show="item")
     a(ng-href="{{item.path}}")
       i(class="{{item.icon}} icon", ng-show="item.icon")
       span {{item.label | translate}}

@@ -67,8 +67,8 @@ angular.module("konzilo.menu", ["konzilo.translations"])
       menus[name]
 )
 .directive("konziloMenu",
-["konziloMenu", "loadTemplate", "$compile", "$q", "UserState",
-(konziloMenu, loadTemplate, $compile, $q, UserState) ->
+["konziloMenu", "loadTemplate", "$compile", "$q", "UserState", "$location",
+(konziloMenu, loadTemplate, $compile, $q, UserState, $location) ->
   restrict: "AE"
   replace: true
   templateUrl: "bundles/menu/menu.html"
@@ -82,6 +82,18 @@ angular.module("konzilo.menu", ["konzilo.translations"])
       items = menu?.getItems()
     else
       return
+
+    scope.active = (item) ->
+      return "" if not item?.path
+
+      path = if item.path[0] == "#"
+        item.path.substring(1, item.path.length - 1)
+      else
+        item.path
+
+      if $location.absUrl().indexOf(path) >= 0
+        return "active"
+      return ""
 
     UserState.infoSaved ->
       scope.items = menu?.getItems()
