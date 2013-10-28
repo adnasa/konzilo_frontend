@@ -244,7 +244,7 @@ angular.module("kntnt.article",
 .directive("kntntAddArticle",
 ["ClipboardStorage", "ArticleStorage", (ClipboardStorage, ArticleStorage) ->
   restrict: 'AE'
-  scope: defaults: "=", articleCreated: "="
+  scope: defaults: "=", articleCreated: "=", inherits: "="
   controller: ["$scope", "$element", "$attrs", "UserState",
   ($scope, $element, $attrs, UserState) ->
     defaults = $scope.defaults or {}
@@ -259,6 +259,12 @@ angular.module("kntnt.article",
           title: $scope.articleTitle
           keywords: []
           responsible: info._id
+
+        if $scope.inherits
+          for property in ["target", "step", "channel", "topic"]
+            if $scope.inherits[property]
+              article[property] = $scope.inherits[property]
+  
         article = _.defaults(article, defaults)
         ArticleStorage.save article, (result) ->
           if $scope.articleCreated

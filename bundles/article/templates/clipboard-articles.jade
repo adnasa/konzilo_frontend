@@ -2,7 +2,7 @@
   .box.pad
     .articles.unscheduled
       .inner
-        div(kntnt-add-article, article-created="articleCreated")
+        div(kntnt-add-article, article-created="articleCreated", inherits="unscheduled[0]")
         a.row-item(ng-repeat="article in unscheduled", href="{{link(article)}}", ng-class="activeArticle(article)")
             span(class="article-state {{article.state}}")
             span {{article.title}}
