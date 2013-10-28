@@ -39,10 +39,19 @@ TargetStorage, InputAutoSave, StepStorage,
 ArticlePartStorage, ChannelStorage, $filter, kzAnalysisDialog, $location) ->
   $scope.savePart = ->
     ArticlePartStorage.save $scope.part
-    return
 
   $scope.today = new Date()
   $scope.translations = {}
+
+  getPart = (part) ->
+    ArticlePartStorage.get($routeParams.part).then (part) ->
+      $scope.part = part.toObject()
+      $scope.changeDate()
+      $scope.part.terms = $scope.part.terms or []
+      if $scope.autosave
+        $scope.autosave.stop()
+      $scope.autosave = new InputAutoSave $scope.part, $scope.savePart, ->
+        $scope.partForm?.$valid
 
   if $routeParams.article
     ArticleStorage.get $routeParams.article, (article) ->
@@ -65,14 +74,7 @@ ArticlePartStorage, ChannelStorage, $filter, kzAnalysisDialog, $location) ->
           $scope.translations["step"] = $scope.step.name
 
       if $routeParams.part
-        ArticlePartStorage.get($routeParams.part).then (part) ->
-          $scope.part = part.toObject()
-          $scope.changeDate()
-          $scope.part.terms = $scope.part.terms or []
-          if $scope.autosave
-            $scope.autosave.stop()
-          $scope.autosave = new InputAutoSave $scope.part, $scope.savePart, ->
-            $scope.partForm?.$valid
+        getPart($routeParams.part)
 
   $scope.contentSaved = (part) ->
     return false if not part?.content
@@ -99,6 +101,10 @@ ArticlePartStorage, ChannelStorage, $filter, kzAnalysisDialog, $location) ->
 
   $scope.partCreated = (article, part) ->
     $location.path("order/#{article._id}/#{part._id}")
+
+  ArticlePartStorage.itemRemoved ->
+    delete $scope.part
+    getPart($routeParams.part) if $routeParams.part
 
   $scope.types = articleParts.labels()
   $scope.languages = KonziloConfig.get("languages").listAll()

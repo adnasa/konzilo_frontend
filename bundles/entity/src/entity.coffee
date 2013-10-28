@@ -216,6 +216,10 @@ entityInfo, $q, $http, $cacheFactory) ->
       , errorCallback
 
     query: (q, callback, errorCallback) ->
+      if q?.reset
+        @cache.removeAll()
+        delete q.reset
+
       @queryRequests = @queryRequests or {}
       cacheKey = ""
       deferred = $q.defer()

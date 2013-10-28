@@ -269,7 +269,8 @@
     "PICKALL": "Pick all articles",
     "FILTERCOUNT": "Your choice matches {{count}} articles.",
     "LOCKEDTEXT": "The article part is being edited by {{user}}.",
-    "UNLOCK": "Unlock"
+    "UNLOCK": "Unlock",
+    "NEWPART": "Create new article part"
   },
   "ENDPOINT": {
     "REMOVE": "Remove endpoint",

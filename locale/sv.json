@@ -268,7 +268,8 @@
     "PICKALL": "Välj alla artiklar",
     "FILTERCOUNT": "Ditt val matchar {{count}} artiklar.",
     "LOCKEDTEXT": "Artikeldelen redigeras av {{user}}.",
-    "UNLOCK": "Lås upp"
+    "UNLOCK": "Lås upp",
+    "NEWPART": "Skapa ny artikeldel"
   },
   "ENDPOINT": {
     "REMOVE": "Ta bort publiceringsmål",

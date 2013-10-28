@@ -365,7 +365,7 @@ angular.module("cmf.input", [])
       @callback = =>
         if @dirty() and @validCallback(@obj) and not @stopSaving
           result = @saveCallback(@obj)
-          if result.then
+          if result?.then
             result.then =>
               callback(@obj) for callback in @saveCallbacks
               delete @originalObj
@@ -374,6 +374,7 @@ angular.module("cmf.input", [])
               @originalObj = _.cloneDeep(@obj)
               callback(err) for callback in @errorCallbacks
           else
+            @originalObj = _.cloneDeep(@obj)
             callback(@obj) for callback in @saveCallbacks
 
         if not @stopSaving

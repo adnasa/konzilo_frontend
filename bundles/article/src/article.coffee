@@ -264,7 +264,7 @@ angular.module("kntnt.article",
           for property in ["target", "step", "channel", "topic"]
             if $scope.inherits[property]
               article[property] = $scope.inherits[property]
-  
+
         article = _.defaults(article, defaults)
         ArticleStorage.save article, (result) ->
           if $scope.articleCreated
@@ -276,38 +276,37 @@ angular.module("kntnt.article",
 ])
 
 .directive("kntntAddArticlePart",
-["ArticleStorage", "UserState", "KonziloConfig", "articleParts"
-(ArticleStorage, UserState, KonziloConfig, articleParts) ->
+["ArticlePartStorage", "UserState", "KonziloConfig", "articleParts"
+(ArticlePartStorage, UserState, KonziloConfig, articleParts) ->
   restrict: 'AE'
   scope: { article: "=", partCreated: "=" }
   controller: ["$scope", "$element", "$attrs", ($scope, $element, $attrs) ->
 
     $scope.types = articleParts.labels()
     defaultNames = articleParts.defaultNames()
+    article = $scope.article
+    user = UserState.getInfo().info
 
     $scope.addArticlePart = ->
-      article = $scope.article
-      user = UserState.getInfo().info
-      $scope.addArticlePart = ->
-        if $scope.addArticlePartForm.$valid
-          KonziloConfig.get("languages").listAll().then (languages) ->
-            defaultLang = _.find(languages, default: true)
-            articlePart =
-              title: defaultNames[$scope.type]
-              state: "notstarted"
-              type: $scope.type
-              submitter: user._id
-            articlePart.language = defaultLang.langcode if defaultLang
-            article.parts = article.parts or []
-            article.parts.push(articlePart)
-            # Generate a unique name by iterating over the number of parts
-            # of the same type.
-            count = _.filter(article.parts, type: articlePart.type).length
-            articlePart.title += " #{count}" if count > 1
+      if $scope.addArticlePartForm.$valid and $scope.type?.length > 0
+        KonziloConfig.get("languages").listAll().then (languages) ->
+          defaultLang = _.find(languages, default: true)
+          articlePart =
+            title: defaultNames[$scope.type]
+            state: "notstarted"
+            type: $scope.type
+            submitter: user._id
+            article: $scope.article._id
 
-            ArticleStorage.save article, (result) ->
-              if $scope.partCreated
-                $scope.partCreated(result, result.parts[result.parts.length-1])
+          articlePart.language = defaultLang.langcode if defaultLang
+          # Generate a unique name by iterating over the number of parts
+          # of the same type.
+          count = _.filter(article.parts, type: articlePart.type).length
+          articlePart.title += " #{count}" if count > 1
+          ArticlePartStorage.save articlePart, (result) ->
+            article.parts.push(result)
+            if $scope.partCreated
+              $scope.partCreated(article, result)
               $scope.articlePartTitle = ""
   ]
   templateUrl: "bundles/article/add-article-part.html"
@@ -337,27 +336,29 @@ angular.module("kntnt.article",
 ])
 
 .directive("kntntClipboardArticleParts",
-["ClipboardStorage", "ArticleStorage", "ArticlePartStorage", "$translate",
-(ClipboardStorage, ArticleStorage, ArticlePartStorage, $translate) ->
+["ClipboardStorage", "ArticleStorage",
+"ArticlePartStorage", "$translate", "$routeParams"
+(ClipboardStorage, ArticleStorage, ArticlePartStorage, $translate, $routeParams) ->
   restrict: "AE",
-  scope: { selected: "=", linkPattern: "@", partCreated: "=" }
+  scope: selected: "=", linkPattern: "@", partCreated: "="
   controller: ["$scope", "$attrs", ($scope, $attrs) ->
     articleMap = {}
     linkPattern = $attrs.linkPattern
-    getClipboard = ->
-      $scope.size = 0
-      ClipboardStorage.query().then (articles) ->
-        articleMap = {}
-        $scope.articles = for article in articles.toArray() when article.publishdate
-          articleMap[article._id] = article
-          if article.parts
-            for part in article.parts
-              part.link = linkPattern.replace(":article", article._id)
-                .replace(":part", part._id)
-          article
-        $scope.size = $scope.articles.length
-      return
-    getClipboard()
+    getClipboard = (reset = false) ->
+      ->
+        $scope.size = 0
+        ClipboardStorage.query(reset: reset).then (articles) ->
+          articleMap = {}
+          $scope.articles = for article in articles.toArray() when article.publishdate
+            articleMap[article._id] = article
+            if article.parts
+              for part in article.parts
+                part.link = linkPattern.replace(":article", article._id)
+                  .replace(":part", part._id)
+            article
+          $scope.size = $scope.articles.length
+        return
+    getClipboard()()
 
     $scope.options =
       stop: (event, ui) ->
@@ -367,25 +368,24 @@ angular.module("kntnt.article",
     $scope.removeArticlePart = (article, part) ->
       if confirm($translate("MANAGE.CONFIRMPARTREMOVE"))
         article.parts = _.without(article.parts, part)
-        # Save the change directly.
-        ClipboardStorage.add(article._id)
         ArticlePartStorage.remove(part._id).then ->
-          ArticleStorage.get(article._id).then (loadedArticle) ->
-            ClipboardStorage.add(loadedArticle._id)
+          ArticleStorage.get(article._id)
 
-    ArticleStorage.changed(getClipboard)
-    ClipboardStorage.changed(getClipboard)
+    ArticleStorage.changed(getClipboard())
+    ArticlePartStorage.changed(getClipboard(true))
+    ClipboardStorage.changed(getClipboard())
 
     setSelected = ->
       if $scope.selected
-        $scope.openArticle = $scope.selected
+        $scope.openPart = $scope.selected
+        $scope.openArticle = $scope.selected.article
 
     setSelected()
     $scope.$watch("selected", setSelected)
 
     # @todo generalize this code into a common directive.
     $scope.toggleArticle = (article) ->
-      if $scope.openArticle?._id == article._id
+      if $scope.openArticle == article
         $scope.openArticle = null
       else
         $scope.openArticle = article
@@ -396,11 +396,12 @@ angular.module("kntnt.article",
       else
         "icon-chevron-down"
 
-    $scope.activeItem = (article) ->
-      if $scope.openArticle?._id == article._id
+    $scope.activePart = (part) ->
+      if $scope.openPart?._id == part._id
         "active"
       else
         ""
+
     $scope.active = (article) -> $scope.openArticle?._id == article._id
   ]
   templateUrl: "bundles/article/clipboard-articleparts.html"
