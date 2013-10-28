@@ -14,6 +14,7 @@ dependencies = [
   "rangyinputs/rangyinputs-jquery-src.js",
   "showdown/src/showdown.js"
   "angular/angular.js"
+  "angular-i18n/angular-locale_sv-se.js"
   "angular-cookies/angular-cookies.js"
   "angular-resource/angular-resource.js"
   "angular-ui-sortable/src/sortable.js"
