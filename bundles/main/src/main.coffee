@@ -42,3 +42,16 @@ angular.module("konzilo.main",
       $http.get(options.templateUrl, { cache: $templateCache })
       .then (response) -> return response.data
 ])
+
+.directive("kzMaxHeight", ->
+  restrict: "A",
+  link: (scope, elm, attrs, ctrl) ->
+    diff = attrs.kzMaxHeight or 150
+    height = $(window).height()
+    elm.css("max-height", height - diff)
+    elm.css("overflow-y", "scroll")
+    elm.addClass("max-height")
+    $(window).resize ->
+      height = $(window).height()
+      elm.css("max-height", height - diff)
+)

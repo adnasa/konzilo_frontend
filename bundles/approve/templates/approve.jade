@@ -2,7 +2,7 @@
   .row-fluid
     .span3
       .box.pad
-        div(kntnt-article-parts,
+        div(kntnt-article-parts, kz-max-height="150",
           link-pattern="#/approve/:part",
           query="query", part="articlePart")
     .span9(ng-show="!articlePart")

@@ -4,7 +4,8 @@ div(kntnt-article-picker)
     .span3
       .box.pad
         div(kntnt-add-article, defaults="articleDefaults")
-        kntnt-clipboard-article-list(link-pattern="#/manage/:article/")
+        div(kz-max-height="200")
+          kntnt-clipboard-article-list(link-pattern="#/manage/:article/")
     .span9(ng-show="!article")
       .box.pad
         h1 {{'MANAGE.TITLE' | translate}}

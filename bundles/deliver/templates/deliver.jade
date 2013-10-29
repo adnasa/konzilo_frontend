@@ -2,7 +2,7 @@
   .row-fluid
     .span3
       .box.pad
-        div(kntnt-article-deliver, link-pattern="#/deliver/:part", states="states", selected="articlePart")
+        div(kntnt-article-deliver, kz-max-height="150", link-pattern="#/deliver/:part", states="states", selected="articlePart")
     .span9(ng-show="!articlePart")
       .box.pad
         h1 {{'DELIVER.TITLE' | translate}}

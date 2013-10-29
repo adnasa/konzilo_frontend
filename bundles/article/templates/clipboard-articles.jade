@@ -1,29 +1,28 @@
 .clipboard-articles
   .box.pad
-    .articles.unscheduled
-      .inner
-        div(kntnt-add-article, article-created="articleCreated", inherits="unscheduled[0]")
-        a.row-item(ng-repeat="article in unscheduled", href="{{link(article)}}", ng-class="activeArticle(article)")
-            span(class="article-state {{article.state}}")
-            span {{article.title}}
-            button.btn-link.clipboard-remove(ng-click="removeFromClipboard(article)")
-              span {{'GLOBAL.HIDE' | translate}}
-
-    .scheduled
-      .inner
-        .articles.sortable
-          .period(ng-repeat="(index, date) in dates")
-            a.toggle-period(ng-click="toggleMonth(date)")
-              h3
-                i(ng-class="{'icon-chevron-down': !monthHidden[date], 'icon-chevron-right': monthHidden[date]}")
-                span {{ getDate(date) | date: 'MMMM' }}
-            .content(ng-show="!monthHidden[date]")
-              a.row-item(ng-class="activeArticle(article)",
-                href="{{link(article)}}",
-                ng-repeat="article in clipboard[date]")
-                span(class="article-state {{article.state}}")
-                span {{article.title}}
-                button.btn-link.clipboard-remove(ng-click="removeFromClipboard(article)")
-                    span {{'GLOBAL.HIDE' | translate}}
-        .fetchmore
-          a(ng-click="nextPage()", ng-show="skip + 20  <= count") {{'GLOBAL.FETCHMORE' | translate}}
+    div(kntnt-add-article, article-created="articleCreated", inherits="unscheduled[0]")
+    .articles(kz-max-height="220")
+      .unscheduled
+        .inner
+          a.row-item(ng-repeat="article in unscheduled", href="{{link(article)}}", ng-class="activeArticle(article)")
+              span(class="article-state {{article.state}}")
+              span {{article.title}}
+              button.btn-link.clipboard-remove(ng-click="removeFromClipboard(article)")
+                span {{'GLOBAL.HIDE' | translate}}
+      .scheduled
+        .inner
+          .articles.sortable
+            .period(ng-repeat="(index, date) in dates")
+              a.toggle-period(ng-click="toggleMonth(date)")
+                h3
+                  i(ng-class="{'icon-chevron-down': !monthHidden[date], 'icon-chevron-right': monthHidden[date]}")
+                  span {{ getDate(date) | date: 'MMMM' }}
+              .content(ng-show="!monthHidden[date]")
+                a.row-item(ng-class="activeArticle(article)",
+                  href="{{link(article)}}",
+                  ng-repeat="article in clipboard[date]")
+                  span(class="article-state {{article.state}}")
+                  span {{article.title}}
+                  span.pull-right {{ article.publishdate | date: "yyyy-MM-dd" }}
+          .fetchmore
+            a(ng-click="nextPage()", ng-show="skip + 20  <= count") {{'GLOBAL.FETCHMORE' | translate}}

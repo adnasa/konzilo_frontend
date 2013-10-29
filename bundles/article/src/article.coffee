@@ -635,14 +635,6 @@
       fetchedArticles = []
       articleMap = {}
 
-      # Set the height of the element.
-      height = $(window).height()
-      scrollableElement = $element.find(".scheduled > .inner")
-      scrollableElement.css("max-height", height - 300)
-      $(window).resize ->
-        height = $(window).height()
-        scrollableElement.css("max-height", height - 300)
-
       $scope.activeArticle = (article) ->
         if article._id == $routeParams.id then "active"
 
