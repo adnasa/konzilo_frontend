@@ -947,8 +947,8 @@ $http, $templateCache, KonziloEntity, UserState) ->
 ])
 
 .directive("konziloArticlepartChangeState",
-["ArticlePartStorage", "ArticlePartStates", "userAccess"
-(ArticlePartStorage, ArticlePartStates, userAccess) ->
+["ArticlePartStorage", "ArticlePartStates", "userAccess", "UserState"
+(ArticlePartStorage, ArticlePartStates, userAccess, UserState) ->
   restrict: "AE",
   scope:
     articlePart: "="
@@ -957,6 +957,11 @@ $http, $templateCache, KonziloEntity, UserState) ->
     nextState = null
     update = ->
       return if not $scope.articlePart
+      userId = UserState.getInfo().info._id
+
+      locked = $scope.articlePart.get('locked')
+      $scope.locked = locked and userId != locked._id
+
       currentState = $scope.articlePart.get("state")
 
       if not currentState or currentState == ArticlePartStates[0].name
@@ -990,6 +995,11 @@ $http, $templateCache, KonziloEntity, UserState) ->
           $scope.articlePart.save().then(update)
 
     $scope.$watch("articlePart", update)
+    ArticlePartStorage.itemSaved (item) ->
+      if item.get("_id") == $scope.articlePart.get("_id")
+        $scope.articlePart = item
+        update()
+
   ]
   templateUrl: "bundles/article/articlepart-change-state.html"
 ])

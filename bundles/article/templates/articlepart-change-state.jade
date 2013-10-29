@@ -1,3 +1,4 @@
-div(ng-class="{'btn-group': backLabel}")
-  button.btn.btn-primary(ng-click="nextState()", ng-show="nextLabel") {{ nextLabel | translate }}
-  button.btn.btn(ng-click="prevState()", ng-show="backLabel") {{ backLabel | translate }}
+.well(ng-show="!locked")
+  div(ng-class="{'btn-group': backLabel}")
+    button.btn.btn-primary(ng-click="nextState()", ng-show="nextLabel") {{ nextLabel | translate }}
+    button.btn.btn(ng-click="prevState()", ng-show="backLabel") {{ backLabel | translate }}
