@@ -73,7 +73,8 @@
     "SETTINGS": "Settings",
     "LOGOUT": "Log out",
     "BACK": "Back",
-    "HIDE": "Dölj"
+    "HIDE": "Dölj",
+    "FETCHMORE": "Fetch more"
   },
   "CHANNEL": {
     "TITLE": "Channels",

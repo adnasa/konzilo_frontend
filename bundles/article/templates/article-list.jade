@@ -5,3 +5,4 @@
       span {{article.publishdate | date: 'yyyy-MM-dd'}}
     h3.title
       a(href="{{article.link}}") {{article.title}}
+  kz-entity-pager(collection="collection", items-fetched="nextPage")

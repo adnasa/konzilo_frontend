@@ -356,6 +356,7 @@ angular.module("cmf.input", [])
     scope.$watch('value', update)
 ])
 
+
 .factory("InputAutoSave", ["$timeout", ($timeout) ->
   class InputAutoSave
     constructor: (@obj, @saveCallback, @validCallback, @timeout = 1500) ->
@@ -396,6 +397,12 @@ angular.module("cmf.input", [])
 
     onError: (callback) ->
       @errorCallbacks.push(callback)
+
+  createInstance: (@obj, @saveCallback, @validCallback, @timeout) ->
+    if @instance
+      @instance.stop()
+    @instance = new InputAutoSave(@obj, @saveCallback, @validCallback, @timeout)
+    return @instance
 ])
 
 .directive("contenteditable", ->

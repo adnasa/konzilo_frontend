@@ -130,7 +130,7 @@ InputAutoSave, MapMoods, $translate, $location) ->
         $scope.newTopics[step._id] = {}
 
     $scope.target = _.clone target
-    $scope.autosave = new InputAutoSave $scope.target, $scope.saveTarget, ->
+    $scope.autosave = InputAutoSave.createInstance $scope.target, $scope.saveTarget, ->
       $scope.mapForm.$valid
 
     $scope.title = $scope.target.name

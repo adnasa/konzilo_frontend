@@ -333,16 +333,30 @@ entityInfo, $q, $http, $cacheFactory) ->
     return
 
   template: "<ng-form name=\"referenceForm\">
-    <input type=\"text\" name=\"title\" ng-model=\"label\" typeahead=\"entity for entity in fetchMatches($viewValue)\" typeahead-editable=\"editable\" autocomplete=\"off\" /></ng-form>"
+    <input type=\"text\" name=\"title\" ng-model=\"label\"
+    typeahead=\"entity for entity in fetchMatches($viewValue)\"
+    typeahead-editable=\"editable\" autocomplete=\"off\" /></ng-form>"
 ])
 
-.directive("entityPager", ->
+.directive("kzEntityPager", ->
   restrict: "AE"
   scope:
     collection: "="
-  controller: ($scope) ->
-    $scope.getPage = (page) ->
-      $scope.collection.getPage()
+    itemsFetched: "="
+  controller: ["$scope", ($scope) ->
+    $scope.currentPage = 0
+    $scope.pages = 0
+    update = ->
+      return if not $scope.collection?.pages
+      $scope.pages = $scope.collection.pages()
+      $scope.getPage = ->
+        $scope.currentPage += 1
+        $scope.collection.getPage($scope.currentPage).then($scope.itemsFetched)
+    $scope.$watch("collection", update)
+    return
+  ]
+  template: "<a class=\"pager\" ng-click=\"getPage(page)\" ng-show=\"currentPage < pages\">
+    {{'GLOBAL.FETCHMORE' | translate}}</a>"
 )
 
 .directive("validEntity",

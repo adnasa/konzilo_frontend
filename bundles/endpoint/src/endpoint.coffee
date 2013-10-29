@@ -46,7 +46,7 @@ angular.module("konzilo.endpoint", ["konzilo.config", "konzilo.translations"])
       bin.get($routeParams.endpoint).then (endpoint) ->
         console.log endpoint
         $scope.endpoint = endpoint
-        $scope.autosave = new InputAutoSave $scope.endpoint,
+        $scope.autosave = InputAutoSave.createInstance $scope.endpoint,
           ->
             bin.set($scope.endpoint.name, $scope.endpoint)
           , -> $scope.editEndpointForm.$valid

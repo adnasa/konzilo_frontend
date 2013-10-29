@@ -348,7 +348,7 @@ angular.module("kntnt.user",
         $scope.user = $scope.user.toObject()
       $scope.user.roles = $scope.user.roles or []
       if (not activeUser or $scope.user._id is not activeUser._id)
-        $scope.autosave = new InputAutoSave $scope.user,
+        $scope.autosave = InputAutoSave.createInstance $scope.user,
         ->
           UserStorage.save $scope.user
         , ->
@@ -454,7 +454,7 @@ InputAutoSave, GroupStorage, $translate) ->
       $scope.group.members = $scope.group.members or []
       valid = -> $scope.editGroupForm.$valid
       save = -> GroupStorage.save($scope.group)
-      $scope.autosave = new InputAutoSave($scope.group, save, valid)
+      $scope.autosave = InputAutoSave.createInstance($scope.group, save, valid)
 
   $scope.mainClass = ->
     if $scope.group then "span6" else "span12"

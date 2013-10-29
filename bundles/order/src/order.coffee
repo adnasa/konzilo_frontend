@@ -50,7 +50,7 @@ ArticlePartStorage, ChannelStorage, $filter, kzAnalysisDialog, $location) ->
       $scope.part.terms = $scope.part.terms or []
       if $scope.autosave
         $scope.autosave.stop()
-      $scope.autosave = new InputAutoSave $scope.part, $scope.savePart, ->
+      $scope.autosave = InputAutoSave.createInstance $scope.part, $scope.savePart, ->
         $scope.partForm?.$valid
 
   if $routeParams.article

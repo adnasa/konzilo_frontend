@@ -73,7 +73,8 @@
     "SETTINGS": "Inställningar",
     "LOGOUT": "Logga ut",
     "BACK": "Tillbaka",
-    "HIDE": "Dölj"
+    "HIDE": "Dölj",
+    "FETCHMORE": "Hämta fler"
   },
   "CHANNEL": {
     "TITLE": "Kanaler",

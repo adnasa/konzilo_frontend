@@ -88,7 +88,7 @@ TermStorage, InputAutoSave, $translate) ->
         if $routeParams.term
           TermStorage.get($routeParams.term).then (result) ->
             $scope.term = result.toObject()
-            $scope.autosave = new InputAutoSave $scope.term, $scope.saveTerm, ->
+            $scope.autosave = InputAutoSave.createInstance $scope.term, $scope.saveTerm, ->
               $scope.termForm.$valid
 
     $scope.newVocabulary = ->

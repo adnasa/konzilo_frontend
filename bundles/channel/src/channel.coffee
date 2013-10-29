@@ -63,7 +63,8 @@ InputAutoSave, ChannelStorage, $translate) ->
       $scope.channel = channel.toObject()
       valid = -> $scope.editChannelForm.$valid
       save = -> ChannelStorage.save($scope.channel)
-      $scope.autosave = new InputAutoSave($scope.channel, save, valid)
+      $scope.autosave = InputAutoSave.createInstance($scope.channel,
+        save, valid)
 
   $scope.mainClass = ->
     if $scope.channel then "span6" else "span12"

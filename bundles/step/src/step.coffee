@@ -63,7 +63,7 @@ InputAutoSave, StepStorage, KonziloConfig, $translate, $location) ->
       $scope.step = step.toObject()
       valid = -> $scope.editStepForm.$valid
       save = -> StepStorage.save($scope.step)
-      $scope.autosave = new InputAutoSave($scope.step, save, valid)
+      $scope.autosave = InputAutoSave.createInstance($scope.step, save, valid)
 
   $scope.mainClass = ->
     if $scope.step then "span6" else "span12"
