@@ -30,7 +30,7 @@ div(kntnt-article-picker)
             select(ng-model="part.state")
               option(ng-repeat="state in states",
                 value="{{state.name}}",
-                ng-selected="part.state == state.name") {{state.label}}
+                ng-selected="part.state == state.name") {{state.label | translate}}
             label.checkbox
               input(type="checkbox", ng-model="part.teaser")
               span {{ 'MANAGE.SHOWLISTINGS' | translate }}
