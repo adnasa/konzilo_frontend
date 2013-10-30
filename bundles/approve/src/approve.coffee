@@ -29,9 +29,10 @@ angular.module "kntnt.approve",
 .controller("ApproveController", [
   '$scope', 'ClipboardStorage', 'ArticlePartStorage',
   '$routeParams', 'TargetStorage', 'StepStorage',
-  'kzAnalysisDialog', '$translate', "$location"
+  'kzAnalysisDialog', '$translate', "$location", "KonziloConfig",
   ($scope, ClipboardStorage, ArticlePartStorage, $routeParams,
-    TargetStorage, StepStorage, kzAnalysisDialog, $translate, $location) ->
+    TargetStorage, StepStorage, kzAnalysisDialog,
+    $translate, $location, KonziloConfig) ->
     $scope.query = { state: "needsreview" }
 
     $scope.failState = "started"
@@ -60,6 +61,10 @@ angular.module "kntnt.approve",
           .then (result) ->
             $scope.translateVars['name'] = result.get("name")
             result.toObject()
+
+        if $scope.part.language
+          $scope.language = KonziloConfig.get("languages")
+          .get($scope.part.language)
 
     $scope.showAnalysis = (target) ->
       kzAnalysisDialog(target)

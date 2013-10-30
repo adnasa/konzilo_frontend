@@ -311,6 +311,7 @@
               if $scope.partCreated
                 $scope.partCreated(article, result)
                 $scope.articlePartTitle = ""
+      return
     ]
     templateUrl: "bundles/article/add-article-part.html"
   ])

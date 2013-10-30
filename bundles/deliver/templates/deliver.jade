@@ -28,10 +28,10 @@
                   ul.keywords
                     li.item(ng-repeat="term in part.terms")
                       a(href="{{term.uri}}") {{term.name}}
-              .control-group(ng-show="part.language")
-                label.control-label(for="submitter") {{'GLOBAL.LANGUAGE' | translate}}
+              .control-group(ng-show="language")
+                label.control-label {{'GLOBAL.LANGUAGE' | translate}}
                 .controls
-                  span {{part.language}}
+                  span {{language.name}}
               .control-group(ng-show="target")
                 label.control-label(for="target") {{'GLOBAL.TARGET' | translate}}
                 .controls

@@ -31,10 +31,10 @@ angular.module("kntnt.deliver",
 .controller("DeliverController",
 ["$scope", "ClipboardStorage", "ArticlePartStorage", "$routeParams",
 "TargetStorage", "StepStorage", "ChannelStorage",
-"kzAnalysisDialog", "$translate", "UserState",
+"kzAnalysisDialog", "$translate", "UserState", "KonziloConfig"
 ($scope, ClipboardStorage, ArticlePartStorage, $routeParams,
 TargetStorage, StepStorage, ChannelStorage,
-kzAnalysisDialog, $translate, UserState) ->
+kzAnalysisDialog, $translate, UserState, KonziloConfig) ->
   $scope.states = [ "notstarted", "started", "needsreview" ]
   $scope.useSave = true
   $scope.translations = {}
@@ -66,6 +66,10 @@ kzAnalysisDialog, $translate, UserState) ->
       if $scope.part.article.step
         $scope.step = StepStorage.get($scope.part.article.step)
         .then (result) -> result.toObject()
+
+      if $scope.part.language
+        $scope.language = KonziloConfig.get("languages")
+        .get($scope.part.language)
 
     $scope.showAnalysis = (target) ->
       kzAnalysisDialog(target)

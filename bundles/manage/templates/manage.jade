@@ -44,15 +44,7 @@ div(kntnt-article-picker)
           .content
             konzilo-articlepart-form(article-part="part")
       .box.pad.create-form(ng-show="article")
-        form.form-inline(name="newPartForm", ng-submit="saveNewPart()")
-           input(type="text", ng-model="newPart.name",
-            required,
-            placeholder="{{ 'MANAGE.ADDPART' | translate }}")
-           select(name="type", ng-model="newPart.type",
-            ng-options="key as value for (key, value) in types",
-            required, placeholder="{{'GLOBAL.DELIVERY' | translate}}")
-           button.btn.create-btn
-             i.icon-plus
+        kntnt-add-article-part(article="article")
     .span4(ng-show="article")
       .box.pad
         konzilo-article-form(article="article")

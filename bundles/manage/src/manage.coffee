@@ -70,22 +70,5 @@ UserState, $http, ChannelStorage, ArticlePartStates, $location) ->
         $location.path('/manage')
 
   $scope.states = ArticlePartStates
-
-  $scope.saveNewPart = ->
-    if $scope.newPartForm.$valid
-      KonziloConfig.get("languages").listAll().then (languages) ->
-        defaultLang = _.find(languages, default: true)
-        articlePart =
-          article: $scope.article._id
-          title: $scope.newPart.name
-          type: $scope.newPart.type
-          submitter: user._id
-          # @todo should not be hard-coded.
-          state: "approved"
-
-        articlePart.language = defaultLang.langcode if defaultLang
-        ArticlePartStorage.save(articlePart).then (result) ->
-          ArticleStorage.get($routeParams.article).then (result) ->
-            $scope.article = result.toObject()
   return
 ])
