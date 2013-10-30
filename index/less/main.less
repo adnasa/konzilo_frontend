@@ -1,15 +1,13 @@
 // Bootstrap imports
 @import "bootstrap/less/variables.less";
 @import "bootstrap/less/mixins.less";
-@import "bootstrap/less/reset.less";
+@import "bootstrap/less/normalize.less";
 
 @import "bootstrap/less/scaffolding.less";
 
 @gridGutterWidth: 1px;
 
 @import "bootstrap/less/grid.less";
-@import "bootstrap/less/layouts.less";
-@import "bootstrap/less/responsive.less";
 
 @import "bootstrap/less/type.less";
 @import "bootstrap/less/code.less";
@@ -23,14 +21,13 @@
 @import "bootstrap/less/navs.less";
 @import "bootstrap/less/navbar.less";
 
-@import "bootstrap/less/labels-badges.less";
+@import "bootstrap/less/labels.less";
 @import "bootstrap/less/component-animations.less";
 
 @import "bootstrap/less/dropdowns.less";
 @import "bootstrap/less/pagination.less";
 
 @import "bootstrap/less/modals.less";
-@import "bootstrap/less/accordion.less";
 @import "bootstrap/less/button-groups.less";
 
 // Font awesome import
@@ -46,6 +43,26 @@
 // Our own imports
 @import "input.less";
 @import "timeline.less";
+
+// Grays
+@black:                 #000;
+@grayDarker:            #222;
+@grayDark:              #333;
+@gray:                  #555;
+@grayLight:             #999;
+@grayLighter:           #eee;
+@white:                 #fff;
+
+
+// Accent colors
+@blue:                  #049cdb;
+@blueDark:              #0064cd;
+@green:                 #46a546;
+@red:                   #9d261d;
+@yellow:                #ffc40d;
+@orange:                #f89406;
+@pink:                  #c3325f;
+@purple:                #7a43b6;
 
 @background: #F2F2F2;
 @maincolor: #fff;
@@ -82,12 +99,12 @@
 
 @headingsFontWeight: normal;
 
-h1 { font-size: @baseFontSize * 2.25; } // ~38px
-h2 { font-size: @baseFontSize * 1.75; } // ~32px
-h3 { font-size: @baseFontSize * 1.5; } // ~24px
-h4 { font-size: @baseFontSize * 1.25; } // ~18px
-h5 { font-size: @baseFontSize; }
-h6 { font-size: @baseFontSize * 0.85; } // ~12px
+h1 { font-size: @font-size-base * 2.25; } // ~38px
+h2 { font-size: @font-size-base * 1.75; } // ~32px
+h3 { font-size: @font-size-base * 1.5; } // ~24px
+h4 { font-size: @font-size-base * 1.25; } // ~18px
+h5 { font-size: @font-size-base; }
+h6 { font-size: @font-size-base * 0.85; } // ~12px
 
 .navbar {
   .icon {
@@ -239,8 +256,8 @@ body {
     background: @white;
     width: 130px;
     margin: 0 auto;
-    .border-bottom-left-radius(10px);
-    .border-bottom-right-radius(10px);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
   }
   .keywords .label {
     margin-right: 10px;
@@ -372,7 +389,6 @@ a.new-target {
     width: 90%;
     height: 100%;
   }
-
   display: block;
   padding: 10px;
   background: @white;
@@ -380,8 +396,7 @@ a.new-target {
   overflow: hidden;
   margin-bottom: 10px;
   border: 1px solid @grayLighter;
-
-  .box-shadow(inset 0 -1px 1px #fdfdfd, 0 1px 3px rgba(0,0,0,0.055););
+  box-shadow:  inset 0 -1px 1px #fdfdfd, 0 1px 3px rgba(0,0,0,0.055);
 
   .link-block {
     display: block;
@@ -516,7 +531,7 @@ a.new-target {
       display: block;
       margin: 0 auto;
       .box-shadow(0px 1px 1px #42912B);
-      .border-radius(0px 0px 3px 3px);
+      border-radius: 0px 0px 3px 3px;
       text-shadow: none;
       font-weight: 120;
       color: @white;
@@ -720,7 +735,7 @@ form.add-part-form {
 
 .author {
   .input-preview {
-    border: 1px solid @wellBackground;
+    border: 1px solid @well-bg;
     &:hover {
       border: 1px dotted @kntntGreen;
     }
