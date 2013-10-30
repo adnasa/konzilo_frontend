@@ -16,6 +16,6 @@
             ng-click="file.$cancel()") {{ 'GLOBAL.REMOVE' | translate }}
   button.btn.btn-primary(ng-click="submit()") {{'GLOBAL.UPLOAD' | translate }}
   dl
-    dt {{'FILE.ALLOWDTYPES' | translate }}
+    dt {{'FILE.ALLOWEDTYPES' | translate }}
     dd
-      small(ng-repeat="info in bundleInfo.types") {{ info }},
+      small {{fileTypes}}

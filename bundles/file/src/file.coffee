@@ -129,6 +129,7 @@ angular.module("konzilo.file",
     files= []
     FileBundle.get { name: $scope.bundle }, (bundleInfo) ->
       $scope.bundleInfo = bundleInfo
+      $scope.fileTypes = _.toArray(bundleInfo.types).join(', ')
       $scope.options =
         headers:
           Authorization: UserState.getTokenHeader()
