@@ -18812,14 +18812,10 @@ $.ui.ddmanager = {
 };
 
 })(jQuery);
-;/*! Copyright (c) 2013 Brandon Aaron (http://brandonaaron.net)
+;/*! Copyright (c) 2013 Brandon Aaron (http://brandon.aaron.sh)
  * Licensed under the MIT License (LICENSE.txt).
  *
- * Thanks to: http://adomas.org/javascript-mouse-wheel/ for some pointers.
- * Thanks to: Mathias Bank(http://www.mathias-bank.de) for a scope bug fix.
- * Thanks to: Seamus Leahy for adding deltaX and deltaY
- *
- * Version: 3.1.3
+ * Version: 3.1.4
  *
  * Requires: 1.2.2+
  */
@@ -18871,30 +18867,39 @@ $.ui.ddmanager = {
 
     $.fn.extend({
         mousewheel: function(fn) {
-            return fn ? this.bind("mousewheel", fn) : this.trigger("mousewheel");
+            return fn ? this.bind('mousewheel', fn) : this.trigger('mousewheel');
         },
 
         unmousewheel: function(fn) {
-            return this.unbind("mousewheel", fn);
+            return this.unbind('mousewheel', fn);
         }
     });
 
 
     function handler(event) {
-        var orgEvent = event || window.event,
-            args = [].slice.call(arguments, 1),
-            delta = 0,
-            deltaX = 0,
-            deltaY = 0,
-            absDelta = 0,
+        var orgEvent   = event || window.event,
+            args       = [].slice.call(arguments, 1),
+            delta      = 0,
+            deltaX     = 0,
+            deltaY     = 0,
+            absDelta   = 0,
             absDeltaXY = 0,
             fn;
         event = $.event.fix(orgEvent);
-        event.type = "mousewheel";
+        event.type = 'mousewheel';
 
         // Old school scrollwheel delta
         if ( orgEvent.wheelDelta ) { delta = orgEvent.wheelDelta; }
         if ( orgEvent.detail )     { delta = orgEvent.detail * -1; }
+
+        // At a minimum, setup the deltaY to be delta
+        deltaY = delta;
+
+        // Firefox < 17 related to DOMMouseScroll event
+        if ( orgEvent.axis !== undefined && orgEvent.axis === orgEvent.HORIZONTAL_AXIS ) {
+            deltaY = 0;
+            deltaX = delta * -1;
+        }
 
         // New school wheel delta (wheel event)
         if ( orgEvent.deltaY ) {
@@ -18917,8 +18922,8 @@ $.ui.ddmanager = {
         if ( !lowestDeltaXY || absDeltaXY < lowestDeltaXY ) { lowestDeltaXY = absDeltaXY; }
 
         // Get a whole value for the deltas
-        fn = delta > 0 ? 'floor' : 'ceil';
-        delta  = Math[fn](delta / lowestDelta);
+        fn     = delta > 0 ? 'floor' : 'ceil';
+        delta  = Math[fn](delta  / lowestDelta);
         deltaX = Math[fn](deltaX / lowestDeltaXY);
         deltaY = Math[fn](deltaY / lowestDeltaXY);
 
@@ -35813,7 +35818,104 @@ var styleDirective = valueFn({
   });
 
 })(window, document);
-angular.element(document).find('head').append('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak{display:none !important;}ng\\:form{display:block;}</style>');;/**
+angular.element(document).find('head').append('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak{display:none !important;}ng\\:form{display:block;}</style>');;angular.module("ngLocale", [], ["$provide", function($provide) {
+var PLURAL_CATEGORY = {ZERO: "zero", ONE: "one", TWO: "two", FEW: "few", MANY: "many", OTHER: "other"};
+$provide.value("$locale", {
+  "DATETIME_FORMATS": {
+    "AMPMS": [
+      "fm",
+      "em"
+    ],
+    "DAY": [
+      "s\u00f6ndag",
+      "m\u00e5ndag",
+      "tisdag",
+      "onsdag",
+      "torsdag",
+      "fredag",
+      "l\u00f6rdag"
+    ],
+    "MONTH": [
+      "januari",
+      "februari",
+      "mars",
+      "april",
+      "maj",
+      "juni",
+      "juli",
+      "augusti",
+      "september",
+      "oktober",
+      "november",
+      "december"
+    ],
+    "SHORTDAY": [
+      "s\u00f6n",
+      "m\u00e5n",
+      "tis",
+      "ons",
+      "tors",
+      "fre",
+      "l\u00f6r"
+    ],
+    "SHORTMONTH": [
+      "jan",
+      "feb",
+      "mar",
+      "apr",
+      "maj",
+      "jun",
+      "jul",
+      "aug",
+      "sep",
+      "okt",
+      "nov",
+      "dec"
+    ],
+    "fullDate": "EEEE'en' 'den' d:'e' MMMM y",
+    "longDate": "d MMMM y",
+    "medium": "d MMM y HH:mm:ss",
+    "mediumDate": "d MMM y",
+    "mediumTime": "HH:mm:ss",
+    "short": "yyyy-MM-dd HH:mm",
+    "shortDate": "yyyy-MM-dd",
+    "shortTime": "HH:mm"
+  },
+  "NUMBER_FORMATS": {
+    "CURRENCY_SYM": "kr",
+    "DECIMAL_SEP": ",",
+    "GROUP_SEP": "\u00a0",
+    "PATTERNS": [
+      {
+        "gSize": 3,
+        "lgSize": 3,
+        "macFrac": 0,
+        "maxFrac": 3,
+        "minFrac": 0,
+        "minInt": 1,
+        "negPre": "-",
+        "negSuf": "",
+        "posPre": "",
+        "posSuf": ""
+      },
+      {
+        "gSize": 3,
+        "lgSize": 3,
+        "macFrac": 0,
+        "maxFrac": 2,
+        "minFrac": 2,
+        "minInt": 1,
+        "negPre": "-",
+        "negSuf": "\u00a0\u00a4",
+        "posPre": "",
+        "posSuf": "\u00a0\u00a4"
+      }
+    ]
+  },
+  "id": "sv-se",
+  "pluralCat": function (n) {  if (n == 1) {   return PLURAL_CATEGORY.ONE;  }  return PLURAL_CATEGORY.OTHER;}
+});
+}]);;/**
  * @license AngularJS v1.2.0-rc.2
  * (c) 2010-2012 Google, Inc. http://angularjs.org
  * License: MIT

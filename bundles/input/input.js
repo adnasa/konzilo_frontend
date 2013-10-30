@@ -486,7 +486,7 @@
   ]).factory("InputAutoSave", [
     "$timeout", function($timeout) {
       var InputAutoSave;
-      return InputAutoSave = (function() {
+      InputAutoSave = (function() {
         function InputAutoSave(obj, saveCallback, validCallback, timeout) {
           var _this = this;
           this.obj = obj;
@@ -495,17 +495,40 @@
           this.timeout = timeout != null ? timeout : 1500;
           this.originalObj = _.cloneDeep(this.obj);
           this.saveCallbacks = [];
+          this.errorCallbacks = [];
           this.callback = function() {
-            var callback, _i, _len, _ref;
+            var callback, result, _i, _len, _ref;
             if (_this.dirty() && _this.validCallback(_this.obj) && !_this.stopSaving) {
-              _this.saveCallback(_this.obj);
-              _ref = _this.saveCallbacks;
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                callback = _ref[_i];
-                callback(_this.obj);
+              result = _this.saveCallback(_this.obj);
+              if (result != null ? result.then : void 0) {
+                result.then(function() {
+                  var callback, _i, _len, _ref;
+                  _ref = _this.saveCallbacks;
+                  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    callback = _ref[_i];
+                    callback(_this.obj);
+                  }
+                  delete _this.originalObj;
+                  return _this.originalObj = _.cloneDeep(_this.obj);
+                }, function(err) {
+                  var callback, _i, _len, _ref, _results;
+                  _this.originalObj = _.cloneDeep(_this.obj);
+                  _ref = _this.errorCallbacks;
+                  _results = [];
+                  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    callback = _ref[_i];
+                    _results.push(callback(err));
+                  }
+                  return _results;
+                });
+              } else {
+                _this.originalObj = _.cloneDeep(_this.obj);
+                _ref = _this.saveCallbacks;
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                  callback = _ref[_i];
+                  callback(_this.obj);
+                }
               }
-              delete _this.originalObj;
-              _this.originalObj = _.cloneDeep(_this.obj);
             }
             if (!_this.stopSaving) {
               $timeout(_this.callback, _this.timeout);
@@ -531,9 +554,26 @@
           return this.saveCallbacks.push(callback);
         };
 
+        InputAutoSave.prototype.onError = function(callback) {
+          return this.errorCallbacks.push(callback);
+        };
+
         return InputAutoSave;
 
       })();
+      return {
+        createInstance: function(obj, saveCallback, validCallback, timeout) {
+          this.obj = obj;
+          this.saveCallback = saveCallback;
+          this.validCallback = validCallback;
+          this.timeout = timeout;
+          if (this.instance) {
+            this.instance.stop();
+          }
+          this.instance = new InputAutoSave(this.obj, this.saveCallback, this.validCallback, this.timeout);
+          return this.instance;
+        }
+      };
     }
   ]).directive("contenteditable", function() {
     return {
@@ -582,11 +622,19 @@
               status = $scope.status;
               if (status && (!oldStatus || status === !oldStatus)) {
                 oldStatus = status;
-                return status.onSave(function() {
+                status.onSave(function() {
                   var currentDate;
                   currentDate = new Date();
-                  $scope.statusMessage = getDateString();
+                  $scope.statusMessage = "GLOBAL.SAVED";
+                  $scope.translations = {
+                    date: getDateString()
+                  };
                   $timeout(reset, 2000);
+                  $scope.error = false;
+                });
+                return status.onError(function(err) {
+                  $scope.error = true;
+                  return $scope.statusMessage = err.data.message;
                 });
               }
             };
@@ -594,7 +642,7 @@
             return $scope.$watch('status', updateStatus);
           }
         ],
-        template: "<div class=\"save-status\" ng-show=\"statusMessage\">{{'GLOBAL.SAVED' | translate}} {{statusMessage}}</div>"
+        template: "<div class=\"save-status\" ng-class=\"{error: error}\"    ng-show=\"statusMessage\">{{statusMessage | translate: translations}}</div>"
       };
     }
   ]);

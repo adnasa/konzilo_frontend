@@ -3,7 +3,7 @@
   <div class="row-fluid">
     <div class="span3">
       <div class="box pad">
-        <div kntnt-article-parts="kntnt-article-parts" link-pattern="#/approve/:part" query="query" part="articlePart"></div>
+        <div kntnt-article-parts="kntnt-article-parts" kz-max-height="150" link-pattern="#/approve/:part" query="query" part="articlePart"></div>
       </div>
     </div>
     <div ng-show="!articlePart" class="span9">
@@ -41,9 +41,9 @@
                   </ul>
                 </div>
               </div>
-              <div ng-show="part.language" class="control-group">
-                <label for="submitter" class="control-label"> {{ 'GLOBAL.LANGUAGE' | translate }}</label>
-                <div class="controls"><span>{{part.language}}</span></div>
+              <div ng-show="language" class="control-group">
+                <label class="control-label">{{ 'GLOBAL.LANGUAGE' | translate }}</label>
+                <div class="controls"><span>{{language.name}}</span></div>
               </div>
               <div ng-show="target" class="control-group">
                 <label for="target" class="control-label">{{ 'GLOBAL.TARGET' | translate }}</label>
@@ -61,7 +61,7 @@
                 <label for="target" class="control-label">{{ 'GLOBAL.SUBJECT' | translate }}</label>
                 <div class="controls"><span ng-show="part.article.topic" class="help-block">{{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate: translateVars }}</span></div>
               </div>
-              <div class="control-group">
+              <div ng-show="part.article.keywords" class="control-group">
                 <label class="control-label">{{ 'GLOBAL.KEYWORDS' | translate }}</label>
                 <div class="controls">
                   <ul class="keywords">

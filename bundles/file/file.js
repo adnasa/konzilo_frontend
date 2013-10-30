@@ -85,7 +85,7 @@
       modes: {
         image: {
           types: ["image/jpeg", "image/gif", "image/png"],
-          template: "<img src=\"{{file.uri}}\">",
+          template: "<img ng-src=\"{{file.uri}}\" ng-cloak />",
           controller: [
             "$scope", "file", function($scope, file) {
               return $scope.file = file;
@@ -160,7 +160,7 @@
       };
     }
   ]).directive("fileUploadForm", [
-    "UserState", "$timeout", "FileBundle", function(UserState, $timeout, FileBundle) {
+    "UserState", "$timeout", "FileBundle", "FileStorage", function(UserState, $timeout, FileBundle, FileStorage) {
       return {
         restrict: "AE",
         templateUrl: 'bundles/file/file-upload.html',
@@ -176,6 +176,7 @@
               name: $scope.bundle
             }, function(bundleInfo) {
               $scope.bundleInfo = bundleInfo;
+              $scope.fileTypes = _.toArray(bundleInfo.types).join(', ');
               return $scope.options = {
                 headers: {
                   Authorization: UserState.getTokenHeader()
@@ -187,6 +188,7 @@
                 acceptFileTypes: new RegExp(bundleInfo.acceptFileTypes),
                 done: function(e, data) {
                   var timeoutFn;
+                  FileStorage.clearCache();
                   files.push(data.result);
                   if (files.length === $scope.queue.length) {
                     timeoutFn = function() {
@@ -337,7 +339,7 @@
             var template;
             template = "<span class=\"file-preview\">";
             if (/image/i.test(scope.file.type)) {
-              template += "<img class=\"preview\" src=\"{{file.uri}}\" alt=\"{{file.name}}\"/>";
+              template += "<img class=\"preview\" ng-src=\"{{file.uri}}\"          alt=\"{{file.name}}\"/>";
             } else {
               template += "<i class=\"preview icon-xlarge icon-file\"></i>";
             }

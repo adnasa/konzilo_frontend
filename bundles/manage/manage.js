@@ -35,6 +35,9 @@
       user = UserState.getInfo().info;
       $scope.translations = {};
       $scope.$parent.title = $translate("MANAGE.TITLE");
+      $scope.articleCreated = function(article) {
+        return $location.path("/manage/" + article._id);
+      };
       $scope.articleDefaults = {
         publishdate: new Date()
       };
@@ -75,31 +78,6 @@
         }
       };
       $scope.states = ArticlePartStates;
-      $scope.saveNewPart = function() {
-        if ($scope.newPartForm.$valid) {
-          return KonziloConfig.get("languages").listAll().then(function(languages) {
-            var articlePart, defaultLang;
-            defaultLang = _.find(languages, {
-              "default": true
-            });
-            articlePart = {
-              article: $scope.article._id,
-              title: $scope.newPart.name,
-              type: $scope.newPart.type,
-              submitter: user._id,
-              state: "approved"
-            };
-            if (defaultLang) {
-              articlePart.language = defaultLang.langcode;
-            }
-            return ArticlePartStorage.save(articlePart).then(function(result) {
-              return ArticleStorage.get($routeParams.article).then(function(result) {
-                return $scope.article = result.toObject();
-              });
-            });
-          });
-        }
-      };
     }
   ]);
 

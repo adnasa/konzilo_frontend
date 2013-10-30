@@ -29,7 +29,7 @@
     "NAME": "Namn",
     "DESCRIPTION": "Beskrivning",
     "SAVE": "Spara",
-    "SAVED": "Sparad",
+    "SAVED": "Sparad {{date}}",
     "SEARCH": "Sök",
     "REMOVE": "Ta bort",
     "USER": "Användare",
@@ -73,7 +73,8 @@
     "SETTINGS": "Inställningar",
     "LOGOUT": "Logga ut",
     "BACK": "Tillbaka",
-    "HIDE": "Dölj"
+    "HIDE": "Dölj",
+    "FETCHMORE": "Hämta fler"
   },
   "CHANNEL": {
     "TITLE": "Kanaler",
@@ -224,7 +225,7 @@
   "FILE": {
     "ALLOWEDTYPES": "Tillåtna typer",
     "ADDNEW": "Lägg till ny fil",
-    "UPLOADFILES": "Ladda up filer",
+    "UPLOADFILES": "Ladda upp filer",
     "ALLFILES": "Alla filer",
     "MYFILES": "Mina filer"
   },
@@ -266,7 +267,10 @@
     "APPROVE": "Godkänn",
     "PICKFILTERED": "Välj bland filtrerade artiklar",
     "PICKALL": "Välj alla artiklar",
-    "FILTERCOUNT": "Ditt val matchar {{count}} artiklar."
+    "FILTERCOUNT": "Ditt val matchar {{count}} artiklar.",
+    "LOCKEDTEXT": "Artikeldelen redigeras av {{user}}.",
+    "UNLOCK": "Lås upp",
+    "NEWPART": "Skapa ny artikeldel"
   },
   "ENDPOINT": {
     "REMOVE": "Ta bort publiceringsmål",

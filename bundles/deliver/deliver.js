@@ -26,10 +26,18 @@
       });
     }
   ]).controller("DeliverController", [
-    "$scope", "ClipboardStorage", "ArticlePartStorage", "$routeParams", "TargetStorage", "StepStorage", "ChannelStorage", "kzAnalysisDialog", "$translate", function($scope, ClipboardStorage, ArticlePartStorage, $routeParams, TargetStorage, StepStorage, ChannelStorage, kzAnalysisDialog, $translate) {
+    "$scope", "ClipboardStorage", "ArticlePartStorage", "$routeParams", "TargetStorage", "StepStorage", "ChannelStorage", "kzAnalysisDialog", "$translate", "UserState", "KonziloConfig", function($scope, ClipboardStorage, ArticlePartStorage, $routeParams, TargetStorage, StepStorage, ChannelStorage, kzAnalysisDialog, $translate, UserState, KonziloConfig) {
+      var userId;
       $scope.states = ["notstarted", "started", "needsreview"];
       $scope.useSave = true;
       $scope.translations = {};
+      userId = UserState.getInfo().info._id;
+      $scope.isLocked = function(part) {
+        return (part != null ? part.locked : void 0) !== userId;
+      };
+      $scope.unlockPart = function(part) {
+        return part.locked = userId;
+      };
       $scope.$parent.title = $translate("DELIVER.TITLE");
       if ($routeParams.id) {
         ArticlePartStorage.get($routeParams.id, function(articlePart) {
@@ -50,9 +58,12 @@
             });
           }
           if ($scope.part.article.step) {
-            return $scope.step = StepStorage.get($scope.part.article.step).then(function(result) {
+            $scope.step = StepStorage.get($scope.part.article.step).then(function(result) {
               return result.toObject();
             });
+          }
+          if ($scope.part.language) {
+            return $scope.language = KonziloConfig.get("languages").get($scope.part.language);
           }
         });
         return $scope.showAnalysis = function(target) {

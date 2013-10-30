@@ -11,9 +11,6 @@
       </div></a>
     <div ng-show="active(article)" class="content">
       <div class="inner">
-        <div class="row-item add-part">
-          <div kntnt-add-article-part="kntnt-add-article-part" article="article" part-created="partCreated"></div>
-        </div>
         <div ui-sortable="options" ng-model="article.parts" class="items">
           <div ng-class="activePart(part)" ng-repeat="(index, part) in article.parts" data-id="{{article._id}}" class="row-item"><a ng-href="{{part.link}}" class="block"><span class="article-state {{part.state}}"></span><span>{{part.title}}</span></a>
             <button ng-click="removeArticlePart(article, part)" class="btn-link clipboard-remove"><i class="icon-remove"></i></button>

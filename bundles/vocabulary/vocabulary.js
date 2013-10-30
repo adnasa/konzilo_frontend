@@ -87,7 +87,7 @@
             if ($routeParams.term) {
               return TermStorage.get($routeParams.term).then(function(result) {
                 $scope.term = result.toObject();
-                return $scope.autosave = new InputAutoSave($scope.term, $scope.saveTerm, function() {
+                return $scope.autosave = InputAutoSave.createInstance($scope.term, $scope.saveTerm, function() {
                   return $scope.termForm.$valid;
                 });
               });

@@ -4,8 +4,10 @@
   <div class="row-fluid content">
     <div class="span3">
       <div class="box pad">
-        <div kntnt-add-article="kntnt-add-article" defaults="articleDefaults"></div>
-        <kntnt-clipboard-article-list link-pattern="#/manage/:article/"></kntnt-clipboard-article-list>
+        <div kntnt-add-article="kntnt-add-article" defaults="articleDefaults" article-created="articleCreated"></div>
+        <div kz-max-height="200">
+          <kntnt-clipboard-article-list link-pattern="#/manage/:article/"></kntnt-clipboard-article-list>
+        </div>
       </div>
     </div>
     <div ng-show="!article" class="span9">
@@ -33,7 +35,7 @@
           <accordion-heading>{{part.title}}</accordion-heading>
           <form class="form-inline options-form">
             <select ng-model="part.state">
-              <option ng-repeat="state in states" value="{{state.name}}" ng-selected="part.state == state.name">{{state.label}}</option>
+              <option ng-repeat="state in states" value="{{state.name}}" ng-selected="part.state == state.name">{{state.label | translate}}</option>
             </select>
             <label class="checkbox">
               <input type="checkbox" ng-model="part.teaser"/><span>{{ 'MANAGE.SHOWLISTINGS' | translate }}</span>
@@ -47,11 +49,7 @@
         </accordion-group>
       </accordion>
       <div ng-show="article" class="box pad create-form">
-        <form name="newPartForm" ng-submit="saveNewPart()" class="form-inline">
-          <input type="text" ng-model="newPart.name" required="required" placeholder="{{ 'MANAGE.ADDPART' | translate }}"/>
-          <select name="type" ng-model="newPart.type" ng-options="key as value for (key, value) in types" required="required" placeholder="{{'GLOBAL.DELIVERY' | translate}}"></select>
-          <button class="btn create-btn"><i class="icon-plus"></i></button>
-        </form>
+        <kntnt-add-article-part article="article"></kntnt-add-article-part>
       </div>
     </div>
     <div ng-show="article" class="span4">

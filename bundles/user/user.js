@@ -476,7 +476,7 @@
               }
               $scope.user.roles = $scope.user.roles || [];
               if (!activeUser || $scope.user._id === !activeUser._id) {
-                return $scope.autosave = new InputAutoSave($scope.user, function() {
+                return $scope.autosave = InputAutoSave.createInstance($scope.user, function() {
                   return UserStorage.save($scope.user);
                 }, function() {
                   var _ref;
@@ -626,7 +626,7 @@
           save = function() {
             return GroupStorage.save($scope.group);
           };
-          return $scope.autosave = new InputAutoSave($scope.group, save, valid);
+          return $scope.autosave = InputAutoSave.createInstance($scope.group, save, valid);
         });
       }
       $scope.mainClass = function() {

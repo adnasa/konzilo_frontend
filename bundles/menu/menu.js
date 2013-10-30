@@ -109,7 +109,7 @@
       }
     };
   }).directive("konziloMenu", [
-    "konziloMenu", "loadTemplate", "$compile", "$q", "UserState", function(konziloMenu, loadTemplate, $compile, $q, UserState) {
+    "konziloMenu", "loadTemplate", "$compile", "$q", "UserState", "$location", function(konziloMenu, loadTemplate, $compile, $q, UserState, $location) {
       return {
         restrict: "AE",
         replace: true,
@@ -128,6 +128,17 @@
           } else {
             return;
           }
+          scope.active = function(item) {
+            var path;
+            if (!(item != null ? item.path : void 0)) {
+              return "";
+            }
+            path = item.path[0] === "#" ? item.path.substring(1, item.path.length - 1) : item.path;
+            if ($location.absUrl().indexOf(path) >= 0) {
+              return "active";
+            }
+            return "";
+          };
           UserState.infoSaved(function() {
             return scope.items = menu != null ? menu.getItems() : void 0;
           });

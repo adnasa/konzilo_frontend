@@ -20,7 +20,7 @@
   </form>
   <button ng-click="submit()" class="btn btn-primary">{{'GLOBAL.UPLOAD' | translate }}</button>
   <dl>
-    <dt>{{'FILE.ALLOWDTYPES' | translate }}</dt>
-    <dd><small ng-repeat="info in bundleInfo.types">{{ info }},</small></dd>
+    <dt>{{'FILE.ALLOWEDTYPES' | translate }}</dt>
+    <dd><small>{{fileTypes}}</small></dd>
   </dl>
 </div>

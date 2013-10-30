@@ -4,7 +4,7 @@
   <div class="row-fluid content">
     <div class="span3">
       <div class="box pad">
-        <div kntnt-clipboard-article-parts="kntnt-clipboard-article-parts" selected="article" link-pattern="#/order/:article/:part" part-created="partCreated"></div>
+        <div kntnt-clipboard-article-parts="kntnt-clipboard-article-parts" kz-max-height="150" selected="part" link-pattern="#/order/:article/:part" part-created="partCreated"></div>
       </div>
     </div>
     <div ng-show="!part" class="span9">
@@ -109,7 +109,7 @@
                 <label for="target" class="control-label">{{ 'GLOBAL.SUBJECT' | translate }}</label>
                 <div class="controls"><span ng-show="article.topic" class="help-block"><span>{{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate: translations  }}</span></span></div>
               </div>
-              <div class="control-group">
+              <div ng-show="article.keywords" class="control-group">
                 <label class="control-label">{{ 'GLOBAL.KEYWORDS' | translate  }}</label>
                 <div class="controls"><span class="help-block">{{'GLOBAL.KEYWORD_SPEC' | translate: translations }}</span>
                   <ul class="keywords">

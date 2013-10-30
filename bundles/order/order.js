@@ -28,11 +28,26 @@
     }
   ]).controller("OrderController", [
     "$scope", "ArticleStorage", "$routeParams", "UserStorage", "$q", "articleParts", "KonziloConfig", "TargetStorage", "InputAutoSave", "StepStorage", "ArticlePartStorage", "ChannelStorage", "$filter", "kzAnalysisDialog", "$location", function($scope, ArticleStorage, $routeParams, UserStorage, $q, articleParts, KonziloConfig, TargetStorage, InputAutoSave, StepStorage, ArticlePartStorage, ChannelStorage, $filter, kzAnalysisDialog, $location) {
+      var getPart;
       $scope.savePart = function() {
-        ArticlePartStorage.save($scope.part);
+        return ArticlePartStorage.save($scope.part);
       };
       $scope.today = new Date();
       $scope.translations = {};
+      getPart = function(part) {
+        return ArticlePartStorage.get($routeParams.part).then(function(part) {
+          $scope.part = part.toObject();
+          $scope.changeDate();
+          $scope.part.terms = $scope.part.terms || [];
+          if ($scope.autosave) {
+            $scope.autosave.stop();
+          }
+          return $scope.autosave = InputAutoSave.createInstance($scope.part, $scope.savePart, function() {
+            var _ref;
+            return (_ref = $scope.partForm) != null ? _ref.$valid : void 0;
+          });
+        });
+      };
       if ($routeParams.article) {
         ArticleStorage.get($routeParams.article, function(article) {
           $scope.article = article.toObject();
@@ -55,18 +70,7 @@
             });
           }
           if ($routeParams.part) {
-            return ArticlePartStorage.get($routeParams.part).then(function(part) {
-              $scope.part = part.toObject();
-              $scope.changeDate();
-              $scope.part.terms = $scope.part.terms || [];
-              if ($scope.autosave) {
-                $scope.autosave.stop();
-              }
-              return $scope.autosave = new InputAutoSave($scope.part, $scope.savePart, function() {
-                var _ref;
-                return (_ref = $scope.partForm) != null ? _ref.$valid : void 0;
-              });
-            });
+            return getPart($routeParams.part);
           }
         });
       }
@@ -104,6 +108,12 @@
       $scope.partCreated = function(article, part) {
         return $location.path("order/" + article._id + "/" + part._id);
       };
+      ArticlePartStorage.itemRemoved(function() {
+        delete $scope.part;
+        if ($routeParams.part) {
+          return getPart($routeParams.part);
+        }
+      });
       $scope.types = articleParts.labels();
       return $scope.languages = KonziloConfig.get("languages").listAll();
     }

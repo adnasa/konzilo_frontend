@@ -26,7 +26,7 @@
       });
     }
   ]).controller("ApproveController", [
-    '$scope', 'ClipboardStorage', 'ArticlePartStorage', '$routeParams', 'TargetStorage', 'StepStorage', 'kzAnalysisDialog', '$translate', "$location", function($scope, ClipboardStorage, ArticlePartStorage, $routeParams, TargetStorage, StepStorage, kzAnalysisDialog, $translate, $location) {
+    '$scope', 'ClipboardStorage', 'ArticlePartStorage', '$routeParams', 'TargetStorage', 'StepStorage', 'kzAnalysisDialog', '$translate', "$location", "KonziloConfig", function($scope, ClipboardStorage, ArticlePartStorage, $routeParams, TargetStorage, StepStorage, kzAnalysisDialog, $translate, $location, KonziloConfig) {
       $scope.query = {
         state: "needsreview"
       };
@@ -50,10 +50,13 @@
             topic: $scope.part.article.topic
           };
           if ($scope.part.article.target) {
-            return $scope.target = TargetStorage.get($scope.part.article.target).then(function(result) {
+            $scope.target = TargetStorage.get($scope.part.article.target).then(function(result) {
               $scope.translateVars['name'] = result.get("name");
               return result.toObject();
             });
+          }
+          if ($scope.part.language) {
+            return $scope.language = KonziloConfig.get("languages").get($scope.part.language);
           }
         });
       }

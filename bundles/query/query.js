@@ -351,13 +351,15 @@
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             group = _ref[_i];
             groupQuery = {};
-            groupQuery[group.operator] = [];
             if (!resultQuery[group.outerOperator]) {
               resultQuery[group.outerOperator] = [];
             }
             _ref1 = group.filters;
             for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
               filter = _ref1[_j];
+              if (!groupQuery[group.operator]) {
+                groupQuery[group.operator] = [];
+              }
               groupQuery[group.operator].push(filter.filter.query(filter.value));
             }
             resultQuery[group.outerOperator].push(groupQuery);
@@ -365,20 +367,22 @@
           if (_.size(resultQuery) === 1 && _.size(_.toArray(resultQuery)[0]) === 1) {
             resultQuery = _.first(_.toArray(resultQuery)[0]);
           }
-          return this.resource.query({
-            q: resultQuery,
-            limit: this.limit
-          }, function(result) {
-            var eventCallback, _k, _len2, _ref2;
-            _ref2 = _this.listeners;
-            for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-              eventCallback = _ref2[_k];
-              eventCallback(result);
-            }
-            if (callback) {
-              return callback(result);
-            }
-          });
+          if (!_.isEmpty(resultQuery)) {
+            return this.resource.query({
+              q: resultQuery,
+              limit: this.limit
+            }, function(result) {
+              var eventCallback, _k, _len2, _ref2;
+              _ref2 = _this.listeners;
+              for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+                eventCallback = _ref2[_k];
+                eventCallback(result);
+              }
+              if (callback) {
+                return callback(result);
+              }
+            });
+          }
         };
 
         return QueryBuilder;

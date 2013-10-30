@@ -29,6 +29,22 @@
         }
       };
     }
-  ]);
+  ]).directive("kzMaxHeight", function() {
+    return {
+      restrict: "A",
+      link: function(scope, elm, attrs, ctrl) {
+        var diff, height;
+        diff = attrs.kzMaxHeight || 150;
+        height = $(window).height();
+        elm.css("max-height", height - diff);
+        elm.css("overflow-y", "scroll");
+        elm.addClass("max-height");
+        return $(window).resize(function() {
+          height = $(window).height();
+          return elm.css("max-height", height - diff);
+        });
+      }
+    };
+  });
 
 }).call(this);

@@ -3,7 +3,7 @@
   <div class="row-fluid">
     <div class="span3">
       <div class="box pad">
-        <div kntnt-article-deliver="kntnt-article-deliver" link-pattern="#/deliver/:part" states="states" selected="articlePart"></div>
+        <div kntnt-article-deliver="kntnt-article-deliver" kz-max-height="150" link-pattern="#/deliver/:part" states="states" selected="articlePart"></div>
       </div>
     </div>
     <div ng-show="!articlePart" class="span9">
@@ -17,9 +17,7 @@
         <div class="box pad articleinfo">
           <div class="inner">
             <konzilo-articlepart-form article-part="articlePart" use-auto-save="useSave"></konzilo-articlepart-form>
-            <div class="well">
-              <konzilo-articlepart-change-state article-part="articlePart"></konzilo-articlepart-change-state>
-            </div>
+            <konzilo-articlepart-change-state article-part="articlePart"></konzilo-articlepart-change-state>
           </div>
         </div>
       </section>
@@ -41,9 +39,9 @@
                   </ul>
                 </div>
               </div>
-              <div ng-show="part.language" class="control-group">
-                <label for="submitter" class="control-label">{{'GLOBAL.LANGUAGE' | translate}}</label>
-                <div class="controls"><span>{{part.language}}</span></div>
+              <div ng-show="language" class="control-group">
+                <label class="control-label">{{'GLOBAL.LANGUAGE' | translate}}</label>
+                <div class="controls"><span>{{language.name}}</span></div>
               </div>
               <div ng-show="target" class="control-group">
                 <label for="target" class="control-label">{{'GLOBAL.TARGET' | translate}}</label>
@@ -61,21 +59,21 @@
                 <label for="target" class="control-label">{{'GLOBAL.SUBJECT' | translate}}</label>
                 <div class="controls"><span ng-show="part.article.topic">{{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate }}</span></div>
               </div>
-              <div class="control-group">
-                <label class="control-label">Sökord</label>
+              <div ng-show="part.article.keywords" class="control-group">
+                <label class="control-label">{{ 'GLOBAL.KEYWORDS' | translate }}</label>
                 <div class="controls">
                   <ul class="keywords">
                     <li ng-repeat="item in part.article.keywords" class="label label-info"><span>{{item}}</span></li>
                   </ul>
                 </div>
               </div>
-              <div class="control-group">
+              <div ng-show="part.article.description" class="control-group">
                 <label for="assignment" class="control-label">{{'GLOBAL.ARTICLE_IDEA' | translate }}</label>
                 <div class="controls">
                   <div markdown="part.article.description" class="text"></div>
                 </div>
               </div>
-              <div class="control-group">
+              <div ng-show="part.assignment" class="control-group">
                 <label for="assignment" class="control-label">{{'GLOBAL.TASK' | translate}}</label>
                 <div class="controls">
                   <div markdown="part.assignment" class="text"></div>

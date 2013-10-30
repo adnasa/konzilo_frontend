@@ -1,44 +1,22 @@
 
 <div class="clipboard-articles">
   <div class="box pad">
-    <div class="articles unscheduled">
-      <div class="inner">
-        <div kntnt-add-article="kntnt-add-article" article-created="articleCreated"></div><a ng-repeat="article in unscheduled" href="{{link(article)}}" data-id="{{article._id}}" ui-jq="draggable" ui-options="draggableOptions" class="row-item"><span class="article-state {{article.state}}"></span><span>{{article.title}}</span>
-          <button ng-click="removeFromClipboard(article)" class="btn-link clipboard-remove"><span>{{'GLOBAL.HIDE' | translate}}</span></button></a>
+    <div kntnt-add-article="kntnt-add-article" article-created="articleCreated" inherits="unscheduled[0]"></div>
+    <div kz-max-height="220" class="articles">
+      <div class="unscheduled">
+        <div class="inner"><a ng-repeat="article in unscheduled" href="{{link(article)}}" ng-class="activeArticle(article)" class="row-item"><span class="article-state {{article.state}}"></span><span>{{article.title}}</span>
+            <button ng-click="removeFromClipboard(article)" class="btn-link clipboard-remove"><span>{{'GLOBAL.HIDE' | translate}}</span></button></a></div>
       </div>
-    </div>
-    <div class="scheduled">
-      <div class="inner">
-        <div class="articles">
-          <div ui-jq="droppable" ui-options="droppableOptions" data-date="{{prevDate}}" ng-show="prevDate" class="group date-hidden">
-            <div class="top">
-              <h2>{{ prevDate }}</h2>
-            </div>
-            <div class="content"></div>
-          </div>
-        </div>
-        <div ui-sortable="options" ng-model="dates" class="articles sortable">
-          <div ng-repeat="(index, date) in dates" ui-jq="droppable" ui-options="droppableOptions" data-date="{{date}}" class="group">
-            <div class="top">
-              <h2>{{ date }}</h2>
-              <button ng-click="toggleDatePicker(date)" class="btn-link pull-right calendar-btn"><i class="icon-calendar"></i></button>
-              <div ng-show="datePickerShown(date)" ng-model="datePickerValues[index]" ng-change="newDate(index, date)" class="picker">
-                <datepicker min="today"></datepicker>
-              </div>
-            </div>
-            <div class="content"><a ng-class="activeArticle(article)" ui-jq="draggable" data-id="{{article._id}}" href="{{link(article)}}" ng-repeat="article in clipboard[date]" class="row-item"><span class="article-state {{article.state}}"></span><span>{{article.title}}</span>
-                <button ng-click="removeFromClipboard(article)" class="btn-link clipboard-remove"><span>{{'GLOBAL.HIDE' | translate}}</span></button></a></div>
-          </div>
-        </div>
-        <div class="articles">
-          <div ui-jq="droppable" ui-options="droppableOptions" data-date="{{nextDate}}" class="group date-hidden">
-            <div class="top">
-              <h2>{{ nextDate | placeholder: "Utan publiceringsdatum" }}</h2>
+      <div class="scheduled">
+        <div class="inner">
+          <div class="articles sortable">
+            <div ng-repeat="(index, date) in dates" class="period"><a ng-click="toggleMonth(date)" class="toggle-period">
+                <h3><i ng-class="{'icon-chevron-down': !monthHidden[date], 'icon-chevron-right': monthHidden[date]}"></i><span>{{ getDate(date) | date: 'MMMM' }}</span></h3></a>
+              <div ng-show="!monthHidden[date]" class="content"><a ng-class="activeArticle(article)" href="{{link(article)}}" ng-repeat="article in clipboard[date]" class="row-item"><span class="article-state {{article.state}}"></span><span>{{article.title}}</span><span class="pull-right">{{ article.publishdate | date: "yyyy-MM-dd" }}</span></a></div>
             </div>
           </div>
-          <div class="content"></div>
+          <div class="fetchmore"><a ng-click="nextPage()" ng-show="skip + 20  &lt;= count">{{'GLOBAL.FETCHMORE' | translate}}</a></div>
         </div>
-        <div class="fetchmore"><a ng-click="nextPage()" ng-show="skip + 20  &lt;= count">Hämta fler</a></div>
       </div>
     </div>
   </div>

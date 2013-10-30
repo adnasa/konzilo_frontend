@@ -151,7 +151,7 @@
           return _results;
         });
         $scope.target = _.clone(target);
-        $scope.autosave = new InputAutoSave($scope.target, $scope.saveTarget, function() {
+        $scope.autosave = InputAutoSave.createInstance($scope.target, $scope.saveTarget, function() {
           return $scope.mapForm.$valid;
         });
         return $scope.title = $scope.target.name;

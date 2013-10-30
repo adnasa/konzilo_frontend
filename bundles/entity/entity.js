@@ -86,7 +86,8 @@
           } else {
             this.data[name] = data;
           }
-          return this.dirty = true;
+          this.dirty = true;
+          return this;
         };
 
         KonziloEntity.prototype.id = function() {
@@ -355,6 +356,10 @@
         KonziloStorage.prototype.query = function(q, callback, errorCallback) {
           var cacheKey, deferred, item, key,
             _this = this;
+          if (q != null ? q.reset : void 0) {
+            this.cache.removeAll();
+            delete q.reset;
+          }
           this.queryRequests = this.queryRequests || {};
           cacheKey = "";
           deferred = $q.defer();
@@ -382,6 +387,10 @@
             return deferred.reject(result);
           });
           return deferred.promise;
+        };
+
+        KonziloStorage.prototype.clearCache = function() {
+          return this.cache.removeAll();
         };
 
         KonziloStorage.prototype.triggerEvent = function(event, item) {
@@ -525,20 +534,36 @@
           $scope.$watch("ngModel", modelChanged);
           $scope.label = "";
         },
-        template: "<ng-form name=\"referenceForm\">    <input type=\"text\" name=\"title\" ng-model=\"label\" typeahead=\"entity for entity in fetchMatches($viewValue)\" typeahead-editable=\"editable\" autocomplete=\"off\" /></ng-form>"
+        template: "<ng-form name=\"referenceForm\">    <input type=\"text\" name=\"title\" ng-model=\"label\"    typeahead=\"entity for entity in fetchMatches($viewValue)\"    typeahead-editable=\"editable\" autocomplete=\"off\" /></ng-form>"
       };
     }
-  ]).directive("entityPager", function() {
+  ]).directive("kzEntityPager", function() {
     return {
       restrict: "AE",
       scope: {
-        collection: "="
+        collection: "=",
+        itemsFetched: "="
       },
-      controller: function($scope) {
-        return $scope.getPage = function(page) {
-          return $scope.collection.getPage();
-        };
-      }
+      controller: [
+        "$scope", function($scope) {
+          var update;
+          $scope.currentPage = 0;
+          $scope.pages = 0;
+          update = function() {
+            var _ref;
+            if (!((_ref = $scope.collection) != null ? _ref.pages : void 0)) {
+              return;
+            }
+            $scope.pages = $scope.collection.pages();
+            return $scope.getPage = function() {
+              $scope.currentPage += 1;
+              return $scope.collection.getPage($scope.currentPage).then($scope.itemsFetched);
+            };
+          };
+          $scope.$watch("collection", update);
+        }
+      ],
+      template: "<a class=\"pager\" ng-click=\"getPage(page)\" ng-show=\"currentPage < pages\">    {{'GLOBAL.FETCHMORE' | translate}}</a>"
     };
   }).directive("validEntity", [
     "entityStorage", "$parse", function(entityStorage, $parse) {

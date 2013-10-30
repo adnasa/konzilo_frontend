@@ -81,7 +81,7 @@
           save = function() {
             return ChannelStorage.save($scope.channel);
           };
-          return $scope.autosave = new InputAutoSave($scope.channel, save, valid);
+          return $scope.autosave = InputAutoSave.createInstance($scope.channel, save, valid);
         });
       }
       $scope.mainClass = function() {

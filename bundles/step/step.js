@@ -82,7 +82,7 @@
           save = function() {
             return StepStorage.save($scope.step);
           };
-          return $scope.autosave = new InputAutoSave($scope.step, save, valid);
+          return $scope.autosave = InputAutoSave.createInstance($scope.step, save, valid);
         });
       }
       $scope.mainClass = function() {
