@@ -3,7 +3,7 @@ div(kntnt-article-picker)
   .row-fluid.content
     .span3
       .box.pad
-        div(kntnt-add-article, defaults="articleDefaults")
+        div(kntnt-add-article, defaults="articleDefaults", article-created="articleCreated")
         div(kz-max-height="200")
           kntnt-clipboard-article-list(link-pattern="#/manage/:article/")
     .span9(ng-show="!article")

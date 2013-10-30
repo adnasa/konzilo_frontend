@@ -54,7 +54,7 @@
                 .controls
                   span.help-block(ng-show="part.article.topic")
                     {{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate: translateVars }}
-              .control-group
+              .control-group(ng-show="part.article.keywords")
                 label.control-label {{ 'GLOBAL.KEYWORDS' | translate }}
                 .controls
                   ul.keywords

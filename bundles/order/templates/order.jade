@@ -87,7 +87,7 @@ div(kntnt-article-picker)
                 .controls
                   span.help-block(ng-show="article.topic")
                     span {{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate: translations  }}
-              .control-group
+              .control-group(ng-show="article.keywords")
                 label.control-label {{ 'GLOBAL.KEYWORDS' | translate  }}
                 .controls
                   span.help-block {{'GLOBAL.KEYWORD_SPEC' | translate: translations }}
