@@ -65,7 +65,7 @@ angular.module("konzilo.file",
   modes:
     image:
       types: ["image/jpeg", "image/gif", "image/png"]
-      template: "<img src=\"{{file.uri}}\">"
+      template: "<img ng-src=\"{{file.uri}}\" ng-cloak />"
       controller: ["$scope", "file", ($scope, file) ->
         $scope.file = file
       ]
@@ -225,7 +225,8 @@ angular.module("konzilo.file",
     update = ->
       template = "<span class=\"file-preview\">"
       if /image/i.test(scope.file.type)
-        template += "<img class=\"preview\" src=\"{{file.uri}}\" alt=\"{{file.name}}\"/>"
+        template += "<img class=\"preview\" ng-src=\"{{file.uri}}\"
+          alt=\"{{file.name}}\"/>"
       else
         template += "<i class=\"preview icon-xlarge icon-file\"></i>"
 
