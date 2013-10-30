@@ -36,6 +36,9 @@ UserState, $http, ChannelStorage, ArticlePartStates, $location) ->
   $scope.translations = {}
   $scope.$parent.title = $translate("MANAGE.TITLE")
 
+  $scope.articleCreated = (article) ->
+    $location.path("/manage/#{article._id}")
+
   # Set date by default.
   $scope.articleDefaults =
     publishdate: new Date()
