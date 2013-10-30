@@ -192,11 +192,11 @@ angular.module("konzilo.query", [])
       resultQuery = {}
       for group in @groups
         groupQuery = {}
-        groupQuery[group.operator] = []
         if not resultQuery[group.outerOperator]
           resultQuery[group.outerOperator] = []
 
         for filter in group.filters
+          groupQuery[group.operator] = [] if not groupQuery[group.operator]
           groupQuery[group.operator].push(filter.filter.query(filter.value))
 
         resultQuery[group.outerOperator].push(groupQuery)
@@ -204,9 +204,11 @@ angular.module("konzilo.query", [])
       # ((property1 = 2 or property2 = 3) and (property3 = 4))
       if _.size(resultQuery) == 1 and _.size(_.toArray(resultQuery)[0]) == 1
         resultQuery = _.first(_.toArray(resultQuery)[0])
-      @resource.query { q: resultQuery, limit: @limit }, (result) =>
-        eventCallback(result) for eventCallback in @listeners
-        callback(result) if callback
+
+      if not _.isEmpty(resultQuery)
+        @resource.query { q: resultQuery, limit: @limit }, (result) =>
+          eventCallback(result) for eventCallback in @listeners
+          callback(result) if callback
 ])
 
 .controller("konziloFilterConfig",
