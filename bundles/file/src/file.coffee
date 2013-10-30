@@ -120,8 +120,8 @@ angular.module("konzilo.file",
 ])
 
 .directive("fileUploadForm",
-["UserState", "$timeout", "FileBundle",
-(UserState, $timeout, FileBundle) ->
+["UserState", "$timeout", "FileBundle", "FileStorage"
+(UserState, $timeout, FileBundle, FileStorage) ->
   restrict: "AE"
   templateUrl: 'bundles/file/file-upload.html'
   scope: { bundle: "=", filesUploaded: "=" }
@@ -136,6 +136,7 @@ angular.module("konzilo.file",
         maxFileSize: bundleInfo.maxFileSize
         acceptFileTypes: new RegExp(bundleInfo.acceptFileTypes)
         done: (e, data) ->
+          FileStorage.clearCache()
           files.push(data.result)
           # Really ugly hack to avoid errors when re-rendering the scope.
           if files.length == $scope.queue.length

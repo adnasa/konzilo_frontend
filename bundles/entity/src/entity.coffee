@@ -148,7 +148,6 @@ entityInfo, $q, $http, $cacheFactory) ->
         update:
           method: "PUT"
           params: params
-
       @info = info
       @cache = $cacheFactory("#{@url}:#{name}")
       # @todo replace this ugly hack by removing $resource completely.
@@ -235,6 +234,8 @@ entityInfo, $q, $http, $cacheFactory) ->
         errorCallback(result) if errorCallback
         deferred.reject(result)
       deferred.promise
+
+    clearCache: -> @cache.removeAll()
 
     # Trigger a particular event.
     triggerEvent: (event, item) ->
