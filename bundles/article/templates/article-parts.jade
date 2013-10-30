@@ -1,0 +1,22 @@
+.articleparts
+  p(ng-show="size == 0") {{'CLIPBOARD.DESCRIPTION' | translate}}
+  .row-item(ng-repeat="article in articles")
+    a.link-block(ng-click="toggleArticle(article)")
+      .pull-right
+        span {{article.publishdate | date: 'yyyy-MM-dd'}}
+        button.btn-link
+          i(ng-class="toggleIcon(article)")
+      .top
+        div(class="article-state {{article.state}}")
+        h3.title {{article.title}}
+    .content(ng-show="active(article)")
+      .inner
+        .items(ui-sortable="options", ng-model="article.parts")
+          .row-item(ng-class="activePart(part)", ng-repeat="(index, part) in article.parts", data-id="{{article._id}}")
+            a.block(ng-href="{{part.link}}")
+              span(class="article-state {{part.state}}")
+              span {{part.title}}
+            button.btn-link.clipboard-remove(ng-click="removeArticlePart(article, part)")
+              i.icon-remove
+  kz-entity-pager(collection="collection", items-fetched="nextPage")
+

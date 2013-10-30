@@ -477,7 +477,7 @@
           ""
       $scope.active = (article) -> $scope.openArticle == article
     ]
-    templateUrl: "bundles/article/clipboard-articleparts.html"
+    templateUrl: "bundles/article/article-parts.html"
   ])
 
   .factory("ArticleStates", ["$translate", ($translate) ->
@@ -972,7 +972,9 @@
         userId = UserState.getInfo().info._id
 
         locked = $scope.articlePart.get('locked')
-        $scope.locked = locked and userId != locked._id
+
+        locked = if _.isPlainObject(locked) then locked._id else locked
+        $scope.locked = locked and userId != locked
 
         currentState = $scope.articlePart.get("state")
 
@@ -1009,9 +1011,8 @@
       $scope.$watch("articlePart", update)
       ArticlePartStorage.itemSaved (item) ->
         if $scope.articlePart?.get("_id") == item.get("_id")
-          $scope.articlePart = item
+          $scope.articlePart.set("state", item.get("state"))
           update()
-
     ]
     templateUrl: "bundles/article/articlepart-change-state.html"
   ])
