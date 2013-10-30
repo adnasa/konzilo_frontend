@@ -49,17 +49,17 @@
                 label.control-label(for="target") {{'GLOBAL.SUBJECT' | translate}}
                 .controls
                   span(ng-show="part.article.topic") {{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate }}
-              .control-group
-                label.control-label Sökord
+              .control-group(ng-show="part.article.keywords")
+                label.control-label {{ 'GLOBAL.KEYWORDS' | translate }}
                 .controls
                   ul.keywords
                     li.label.label-info(ng-repeat="item in part.article.keywords")
                       span {{item}}
-              .control-group
+              .control-group(ng-show="part.article.description")
                 label.control-label(for="assignment") {{'GLOBAL.ARTICLE_IDEA' | translate }}
                 .controls
                   .text(markdown="part.article.description")
-              .control-group
+              .control-group(ng-show="part.assignment")
                 label.control-label(for="assignment") {{'GLOBAL.TASK' | translate}}
                 .controls
                   .text(markdown="part.assignment")
