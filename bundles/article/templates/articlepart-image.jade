@@ -1,28 +1,29 @@
-ng-form.form.form-horizontal(name="partForm")
-  .title
-      cmf-autosave-status(status="autosave")
-      h2 {{ 'IMAGEPART.TITLE' | translate }}
-  .control-group
-    label.control-label {{'IMAGEPART.UPLOADFILES' | translate}}
-    .controls
-      file-upload-list(ng-model="content.images", bundle="media")
-  .control-group
-    label.control-label {{ 'GLOBAL.HEADLINE' | translate }}
-    .controls
-      cmf-inline(ng-model="content.headline")
-        cmf-inline-preview
-          i.icon-edit.pull-right
-          h1 {{content.headline}}
-        cmf-inline-input
-          input(type="text", name="headline", ng-model="content.headline")
-  .control-group
-    label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
-    .controls
-      cmf-inline(ng-model="content.description")
-        cmf-inline-preview
-          i.icon-edit.pull-right
-          span {{content.description}}
-        cmf-inline-input
-          textarea.input-block-level(type="text", name="description", ng-model="content.description")
-  author-picker(author="part.byline")
-  kz-vocabulary-input(ng-model="part.vocabularies")
+ng-form(name="partForm")
+  .form-horizontal.part-form
+    .title
+        cmf-autosave-status(status="autosave")
+        h2 {{ 'IMAGEPART.TITLE' | translate }}
+    .form-group
+      label.control-label {{'IMAGEPART.UPLOADFILES' | translate}}
+      .controls
+        file-upload-list(ng-model="content.images", bundle="media")
+    .form-group
+      label.control-label {{ 'GLOBAL.HEADLINE' | translate }}
+      .controls
+        cmf-inline(ng-model="content.headline")
+          cmf-inline-preview
+            i.icon-edit.pull-right
+            h1 {{content.headline}}
+          cmf-inline-input
+            input(type="text", name="headline", ng-model="content.headline")
+    .form-group
+      label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
+      .controls
+        cmf-inline(ng-model="content.description")
+          cmf-inline-preview
+            i.icon-edit.pull-right
+            span {{content.description}}
+          cmf-inline-input
+            textarea.input-block-level(type="text", name="description", ng-model="content.description")
+    author-picker(author="part.byline")
+    kz-vocabulary-input(ng-model="part.vocabularies")

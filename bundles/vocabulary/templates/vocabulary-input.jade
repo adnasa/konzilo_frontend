@@ -1,5 +1,5 @@
-.control-group(ng-repeat="vocabulary in vocabularies")
-  label.control-label {{vocabulary.title}}
-  .controls
-    select(ng-model="ngModel[vocabulary.name]")
-      option(ng-repeat="term in terms[vocabulary.name]", value="{{ term._id }}", ng-selected="ngModel[vocabulary.name] == term._id") {{ term.name }}
+.form-group(ng-repeat="vocabulary in vocabularies")
+    label.control-label {{vocabulary.title}}
+    .controls
+      select(ng-model="ngModel[vocabulary.name]")
+        option(ng-repeat="term in terms[vocabulary.name]", value="{{ term._id }}", ng-selected="ngModel[vocabulary.name] == term._id") {{ term.name }}

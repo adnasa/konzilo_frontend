@@ -2,11 +2,11 @@
   .box.pad
     form.form.form-horizontal(name="loginForm", ng-submit="loginUser()", ng-show="!showReset")
       .alert(ng-show="message") {{message | translate}}
-      .control-group
+      .form-group
         label.control-label {{ 'GLOBAL.USERNAME' | translate }}
         .controls
           input(type="text", name="username", ng-model="username", ng-required)
-      .control-group
+      .form-group
         label.control-label {{ 'GLOBAL.PASSWORD' | translate }}
         .controls
           input(type="password", name="password", ng-model="password", ng-required)
@@ -15,7 +15,7 @@
       .form-actions
         input.btn.btn-primary(type="submit", value="{{ 'LOGIN.LOGIN' | translate }}")
     form.form-horizontal(name="forgotPasswordForm", ng-submit="sendPassword()", ng-show="showReset")
-      .control-group
+      .form-group
         label.control-label {{'LOGIN.USERNAMEOREMAIL' | translate}}
         .controls
           input(type="text", name="forgotpassword", ng-model="forgot", required)

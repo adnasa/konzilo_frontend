@@ -1,34 +1,36 @@
 form.form.article-form.form-horizontal(ng-submit="saveArticle(article)", name="articleForm")
   .title
       cmf-autosave-status(status="autosave")
-  .control-group
+  .form-group
     label.control-label {{ 'GLOBAL.WORKINGTITLE' | translate }}
     .controls
       input(type="text", name="title", ng-model="article.title", required)
-  .control-group
+  .form-group
     label.control-label {{ 'GLOBAL.RESPONSIBLE' | translate }}
     .controls
       entity-reference(ng-model="article.responsible", entity-type="Provider")
-  .control-group
+  .form-group
     label.control-label(for="date") {{'GLOBAL.PUBLISHING' | translate}}
     .controls
-        input.input-medium(type="text", ng-model="article.publishdate",
+      .publishdate
+        input(type="text", ng-model="article.publishdate",
           placeholder="{{'GLOBAL.DATE' | translate}}",
-          datepicker-popup="yyyy-MM-dd",
-          class="publishdate publishdate-date")
-        input.input-mini(type="text", ng-model="publishtime",
+          datepicker-popup="yyyy-MM-dd")
+      .publishtime
+        input(type="text", ng-model="publishtime",
           ng-change="changeTime(publishtime, article.publishdate)",
-          placeholder="{{'GLOBAL.PUBLISHTIME' | translate}}",
-          class="publishdate publishdate-time", maxlength="5")
-  .control-group
+          placeholder="{{'GLOBAL.PUBLISHTIME' | translate}}", maxlength="5")
+  .form-group
     label.control-label(for="date") {{'GLOBAL.UNPUBLISHING' | translate}}
     .controls
-        input.input-medium(type="text", ng-model="article.unpublishdate",
+      .publishdate
+        input(type="text", ng-model="article.unpublishdate",
           placeholder="{{'GLOBAL.DATE' | translate}}", datepicker-popup="yyyy-MM-dd")
-        input.input-mini(type="text", ng-model="unpublishtime",
+      .publishtime
+        input(type="text", ng-model="unpublishtime",
           ng-change="changeTime(unpublishtime, article.unpublishdate)",
           placeholder="{{'GLOBAL.UNPUBLISHTIME' | translate}}", maxlength="5")
-  .control-group
+  .form-group
     label.control-label {{'GLOBAL.CHANNEL' | translate}}
     .controls
       select(name="channel", ng-model="article.channel",
@@ -37,7 +39,7 @@ form.form.article-form.form-horizontal(ng-submit="saveArticle(article)", name="a
           value="{{ channel._id }}",
           ng-selected="article.channel == channel._id") {{ channel.name }}
       span.help-block {{ channel.description }}
-  .control-group
+  .form-group
     label.control-label(for="target") {{ 'GLOBAL.TARGET' | translate }}
     .controls
       select(name="target", ng-model="article.target",  ng-change="changeTarget()")
@@ -45,27 +47,26 @@ form.form.article-form.form-horizontal(ng-submit="saveArticle(article)", name="a
           value="{{ target._id }}",
           ng-selected="article.target == target._id") {{ target.name }}
       span.help-block(markdown="target.description")
-  .control-group
+  .form-group
     label.control-label(for="target") {{ 'GLOBAL.STEP' | translate }}
     .controls
       select(name="step", ng-model="article.step", ng-change="changeTarget()")
         option(ng-repeat="step in steps", value="{{ step._id }}", ng-selected="article.step == step._id") {{ step.name }}
       span.help-block(markdown="target.steps[step._id].description")
-  .control-group
+  .form-group
     label.control-label(for="target") {{'GLOBAL.SUBJECT' | translate}}
     .controls
       select(name="step", ng-model="article.topic", ng-disabled="!article.step", ng-change="topicChanged(article.topic)")
         option(ng-repeat="topic in topics",
           value="{{ topic.name }}",
           ng-selected="article.topic == topic.name") {{ topic.name }}
-      span.help-block(ng-show="article.topic")
-        {{'GLOBAL.TARGET_TOPIC_SPEC' | translate: translations}}
-  .control-group
+      span.help-block(ng-show="article.topic") {{'GLOBAL.TARGET_TOPIC_SPEC' | translate: translations}}
+  .form-group
     label.control-label {{ 'GLOBAL.KEYWORDS' | translate }}
     .controls
       cmf-input-list(ng-model="article.keywords", placeholder="{{'GLOBAL.KEYWORDS' | translate}}")
-  .control-group
+  .form-group
     label.control-label(for="description") {{ 'GLOBAL.ARTICLE_IDEA' | translate}}
     .controls
-      textarea.input-block-level(ng-model="article.description", name="description")
+      textarea(ng-model="article.description", name="description", rows="3")
   kz-vocabulary-input(ng-model="article.vocabularies")

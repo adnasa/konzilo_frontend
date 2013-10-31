@@ -1,18 +1,18 @@
-.navbar.navbar-fixed-top.navbar-inverse
-  .navbar-inner
-    .container-fluid
-      a.brand(href="#/dashboard") Konzilo
-      konzilo-menu.nav.nav-pills.mainMenu(menu="mainMenu")
-      ul.nav.pull-right.right-menu
-        li.dropdown
-          a.dropdown-toggle(href="#/settings/targets", kz-user-access="administer system")
-            i.icon-cog
-            span {{ 'GLOBAL.SETTINGS' | translate }}
-            b.caret
-          konzilo-menu.dropdown-menu(menu="settingsMenu")
-        li
-          language-switcher
-        li
-          user-info
-        li
-          kz-logout
+nav.navbar.navbar-fixed-top.navbar-inverse(role="navigation")
+  .navbar-header
+    a.navbar-brand(href="#/dashboard") Konzilo
+  .collapse.navbar-collapse.navbar-ex1-collapse
+    konzilo-menu.nav.navbar-nav.mainMenu(menu="mainMenu")
+    ul.nav.navbar-nav.navbar-right.right-menu
+      li.dropdown
+        a.dropdown-toggle(href="#/settings/targets", kz-user-access="administer system")
+          i.icon-cog
+          span {{ 'GLOBAL.SETTINGS' | translate }}
+          b.caret
+        konzilo-menu.dropdown-menu(menu="settingsMenu")
+      li
+        language-switcher
+      li
+        user-info
+      li
+        kz-logout

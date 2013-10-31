@@ -9,7 +9,5 @@ html(class="no-js", ng-app="konzilo.main")
     for script in scripts
       script(src=script)
   body
-    .header
-      .content
-        include navbar.jade
+    include navbar.jade
     div(ng-view)

@@ -7,11 +7,11 @@ div(kntnt-article-picker)
         content-table(items="clients", properties="properties", id="name", operations="operations")
         h3 {{ CLIENT.ADDNEW }}
         form.form.form-horizontal(name="addClientForm", ng-submit="addClient()")
-          .control-group
+          .form-group
             label.control-label(for="name") {{ "GLOBAL.NAME" | translate }}
             .controls
               input(type="text", name="name", ng-model="client.name", required)
-          .control-group
+          .form-group
             label.control-label(for="langcode") {{"CLIENT.REDIRECT_URI" | translate}}
             .controls
               input(type="text", name="redirectURI", ng-model="client.redirectURI", required)

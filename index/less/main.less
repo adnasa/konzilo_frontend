@@ -5,8 +5,6 @@
 
 @import "bootstrap/less/scaffolding.less";
 
-@gridGutterWidth: 1px;
-
 @import "bootstrap/less/grid.less";
 
 @import "bootstrap/less/type.less";
@@ -83,21 +81,16 @@
 @green: @kntntGreen;
 @grayLighter: #D9D9D9;
 
-@btnPrimaryBackground: @kntntGreen;
-@btnPrimaryBackgroundHighlight: darken(@kntntGreen, 10%);
+@btn-primary-bg: @kntntGreen;
 
-/* @navbarBackground: @white; */
-/* @navbarBackgroundHighlight: @white; */
-/* @navbarBrandColor: @black; */
-/* @navbarText: @black; */
-/* @navbarLinkColor: @black; */
-/* @navbarBorder: @white; */
+@navbar-inverse-color: @white;
+@navbar-inverse-link-color: @white;
 
-@navbarInverseLinkColor: @white;
-@navbarInverseText: @white;
-@navbarInverseBackgroundHighlight: @gray;
 
-@headingsFontWeight: normal;
+@label-primary-bg: @kntntGreen;
+@label-info-bg: darken(@blue, 20%);
+
+@label-success-bg: @kntntGreen;
 
 h1 { font-size: @font-size-base * 2.25; } // ~38px
 h2 { font-size: @font-size-base * 1.75; } // ~32px
@@ -105,6 +98,10 @@ h3 { font-size: @font-size-base * 1.5; } // ~24px
 h4 { font-size: @font-size-base * 1.25; } // ~18px
 h5 { font-size: @font-size-base; }
 h6 { font-size: @font-size-base * 0.85; } // ~12px
+
+.wrapper {
+  padding: 0 15px;
+}
 
 .navbar {
   .icon {
@@ -119,18 +116,109 @@ h6 { font-size: @font-size-base * 0.85; } // ~12px
   }
 }
 
+// Default form styles
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"] {
+  .form-control;
+}
+
+.form-horizontal .controls {
+  .make-lg-column(8);
+  select {
+    .make-lg-column(6);
+  }
+}
+
+.help-block {
+  .make-lg-column(12);
+  padding-left: 0;
+}
+
+textarea {
+  height: auto;
+}
+
+img {
+  .img-responsive();
+}
+
+.form-horizontal {
+  .container;
+}
+.form-horizontal .control-label {
+  .make-lg-column(2);
+}
+
+.publishdate {
+  .make-lg-column(8);
+  padding-right: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.publishtime {
+  .make-lg-column(4);
+  padding-left: 5px;
+  padding-right: 0px;
+}
+
+// input.publishdate {
+//   .make-lg-column(6);
+// }
+
+// input.publishtime {
+//   .make-lg-column(6);
+// }
+
+.radio, .checkbox {
+  font-weight: normal;
+}
+
 .pad {
   padding: 10px;
 }
 
 body {
   background: @background;
-  padding-top: 31px;
+  padding-top: 51px;
 }
 
 .main-content {
-  margin-top: 50px;
+  padding-top: 50px;
   background: @background;
+  .make-row();
+
+  .list {
+    .make-md-column(4);
+    .make-lg-column(3);
+  }
+
+  .main-full {
+    .make-md-column(9);
+  }
+
+  .main {
+    .make-md-column(8);
+    .make-lg-column(5);
+  }
+
+  .additional {
+    .make-md-column(4);
+  }
 }
 
 .title {
@@ -217,17 +305,14 @@ body {
     float: left;
     width: 88%;
   }
+  .btn {
+    margin-top: 5px;
+  }
 }
 .comment-form {
   textarea {
     width: 100%;
   }
-}
-
-.main {
-  padding: 10px;
-  background: @maincolor;
-  min-height: 300px;
 }
 
 .new-article {
@@ -299,6 +384,7 @@ body {
     }
   }
   > .inner, .tab-pane {
+    padding-top: 15px;
     margin-bottom: 10px;
     background: @white;
     border-bottom: 1px solid @grayLighter;
@@ -361,16 +447,16 @@ a.new-target {
 
   .top {
     padding-left: 10px;
+    height: 40px;
     margin: 0;
     color: @white;
     position: relative;
     background: #464646;
     overflow: hidden;
     h2 {
+      margin-top: 10px;
       font-size: 0.9em;
-      padding: 0;
       float: left;
-      margin: 0;
     }
     .calendar-btn {
       line-height: 35px;
@@ -479,9 +565,6 @@ a.new-target {
 
   .simple {
     border-right: 1px solid @grayLighter;
-    label.control-label, .control-group label {
-      font-weight: normal;
-    }
   }
   .picker-body {
     background: @white;
@@ -490,11 +573,26 @@ a.new-target {
   .selection {
     margin-top: 20px;
     padding-left: 10px;
+    overflow: hidden;
+    .pagination {
+      margin-top: 0px;
+    }
   }
 
   .picker-form {
+    .container;
+    .make-row();
+    .simple {
+      .make-md-column(3);
+      padding: 10px;
+    }
+    .advanced {
+      padding: 10px;
+      .make-md-column(9);
+    }
+
     border-bottom: 2px solid @grayLighter;
-    .control-group {
+    .form-group {
       border: none;
     }
   }
@@ -509,7 +607,7 @@ a.new-target {
     }
   }
 
-  .pick-form .control-group {
+  .pick-form .form-control {
     border-bottom: none;
     label {
       font-weight: normal;
@@ -517,6 +615,7 @@ a.new-target {
   }
 
   .picker {
+    z-index: 1000;
     &.collapsed {
       position: fixed;
     }
@@ -547,7 +646,7 @@ a.new-target {
   .pick-form {
     margin-top: 20px;
   }
-  .control-group {
+  .form-control {
     border: none;
     &.actions {
       margin-top: 20px;
@@ -629,6 +728,7 @@ form.add-article {
   .icon-plus {
     color: @kntntGreen;
   }
+  margin-bottom: 20px;
 }
 
 .add-part {
@@ -639,6 +739,16 @@ form.add-article {
 form.add-part-form {
   margin-bottom: 0px;
 
+}
+
+// Special styling for part forms.
+.part-form.form-horizontal {
+  .controls {
+    .make-lg-column(10);
+    input[type="text"], input[type="url"] {
+      .make-lg-column(10);
+    }
+  }
 }
 
 .articleparts {
@@ -713,6 +823,7 @@ form.add-part-form {
   }
   table {
     margin-bottom: 10px;
+    width: 100%;
   }
   td {
     padding: 10px;
@@ -725,12 +836,9 @@ form.add-part-form {
   }
 }
 
-.control-group {
+.form-group {
   padding-bottom: 10px;
   border-bottom: 1px solid @grayLighter;
-  label {
-    font-weight: bold;
-  }
 }
 
 .author {
@@ -740,6 +848,15 @@ form.add-part-form {
       border: 1px dotted @kntntGreen;
     }
   }
+  .top {
+    .make-row();
+    .image {
+      .make-md-column(4);
+    }
+    .top {
+      .make-md-column(8);
+    }
+  }
   h3 {
     margin: 0;
     padding: 0;
@@ -747,6 +864,11 @@ form.add-part-form {
   .author-info {
     margin-bottom: 10px;
   }
+}
+
+.author-picker .links {
+  .make-lg-column(12);
+  padding-left: 0;
 }
 
 .file-picker {
@@ -809,10 +931,6 @@ form.add-part-form {
   .content {
     padding: 10px;
   }
-}
-
-.form-horizontal .controls {
-  margin-left: 110px;
 }
 
 .create-form {

@@ -14,11 +14,11 @@
       .box.pad
         form.form.form-horizontal(name="editGroupForm")
           h3 {{group.name}}
-          .control-group
+          .form-group
             label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}
             .controls
               input(type="text", name="name", ng-model="group.name", required)
-          .control-group
+          .form-group
             label.control-label {{'GLOBAL.USER' | translate}}
             .controls
               table.table-striped.table

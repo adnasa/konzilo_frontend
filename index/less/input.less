@@ -2,6 +2,7 @@
 // This css requires bootstrap and font awesome css.
 .input-list {
   ul {
+    padding-left: 0px;
     display: block;
     overflow: hidden;
     margin-bottom: 10px;
@@ -17,58 +18,24 @@
       padding-left: 5px;
     }
   }
-  input {
+  input[type="text"] {
     border: none;
     width: 100px;
     box-shadow: none;
     font-weight: bold;
+    display: inline-block;
     &:hover {
       box-shadow: none;
     }
+  }
+  .btn {
+    display: inline-block;
   }
   .icon-remove {
     color: @red;
   }
   .icon-plus {
     color: @kntntGreen;
-  }
-  .remove-btn {
-    margin-right: 10px;
-    margin-bottom: 10px;
-    // Set up font awesome as font.
-    // This requires font awesome.
-    .icon {
-      font-family: FontAwesome;
-      font-weight: normal;
-      font-style: normal;
-      text-decoration: inherit;
-      -webkit-font-smoothing: antialiased;
-
-      /* sprites.less reset */
-      display: inline;
-      width: auto;
-      height: auto;
-      line-height: normal;
-      vertical-align: baseline;
-      background-image: none;
-      background-position: 0% 0%;
-      background-repeat: repeat;
-      margin-top: 0;
-      margin-right: 5px;
-      // Use the circle as default icon.
-      &:before {
-        content: "\f111";
-      }
-    }
-    .btn-primary;
-    &:hover {
-      // We inherit from btn-danger, to get the button to be red.
-      .btn-danger;
-      // Switch to a trash icon.
-      .icon:before {
-        content: "\f014";
-      }
-    }
   }
 }
 

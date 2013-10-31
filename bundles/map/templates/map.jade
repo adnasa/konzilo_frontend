@@ -15,25 +15,25 @@
         h2 {{title}}
         cmf-autosave-status(status="autosave")
         form.form.form-horizontal(ng-submit="saveTarget()", name="mapForm")
-          .control-group
+          .form-group
             label.control-label {{ 'GLOBAL.NAME' | translate }}
             .controls
               input(type="text", name="name", ng-model="target.name")
-          .control-group
+          .form-group
             label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
             .controls
               textarea.input-block-level(name="target_desc", placeholder="{{ 'TARGET.TARGETDESC' | translate}}",
                 ng-model="target.description")
-          .control-group
+          .form-group
             label.control-label {{ 'TARGET.PAIN' | translate }}
             .controls
               textarea.input-block-level(ng-model="target.pain")
-          .control-group
+          .form-group
             label.control-label {{ 'TARGET.GAIN' | translate }}
             .controls
               textarea.input-block-level(ng-model="target.gain")
         form.form.form-horizontal(ng-repeat="(name, mood) in moods")
-          .control-group
+          .form-group
             label.control-label {{ mood | translate }}
             .controls
               cmf-input-list(ng-model="target.analysis[name]")
@@ -41,27 +41,27 @@
       form.form.form.form-horizontal(name="newstrategy", ng-submit="saveTarget()")
         .step.box.pad(ng-repeat="step in steps")
           h3 {{step.name}}
-          .control-group
+          .form-group
             label.control-label {{ "TARGET.LOOKINGFOR" | translate }}
             .controls
               textarea.input-block-level(ng-model="target.steps[step._id].description")
           .topics(ng-repeat="topic in target.steps[step._id].topics")
-            .control-group
+            .form-group
               label.control-label {{ "TARGET.SUBJECTNAME" | translate }}
               .controls
                 input(ng-model="topic.name", type="text",
                   placeholder="{{ 'TARGET.SUBJECTNAME' | translate}}", required)
-            .control-group
+            .form-group
               label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
               .controls
                 textarea(ng-model="topic.description")
           h4 Nytt ämne
-          .control-group.form-horizontal
+          .form-group.form-horizontal
             label.control-label Ämne
             .controls
               input(type="text", ng-model="newTopics[step._id].name",
                 placeholder="{{ 'TARGET.SUBJECTNAME' | translate}}")
-          .control-group
+          .form-group
             label.control-label {{ "GLOBAL.DESCRIPTION" | translate }}
             .controls
               textarea(ng-model="newTopics[step._id].description",

@@ -1,17 +1,17 @@
 ng-form.form.form-horizontal(name="authorForm")
-  .control-group
+  .form-group
     label.control-label {{ 'GLOBAL.NAME' | translate }}
     .controls
       input(type="text", name="name", ng-model="author.name", required)
-  .control-group
+  .form-group
     label.control-label {{ 'GLOBAL.EMAIL' | translate }}
     .controls
       input(type="email", name="email", ng-model="author.email")
-  .control-group
+  .form-group
     label.control-label {{ 'AUTHOR.ABOUT' | translate }}
     .controls
       textarea(name="about", ng-model="author.about")
-  .control-group
+  .form-group
     label.control-label {{ 'GLOBAL.IMAGE' | translate }}
     .controls
       file-upload-list(limit=1, ng-model="images", bundle="media", ng-change="getImage()")

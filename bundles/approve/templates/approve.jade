@@ -22,49 +22,49 @@
         tabset
           tab(heading="{{'GLOBAL.ORDER' | translate }}")
             .inner.pad.form.form-horizontal.article-description
-              .control-group(ng-show="part.deadline")
+              .form-group(ng-show="part.deadline")
                 label.control-label(for="date") {{ 'GLOBAL.DEADLINE' | translate }}
                 .controls
                   span {{part.deadline | date: "yyyy-MM-dd"}}
-              .control-group(ng-show="part.terms")
+              .form-group(ng-show="part.terms")
                 label.control-label(for="terms") {{ 'GLOBAL.TERMS' | translate }}
                 .controls
                   ul.keywords
                     li.item(ng-repeat="term in terms")
                       a(ng-href="term") {{term}}
-              .control-group(ng-show="language")
+              .form-group(ng-show="language")
                 label.control-label {{ 'GLOBAL.LANGUAGE' | translate }}
                 .controls
                   span {{language.name}}
-              .control-group(ng-show="target")
+              .form-group(ng-show="target")
                 label.control-label(for="target") {{ 'GLOBAL.TARGET' | translate }}
                 .controls
                   span.help-block {{ target.description }}
                   a(ng-click="showAnalysis(target)") {{ 'GLOBAL.SHOW_ANALYSIS' | translate }}
-              .control-group(ng-show="article.step")
+              .form-group(ng-show="article.step")
                 label.control-label(for="steps") {{ 'GLOBAL.STEP' | translate }}
                 .controls
                   span.help-block {{ target.steps[article.step].description }}
-              .control-group(ng-show="channel")
+              .form-group(ng-show="channel")
                 label.control-label {{ 'GLOBAL.CHANNEL' | translate }}
                 .controls
                   span.help-block {{ channel.description }}
-              .control-group(ng-show="part.article.step")
+              .form-group(ng-show="part.article.step")
                 label.control-label(for="target") {{ 'GLOBAL.SUBJECT' | translate }}
                 .controls
                   span.help-block(ng-show="part.article.topic")
                     {{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate: translateVars }}
-              .control-group(ng-show="part.article.keywords")
+              .form-group(ng-show="part.article.keywords")
                 label.control-label {{ 'GLOBAL.KEYWORDS' | translate }}
                 .controls
                   ul.keywords
                     li.item(ng-repeat="item in part.article.keywords")
                       span {{item}}
-              .control-group(ng-show="part.article.description")
+              .form-group(ng-show="part.article.description")
                 label.control-label(for="assignment") {{ 'GLOBAL.ARTICLE_IDEA' | translate }}
                 .controls
                   .text(markdown="part.article.description")
-              .control-group(ng-show="part.assignment")
+              .form-group(ng-show="part.assignment")
                 label.control-label(for="assignment") {{ 'GLOBAL.TASK' | translate }}
                 .controls
                   .text(markdown="part.assignment")

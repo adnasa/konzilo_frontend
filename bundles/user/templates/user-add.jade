@@ -1,20 +1,20 @@
 form.form.user-form.form-horizontal(ng-submit="saveUser()", name="userForm")
   .title
       h2 {{'USER.ADDTITLE' | translate}}
-  .control-group()
+  .form-group()
     label.control-label {{'GLOBAL.USERNAME' | translate}}
     .controls
       input(type="text", name="name", ng-model="user.username")
-  .control-group
+  .form-group
     label.control-label {{'GLOBAL.EMAIL' | translate}}
     .controls
       input(type="email", name="email", ng-model="user.email")
-  .control-group
+  .form-group
     label.control-label {{'GLOBAL.PASSWORD' | translate}}
     .controls
       input(type="password", name="password", ng-model="user.password")
       input(type="password", name="password2", ng-model="password2")
-  .control-group
+  .form-group
     label.control-label {{'USER.ACTIVE' | translate}}
     .controls
       i.icon-edit.pull-right

@@ -1,9 +1,9 @@
 form.form.content-table-form(ng-show="items", ng-submit="performActions()")
-  .control-group
+  .form-group
     .controls
       input(type="text", name="search",
         ng-model="search", placeholder="{{'GLOBAL.SEARCH' | translate}}")
-    .control-group.actions(ng-show="operations")
+    .form-group.actions(ng-show="operations")
       .controls
         .operations
           select(name="operation", ng-options="item.label for (name, item) in operations", ng-model="operation")

@@ -14,14 +14,12 @@
           span {{ 'VOCABULARY.REMOVE' | translate }}
         h2 {{vocabulary.title}}
         form.pad.form.form-horizontal(ng-submit="saveVocabulary()", name="vocabularyForm")
-          .control-group
+          .form-group
             label.control-label {{ 'GLOBAL.TITLE' | translate }}
-            .controls
-              input(type="text", name="title", ng-model="vocabulary.title", ng-change="saveVocabulary()")
-          .control-group
+            input(type="text", name="title", ng-model="vocabulary.title", ng-change="saveVocabulary()")
+          .form-group
             label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
-            .controls
-              textarea.input-block-level(name="description",  ng-model="vocabulary.description", ng-change="saveVocabulary()")
+            textarea.input-block-level(name="description",  ng-model="vocabulary.description", ng-change="saveVocabulary()")
         content-table(query="query", entity-type="Term", properties="properties")
         form.form-inline.pad(name="newTermForm", ng-submit="newTerm()")
           input(type="text", name="termname", ng-model="termName", placeholder="{{'VOCABULARY.NEWTERM' | translate}}")
@@ -31,11 +29,9 @@
       h2 {{term.name}}
       form.pad.form-horizontal(name="termForm")
         cmf-autosave-status(status="autosave")
-        .control-group
+        .form-group
           label.control-label {{'GLOBAL.NAME' | translate }}
-          .controls
-            input(type="text", name="name", ng-model="term.name", ng-change="saveTerm()")
-        .control-group
+          input(type="text", name="name", ng-model="term.name", ng-change="saveTerm()")
+        .form-group
           label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
-          .controls
-            textarea.input-block-level(name="description",  ng-model="term.description")
+          textarea.input-block-level(name="description",  ng-model="term.description")

@@ -1,35 +1,30 @@
 .picker-content
-  .picker-body(collapse="isCollapsed")
-    .container-fluid
-      .row-fluid.picker-form
-        .span3
-          .simple
-            h2 {{ 'ARTICLEPICKER.TITLE' | translate }}
-            .control-group
-              label.control-label {{ 'ARTICLEPICKER.DESCRIPTION' | translate }}
-              .controls
-                label.radio
-                  input(type="radio", name="articles", ng-model="selector", value="all", ng-change="showArticles()")
-                  span {{ 'ARTICLEPICKER.ALL' | translate }}
-                label.radio
-                  input(type="radio", name="articles", ng-model="selector", value="recommended", ng-change="showArticles()")
-                  span {{ 'ARTICLEPICKER.RECOMMENDED' | translate }}
-                label.radio
-                  input(type="radio", name="articles", ng-model="selector", value="advanced", ng-change="showArticles()")
-                  span {{ 'ARTICLEPICKER.CUSTOM' | translate }}
-        .span9
-          .advanced
-            h2 {{ 'ARTICLEPICKER.SELECTION' | translate }}
-            konzilo-query-filters(builder="builder",
-              description="{{ 'ARTICLEPICKER.SHOWARTICLES' | translate }}")
+  .picker-body(ng-show="!isCollapsed")
+    .picker-form
+      .simple
+        h2 {{ 'ARTICLEPICKER.TITLE' | translate }}
+        p {{ 'ARTICLEPICKER.DESCRIPTION' | translate }}
+        .form-group
+          label.radio
+            input(type="radio", name="articles", ng-model="selector", value="all", ng-change="showArticles()")
+            span {{ 'ARTICLEPICKER.ALL' | translate }}
+          label.radio
+            input(type="radio", name="articles", ng-model="selector", value="recommended", ng-change="showArticles()")
+            span {{ 'ARTICLEPICKER.RECOMMENDED' | translate }}
+          label.radio
+            input(type="radio", name="articles", ng-model="selector", value="advanced", ng-change="showArticles()")
+            span {{ 'ARTICLEPICKER.CUSTOM' | translate }}
+      .advanced
+        h2 {{ 'ARTICLEPICKER.SELECTION' | translate }}
+        konzilo-query-filters(builder="builder",
+          description="{{ 'ARTICLEPICKER.SHOWARTICLES' | translate }}")
 
-      .row-fluid
-        .span12.selection
-          .article-info
-            span {{ 'ARTICLE.FILTERCOUNT' | translate: translations }}
-            button.btn.btn-link(ng-click="showTable()") {{ pickLabel | translate }}
-          form.form.pick-form(ng-show="tableShown")
-            .control-group
+    .selection
+      .article-info
+        span {{ 'ARTICLE.FILTERCOUNT' | translate: translations }}
+        button.btn.btn-link(ng-click="showTable()") {{ pickLabel | translate }}
+      form.form.form-inline.pick-form(ng-show="tableShown")
+            .form-group
               .controls
                 input(type="text", name="search", ng-model="search", placeholder="{{'ARTICLEPICKER.SEARCHARTICLES' | translate}}")
             table.articles.table.table-striped(ng-show="articles && tableShown")
@@ -46,18 +41,15 @@
                 td {{article.publishdate | date: "yyyy-MM-dd" }}
                 td {{article.responsible.label }}
 
-           .pagination(ng-show="tableShown")
-             ul
-               li(ng-repeat="page in pages")
-                 button.btn-link(ng-click="getPage(page)") {{page + 1}}
+           ul.pagination(ng-show="tableShown")
+             li(ng-repeat="page in pages")
+               button.btn-link(ng-click="getPage(page)") {{page + 1}}
 
-           .control-group.actions
-             .controls
-                button.btn-primary.btn(ng-click="addArticles()", ng-disabled="count == 0") {{'ARTICLEPICKER.ADDSELECTED' | translate}}
-                label.checkbox
-                  input(type="checkbox", name="purge", ng-model="purge", ng-disabled="count == 0")
-                  span {{ 'ARTICLEPICKER.EMPTYBEFORE' | translate }}
-
+           .actions
+              button.btn-primary.btn(ng-click="addArticles()", ng-disabled="count == 0") {{'ARTICLEPICKER.ADDSELECTED' | translate}}
+              label.checkbox
+                input(type="checkbox", name="purge", ng-model="purge", ng-disabled="count == 0")
+                span {{ 'ARTICLEPICKER.EMPTYBEFORE' | translate }}
 
   .picker(ng-class="collapseClass()")
     button.btn.picker-btn(ng-click="isCollapsed = !isCollapsed")
