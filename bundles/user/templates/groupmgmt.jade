@@ -1,16 +1,17 @@
-.container-fluid.main-content
-  .row-fluid
-    div(ng-class="mainClass()")
+.wrapper
+  .main-content
+    div(ng-class="{full: !group, half: group}")
       section.articleinfo
           .box.pad
             h2 {{"GROUP.TITLE" | translate}}
             content-table(entity-type="Group", properties="properties", query="query")
-            form.form.form-inline(name="addGroupForm", ng-submit="addGroup()")
-              input(type="text", name="name", ng-model="newGroup.name",
-                    placeholder="{{ 'GROUP.CREATENEW' | translate }}", required)
+            form.form.form-inline.add-group-form(name="addGroupForm", ng-submit="addGroup()")
+              .form-group
+                input.form-control(type="text", name="name", ng-model="newGroup.name",
+                  placeholder="{{ 'GROUP.CREATENEW' | translate }}", required)
               input.btn.btn-primary(type="submit", name="save", value="{{'GROUP.CREATE' | translate}}")
 
-    .span6(ng-show="group")
+    .half(ng-show="group")
       .box.pad
         form.form.form-horizontal(name="editGroupForm")
           h3 {{group.name}}
@@ -29,6 +30,10 @@
                       i.icon-remove
                       span {{'GLOBAL.REMOVE' | translate}}
 
-              ng-form(name="userInput")
-                entity-reference(entity-type="User", ng-model="newUser")
-                button.btn.btn-primary(ng-click="addUser()") {{ 'GLOBAL.APPEND' | translate }}
+        form.add-group-user-form(name="userInput")
+          .form-inline
+            .form-group
+              entity-reference(entity-type="User",
+                ng-model="newUser",
+                placeholder="{{'GROUP.ADDUSER' | translate}}")
+              button.btn.btn-primary(ng-click="addUser()") {{ 'GLOBAL.APPEND' | translate }}

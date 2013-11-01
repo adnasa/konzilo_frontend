@@ -12,12 +12,17 @@ form.form.user-form.form-horizontal(ng-submit="saveUser()", name="userForm")
   .form-group
     label.control-label {{'GLOBAL.PASSWORD' | translate}}
     .controls
-      input(type="password", name="password", ng-model="user.password")
-      input(type="password", name="password2", ng-model="password2")
+      input(type="password",
+        name="password",
+        placeholder="{{'GLOBAL.PASSWORD' | translate}}", 
+        ng-model="user.password")
+      input(type="password",
+        name="password2",
+        placeholder="{{'USER.PASSWORDREPEAT' | translate}}",
+        ng-model="password2")
   .form-group
     label.control-label {{'USER.ACTIVE' | translate}}
     .controls
-      i.icon-edit.pull-right
       label.checkbox
         input(type="checkbox", name="active", ng-model="user.active")
   .form-actions

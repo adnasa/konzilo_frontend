@@ -1,6 +1,6 @@
-.container-fluid.main-content
-  .row-fluid
-    .span12.right-side(ng-class="mainClass()")
+.wrapper
+  .main-content
+    div(ng-class="{full: !step, half: step}")
       .box.pad
         h1 {{ 'STEP.TITLE' | translate }}
         p {{ 'STEP.DESCRIPTION' | translate }}
@@ -18,7 +18,7 @@
               textarea(name="description", ng-model="newStep.description")
           .form-actions
             input.btn.btn-primary(type="submit", name="save", value="{{ 'GLOBAL.SAVE' | translate}}")
-    .span6(ng-show="step")
+    .half(ng-show="step")
       .box.pad
         button.pull-right.btn.btn-danger(ng-click="removeStep(step)")
           i.icon-remove

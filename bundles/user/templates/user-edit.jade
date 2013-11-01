@@ -2,30 +2,29 @@ form.form.user-form.form-horizontal(name="userForm")
   .title
       h2 {{user.username}}
       cmf-autosave-status(status="autosave")
-  .form-control
+  .form-group
     label.control-label.col-lg-2 {{'GLOBAL.EMAIL' | translate}}
     .controls.col-lg-10
       input(type="email", name="email", ng-model="user.email")
-  .form-control(ng-show="showAdminFields")
-    label {{'USER.ROLES' | translate}}
+  .form-group(ng-show="showAdminFields")
+    label.control-label {{'USER.ROLES' | translate}}
     .controls
       select(ng-model="user.roles", multiple="true")
         option(ng-repeat="(name, role) in roles", value="{{name}}", ng-selected="hasRole(name)") {{role.label}}
-  .form-control(ng-show="showAdminFields")
-    label {{'GLOBAL.LANGUAGE' | translate}}
+  .form-group(ng-show="showAdminFields")
+    label.control-label {{'GLOBAL.LANGUAGE' | translate}}
     .controls
       select(ng-model="user.language")
         option(ng-repeat="(name, language) in languages", value="{{name}}", ng-selected="name == user.language") {{language.name}}
-  .form-control
+  .form-group
     label.control-label {{'GLOBAL.PASSWORD' | translate}}
     .controls
       input(type="password", name="password", ng-model="user.password", placeholder="{{'GLOBAL.PASSWORD' | translate}}")
       input(type="password", name="password2", ng-model="password2", placeholder="{{'USER.PASSWORDREPEAT' | translate}}")
       .help-block {{'USER.PASSWORDDESC' | translate}}
-  .form-control(ng-show="showAdminFields")
+  .form-group(ng-show="showAdminFields")
     label.control-label {{'USER.ACTIVE' | translate}}
     .controls
-      i.icon-edit.pull-right
       label.checkbox
         input(type="checkbox", name="active", ng-model="user.active")
   author-picker(author="user.author")

@@ -421,7 +421,7 @@ angular.module("kntnt.user",
       updateUsers()
 
   $scope.userGrid = ->
-    if $scope.user then "span6" else "span12"
+    if $scope.user then "half" else "full"
 
   $scope.entity = entityInfo("User")
   $scope.properties =

@@ -1,15 +1,15 @@
-.container-fluid.main-content
-  .row-fluid
-    .span3
+.wrapper
+  .main-content
+    .list
       .box.pad
         div(kntnt-article-parts, kz-max-height="150",
           link-pattern="#/approve/:part",
           query="query", part="articlePart")
-    .span9(ng-show="!articlePart")
+    .main-full(ng-show="!articlePart")
       .box.pad
         h1 {{ 'REVIEW.TITLE' | translate }}
         p {{ 'REVIEW.DESC' | translate }}
-    .span5(ng-show="articlePart")
+    .main(ng-show="articlePart")
       section.articles
         .box.pad.articleinfo
           .inner
@@ -17,7 +17,7 @@
             .well
               konzilo-articlepart-approve(article-part="articlePart",
                 fail-state="failState", approve-state="approveState")
-    .span4(ng-show="articlePart")
+    .additional(ng-show="articlePart")
       .tabbed-box
         tabset
           tab(heading="{{'GLOBAL.ORDER' | translate }}")

@@ -148,6 +148,7 @@ entityInfo, $q, $http, $cacheFactory) ->
         update:
           method: "PUT"
           params: params
+
       @info = info
       @cache = $cacheFactory("#{@url}:#{name}")
       # @todo replace this ugly hack by removing $resource completely.
@@ -286,8 +287,8 @@ entityInfo, $q, $http, $cacheFactory) ->
         mode: attrs.mode
 ])
 .directive("entityReference",
-["entityStorage", "entityInfo", "$q",
-(entityStorage, entityInfo, $q) ->
+["entityStorage", "entityInfo", "$q", "$parse",
+(entityStorage, entityInfo, $q, $parse) ->
   restrict: "E"
   scope:
     ngRequired: "="

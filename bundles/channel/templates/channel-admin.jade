@@ -1,6 +1,6 @@
-.container-fluid.main-content
-  .row-fluid
-    .span12.right-side(ng-class="mainClass()")
+.wrapper
+  .main-content
+    div(ng-class="{full: !channel, half: channel}")
       .box.pad
         h2 {{ 'CHANNEL.TITLE' | translate }}
         content-table(entity-type="Channel", properties="properties", query="query")
@@ -20,8 +20,8 @@
               select(type="text", name="endpoint", ng-model="newChannel.endpoint", required)
                 option(ng-repeat="endpoint in endpoints") {{endpoint.name}}
           .actions
-            input(type="submit", name="save", value="{{'GLOBAL.SAVE' | translate}}")
-    .span6(ng-show="channel")
+            input.btn.btn-primary(type="submit", name="save", value="{{'GLOBAL.SAVE' | translate}}")
+    .half(ng-show="channel")
       .box.pad
         h2 {{endpoint.name}}
         form.form.form-horizontal(name="editChannelForm")

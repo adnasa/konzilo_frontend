@@ -1,13 +1,15 @@
-.container-fluid.main-content
-  .row-fluid
-    .span2
-      form.box.pad(ng-submit="newTarget()")
-        input(type="text", name="target", ng-model="targetName", placeholder="{{ 'TARGET.ADDNEW' | translate }}")
+.wrapper
+  .main-content
+    .list
+      form.box.pad.form-inline(ng-submit="newTarget()")
+        .form-group
+          input.form-control(type="text", name="target", ng-model="targetName", placeholder="{{ 'TARGET.ADDNEW' | translate }}")
         input.btn.btn-primary(type="submit", name="newtarget", value="{{ 'GLOBAL.SAVE' | translate }}")
-      ul.targets.nav.nav-stacked.nav-tabs.menu-list
-          li(ng-repeat="target in targets")
-            a(href="#/settings/targets/{{target._id}}") {{ target.name }}
-    .span10.target(ng-show="target")
+      .item-list
+        ul.nav.nav-stacked.nav-pills.menu-list
+            li(ng-repeat="item in targets", ng-class="{active: item._id == target._id}")
+              a(href="#/settings/targets/{{item._id}}") {{ item.name }}
+    .main-full(ng-show="target")
       .box.pad
         button.btn.btn-danger.pull-right(ng-click="removeTarget(target)")
           i.icon-remove
@@ -38,35 +40,37 @@
             .controls
               cmf-input-list(ng-model="target.analysis[name]")
 
-      form.form.form.form-horizontal(name="newstrategy", ng-submit="saveTarget()")
+      form.form.form(name="newstrategy", ng-submit="saveTarget()")
         .step.box.pad(ng-repeat="step in steps")
           h3 {{step.name}}
-          .form-group
-            label.control-label {{ "TARGET.LOOKINGFOR" | translate }}
-            .controls
-              textarea.input-block-level(ng-model="target.steps[step._id].description")
-          .topics(ng-repeat="topic in target.steps[step._id].topics")
+          .form-horizontal
             .form-group
-              label.control-label {{ "TARGET.SUBJECTNAME" | translate }}
+              label.control-label {{ "TARGET.LOOKINGFOR" | translate }}
               .controls
-                input(ng-model="topic.name", type="text",
-                  placeholder="{{ 'TARGET.SUBJECTNAME' | translate}}", required)
-            .form-group
-              label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
-              .controls
-                textarea(ng-model="topic.description")
+                textarea.input-block-level(ng-model="target.steps[step._id].description")
+            .topics(ng-repeat="topic in target.steps[step._id].topics")
+              .form-group
+                label.control-label {{ "TARGET.SUBJECTNAME" | translate }}
+                .controls
+                  input(ng-model="topic.name", type="text",
+                    placeholder="{{ 'TARGET.SUBJECTNAME' | translate}}", required)
+              .form-group
+                label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
+                .controls
+                  textarea(ng-model="topic.description")
           h4 Nytt ämne
-          .form-group.form-horizontal
-            label.control-label Ämne
-            .controls
-              input(type="text", ng-model="newTopics[step._id].name",
-                placeholder="{{ 'TARGET.SUBJECTNAME' | translate}}")
-          .form-group
-            label.control-label {{ "GLOBAL.DESCRIPTION" | translate }}
-            .controls
-              textarea(ng-model="newTopics[step._id].description",
-                placeholder=" {{ 'GLOBAL.DESCRIPTION' | translate }}")
+          .form-horizontal
+            .form-group
+              label.control-label Ämne
+              .controls
+                input(type="text", ng-model="newTopics[step._id].name",
+                  placeholder="{{ 'TARGET.SUBJECTNAME' | translate}}")
+            .form-group
+              label.control-label {{ "GLOBAL.DESCRIPTION" | translate }}
+              .controls
+                textarea(ng-model="newTopics[step._id].description",
+                  placeholder=" {{ 'GLOBAL.DESCRIPTION' | translate }}")
             .form-actions
-              button.btn(ng-click="addTopic(target.steps[step._id], step._id)")
-                i.icon-plus
-                span {{"GLOBAL.APPEND" | translate}}
+             button.btn.btn-primary(ng-click="addTopic(target.steps[step._id], step._id)")
+               i.icon-plus
+               span {{"GLOBAL.APPEND" | translate}}

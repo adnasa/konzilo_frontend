@@ -163,6 +163,10 @@ img {
   .make-lg-column(2);
 }
 
+.form-horizontal .form-actions {
+  .make-lg-column-offset(2);
+}
+
 .publishdate {
   .make-lg-column(8);
   padding-right: 0px;
@@ -218,6 +222,12 @@ body {
 
   .additional {
     .make-md-column(4);
+  }
+  .half {
+    .make-md-column(6);
+  }
+  .full {
+    .make-xs-column(12);
   }
 }
 
@@ -313,6 +323,19 @@ body {
   textarea {
     width: 100%;
   }
+}
+
+.add-group-form {
+  margin-left: 15px;
+}
+
+.add-group-user-form {
+ button, input {
+  display: inline-block;
+ }
+ entity-reference, ng-form {
+   display: inline-block;
+ }
 }
 
 .new-article {
@@ -751,6 +774,15 @@ form.add-part-form {
   }
 }
 
+.additional {
+  .form-horizontal {
+    .control-label {
+      .make-lg-column(3);
+    }
+  }
+}
+
+
 .articleparts {
   .article {
     margin-bottom: 30px;
@@ -836,7 +868,7 @@ form.add-part-form {
   }
 }
 
-.form-group {
+.form-horizontal .form-group {
   padding-bottom: 10px;
   border-bottom: 1px solid @grayLighter;
 }
@@ -910,17 +942,17 @@ form.add-part-form {
   .collapse {
     position: static;
   }
-  .accordion .accordion-group {
+  .panel {
     background: @white;
     margin-bottom: 5px;
   }
-  .accordion-heading {
+  .panel-heading {
     .group > .top;
     a {
       color: @white;
     }
   }
-  .accordion-inner {
+  .panel-body {
     padding: 0;
   }
   .options-form {
@@ -942,6 +974,19 @@ form.add-part-form {
     background: @white;
     border-radius: 10px;
     color: @kntntGreen;
+  }
+}
+
+.user-form {
+  input[type="password"] {
+    .make-lg-column(5);
+    margin-right: 5px;
+  }
+}
+
+.form-horizontal.content-table-form {
+  input[type="text"], select {
+    .make-lg-column(4);
   }
 }
 
@@ -980,6 +1025,12 @@ form.add-part-form {
     width: 100%;
     height: 100%;
   }
+}
+
+.item-list {
+  background: @white;
+  padding: 10px;
+  border: 1px solid @grayLighter;
 }
 
 .max-height {

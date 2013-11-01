@@ -151,7 +151,8 @@
   "GROUP": {
     "TITLE": "Grupper",
     "CREATENEW": "Ny Grupp",
-    "CREATE": "Skapa grupp"
+    "CREATE": "Skapa grupp",
+    "ADDUSER": "Lägg till användare i grupp"
   },
   "MANAGE": {
     "TITLE": "Hantera",

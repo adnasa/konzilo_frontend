@@ -1,12 +1,12 @@
-.container-fluid.main-content
-  .row-fluid
-    .right-side(ng-class="userGrid()")
+.wrapper
+  .main-content
+    .half(ng-class="userGrid()")
       section.articleinfo
           .box.pad
             h2 Användare
             content-table(items="users", properties="properties",
               id="username", selected="selected", entity="entity")
             user-add-form
-    .span6(ng-show="user")
+    .half(ng-show="user")
       .box.pad
         user-edit-form(user="user")

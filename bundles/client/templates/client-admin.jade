@@ -1,11 +1,10 @@
-div(kntnt-article-picker)
-.container-fluid.main-content
-  .row-fluid
-    .span12.right-side
+.wrapper
+  .main-content
+    .full
       .box.pad
         h2 {{ "CLIENT.TITLE" | translate }}
         content-table(items="clients", properties="properties", id="name", operations="operations")
-        h3 {{ CLIENT.ADDNEW }}
+        h3 {{ 'CLIENT.ADDNEW' | translate }}
         form.form.form-horizontal(name="addClientForm", ng-submit="addClient()")
           .form-group
             label.control-label(for="name") {{ "GLOBAL.NAME" | translate }}

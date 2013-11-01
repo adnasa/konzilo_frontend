@@ -152,7 +152,8 @@
   "GROUP": {
     "TITLE": "Groups",
     "CREATENEW": "New group",
-    "CREATE": "Create group"
+    "CREATE": "Create group",
+    "ADDUSER": "Add user to group"
   },
   "MANAGE": {
     "TITLE": "Manage",
