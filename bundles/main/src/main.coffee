@@ -55,3 +55,10 @@ angular.module("konzilo.main",
       height = $(window).height()
       elm.css("max-height", height - diff)
 )
+
+.run(["$route", "$rootScope", ($route, $rootScope)->
+  console.log $rootScope
+  $rootScope.$on("$routeChangeSuccess", ->
+    $rootScope.navbar = false
+  )
+])
