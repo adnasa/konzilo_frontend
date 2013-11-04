@@ -120,6 +120,21 @@ h6 { font-size: @font-size-base * 0.85; } // ~12px
   .right-menu [class^="icon-"] {
     margin-right: 5px;
   }
+  @media (max-width: @grid-float-breakpoint) {
+    .dropdown-menu {
+      background: inherit;
+      position: inherit;
+      box-shadow: none;
+      float: none;
+      padding-left: 15px;
+      li > a {
+        color: @white;
+        &:focus, &:hover {
+          background: @navbar-inverse-toggle-hover-bg;
+        }
+      }
+    }
+  }
 }
 
 // Default form styles
@@ -221,6 +236,11 @@ body {
   .main-full {
     .make-md-column(8);
     .make-lg-column(9);
+    @media (max-width: @screen-md) {
+      .info-message {
+        display: none;
+      }
+    }
   }
 
   .main {
