@@ -6,7 +6,7 @@
           link-pattern="#/approve/:part",
           query="query", part="articlePart")
     .main-full
-      .box.pad(ng-show="!articlePart")
+      .box.pad.info-message(ng-show="!articlePart")
         h1 {{ 'REVIEW.TITLE' | translate }}
         p {{ 'REVIEW.DESC' | translate }}
       .main(ng-show="articlePart")

@@ -4,7 +4,7 @@
       .box.pad
         div(kntnt-article-deliver, kz-max-height="150", link-pattern="#/deliver/:part", states="states", selected="articlePart")
     .main-full
-      .box.pad(ng-show="!articlePart")
+      .box.pad.info-message(ng-show="!articlePart")
         h1 {{'DELIVER.TITLE' | translate}}
         p {{'DELIVER.DESCRIPTION' | translate}}
       .main(ng-show="articlePart")

@@ -7,7 +7,7 @@ div(kntnt-article-picker)
         first-article="firstArticle",
         article-created="articleCreated")
     .main-full
-      .box.pad(ng-show="!article")
+      .box.pad.info-message(ng-show="!article")
         h1 {{ "PLAN.TITLE" | translate }}
         p {{ "PLAN.DESCRIPTION" | translate }}
       .main(ng-show="article")
