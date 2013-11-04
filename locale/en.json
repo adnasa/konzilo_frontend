@@ -74,7 +74,8 @@
     "LOGOUT": "Log out",
     "BACK": "Back",
     "HIDE": "Dölj",
-    "FETCHMORE": "Fetch more"
+    "FETCHMORE": "Fetch more",
+    "DETAILS": "Details"
   },
   "CHANNEL": {
     "TITLE": "Channels",

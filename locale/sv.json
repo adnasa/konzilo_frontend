@@ -74,7 +74,8 @@
     "LOGOUT": "Logga ut",
     "BACK": "Tillbaka",
     "HIDE": "Dölj",
-    "FETCHMORE": "Hämta fler"
+    "FETCHMORE": "Hämta fler",
+    "DETAILS": "Detaljer"
   },
   "CHANNEL": {
     "TITLE": "Kanaler",
