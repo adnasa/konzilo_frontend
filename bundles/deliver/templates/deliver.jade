@@ -1,68 +1,23 @@
 .wrapper
   .main-content
-    .list
+    .list(ng-class="{visible: articlePart}")
       .box.pad
         div(kntnt-article-deliver, kz-max-height="150", link-pattern="#/deliver/:part", states="states", selected="articlePart")
-    .main-full(ng-show="!articlePart")
-      .box.pad
+    .main-full
+      .box.pad(ng-show="!articlePart")
         h1 {{'DELIVER.TITLE' | translate}}
         p {{'DELIVER.DESCRIPTION' | translate}}
-    .main(ng-show="articlePart")
-      section.articles
+      .main(ng-show="articlePart")
         .box.pad.articleinfo
+          ol.breadcrumb(ng-show="articlePart")
+            li
+              a(ng-href="#/deliver") {{'DELIVER.TITLE' | translate}}
+            li.active
+              {{part.article.title}}
+            li.active(ng-show="part")
+              {{part.title}}
           .inner
             konzilo-articlepart-form(article-part="articlePart", use-auto-save="useSave")
             konzilo-articlepart-change-state(article-part="articlePart")
-    .additional(ng-show="articlePart")
-      .tabbed-box
-        tabset
-          tab(heading="{{'GLOBAL.ORDER' | translate}}")
-            .inner.pad.form.form-horizontal.article-description
-              .form-group(ng-show="part.deadline")
-                label.control-label(for="date") {{'GLOBAL.DEADLINE' | translate}}
-                .controls
-                  span {{part.deadline | date: "yyyy-MM-dd"}}
-              .form-group(ng-show="part.terms")
-                label.control-label(for="terms") {{'GLOBAL.TERMS' | translate}}
-                .controls
-                  ul.keywords
-                    li.item(ng-repeat="term in part.terms")
-                      a(href="{{term.uri}}") {{term.name}}
-              .form-group(ng-show="language")
-                label.control-label {{'GLOBAL.LANGUAGE' | translate}}
-                .controls
-                  span {{language.name}}
-              .form-group(ng-show="target")
-                label.control-label(for="target") {{'GLOBAL.TARGET' | translate}}
-                .controls
-                  span(markdown="target.description")
-                  a(ng-click="showAnalysis(target)") {{'GLOBAL.SHOW_ANALYSIS' | translate}}
-              .form-group(ng-show="part.article.step")
-                label.control-label(for="steps") {{'GLOBAL.STEP' | translate}}
-                .controls
-                  span {{ target.steps[part.article.step].description }}
-              .form-group(ng-show="part.article.channel")
-                label.control-label {{'GLOBAL.CHANNEL' | translate}}
-                .controls
-                  span {{ channel.description }}
-              .form-group(ng-show="part.article.step")
-                label.control-label(for="target") {{'GLOBAL.SUBJECT' | translate}}
-                .controls
-                  span(ng-show="part.article.topic") {{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate }}
-              .form-group(ng-show="part.article.keywords")
-                label.control-label {{ 'GLOBAL.KEYWORDS' | translate }}
-                .controls
-                  ul.keywords
-                    li.label.label-info(ng-repeat="item in part.article.keywords")
-                      span {{item}}
-              .form-group(ng-show="part.article.description")
-                label.control-label(for="assignment") {{'GLOBAL.ARTICLE_IDEA' | translate }}
-                .controls
-                  .text(markdown="part.article.description")
-              .form-group(ng-show="part.assignment")
-                label.control-label(for="assignment") {{'GLOBAL.TASK' | translate}}
-                .controls
-                  .text(markdown="part.assignment")
-          tab(heading="{{'GLOBAL.DISCUSSION' | translate}}")
-            .inner.pad
-              konzilo-comments(ng-model="part.comments")
+      .additional(ng-show="articlePart")
+        kz-deliver-info(part="part")

@@ -1,109 +1,68 @@
 div(kntnt-article-picker)
 .wrapper
   .main-content
-    .list
+    .list(ng-class="{ visible: part }")
       .box.pad
         div(kntnt-clipboard-article-parts, kz-max-height="150", selected="part", link-pattern="#/order/:article/:part", part-created="partCreated")
-    .main-full(ng-show="!part")
-      .box.pad
+    .main-full
+      .box.pad(ng-show="!part")
         h1 {{ "ORDER.TITLE" | translate }}
         p {{ "ORDER.DESCRIPTION" | translate }}
-    .main(ng-show="part")
-      .box.pad
-        h2 {{ "ORDER.PARTDESC" | translate }}
-        cmf-autosave-status(status="autosave")
-        form.form.part-form.form-horizontal(ng-submit="savePart()", name="partForm")
-          .form-group
-            label.control-label(for="title") {{ "GLOBAL.WORKINGTITLE" | translate }}
-            .controls
-              input(type="text", name="title", ng-model="part.title", required)
-          .form-group
-            label.control-label(for="submitter") {{ "GLOBAL.SUBMITTER" | translate }}
-            .controls
-              entity-reference(ng-model="part.submitter", entity-type="Provider")
-          .form-group
-            label.control-label(for="provider") {{ "GLOBAL.PROVIDER" | translate }}
-            .controls
-              entity-reference(ng-model="part.provider", entity-type="Provider")
-          .form-group
-            label.control-label(for="deadline") {{ "GLOBAL.DEADLINE" | translate }}
-            .controls
-              .publishdate
-                input(type="text", ng-model="part.deadline", placeholder="{{'GLOBAL.DATE' | translate}}",
-                  datepicker-popup="yyyy-MM-dd", ng-change="changeDate()")
-              .publishtime
-                input(type="text", ng-model="deadlinetime", ng-change="changeTime(deadlinetime, part.deadline)", placeholder="{{'GLOBAL.TIME' | translate}}")
-          .form-group
-            label.control-label(for="type") {{'GLOBAL.DELIVERY' | translate}}
-            .controls
-              select(name="type", ng-model="part.type", ng-options="key as value for (key, value) in types", required, ng-disabled="contentSaved(part)")
-          .form-group
-            label.control-label(for="language") {{ 'GLOBAL.LANGUAGE' | translate }}
-            .controls
-              select(name="language", ng-model="part.language")
-                option(value="{{code}}", ng-repeat="(code, lang) in languages",
-                  ng-selected="part.language == code") {{lang.name}}
-          .form-group
-            label.control-label(for="terms") {{ 'GLOBAL.TERMS' | translate }}
-            .controls
-              file-upload-list(ng-model="part.terms", bundle="document", preview="false")
-          .form-group
-            label.control-label(for="assignment") {{ 'GLOBAL.ASSIGNMENT' | translate }}
-            .controls
-              textarea.input-block-level(ng-model="part.assignment", placeholder="Beskriv uppdraget här.")
-          .form-group
-            label.control-label(for="teaser") {{ 'GLOBAL.DISPLAY' | translate }}
-            .controls
-              label.checkbox
-                input(type="checkbox", ng-model="part.teaser")
-                span {{'ORDER.SHOWLISTINGS' | translate}}
-
-    .additional(ng-show="part")
-      .tabbed-box
-        tabset
-          tab(heading="{{ 'ORDER.ARTICLE_TITLE' | translate}}")
-            .inner.form.form-horizontal.article-description
-              .form-group
-                label.control-label(for="date") {{'GLOBAL.PUBLISHING' | translate}}
-                .controls
-                  span {{article.publishdate |  date: 'yyyy-MM-dd'}} {{'ORDER.PUBLISHINFO' | translate}}
-              .form-group(ng-show="article.unpublishdate")
-                label.control-label(for="date") {{ 'GLOBAL.UNPUBLISHING' | translate }}
-                .controls
-                  span {{article.unpublishdate | date: 'yyyy-MM-dd' }}
-              .form-group(ng-show="channel")
-                label.control-label {{ 'GLOBAL.CHANNEL' | translate }}
-                .controls
-                  span(markdown="channel.description")
-              .form-group(ng-show="target")
-                label.control-label(for="target") {{ 'GLOBAL.TARGET' | translate }}
-                .controls
-                  span(markdown="target.description")
-                  a(ng-click="showAnalysis(target)") {{ 'GLOBAL.SHOW_ANALYSIS' | translate }}
-              .form-group(ng-show="article.step")
-                label.control-label(for="steps") {{ 'GLOBAL.STEP' | translate }}
-                .controls
-                  span {{ target.steps[article.step].description }}
-              .form-group(ng-show="article.step")
-                label.control-label(for="target") {{ 'GLOBAL.SUBJECT' | translate }}
-                .controls
-                  span(ng-show="article.topic")
-                    span {{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate: translations  }}
-              .form-group(ng-show="article.keywords")
-                label.control-label {{ 'GLOBAL.KEYWORDS' | translate  }}
-                .controls
-                  span {{'GLOBAL.KEYWORD_SPEC' | translate: translations }}
-                  ul.keywords
-                    li.label.label-info(ng-repeat="item in article.keywords")
-                      span {{item}}
-              .form-group(ng-show="article.description")
-                label.control-label(for="description") {{ 'GLOBAL.ARTICLE_IDEA' | translate }}
-                .controls
-                  .text(markdown="article.description")
-          tab(heading="{{ 'GLOBAL.DISCUSSION' | translate }}")
-            .inner.pad
-              konzilo-comments(ng-model="part.comments")
-          tab(heading="{{'GLOBAL.VERSIONS' | translate}}")
-            .inner.pad
-              konzilo-article-part-versions(part="part", link-pattern="#/order/:article_id/:id")
-              konzilo-article-part-new-version(part="part")
+      .main(ng-show="part", ng-class="{ visible: part }")
+        .box.pad
+          ol.breadcrumb(ng-show="part")
+            li
+              a(ng-href="#/order") {{'ORDER.TITLE' | translate}}
+            li.active
+              {{part.article.title}}
+            li.active(ng-show="part")
+              {{part.title}}
+          h2 {{ "ORDER.PARTDESC" | translate }}
+          cmf-autosave-status(status="autosave")
+          form.form.form-horizontal(ng-submit="savePart()", name="partForm")
+            .form-group
+              label.control-label(for="title") {{ "GLOBAL.WORKINGTITLE" | translate }}
+              .controls
+                input(type="text", name="title", ng-model="part.title", required)
+            .form-group
+              label.control-label(for="submitter") {{ "GLOBAL.SUBMITTER" | translate }}
+              .controls
+                entity-reference(ng-model="part.submitter", entity-type="Provider")
+            .form-group
+              label.control-label(for="provider") {{ "GLOBAL.PROVIDER" | translate }}
+              .controls
+                entity-reference(ng-model="part.provider", entity-type="Provider")
+            .form-group
+              label.control-label(for="deadline") {{ "GLOBAL.DEADLINE" | translate }}
+              .controls
+                .publishdate
+                  input(type="text", ng-model="part.deadline", placeholder="{{'GLOBAL.DATE' | translate}}",
+                    datepicker-popup="yyyy-MM-dd", ng-change="changeDate()")
+                .publishtime
+                  input(type="text", ng-model="deadlinetime", ng-change="changeTime(deadlinetime, part.deadline)", placeholder="{{'GLOBAL.TIME' | translate}}")
+            .form-group
+              label.control-label(for="type") {{'GLOBAL.DELIVERY' | translate}}
+              .controls
+                select(name="type", ng-model="part.type", ng-options="key as value for (key, value) in types", required, ng-disabled="contentSaved(part)")
+            .form-group
+              label.control-label(for="language") {{ 'GLOBAL.LANGUAGE' | translate }}
+              .controls
+                select(name="language", ng-model="part.language")
+                  option(value="{{code}}", ng-repeat="(code, lang) in languages",
+                    ng-selected="part.language == code") {{lang.name}}
+            .form-group
+              label.control-label(for="terms") {{ 'GLOBAL.TERMS' | translate }}
+              .controls
+                file-upload-list(ng-model="part.terms", bundle="document", preview="false")
+            .form-group
+              label.control-label(for="assignment") {{ 'GLOBAL.ASSIGNMENT' | translate }}
+              .controls
+                textarea.input-block-level(ng-model="part.assignment", placeholder="Beskriv uppdraget här.")
+            .form-group
+              label.control-label(for="teaser") {{ 'GLOBAL.DISPLAY' | translate }}
+              .controls
+                label.checkbox
+                  input(type="checkbox", ng-model="part.teaser")
+                  span {{'ORDER.SHOWLISTINGS' | translate}}
+      .additional(ng-show="part")
+        kz-order-info(part="part")

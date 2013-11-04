@@ -27,9 +27,11 @@
 
 @import "bootstrap/less/modals.less";
 @import "bootstrap/less/button-groups.less";
+@import "bootstrap/less/responsive-utilities.less";
 
 // Font awesome import
 @import "font-awesome/less/variables.less";
+
 @import "font-awesome/less/mixins.less";
 @FontAwesomePath:   "../font";
 @import "font-awesome/less/path.less";
@@ -83,6 +85,8 @@
 
 @btn-primary-bg: @kntntGreen;
 
+//@screen-lg: 1500px;
+
 @navbar-inverse-color: @white;
 @navbar-inverse-link-color: @white;
 
@@ -91,6 +95,8 @@
 @label-info-bg: darken(@blue, 20%);
 
 @label-success-bg: @kntntGreen;
+
+@grid-float-breakpoint: 1100px;
 
 h1 { font-size: @font-size-base * 2.25; } // ~38px
 h2 { font-size: @font-size-base * 1.75; } // ~32px
@@ -138,9 +144,6 @@ input[type="color"] {
 
 .form-horizontal .controls {
   .make-lg-column(8);
-  select {
-    .make-lg-column(6);
-  }
 }
 
 .help-block {
@@ -160,7 +163,7 @@ img {
   .container;
 }
 .form-horizontal .control-label {
-  .make-lg-column(2);
+  .make-lg-column(3);
 }
 
 .form-horizontal .form-actions {
@@ -168,14 +171,14 @@ img {
 }
 
 .publishdate {
-  .make-lg-column(8);
+  .make-xs-column(8);
   padding-right: 0px;
   padding-left: 0px;
   padding-right: 0px;
 }
 
 .publishtime {
-  .make-lg-column(4);
+  .make-xs-column(4);
   padding-left: 5px;
   padding-right: 0px;
 }
@@ -185,7 +188,7 @@ img {
 // }
 
 // input.publishtime {
-//   .make-lg-column(6);
+//   .jake-lg-column(6);
 // }
 
 .radio, .checkbox {
@@ -205,24 +208,34 @@ body {
   padding-top: 50px;
   background: @background;
   .make-row();
-
   .list {
     .make-md-column(4);
     .make-lg-column(3);
+    @media (max-width: @screen-md) {
+      &.visible {
+        display: none;
+      }
+    }
   }
 
   .main-full {
-    .make-md-column(9);
+    .make-md-column(8);
+    .make-lg-column(9);
   }
 
   .main {
-    .make-md-column(8);
-    .make-lg-column(5);
+    .make-lg-column(7);
+    @media (min-width: @screen-md) {
+      .breadcrumb {
+        display: none;
+      }
+    }
   }
 
   .additional {
-    .make-md-column(4);
+    .make-lg-column(5);
   }
+
   .half {
     .make-md-column(6);
   }
@@ -230,6 +243,15 @@ body {
     .make-xs-column(12);
   }
 }
+
+.additional-info {
+  margin-right: 10px;
+  margin-top: 10px;
+  @media (min-width: @screen-lg) {
+    display: none;
+  }
+}
+
 
 .title {
   .save-status {
@@ -391,6 +413,7 @@ body {
   h2, h3, h4 {
     font-weight: normal;
     margin-bottom: 10px;
+    margin-left: 5px;
   }
 
 }
@@ -493,9 +516,9 @@ a.new-target {
 
 .row-item {
   .block {
+    .make-xs-column(8);
+    padding-left: 0;
     display: block;
-    float: left;
-    width: 90%;
     height: 100%;
   }
   display: block;
@@ -742,9 +765,7 @@ a.new-target {
 
 form.add-article {
   input {
-    width: 57%;
-    padding: 4px 2px 4px 4px;
-    margin:0;
+    .make-xs-column(8);
   }
   padding: 3%;
   background: @kntntGreen;
@@ -766,6 +787,12 @@ form.add-part-form {
 
 // Special styling for part forms.
 .part-form.form-horizontal {
+  h2 {
+    margin-left: 0;
+  }
+  .control-label {
+    .make-lg-column(2);
+  }
   .controls {
     .make-lg-column(10);
     input[type="text"], input[type="url"] {
@@ -821,6 +848,7 @@ form.add-part-form {
 .zenmode {
   position: absolute;
   min-width: 100%;
+  width: 100%;
   min-height: 95%;
   background: @white;
   z-index: 1049;
@@ -868,6 +896,10 @@ form.add-part-form {
   }
 }
 
+.file-upload {
+  padding-top: 10px;
+}
+
 .form-horizontal .form-group {
   padding-bottom: 10px;
   border-bottom: 1px solid @grayLighter;
@@ -883,10 +915,10 @@ form.add-part-form {
   .top {
     .make-row();
     .image {
-      .make-md-column(4);
+      .make-xs-column(4);
     }
     .top {
-      .make-md-column(8);
+      .make-xs-column(8);
     }
   }
   h3 {
@@ -917,6 +949,10 @@ form.add-part-form {
   &:hover {
     border: 1px dotted @kntntGreen;
   }
+  .tools {
+    overflow: hidden;
+    padding-bottom: 5px;
+  }
   textarea {
     min-height: 400px;
   }
@@ -944,12 +980,17 @@ form.add-part-form {
   }
   .panel {
     background: @white;
+    border: 1px solid @grayLighter;
     margin-bottom: 5px;
   }
   .panel-heading {
     .group > .top;
     a {
+      font-size: 0.8em;
       color: @white;
+      width: 100%;
+      display: block;
+      height: 40px;
     }
   }
   .panel-body {
@@ -966,9 +1007,10 @@ form.add-part-form {
 }
 
 .create-form {
+  margin: 0;
+  margin-bottom: 20px;
   background: @kntntGreen;
   color: @white;
-  margin: 0;
   button {
     border: none;
     background: @white;
@@ -992,6 +1034,13 @@ form.add-part-form {
 
 .modal-body {
   overflow: auto;
+  .tabbed-box > .inner, .tabbed-box .tab-pane {
+    border: none;
+  }
+  .form-horizontal {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 .menu-list {
@@ -1036,5 +1085,23 @@ form.add-part-form {
 .max-height {
   padding-right: 10px;
 }
+
+.breadcrumb {
+  background: @white;
+}
+
+.plan-link {
+  @media (min-width: @screen-lg) {
+    display: none;
+  }
+}
+
+// Re-implement dropdown submenu
+.dropdown-submenu{position:relative;}
+.dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
+.dropdown-submenu:hover>.dropdown-menu{display:block;}
+.dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}
+.dropdown-submenu:hover>a:after{border-left-color:#ffffff;}
+.dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
 
 @horizontalComponentOffset: 100px;

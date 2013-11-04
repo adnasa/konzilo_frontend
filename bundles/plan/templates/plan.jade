@@ -1,24 +1,28 @@
 div(kntnt-article-picker)
 .wrapper
   .main-content
-    .list
+    .list(ng-class="{visible: article}")
       div(kntnt-clipboard-articles,
         link-pattern="#/plan/:_id",
         first-article="firstArticle",
         article-created="articleCreated")
-    .main-full(ng-show="!article")
-      .box.pad
+    .main-full
+      .box.pad(ng-show="!article")
         h1 {{ "PLAN.TITLE" | translate }}
         p {{ "PLAN.DESCRIPTION" | translate }}
-    .main(ng-show="article")
-      section.articleinfo
+      .main(ng-show="article")
         .box.pad
+          ol.breadcrumb(ng-show="article")
+            li
+              a(ng-href="#/plan") {{'PLAN.TITLE' | translate}}
+            li.active(ng-show="article")
+              {{article.title}}
           h2 {{ "PLAN.PLAN_TITLE" | translate }}
           konzilo-article-form(article="article")
-    .additional(ng-show="article")
-      .tabbed-box
-        ul.nav.nav-tabs
-          li.active
-            a {{ "GLOBAL.DISCUSSION" | translate }}
-        .inner.pad
-          konzilo-comments(ng-model="article.comments")
+      .additional(ng-show="article")
+        .tabbed-box
+          ul.nav.nav-tabs
+            li.active
+              a {{ "GLOBAL.DISCUSSION" | translate }}
+          .inner.pad
+            konzilo-comments(ng-model="article.comments")

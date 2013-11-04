@@ -27,6 +27,44 @@ angular.module("konzilo.order", ["konzilo.menu"])
   , (userAccess) ->
     userAccess("create article parts")
 ])
+
+.controller("OrderInfo", ["$scope", "TargetStorage",
+"ChannelStorage", "StepStorage", "KonziloConfig",
+($scope, TargetStorage, ChannelStorage, StepStorage, KonziloConfig) ->
+  update = ->
+    return if not $scope.part
+    $scope.translations = {}
+
+    $scope.article = $scope.part.article
+    if $scope.part.article.topic
+      $scope.translations.topic = $scope.part.article.topic
+
+    if $scope.part.article.target
+      TargetStorage.get($scope.part.article.target).then (result) ->
+        $scope.target = result.toObject()
+        $scope.translations.target = $scope.target.name
+
+    if $scope.part.article.channel
+      $scope.channel = ChannelStorage.get($scope.part.article.channel)
+      .then (result) -> result.toObject()
+
+    if $scope.part.article.step
+      $scope.step = StepStorage.get($scope.part.article.step)
+      .then (result) -> result.toObject()
+
+    if $scope.part.language
+      $scope.language = KonziloConfig.get("languages")
+      .get($scope.part.language)
+  $scope.$watch("part", update)
+])
+
+.directive("kzOrderInfo", ->
+  restrict: "AE"
+  scope: part: "="
+  controller: "OrderInfo"
+  templateUrl: 'bundles/order/order-info.html'
+)
+
 .controller("OrderController",
 ["$scope", "ArticleStorage", "$routeParams",
 "UserStorage", "$q", "articleParts", "KonziloConfig",
@@ -36,7 +74,8 @@ angular.module("konzilo.order", ["konzilo.menu"])
 ($scope, ArticleStorage, $routeParams,
 UserStorage, $q, articleParts, KonziloConfig,
 TargetStorage, InputAutoSave, StepStorage,
-ArticlePartStorage, ChannelStorage, $filter, kzAnalysisDialog, $location) ->
+ArticlePartStorage, ChannelStorage, $filter,
+kzAnalysisDialog, $location) ->
   $scope.savePart = ->
     ArticlePartStorage.save $scope.part
 
@@ -56,23 +95,6 @@ ArticlePartStorage, ChannelStorage, $filter, kzAnalysisDialog, $location) ->
   if $routeParams.article
     ArticleStorage.get $routeParams.article, (article) ->
       $scope.article = article.toObject()
-      $scope.translations["topic"] = $scope.article.topic
-      if $scope.article.target
-        TargetStorage.get($scope.article.target)
-        .then (result) ->
-          $scope.target = result.toObject()
-          $scope.translations["target"] = $scope.target.name
-
-      if $scope.article.channel
-        $scope.channel = ChannelStorage.get($scope.article.channel)
-        .then (result) -> result.toObject()
-
-      if $scope.article.step
-        StepStorage.get($scope.article.step)
-        .then (result) ->
-          $scope.step = result.toObject()
-          $scope.translations["step"] = $scope.step.name
-
       if $routeParams.part
         getPart($routeParams.part)
 

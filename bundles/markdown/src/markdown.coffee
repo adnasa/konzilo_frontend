@@ -36,26 +36,9 @@ angular.module('konzilo.markdown', ["konzilo.file"])
           callback("[[entityType: File, alt: #{settings.alt}, title: #{settings.title}, entityId: #{file._id}]]")
 )
 
-.factory("MarkdownZenPlugin", ["MarkdownPlugin", (MarkdownPlugin) ->
-  class MarkdownZenPlugin extends MarkdownPlugin
-    constructor: (@icon) ->
-      super(@icon, "")
-
-    operation: (text, option, element, callback) ->
-      element.toggleClass('zenmode')
-      height = $('body').height()
-      element.height(height)
-      element.find('textarea').height(height - 200)
-      if element.hasClass('zenmode')
-        element.find('.preview').show()
-      else
-        element.find('.preview').hide()
-      callback(false)
-])
-
 .factory("markdownPlugins",
-["MarkdownPlugin", "MarkdownBrowserPlugin", "MarkdownZenPlugin",
-(MarkdownPlugin, MarkdownBrowserPlugin, MarkdownZenPlugin) ->
+["MarkdownPlugin", "MarkdownBrowserPlugin",
+(MarkdownPlugin, MarkdownBrowserPlugin) ->
   headings =
     "Heading 1": "# {{text}}\r\n"
     "Heading 2": "## {{text}}\r\n"
@@ -69,7 +52,6 @@ angular.module('konzilo.markdown', ["konzilo.file"])
   orderedlist: new MarkdownPlugin('icon-list', "{{row}}. {{text}}", true)
   link: new MarkdownPlugin('icon-link', "[{{text}}]()")
   image: new MarkdownBrowserPlugin('icon-picture')
-  zen: new MarkdownZenPlugin('icon-desktop')
 ])
 
 # Our markdown converter also supports some added
@@ -132,8 +114,7 @@ angular.module('konzilo.markdown', ["konzilo.file"])
     editor.css('overflow', "hidden")
     showInput = ->
       editor.height("auto")
-      if not element.hasClass('zenmode')
-        preview.hide()
+      preview.hide()
       editorFocused = true
     focusTextArea = ->
       showInput()
