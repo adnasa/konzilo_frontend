@@ -17,6 +17,7 @@ angular.module "kntnt.approve",
   $routeProvider.when('/approve', approve)
   .when("/approve/:id", approve)
 ])
+
 .run(['konziloMenu','$translate', (konziloMenu, $translate) ->
   menu = konziloMenu("mainMenu")
   item = menu.addItem
@@ -27,12 +28,9 @@ angular.module "kntnt.approve",
     userAccess("update article parts")
 ])
 .controller("ApproveController", [
-  '$scope', 'ClipboardStorage', 'ArticlePartStorage',
-  '$routeParams', 'TargetStorage', 'StepStorage',
-  'kzAnalysisDialog', '$translate', "$location", "KonziloConfig",
-  ($scope, ClipboardStorage, ArticlePartStorage, $routeParams,
-    TargetStorage, StepStorage, kzAnalysisDialog,
-    $translate, $location, KonziloConfig) ->
+  '$scope', 'ArticlePartStorage',
+  '$routeParams','$translate', "$location",
+  ($scope, ArticlePartStorage, $routeParams, $translate, $location) ->
     $scope.query = { state: "needsreview" }
 
     $scope.failState = "started"
@@ -49,23 +47,7 @@ angular.module "kntnt.approve",
 
     if $routeParams.id
       ArticlePartStorage.get $routeParams.id, (articlePart) ->
-
         $scope.articlePart = articlePart
         $scope.part = articlePart.toObject()
 
-        $scope.translateVars =
-          topic: $scope.part.article.topic
-
-        if $scope.part.article.target
-          $scope.target = TargetStorage.get($scope.part.article.target)
-          .then (result) ->
-            $scope.translateVars['name'] = result.get("name")
-            result.toObject()
-
-        if $scope.part.language
-          $scope.language = KonziloConfig.get("languages")
-          .get($scope.part.language)
-
-    $scope.showAnalysis = (target) ->
-      kzAnalysisDialog(target)
 ])

@@ -1,15 +1,16 @@
 form.form.content-table-form.draggable(ng-show="items", ng-submit="performActions()")
-  .control-group
+  .form-group
     .controls
       input(type="text", name="search", ng-model="search", placeholder="{{'GLOBAL.SEARCH' | translate}}")
-    .control-group.actions(ng-show="operations")
-      .controls
-        .operations
-          select(name="operation", ng-options="item.label for (name, item) in operations", ng-model="operation")
-        .actions(ng-transclude)
-        .confirm
-          input(type="submit", value="{{ 'GLOBAL.EXECUTE' | translate }}")
-    table.table.table-striped
+  .form-group.actions(ng-show="operations")
+    .controls
+      .operations
+        select(name="operation", ng-options="item.label for (name, item) in operations", ng-model="operation")
+      .actions(ng-transclude)
+  .confirm.form-group
+    .controls
+      input.btn.btn-primary(type="submit", value="{{ 'GLOBAL.EXECUTE' | translate }}")
+  table.table.table-striped
       thead
         tr
           th(ng-show="operations")
@@ -21,7 +22,7 @@ form.form.content-table-form.draggable(ng-show="items", ng-submit="performAction
             input(type="checkbox", name="selected", ng-model="selected[key]")
           td(ng-repeat="property in props")
             content-value(item="item", property="property", options="properties[property]")
-   .pagination
+   .pagination(ng-show="pages")
      ul
        li(ng-repeat="page in pages")
          button.btn-link(ng-click="getPage(page)")

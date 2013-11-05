@@ -1,6 +1,7 @@
 form.form-inline.add-article(ng-submit="addArticle()")
-  input(type="text", name="name", ng-model="articleTitle",
-    required,
-    placeholder="{{'GLOBAL.NEWARTICLE' | translate}}")
-  button.btn.add-article
+  .form-group
+    input(type="text", name="name", ng-model="articleTitle",
+      required,
+      placeholder="{{'GLOBAL.NEWARTICLE' | translate}}")
+  button.btn.btn-default.add-article
     i.icon-plus

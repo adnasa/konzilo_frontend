@@ -1,34 +1,35 @@
-ng-form.form.form-horizontal(name="partForm")
-  .title
-      cmf-autosave-status(status="autosave")
-      h2 {{ 'MEDIAPART.TITLE' | translate }}
-  .control-group
-    label.control-label {{ 'MEDIAPART.MEDIA' | translate }}
-    .controls
-      cmf-inline(ng-model="content.media")
-        cmf-inline-preview
-          // @todo This needs to be redone in a safer way.
-          .video(ng-bind-html-unsafe="video", ng-show="video")
-          img(src="{{photo}}", ng-show="photo")
-        cmf-inline-input
-          input(type="url", ng-model="content.media", ng-change="showMedia()")
-  .control-group
-    label.control-label {{ 'GLOBAL.TITLE' | translate }}
-    .controls
-      cmf-inline(ng-model="content.title")
-        cmf-inline-preview
-          i.icon-edit.pull-right
-          h1 {{content.title}}
-        cmf-inline-input
-          input(type="text", name="headline", ng-model="content.title")
-  .control-group
-    label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
-    .controls
-      cmf-inline(ng-model="content.description")
-        cmf-inline-preview
-          i.icon-edit.pull-right
-          strong {{content.description}}
-        cmf-inline-input
-          textarea.input-block-level(type="text", name="description", ng-model="content.description")
-  author-picker(author="part.byline")
-  kz-vocabulary-input(ng-model="part.vocabularies")
+ng-form(name="partForm")
+  .form-horizontal.part-form
+    .title
+        cmf-autosave-status(status="autosave")
+        h2 {{ 'MEDIAPART.TITLE' | translate }}
+    .form-group
+      label.control-label {{ 'MEDIAPART.MEDIA' | translate }}
+      .controls
+        cmf-inline(ng-model="content.media")
+          cmf-inline-preview
+            // @todo This needs to be redone in a safer way.
+            .video(ng-bind-html-unsafe="video", ng-show="video")
+            img(src="{{photo}}", ng-show="photo")
+          cmf-inline-input
+            input(type="url", ng-model="content.media", ng-change="showMedia()")
+    .form-group
+      label.control-label {{ 'GLOBAL.TITLE' | translate }}
+      .controls
+        cmf-inline(ng-model="content.title")
+          cmf-inline-preview
+            i.icon-edit.pull-right
+            h1 {{content.title}}
+          cmf-inline-input
+            input(type="text", name="headline", ng-model="content.title")
+    .form-group
+      label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
+      .controls
+        cmf-inline(ng-model="content.description")
+          cmf-inline-preview
+            i.icon-edit.pull-right
+            strong {{content.description}}
+          cmf-inline-input
+            textarea.input-block-level(type="text", name="description", ng-model="content.description")
+    author-picker(author="part.byline")
+    kz-vocabulary-input(ng-model="part.vocabularies")

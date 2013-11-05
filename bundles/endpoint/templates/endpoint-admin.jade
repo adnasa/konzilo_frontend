@@ -1,39 +1,39 @@
-.container-fluid.main-content
-  .row-fluid
-    .span12.right-side(ng-class="mainClass()")
+.wrapper
+  .main-content
+    div(ng-class="{full: !endpoint, half: endpoint}")
       .box.pad
-        h2 {{'ENDPOINT.TITLE' | translate}}
+        h1 {{'ENDPOINT.TITLE' | translate}}
         content-table(items="endpoints", properties="properties", id="name", selected="selected", operations="operations")
-        h3 {{'ENDPOINT.ADDNEW' | translate}}
-        form.form.form-horizontal(name="addEndpointForm", ng-submit="addEndpoint()")
-          .control-group
+        h2 {{'ENDPOINT.ADDNEW' | translate}}
+        form.form(name="addEndpointForm", ng-submit="addEndpoint()")
+          .form-group
             label.control-label(for="name") {{'GLOBAL.NAME' | translate}}
             .controls
               input(type="text", name="name", ng-model="newEndpoint.name", required)
-          .control-group
+          .form-group
             label.control-label(for="langcode") {{'GLOBAL.TYPE' | translate}}
             .controls
               select(type="text", name="name", ng-model="type", required, ng-options="value.label for (key, value) in types", required)
-          .control-group(ng-repeat="(name, setting) in type.settings")
+          .form-group(ng-repeat="(name, setting) in type.settings")
             label.control-label {{setting}}
             .controls
               input(type="text", ng-model="newEndpoint.settings[name]", required)
           .form-actions
             input.btn.btn-primary(type="submit", value="{{'GLOBAL.SAVE' | translate}}")
-    .span6(ng-show="endpoint")
+    .half(ng-show="endpoint")
       .box.pad
         h2 {{endpoint.name}}
-        form.form.form-horizontal(name="editEndpointForm", ng-submit="addEndpoint()")
+        form.form(name="editEndpointForm", ng-submit="addEndpoint()")
           cmf-autosave-status(status="autosave")
-          .control-group
+          .form-group
             label.control-label(for="name") {{'GLOBAL.NAME' | translate}}
             .controls
               input(type="text", name="name", ng-model="endpoint.name", required)
-          .control-group(ng-repeat="(name, setting) in getSettings(endpoint.type)")
+          .form-group(ng-repeat="(name, setting) in getSettings(endpoint.type)")
             label.control-label {{setting}}
             .controls
               input(type="text", ng-model="endpoint.settings[name]", required)
-        form.form-horizontal(method="POST", action="/endpoint/{{endpoint.name}}/authorize")
-          .control-group
+        form(method="POST", action="/endpoint/{{endpoint.name}}/authorize")
+          .form-group
             .controls
               input.btn-primary.btn(type="submit", name="save", value="Auktorisera")

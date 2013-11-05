@@ -4,7 +4,7 @@
     .tools
       .btn-toolbar.clearfix
         .btn-group.dropdown(ng-repeat="tool in tools")
-          a.btn.dropdown-toggle.markdown-editor-control(ng-click="useTool(tool)")
+          a.btn.btn-default.dropdown-toggle.markdown-editor-control(ng-click="useTool(tool)")
             i(ng-class="tool.icon")
           ul.dropdown-menu(ng-show="tool.options")
             li(ng-repeat="(name, template) in tool.options")

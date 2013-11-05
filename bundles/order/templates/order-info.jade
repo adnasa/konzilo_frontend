@@ -1,0 +1,49 @@
+.tabbed-box
+  tabset
+    tab(heading="{{ 'ORDER.ARTICLE_TITLE' | translate}}")
+      .pad
+        .inner.form.form-horizontal.article-description
+          .form-group
+            label.control-label(for="date") {{'GLOBAL.PUBLISHING' | translate}}
+            .controls
+              span {{article.publishdate |  date: 'yyyy-MM-dd'}} {{'ORDER.PUBLISHINFO' | translate}}
+          .form-group(ng-show="article.unpublishdate")
+            label.control-label(for="date") {{ 'GLOBAL.UNPUBLISHING' | translate }}
+            .controls
+              span {{article.unpublishdate | date: 'yyyy-MM-dd' }}
+          .form-group(ng-show="channel")
+            label.control-label {{ 'GLOBAL.CHANNEL' | translate }}
+            .controls
+              span(markdown="channel.description")
+          .form-group(ng-show="target")
+            label.control-label(for="target") {{ 'GLOBAL.TARGET' | translate }}
+            .controls
+              span(markdown="target.description")
+              a(ng-click="showAnalysis(target)") {{ 'GLOBAL.SHOW_ANALYSIS' | translate }}
+          .form-group(ng-show="article.step")
+            label.control-label(for="steps") {{ 'GLOBAL.STEP' | translate }}
+            .controls
+              span {{ target.steps[article.step].description }}
+          .form-group(ng-show="article.step")
+            label.control-label(for="target") {{ 'GLOBAL.SUBJECT' | translate }}
+            .controls
+              span(ng-show="article.topic")
+                span {{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate: translations  }}
+          .form-group(ng-show="article.keywords")
+            label.control-label {{ 'GLOBAL.KEYWORDS' | translate  }}
+            .controls
+              span {{'GLOBAL.KEYWORD_SPEC' | translate: translations }}
+              ul.keywords
+                li.label.label-info(ng-repeat="item in article.keywords")
+                  span {{item}}
+          .form-group(ng-show="article.description")
+            label.control-label(for="description") {{ 'GLOBAL.ARTICLE_IDEA' | translate }}
+            .controls
+            .text(markdown="article.description")
+    tab(heading="{{ 'GLOBAL.DISCUSSION' | translate }}")
+      .inner.pad
+        konzilo-comments(ng-model="part.comments")
+    tab(heading="{{'GLOBAL.VERSIONS' | translate}}")
+      .inner.pad
+        konzilo-article-part-versions(part="part", link-pattern="#/order/:article_id/:id")
+        konzilo-article-part-new-version(part="part")

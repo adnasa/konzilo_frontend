@@ -74,7 +74,8 @@
     "LOGOUT": "Log out",
     "BACK": "Back",
     "HIDE": "Dölj",
-    "FETCHMORE": "Fetch more"
+    "FETCHMORE": "Fetch more",
+    "DETAILS": "Details"
   },
   "CHANNEL": {
     "TITLE": "Channels",
@@ -152,7 +153,8 @@
   "GROUP": {
     "TITLE": "Groups",
     "CREATENEW": "New group",
-    "CREATE": "Create group"
+    "CREATE": "Create group",
+    "ADDUSER": "Add user to group"
   },
   "MANAGE": {
     "TITLE": "Manage",

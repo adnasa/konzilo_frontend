@@ -9,6 +9,7 @@ angular.module('konzilo.translations', ['pascalprecht.translate'])
 .directive("languageSwitcher", ->
   restrict: 'AE'
   scope: defaults: "="
+  replace: true
   controller: ["$scope", "$element", "$attrs", "$translate",
   "KonziloConfig", "UserState",
   ($scope, $element, $attrs, $translate, KonziloConfig, UserState) ->

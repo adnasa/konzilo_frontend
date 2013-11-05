@@ -4,16 +4,16 @@
   .modal-body
     p {{target.description}}
     .form.form-horizontal.article-description
-      .control-group(ng-class="name", ng-repeat="(name, mood) in target.analysis")
+      .form-group(ng-class="name", ng-repeat="(name, mood) in target.analysis")
         label.control-label {{moods[name] | translate}}
         .controls
           ul
             li(ng-repeat="word in mood") {{word}}
-      .control-group(ng-show="target.pain")
+      .form-group(ng-show="target.pain")
         label.control-label {{'TARGET.PAIN' | translate}}
         .controls
           p {{target.pain}}
-      .control-group(ng-show="target.gain")
+      .form-group(ng-show="target.gain")
         label.control-label {{ 'TARGET.GAIN' | translate }}
         .controls
           p {{target.gain}}

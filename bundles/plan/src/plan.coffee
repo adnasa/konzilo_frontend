@@ -46,7 +46,7 @@ angular.module("kntnt.plan",
     placeholder: "ui-placeholder box pad"
 
   $scope.$watch "firstArticle", ->
-   if $scope.firstArticle and not $routeParams.id
+   if $scope.firstArticle and not $routeParams.id and $(window).width() > 992
      $location.path("/plan/#{$scope.firstArticle._id}")
 
   $scope.articleCreated = (article) ->
