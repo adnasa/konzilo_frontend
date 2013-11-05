@@ -44,7 +44,6 @@ angular.module("konzilo.endpoint", ["konzilo.config", "konzilo.translations"])
   .then ->
     if $routeParams.endpoint
       bin.get($routeParams.endpoint).then (endpoint) ->
-        console.log endpoint
         $scope.endpoint = endpoint
         $scope.autosave = InputAutoSave.createInstance $scope.endpoint,
           ->
