@@ -107,7 +107,8 @@
     "RETRIEVEPASSWORD": "Begär nytt lösenord",
     "PASSWORDSENT": "En återställningslänk har skickats till den mail.",
     "PASSWORDERROR": "Något gick fel när mailet skulle skickas. Angav du rätt uppgifter?",
-    "USERNAMEOREMAIL": "Användarnamn eller E-post"
+    "USERNAMEOREMAIL": "Användarnamn eller E-post",
+    "BACK": "Tillbaka till inloggning"
   },
   "TARGET": {
     "TITLE": "Målgrupper",

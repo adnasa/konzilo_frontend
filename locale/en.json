@@ -107,7 +107,8 @@
     "RETRIEVEPASSWORD": "Request new password",
     "PASSWORDSENT": "A login reset link has been sent to your email address.",
     "PASSWORDERROR": "Something went wrong. Are you sure you entered the right email address?",
-    "USERNAMEOREMAIL": "Username or email"
+    "USERNAMEOREMAIL": "Username or email",
+    "BACK": "Go back to the login page"
   },
   "TARGET": {
     "TITLE": "Target groups",
