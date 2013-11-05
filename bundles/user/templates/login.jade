@@ -1,7 +1,7 @@
 .login-form
   .box.pad
     form.form(name="loginForm", ng-submit="loginUser()", ng-show="!showReset")
-      .alert(ng-show="message") {{message | translate}}
+      .alert.alert-danger(ng-show="message") {{message | translate}}
       .form-group
         label.control-label {{ 'LOGIN.USERNAMEOREMAIL' | translate }}
         .controls
@@ -9,7 +9,7 @@
       .form-group
         label.control-label {{ 'GLOBAL.PASSWORD' | translate }}
         .controls
-          input(type="password", name="password", ng-model="password", ng-required)
+          input(type="password", name="password", ng-model="password", required)
           span.help-block
             a(ng-click="showReset = !showReset") {{'LOGIN.FORGOTPASSWORD' | translate}}
       .form-group

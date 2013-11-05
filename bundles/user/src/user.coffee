@@ -307,7 +307,7 @@ angular.module("kntnt.user",
         else
           window.location = "/"
       (result) ->
-        $scope.message = "Felaktigt användarnamn eller lösenord"
+        $scope.message = "LOGIN.WRONGUSERNAMEPASSWORD"
   $scope.sendPassword = ->
     $http.post("/password/#{$scope.forgot}").then ->
       $scope.message = "LOGIN.PASSWORDSENT"
