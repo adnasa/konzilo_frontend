@@ -17,7 +17,7 @@
           input.btn.btn-primary(type="submit", value="{{ 'LOGIN.LOGIN' | translate }}")
     form.form(name="forgotPasswordForm", ng-submit="sendPassword()", ng-show="showReset")
       .form-group
-        label.control-label {{'LOGIN.USERNAMEOREMAIL' | translate}}
+        label.control-label {{'GLOBAL.EMAIL' | translate}}
         .controls
           input(type="text", name="forgotpassword", ng-model="forgot", required)
        .form-group
