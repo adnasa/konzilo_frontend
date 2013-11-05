@@ -57,7 +57,6 @@ angular.module("konzilo.main",
 )
 
 .run(["$route", "$rootScope", ($route, $rootScope)->
-  console.log $rootScope
   $rootScope.$on("$routeChangeSuccess", ->
     $rootScope.navbar = false
   )
