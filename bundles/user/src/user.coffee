@@ -182,7 +182,12 @@ angular.module("kntnt.user",
       access: (userAccess) ->
         userAccess("administer system")
 
+  resetPassword =
+    controller: "ResetPasswordController"
+    templateUrl: "bundles/user/reset-password.html"
+
   $routeProvider.when('/login', login)
+  $routeProvider.when('/resetpassword', resetPassword)
   $routeProvider.when('/profile', profile)
   $routeProvider.when('/profile/:user', profile)
   $routeProvider.when('/dashboard', dashboard)
@@ -313,6 +318,21 @@ angular.module("kntnt.user",
       $scope.message = "LOGIN.PASSWORDSENT"
     , (err) ->
       $scope.message = "LOGIN.PASSWORDERROR"
+])
+
+.controller("ResetPasswordController",
+["$scope", "UserState", "$location", "$http", "$translate",
+($scope, UserState, $location, $http, $translate) ->
+  $scope.$parent.title = $translate("LOGIN.RESETPASSWORD")
+  UserState.loggedIn(true).then ->
+    $location.url("/")
+  $scope.sendPassword = ->
+    delete $scope.errorMessage
+    delete $scope.successMessage
+    $http.post("/password/#{$scope.forgot}").then ->
+      $scope.successMessage = "LOGIN.PASSWORDSENT"
+    , (err) ->
+      $scope.errorMessage = "LOGIN.PASSWORDERROR"
 ])
 
 .directive("userEditForm",
