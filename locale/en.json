@@ -105,6 +105,7 @@
     "LOGIN": "Log in",
     "FORGOTPASSWORD": "Forgot your password?",
     "RETRIEVEPASSWORD": "Request new password",
+    "WRONGUSERNAMEPASSWORD": "You entered an invalid username or password.",
     "PASSWORDSENT": "A login reset link has been sent to your email address.",
     "PASSWORDERROR": "Something went wrong. Are you sure you entered the right email address?",
     "USERNAMEOREMAIL": "Username or email",

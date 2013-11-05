@@ -1,10 +1,8 @@
 angular.module('konzilo.translations', ['pascalprecht.translate'])
 .config(["$translateProvider", ($translateProvider) ->
-  $translateProvider.useStaticFilesLoader
-    prefix: 'locale/',
-    suffix: '.json'
-  $translateProvider.fallbackLanguage('en')
-  $translateProvider.preferredLanguage('en')
+  $translateProvider.useLoader("kzLanguageLoader")
+  $translateProvider.fallbackLanguage('default')
+  $translateProvider.preferredLanguage('default')
 ])
 .directive("languageSwitcher", ->
   restrict: 'AE'
@@ -36,3 +34,12 @@ angular.module('konzilo.translations', ['pascalprecht.translate'])
   ]
   templateUrl: "bundles/translations/language-switcher.html"
 )
+
+.factory('kzLanguageLoader', ["$http", ($http) ->
+  (options) ->
+    if options.key == "default"
+      $http.get("/language").then (result)->
+        result.data
+    else
+      $http.get("locale/#{options.key}.json").then (result) -> result.data
+])

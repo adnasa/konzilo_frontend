@@ -105,9 +105,10 @@
     "LOGIN": "Logga in",
     "FORGOTPASSWORD": "Glömt lösenordet?",
     "RETRIEVEPASSWORD": "Begär nytt lösenord",
+    "WRONGUSERNAMEPASSWORD": "Du angav ett felaktigt användarnamn eller lösenord.",
     "PASSWORDSENT": "En återställningslänk har skickats till den mail.",
     "PASSWORDERROR": "Något gick fel när mailet skulle skickas. Angav du rätt uppgifter?",
-    "USERNAMEOREMAIL": "Användarnamn eller E-post",
+    "USERNAMEOREMAIL": "Användarnamn eller e-postaddress",
     "BACK": "Tillbaka till inloggning"
   },
   "TARGET": {
