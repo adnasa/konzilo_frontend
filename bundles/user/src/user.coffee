@@ -160,9 +160,6 @@ angular.module("kntnt.user",
   dashboard =
     controller: "DashboardController"
     templateUrl: "bundles/user/dashboard.html"
-    resolve:
-      loggedIn: (UserState) ->
-        UserState.loggedIn(true)
 
   profile =
     controller: "UserProfileController"
@@ -281,16 +278,21 @@ angular.module("kntnt.user",
 )
 
 .controller("DashboardController",
-["$scope", "UserStorage", "UserState",
-($scope, UserStorage, UserState) ->
-  info = UserState.getInfo().info()
-  $scope.translations =
-    name: info.username
+["$scope", "UserStorage", "UserState", "$location",
+($scope, UserStorage, UserState, $location) ->
+  UserState.loggedIn(true).then ->
+    info = UserState.getInfo().info
+    console.log info
+    $scope.translations =
+      name: info.username
+  , ->
+    $location.url("/login")
 ])
 
 .controller("LoginController",
-["$scope", "LoginStorage", "UserState", "$location", "GetParameters", "$http",
-($scope, LoginStorage, UserState, $location, GetParameters, $http) ->
+["$scope", "LoginStorage", "UserState", "$location", "GetParameters", "$http", "$translate",
+($scope, LoginStorage, UserState, $location, GetParameters, $http, $translate) ->
+  $scope.$parent.title = $translate("LOGIN.LOGIN")
   UserState.loggedIn(true).then ->
     $location.url("/")
   $scope.loginUser = ->
@@ -311,11 +313,6 @@ angular.module("kntnt.user",
       $scope.message = "LOGIN.PASSWORDSENT"
     , (err) ->
       $scope.message = "LOGIN.PASSWORDERROR"
-])
-
-.controller("DashboardController",
-["$scope", "LoginStorage", "UserState", ($scope, LoginStorage, UserState) ->
-  $scope.user = UserState.getInfo()
 ])
 
 .directive("userEditForm",

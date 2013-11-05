@@ -1,28 +1,26 @@
-.container
-  .main-content
-    .full
-      .box.pad
-        form.form(name="loginForm", ng-submit="loginUser()", ng-show="!showReset")
-          .alert(ng-show="message") {{message | translate}}
-          .form-group
-            label.control-label {{ 'GLOBAL.USERNAME' | translate }}
-            .controls
-              input(type="text", name="username", ng-model="username", ng-required)
-          .form-group
-            label.control-label {{ 'GLOBAL.PASSWORD' | translate }}
-            .controls
-              input(type="password", name="password", ng-model="password", ng-required)
-              span.help-block
-                a(ng-click="showReset = !showReset") {{'LOGIN.FORGOTPASSWORD' | translate}}
-          .form-group
-            .form-actions
-              input.btn.btn-primary(type="submit", value="{{ 'LOGIN.LOGIN' | translate }}")
-        form.form-horizontal(name="forgotPasswordForm", ng-submit="sendPassword()", ng-show="showReset")
-          .form-group
-            label.control-label {{'LOGIN.USERNAMEOREMAIL' | translate}}
-            .controls
-              input(type="text", name="forgotpassword", ng-model="forgot", required)
-           .from-group
-             .controls
-               input.btn.btn-primary(type="submit", value="{{'LOGIN.RETRIEVEPASSWORD' | translate}}")
-               button.btn.btn-warning(type="button", ng-click="showReset = !showReset") {{'GLOBAL.BACK' | translate}}
+.login-form
+  .box.pad
+    form.form(name="loginForm", ng-submit="loginUser()", ng-show="!showReset")
+      .alert(ng-show="message") {{message | translate}}
+      .form-group
+        label.control-label {{ 'LOGIN.USERNAMEOREMAIL' | translate }}
+        .controls
+          input(type="text", name="username", ng-model="username", required)
+      .form-group
+        label.control-label {{ 'GLOBAL.PASSWORD' | translate }}
+        .controls
+          input(type="password", name="password", ng-model="password", ng-required)
+          span.help-block
+            a(ng-click="showReset = !showReset") {{'LOGIN.FORGOTPASSWORD' | translate}}
+      .form-group
+        .form-actions
+          input.btn.btn-primary(type="submit", value="{{ 'LOGIN.LOGIN' | translate }}")
+    form.form(name="forgotPasswordForm", ng-submit="sendPassword()", ng-show="showReset")
+      .form-group
+        label.control-label {{'LOGIN.USERNAMEOREMAIL' | translate}}
+        .controls
+          input(type="text", name="forgotpassword", ng-model="forgot", required)
+       .form-group
+         .controls
+           input.btn.btn-primary(type="submit", value="{{'LOGIN.RETRIEVEPASSWORD' | translate}}")
+           button.btn.btn-link(type="button", ng-click="showReset = !showReset") {{'LOGIN.BACK' | translate}}
