@@ -1,4 +1,4 @@
-form.form.content-table-form.form-horizontal(ng-show="items", ng-submit="performActions()")
+form.form.content-table-form(ng-show="items", ng-submit="performActions()")
   .form-group
     .controls
       input(type="text", name="search",
@@ -8,8 +8,8 @@ form.form.content-table-form.form-horizontal(ng-show="items", ng-submit="perform
       .operations
         select(name="operation", ng-options="item.label for (name, item) in operations", ng-model="operation")
           option(value="") {{ 'GLOBAL.OPERATIONS' | translate }}
-  .actions(ng-transclude)
-    .confirm
+  .form-group.actions(ng-transclude, ng-show="operations")
+    .confirm.controls
        input.btn.btn-primary(type="submit", value="{{ 'GLOBAL.EXECUTE' | translate }}")
   table.table.table-striped
     thead

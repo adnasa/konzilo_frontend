@@ -1,4 +1,4 @@
-form.form.content-table-form.draggable.form-horizontal(ng-show="items", ng-submit="performActions()")
+form.form.content-table-form.draggable(ng-show="items", ng-submit="performActions()")
   .form-group
     .controls
       input(type="text", name="search", ng-model="search", placeholder="{{'GLOBAL.SEARCH' | translate}}")
@@ -7,8 +7,9 @@ form.form.content-table-form.draggable.form-horizontal(ng-show="items", ng-submi
       .operations
         select(name="operation", ng-options="item.label for (name, item) in operations", ng-model="operation")
       .actions(ng-transclude)
-  .confirm
-    input.btn.btn-primary(type="submit", value="{{ 'GLOBAL.EXECUTE' | translate }}")
+  .confirm.form-group
+    .controls
+      input.btn.btn-primary(type="submit", value="{{ 'GLOBAL.EXECUTE' | translate }}")
   table.table.table-striped
       thead
         tr

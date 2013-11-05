@@ -1,12 +1,11 @@
 .wrapper
-  .main-content
+  .main-content.user-mgmt
     .half(ng-class="userGrid()")
-      section.articleinfo
-          .box.pad
-            h2 Användare
-            content-table(items="users", properties="properties",
-              id="username", selected="selected", entity="entity")
-            user-add-form
+      .box.pad
+        h1 Användare
+        content-table(items="users", properties="properties",
+          id="username", selected="selected", entity="entity")
+        user-add-form
     .half(ng-show="user")
       .box.pad
         user-edit-form(user="user")

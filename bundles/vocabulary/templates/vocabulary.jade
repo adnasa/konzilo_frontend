@@ -1,9 +1,11 @@
 .wrapper
   .main-content
     .list
-      form.box.pad(ng-submit="newVocabulary()")
-        input(type="text", name="target", ng-model="vocabularyName", placeholder="")
-        input.btn.btn-primary(type="submit", name="newstep", value="Spara")
+      .box
+        form.form-inline.new-vocabulary-form(ng-submit="newVocabulary()")
+          .form-group
+            input.form-control(type="text", name="target", ng-model="vocabularyName", placeholder="")
+          input.btn.btn-primary(type="submit", name="newstep", value="Spara")
       .item-list
         ul.nav.nav-pills.nav-stacked
           li(ng-repeat="vocabulary in vocabularies")
@@ -13,8 +15,8 @@
         button.btn.btn-danger.pull-right(ng-click="removeVocabulary(vocabulary)")
           i.icon-remove
           span {{ 'VOCABULARY.REMOVE' | translate }}
-        h2 {{vocabulary.title}}
-        form.pad.form.form-horizontal(ng-submit="saveVocabulary()", name="vocabularyForm")
+        h1 {{vocabulary.title}}
+        form.pad.form(ng-submit="saveVocabulary()", name="vocabularyForm")
           .form-group
             label.control-label {{ 'GLOBAL.TITLE' | translate }}
             .controls
@@ -25,14 +27,15 @@
               textarea.input-block-level(name="description",  ng-model="vocabulary.description", ng-change="saveVocabulary()")
       .box.pad
         content-table(query="query", entity-type="Term", properties="properties")
-        form.form-inline.pad(name="newTermForm", ng-submit="newTerm()")
-          input(type="text", name="termname", ng-model="termName", placeholder="{{'VOCABULARY.NEWTERM' | translate}}")
-          button.btn-link(name="newTerm")
+        form.form-inline(name="newTermForm", ng-submit="newTerm()")
+          .form-group
+            input(type="text", name="termname", ng-model="termName", placeholder="{{'VOCABULARY.NEWTERM' | translate}}")
+          button.btn.btn-primary(name="newTerm")
             i.icon-plus
     .additional(ng-show="term")
       .box
         h2 {{term.name}}
-        form.pad.form-horizontal(name="termForm")
+        form.pad.form(name="termForm")
           cmf-autosave-status(status="autosave")
           .form-group
             label.control-label {{'GLOBAL.NAME' | translate }}

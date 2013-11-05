@@ -3,7 +3,7 @@
     div(ng-class="{full: !group, half: group}")
       section.articleinfo
           .box.pad
-            h2 {{"GROUP.TITLE" | translate}}
+            h1 {{"GROUP.TITLE" | translate}}
             content-table(entity-type="Group", properties="properties", query="query")
             form.form.form-inline.add-group-form(name="addGroupForm", ng-submit="addGroup()")
               .form-group
@@ -14,7 +14,7 @@
     .half(ng-show="group")
       .box.pad
         form.form.form-horizontal(name="editGroupForm")
-          h3 {{group.name}}
+          h2 {{group.name}}
           .form-group
             label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}
             .controls

@@ -367,10 +367,6 @@ body {
   }
 }
 
-.add-group-form {
-  margin-left: 15px;
-}
-
 .add-group-user-form {
  button, input {
   display: inline-block;
@@ -385,13 +381,6 @@ body {
   background: @white;
   height: 100%;
   overflow: hidden;
-  .add-form .input {
-    margin-top: 5px;
-    height: 100%;
-    width: 90%;
-    border-radius: 0;
-  }
-
   .add-form .add-article {
     color: @kntntGreen;
   }
@@ -433,7 +422,6 @@ body {
   h2, h3, h4 {
     font-weight: normal;
     margin-bottom: 10px;
-    margin-left: 5px;
   }
 
 }
@@ -784,9 +772,6 @@ a.new-target {
 
 
 form.add-article {
-  input {
-    .make-xs-column(8);
-  }
   padding: 3%;
   background: @kntntGreen;
   .icon-plus {
@@ -1046,9 +1031,12 @@ form.add-part-form {
   }
 }
 
-.form-horizontal.content-table-form {
+.content-table-form {
+  .form-group {
+    .clearfix();
+  }
   input[type="text"], select {
-    .make-lg-column(4);
+    .make-xs-column(4);
   }
 }
 
@@ -1116,12 +1104,38 @@ form.add-part-form {
   }
 }
 
-// Re-implement dropdown submenu
-.dropdown-submenu{position:relative;}
-.dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
-.dropdown-submenu:hover>.dropdown-menu{display:block;}
-.dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}
-.dropdown-submenu:hover>a:after{border-left-color:#ffffff;}
-.dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
+.user-mgmt {
+  .box {
+    overflow: hidden;
+  }
+  .user-add-form {
+    .form-group {
+      .make-xs-column(12);
+    }
+    .password-wrapper {
+      .make-xs-column(6);
+      &.first {
+        padding-left: 0px;
+      }
+      &.last {
+        padding-right: 0px;
+      }
+    }
+  }
+}
 
+.new-vocabulary-form {
+  overflow: hidden;
+  padding: 10px;
+}
+
+@media (min-width: @screen-md) {
+  // Re-implement dropdown submenu
+  .dropdown-submenu{position:relative;}
+  .dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
+  .dropdown-submenu:hover>.dropdown-menu{display:block;}
+  .dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}
+  .dropdown-submenu:hover>a:after{border-left-color:#ffffff;}
+  .dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
+}
 @horizontalComponentOffset: 100px;

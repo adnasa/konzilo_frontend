@@ -7,7 +7,7 @@
         draggable-content-table(entity-type="Step", properties="properties", query="query", weight="weight")
       .box.pad
         h2 {{ 'STEP.ADDSTEP' | translate }}
-        form.form.form-horizontal(name="addStepForm", ng-submit="addStep()")
+        form.form(name="addStepForm", ng-submit="addStep()")
           .form-group
             label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}
             .controls
@@ -24,7 +24,7 @@
           i.icon-remove
           span {{ 'GLOBAL.REMOVE' | translate }}
         h2 {{step.name}}
-        form.form.form-horizontal(name="editStepForm")
+        form.form(name="editStepForm")
           cmf-autosave-status(status="autosave")
           .form-group
             label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}

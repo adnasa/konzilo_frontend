@@ -2,10 +2,10 @@
   .main-content
     .full
       .box.pad
-        h2 {{ "CLIENT.TITLE" | translate }}
+        h1 {{ "CLIENT.TITLE" | translate }}
         content-table(items="clients", properties="properties", id="name", operations="operations")
-        h3 {{ 'CLIENT.ADDNEW' | translate }}
-        form.form.form-horizontal(name="addClientForm", ng-submit="addClient()")
+        h2 {{ 'CLIENT.ADDNEW' | translate }}
+        form.form(name="addClientForm", ng-submit="addClient()")
           .form-group
             label.control-label(for="name") {{ "GLOBAL.NAME" | translate }}
             .controls

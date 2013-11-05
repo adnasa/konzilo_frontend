@@ -2,10 +2,10 @@
   .main-content
     div(ng-class="{full: !channel, half: channel}")
       .box.pad
-        h2 {{ 'CHANNEL.TITLE' | translate }}
+        h1 {{ 'CHANNEL.TITLE' | translate }}
         content-table(entity-type="Channel", properties="properties", query="query")
-        h3 {{ 'CHANNEL.ADD_NEW' | translate }}
-        form.form.form-horizontal(name="addChannelForm", ng-submit="addChannel()")
+        h2 {{ 'CHANNEL.ADD_NEW' | translate }}
+        form.form(name="addChannelForm", ng-submit="addChannel()")
           .form-group
             label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}
             .controls
@@ -24,7 +24,7 @@
     .half(ng-show="channel")
       .box.pad
         h2 {{endpoint.name}}
-        form.form.form-horizontal(name="editChannelForm")
+        form.form(name="editChannelForm")
           cmf-autosave-status(status="autosave")
           .form-group
             label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}

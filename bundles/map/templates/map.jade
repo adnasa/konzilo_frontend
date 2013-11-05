@@ -14,7 +14,7 @@
         button.btn.btn-danger.pull-right(ng-click="removeTarget(target)")
           i.icon-remove
           span {{'GLOBAL.REMOVE' | translate}}
-        h2 {{title}}
+        h1 {{title}}
         cmf-autosave-status(status="autosave")
         form.form.form-horizontal(ng-submit="saveTarget()", name="mapForm")
           .form-group
