@@ -106,8 +106,8 @@
     "FORGOTPASSWORD": "Glömt lösenordet?",
     "RETRIEVEPASSWORD": "Begär nytt lösenord",
     "WRONGUSERNAMEPASSWORD": "Du angav ett felaktigt användarnamn eller lösenord.",
-    "PASSWORDSENT": "En återställningslänk har skickats till din e-postaddress.",
-    "PASSWORDERROR": "Något gick fel när mailet skulle skickas. Angav du rätt uppgifter?",
+      "PASSWORDSENT": "Ett epostmeddelande har skickats till den angivna adressen. Var vänlig och följ instruktionerna i det meddelandet.",
+    "PASSWORDERROR": "Det finns ingen användare med den epostadressen. Var vänlig och kontrollera epostadressen och försök igen.",
     "USERNAMEOREMAIL": "Användarnamn eller e-postaddress",
     "BACK": "Tillbaka till inloggning"
   },
