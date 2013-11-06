@@ -252,6 +252,7 @@
     "DISPLAYNAME": "Visningsnamn",
     "CONFIRMUSERNAMECHANGE": "Ändra användarnamnet",
     "CONFIRMUSERNAMECHANGEMESSAGE": "Klicka på knappen ovan för att godkänna ändring av av användarnamnet",
+    "INVALIDUSERNAME": "Du måste ha minst 4 tecken i ditt användarnamn. Du kan endast använda tecken a-z, A-Z, 0-9 och . - _ ~",
     "TITLE": "Användare",
     "ADDTITLE": "Skapa ny användare",
     "CREATE": "Skapa användare",

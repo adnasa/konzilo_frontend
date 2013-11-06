@@ -342,6 +342,7 @@ angular.module("kntnt.user",
   templateUrl: "bundles/user/user-edit.html"
   scope: { user: "=" }
   controller: ["$scope", ($scope) ->
+    $scope.usernamePattern = /^[a-zA-Z0-9\.\-_~]{4,}$/
     activeUser = $scope.user
     $scope.languages = KonziloConfig.get("languages").listAll()
     KonziloConfig.get("roles").listAll().then (roles) ->

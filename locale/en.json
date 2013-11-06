@@ -253,6 +253,7 @@
     "DISPLAYNAME": "Display name",
     "CONFIRMUSERNAMECHANGE": "Change user name",
     "CONFIRMUSERNAMECHANGEMESSAGE": "Click on the button above to confirm the change of the user name",
+    "INVALIDUSERNAME": "You must have at least 4 characters in your user name. They can only be of the characters a-z, A-Z, 0-9 and . - _ ~",
     "TITLE": "Users",
     "ADDTITLE": "Create new user",
     "CREATE": "Create user",

@@ -6,10 +6,11 @@ form.form.user-form.form-horizontal(name="userForm")
   .form-group
     label.control-label {{'GLOBAL.USERNAME' | translate}}
     .controls
-      input(type="text", name="username", ng-model="username", placeholder="{{'GLOBAL.USERNAME' | translate}}")
-      .confirm(ng-show="username != user.username")
+      input(type="text", name="username", ng-model="username", ng-pattern="usernamePattern", placeholder="{{'GLOBAL.USERNAME' | translate}}")
+      .confirm(ng-show="username != user.username && userForm.username.$valid")
         button.btn.btn-danger(ng-click="user.username = username") {{'USER.CONFIRMUSERNAMECHANGE' | translate}}
         span.help-block {{'USER.CONFIRMUSERNAMECHANGEMESSAGE' | translate}}
+      .alert.alert-danger(ng-show="!userForm.username.$valid") {{'USER.INVALIDUSERNAME' | translate}}
 
   .form-group
     label.control-label {{'USER.DISPLAYNAME' | translate}}
