@@ -246,6 +246,12 @@
     "ENDDATE": "Slutdatum"
   },
   "USER": {
+    "FULLNAME": "Fullständigt namn",
+    "FIRSTNAME": "Ange ditt förnamn",
+    "LASTNAME": "Ange ditt efternamn",
+    "DISPLAYNAME": "Visningsnamn",
+    "CONFIRMUSERNAMECHANGE": "Ändra användarnamnet",
+    "CONFIRMUSERNAMECHANGEMESSAGE": "Klicka på knappen ovan för att godkänna ändring av av användarnamnet",
     "TITLE": "Användare",
     "ADDTITLE": "Skapa ny användare",
     "CREATE": "Skapa användare",

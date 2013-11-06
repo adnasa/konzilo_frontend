@@ -247,6 +247,12 @@
     "ENDDATE": "End date"
   },
   "USER": {
+    "FULLNAME": "Full name",
+    "FIRSTNAME": "Enter your first name",
+    "LASTNAME": "Enter your last name",
+    "DISPLAYNAME": "Display name",
+    "CONFIRMUSERNAMECHANGE": "Change user name",
+    "CONFIRMUSERNAMECHANGEMESSAGE": "Click on the button above to confirm the change of the user name",
     "TITLE": "Users",
     "ADDTITLE": "Create new user",
     "CREATE": "Create user",
