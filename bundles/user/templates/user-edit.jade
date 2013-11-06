@@ -2,10 +2,28 @@ form.form.user-form.form-horizontal(name="userForm")
   .title
       h2 {{user.username}}
       cmf-autosave-status(status="autosave")
+
+  .form-group
+    label.control-label {{'GLOBAL.USERNAME' | translate}}
+    .controls
+      input(type="text", name="username", ng-model="username", placeholder="{{'GLOBAL.USERNAME' | translate}}")
+      .confirm(ng-show="username != user.username")
+        button.btn.btn-danger(ng-click="user.username = username") {{'USER.CONFIRMUSERNAMECHANGE' | translate}}
+        span.help-block {{'USER.CONFIRMUSERNAMECHANGEMESSAGE' | translate}}
+
+  .form-group
+    label.control-label {{'USER.DISPLAYNAME' | translate}}
+    .controls
+      input(type="text", name="displayname", ng-model="user.displayname", placeholder="{{'USER.DISPLAYNAME' | translate}}")
+  .form-group
+    label.control-label {{'USER.FULLNAME' | translate}}
+    .controls
+      input.input-half.first(type="text", name="firstname", ng-model="user.firstname", ng-change="aggregateDisplayName()", placeholder="{{'USER.FIRSTNAME' | translate}}")
+      input.input-half.last(type="text", name="lastname", ng-model="user.lastname", ng-change="aggregateDisplayName()", placeholder="{{'USER.LASTNAME' | translate}}")
   .form-group
     label.control-label.col-lg-2 {{'GLOBAL.EMAIL' | translate}}
     .controls.col-lg-10
-      input(type="email", name="email", ng-model="user.email")
+      input(type="email", name="email", ng-model="user.email", required, ng-change="aggregateDisplayName()")
   .form-group(ng-show="showAdminFields")
     label.control-label {{'USER.ROLES' | translate}}
     .controls

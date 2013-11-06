@@ -336,8 +336,8 @@ angular.module("kntnt.user",
 ])
 
 .directive("userEditForm",
-["InputAutoSave", "UserStorage", "KonziloConfig", "userAccess",
-(InputAutoSave, UserStorage, KonziloConfig, userAccess) ->
+["InputAutoSave", "UserStorage", "KonziloConfig", "userAccess", "UserState",
+(InputAutoSave, UserStorage, KonziloConfig, userAccess, UserState) ->
   restrict: "AE",
   templateUrl: "bundles/user/user-edit.html"
   scope: { user: "=" }
@@ -356,6 +356,14 @@ angular.module("kntnt.user",
       _.isEqual($scope.user.password, $scope.password2)
         UserStorage.save user
 
+    $scope.aggregateDisplayName = ->
+      if ($scope.user.firstname or $scope.user.lastname)
+        $scope.user.displayname = (for property in ["firstname", "lastname"] when not _.isEmpty($scope.user[property])
+          $scope.user[property]
+        ).join(' ')
+      else
+        $scope.user.displayname = $scope.user.email
+
     userAccess("administer system").then ->
       $scope.showAdminFields = true
 
@@ -365,12 +373,18 @@ angular.module("kntnt.user",
         $scope.user = $scope.user.toObject()
       $scope.user.roles = $scope.user.roles or []
       if (not activeUser or $scope.user._id is not activeUser._id)
+        $scope.username = $scope.user.username
         $scope.autosave = InputAutoSave.createInstance $scope.user,
         ->
-          UserStorage.save $scope.user
+          UserStorage.save($scope.user).then (result) ->
+            info = UserState.getInfo().info
+            info.username = result.username
+            info.email = result.email
+            info.language = result.language
+            UserState.saveInfo(info)
+            return result
         , ->
-          $scope.userForm?.$valid and
-          _.isEqual($scope.user.password, $scope.password2)
+          $scope.userForm?.$valid and _.isEqual($scope.user.password, $scope.password2)
     $scope.$watch('user', update)
   ]
 ])
