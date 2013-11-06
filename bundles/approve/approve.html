@@ -1,20 +1,23 @@
 
-<div class="container-fluid main-content">
-  <div class="row-fluid">
-    <div class="span3">
+<div class="wrapper">
+  <div class="main-content">
+    <div ng-class="{visible: articlePart}" class="list">
       <div class="box pad">
         <div kntnt-article-parts="kntnt-article-parts" kz-max-height="150" link-pattern="#/approve/:part" query="query" part="articlePart"></div>
       </div>
     </div>
-    <div ng-show="!articlePart" class="span9">
-      <div class="box pad">
+    <div class="main-full">
+      <div ng-show="!articlePart" class="box pad info-message">
         <h1>{{ 'REVIEW.TITLE' | translate }}</h1>
         <p>{{ 'REVIEW.DESC' | translate }}</p>
       </div>
-    </div>
-    <div ng-show="articlePart" class="span5">
-      <section class="articles">
+      <div ng-show="articlePart" class="main">
         <div class="box pad articleinfo">
+          <ol ng-show="articlePart" class="breadcrumb">
+            <li><a ng-href="#/deliver">{{'DELIVER.TITLE' | translate}}</a></li>
+            <li class="active">{{part.article.title}}</li>
+            <li ng-show="part" class="active">{{part.title}}</li>
+          </ol>
           <div class="inner">
             <konzilo-articlepart-form article-part="articlePart"></konzilo-articlepart-form>
             <div class="well">
@@ -22,79 +25,9 @@
             </div>
           </div>
         </div>
-      </section>
-    </div>
-    <div ng-show="articlePart" class="span4">
-      <div class="tabbed-box">
-        <tabset>
-          <tab heading="{{'GLOBAL.ORDER' | translate }}">
-            <div class="inner pad form form-horizontal article-description">
-              <div ng-show="part.deadline" class="control-group">
-                <label for="date" class="control-label">{{ 'GLOBAL.DEADLINE' | translate }}</label>
-                <div class="controls"><span>{{part.deadline | date: "yyyy-MM-dd"}}</span></div>
-              </div>
-              <div ng-show="part.terms" class="control-group">
-                <label for="terms" class="control-label">{{ 'GLOBAL.TERMS' | translate }}</label>
-                <div class="controls">
-                  <ul class="keywords">
-                    <li ng-repeat="term in terms" class="item"><a ng-href="term">{{term}}</a></li>
-                  </ul>
-                </div>
-              </div>
-              <div ng-show="language" class="control-group">
-                <label class="control-label">{{ 'GLOBAL.LANGUAGE' | translate }}</label>
-                <div class="controls"><span>{{language.name}}</span></div>
-              </div>
-              <div ng-show="target" class="control-group">
-                <label for="target" class="control-label">{{ 'GLOBAL.TARGET' | translate }}</label>
-                <div class="controls"><span class="help-block">{{ target.description }}</span><a ng-click="showAnalysis(target)">{{ 'GLOBAL.SHOW_ANALYSIS' | translate }}</a></div>
-              </div>
-              <div ng-show="article.step" class="control-group">
-                <label for="steps" class="control-label">{{ 'GLOBAL.STEP' | translate }}</label>
-                <div class="controls"><span class="help-block">{{ target.steps[article.step].description }}</span></div>
-              </div>
-              <div ng-show="channel" class="control-group">
-                <label class="control-label">{{ 'GLOBAL.CHANNEL' | translate }}</label>
-                <div class="controls"><span class="help-block">{{ channel.description }}</span></div>
-              </div>
-              <div ng-show="part.article.step" class="control-group">
-                <label for="target" class="control-label">{{ 'GLOBAL.SUBJECT' | translate }}</label>
-                <div class="controls"><span ng-show="part.article.topic" class="help-block">{{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate: translateVars }}</span></div>
-              </div>
-              <div ng-show="part.article.keywords" class="control-group">
-                <label class="control-label">{{ 'GLOBAL.KEYWORDS' | translate }}</label>
-                <div class="controls">
-                  <ul class="keywords">
-                    <li ng-repeat="item in part.article.keywords" class="item"><span>{{item}}</span></li>
-                  </ul>
-                </div>
-              </div>
-              <div ng-show="part.article.description" class="control-group">
-                <label for="assignment" class="control-label">{{ 'GLOBAL.ARTICLE_IDEA' | translate }}</label>
-                <div class="controls">
-                  <div markdown="part.article.description" class="text"></div>
-                </div>
-              </div>
-              <div ng-show="part.assignment" class="control-group">
-                <label for="assignment" class="control-label">{{ 'GLOBAL.TASK' | translate }}</label>
-                <div class="controls">
-                  <div markdown="part.assignment" class="text"></div>
-                </div>
-              </div>
-            </div>
-          </tab>
-          <tab heading="{{'GLOBAL.DISCUSSION' | translate}}">
-            <div class="inner pad">
-              <konzilo-comments ng-model="part.comments"></konzilo-comments>
-            </div>
-          </tab>
-          <tab heading="Versioner">
-            <div class="inner pad">
-              <konzilo-article-part-versions part="part" link-pattern="#/approve/:id"></konzilo-article-part-versions>
-              <konzilo-article-part-new-version part="part"></konzilo-article-part-new-version>
-            </div>
-          </tab>
-        </tabset>
+      </div>
+      <div ng-show="articlePart" class="additional">
+        <kz-deliver-info part="part"></kz-deliver-info>
       </div>
     </div>
   </div>

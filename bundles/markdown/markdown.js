@@ -65,37 +65,8 @@
       return MarkdownBrowserPlugin;
 
     })(MarkdownPlugin);
-  }).factory("MarkdownZenPlugin", [
-    "MarkdownPlugin", function(MarkdownPlugin) {
-      var MarkdownZenPlugin;
-      return MarkdownZenPlugin = (function(_super) {
-        __extends(MarkdownZenPlugin, _super);
-
-        function MarkdownZenPlugin(icon) {
-          this.icon = icon;
-          MarkdownZenPlugin.__super__.constructor.call(this, this.icon, "");
-        }
-
-        MarkdownZenPlugin.prototype.operation = function(text, option, element, callback) {
-          var height;
-          element.toggleClass('zenmode');
-          height = $('body').height();
-          element.height(height);
-          element.find('textarea').height(height - 200);
-          if (element.hasClass('zenmode')) {
-            element.find('.preview').show();
-          } else {
-            element.find('.preview').hide();
-          }
-          return callback(false);
-        };
-
-        return MarkdownZenPlugin;
-
-      })(MarkdownPlugin);
-    }
-  ]).factory("markdownPlugins", [
-    "MarkdownPlugin", "MarkdownBrowserPlugin", "MarkdownZenPlugin", function(MarkdownPlugin, MarkdownBrowserPlugin, MarkdownZenPlugin) {
+  }).factory("markdownPlugins", [
+    "MarkdownPlugin", "MarkdownBrowserPlugin", function(MarkdownPlugin, MarkdownBrowserPlugin) {
       var headings;
       headings = {
         "Heading 1": "# {{text}}\r\n",
@@ -110,8 +81,7 @@
         unorderedlist: new MarkdownPlugin('icon-list-ul', "* {{text}}", true),
         orderedlist: new MarkdownPlugin('icon-list', "{{row}}. {{text}}", true),
         link: new MarkdownPlugin('icon-link', "[{{text}}]()"),
-        image: new MarkdownBrowserPlugin('icon-picture'),
-        zen: new MarkdownZenPlugin('icon-desktop')
+        image: new MarkdownBrowserPlugin('icon-picture')
       };
     }
   ]).factory("MarkdownConverter", [
@@ -205,9 +175,7 @@
           editor.css('overflow', "hidden");
           showInput = function() {
             editor.height("auto");
-            if (!element.hasClass('zenmode')) {
-              preview.hide();
-            }
+            preview.hide();
             return editorFocused = true;
           };
           focusTextArea = function() {

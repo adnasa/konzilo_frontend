@@ -1,16 +1,14 @@
 
-<div class="container-fluid main-content">
-  <div class="row-fluid">
-    <div ng-class="userGrid()" class="right-side">
-      <section class="articleinfo">
-        <div class="box pad">
-          <h2>Användare</h2>
-          <content-table items="users" properties="properties" id="username" selected="selected" entity="entity"></content-table>
-          <user-add-form></user-add-form>
-        </div>
-      </section>
+<div class="wrapper">
+  <div class="main-content user-mgmt">
+    <div ng-class="userGrid()" class="half">
+      <div class="box pad">
+        <h1>Användare</h1>
+        <content-table items="users" properties="properties" id="username" selected="selected" entity="entity"></content-table>
+        <user-add-form></user-add-form>
+      </div>
     </div>
-    <div ng-show="user" class="span6">
+    <div ng-show="user" class="half">
       <div class="box pad">
         <user-edit-form user="user"></user-edit-form>
       </div>

@@ -1,8 +1,8 @@
 
 <div kntnt-article-picker="kntnt-article-picker"></div>
-<div class="container-fluid main-content">
-  <div class="row-fluid content">
-    <div class="span3">
+<div class="wrapper">
+  <div class="main-content">
+    <div ng-class="{visible: article}" class="list">
       <div class="box pad">
         <div kntnt-add-article="kntnt-add-article" defaults="articleDefaults" article-created="articleCreated"></div>
         <div kz-max-height="200">
@@ -10,51 +10,59 @@
         </div>
       </div>
     </div>
-    <div ng-show="!article" class="span9">
-      <div class="box pad">
+    <div class="main-full">
+      <div ng-show="!article" class="box pad info-message">
         <h1>{{'MANAGE.TITLE' | translate}}</h1>
         <p>{{ 'MANAGE.DESCRIPTION' | translate }}</p>
       </div>
-    </div>
-    <div class="span5">
-      <div ng-show="article" class="box pad">
-        <form class="form-inline options-form pull-right">
-          <button ng-click="removeArticle(article)" class="btn btn-danger"><i class="icon-remove"></i><span>{{ 'MANAGE.REMOVE' | translate }}</span></button>
-        </form>
-        <h2>{{article.title}}</h2>
-        <div ng-show="publishInfo" class="publish-info">
-          <div ng-show="publishInfo.done" class="published">
-            <div class="publish">{{ 'MANAGE.PUBLISHEDTO' | translate }} {{channel.name}} {{publishInfo.performed * 1000 | date: 'yyyy-MM-dd HH:mm'}}</div>
-            <div class="link"><a href="{{publishInfo.resource_url}}">{{ 'MANAGE.GOTOARTICLE' | translate }}</a></div>
+      <div class="main">
+        <div ng-show="article" class="box pad">
+          <div class="pull-right article-tools">
+            <button ng-click="removeArticle(article)" class="btn btn-danger"><i class="icon-remove"></i><span>{{ 'MANAGE.REMOVE' | translate }}</span></button>
           </div>
-          <div ng-show="!publishInfo.done" class="planned">{{ 'MANAGE.PUBLISHINFO' | translate: translations }}</div>
+          <ol class="breadcrumb">
+            <li><a ng-href="#/manage">{{'MANAGE.TITLE' | translate}}</a></li>
+            <li class="active">{{article.title}}</li>
+          </ol>
+          <h2>{{article.title}}</h2>
+          <div ng-show="publishInfo" class="publish-info">
+            <div ng-show="publishInfo.done" class="published">
+              <div class="publish">{{ 'MANAGE.PUBLISHEDTO' | translate }} {{channel.name}} {{publishInfo.performed * 1000 | date: 'yyyy-MM-dd HH:mm'}}</div>
+              <div class="link"><a href="{{publishInfo.resource_url}}">{{ 'MANAGE.GOTOARTICLE' | translate }}</a></div>
+            </div>
+            <div ng-show="!publishInfo.done" class="planned">{{ 'MANAGE.PUBLISHINFO' | translate: translations }}</div>
+          </div>
+        </div>
+        <accordion class="article-accordion">
+          <accordion-group ng-repeat="part in article.parts">
+            <accordion-heading>{{part.title}}</accordion-heading>
+            <form class="form-inline options-form">
+              <div class="form-group">
+                <select ng-model="part.state" class="form-control">
+                  <option ng-repeat="state in states" value="{{state.name}}" ng-selected="part.state == state.name">{{state.label | translate}}</option>
+                </select>
+              </div>
+              <label class="checkbox">
+                <input type="checkbox" ng-model="part.teaser"/><span>{{ 'MANAGE.SHOWLISTINGS' | translate }}</span>
+              </label>
+              <div class="pull-right">
+                <button ng-click="newVersion(part)" class="btn"><i class="icon-plus"></i><span>{{ 'MANAGE.NEWVERSION' | translate }}</span></button>
+                <button ng-click="remove(part)" class="btn btn-danger"><i class="icon-remove"></i><span>{{ 'MANAGE.REMOVEPART' | translate }}</span></button>
+              </div>
+            </form>
+            <div class="content">
+              <konzilo-articlepart-form article-part="part"></konzilo-articlepart-form>
+            </div>
+          </accordion-group>
+        </accordion>
+        <div ng-show="article" class="box pad create-form">
+          <kntnt-add-article-part article="article"></kntnt-add-article-part>
         </div>
       </div>
-      <accordion class="article-accordion">
-        <accordion-group ng-repeat="part in article.parts">
-          <accordion-heading>{{part.title}}</accordion-heading>
-          <form class="form-inline options-form">
-            <select ng-model="part.state">
-              <option ng-repeat="state in states" value="{{state.name}}" ng-selected="part.state == state.name">{{state.label | translate}}</option>
-            </select>
-            <label class="checkbox">
-              <input type="checkbox" ng-model="part.teaser"/><span>{{ 'MANAGE.SHOWLISTINGS' | translate }}</span>
-            </label>
-            <button ng-click="newVersion(part)" class="btn"><i class="icon-plus"></i><span>{{ 'MANAGE.NEWVERSION' | translate }}</span></button>
-            <button ng-click="remove(part)" class="btn btn-danger"><i class="icon-remove"></i><span>{{ 'MANAGE.REMOVEPART' | translate }}</span></button>
-          </form>
-          <div class="content">
-            <konzilo-articlepart-form article-part="part"></konzilo-articlepart-form>
-          </div>
-        </accordion-group>
-      </accordion>
-      <div ng-show="article" class="box pad create-form">
-        <kntnt-add-article-part article="article"></kntnt-add-article-part>
-      </div>
-    </div>
-    <div ng-show="article" class="span4">
-      <div class="box pad">
-        <konzilo-article-form article="article"></konzilo-article-form>
+      <div ng-show="article" class="additional">
+        <div class="box pad">
+          <konzilo-article-form article="article"></konzilo-article-form>
+        </div>
       </div>
     </div>
   </div>

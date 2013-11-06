@@ -1,7 +1,7 @@
 
-<div class="container-fluid main-content">
-  <div class="row-fluid">
-    <div ng-class="mainClass()" class="span12 right-side">
+<div class="wrapper">
+  <div class="main-content">
+    <div ng-class="{full: !step, half: step}">
       <div class="box pad">
         <h1>{{ 'STEP.TITLE' | translate }}</h1>
         <p>{{ 'STEP.DESCRIPTION' | translate }}</p>
@@ -9,14 +9,14 @@
       </div>
       <div class="box pad">
         <h2>{{ 'STEP.ADDSTEP' | translate }}</h2>
-        <form name="addStepForm" ng-submit="addStep()" class="form form-horizontal">
-          <div class="control-group">
+        <form name="addStepForm" ng-submit="addStep()" class="form">
+          <div class="form-group">
             <label for="name" class="control-label">{{ 'GLOBAL.NAME' | translate }}</label>
             <div class="controls">
               <input type="text" name="name" ng-model="newStep.name" required="required"/>
             </div>
           </div>
-          <div class="control-group">
+          <div class="form-group">
             <label for="description" class="control-label">{{'GLOBAL.DESCRIPTION' | translate }}</label>
             <div class="controls">
               <textarea name="description" ng-model="newStep.description"></textarea>
@@ -28,19 +28,19 @@
         </form>
       </div>
     </div>
-    <div ng-show="step" class="span6">
+    <div ng-show="step" class="half">
       <div class="box pad">
         <button ng-click="removeStep(step)" class="pull-right btn btn-danger"><i class="icon-remove"></i><span>{{ 'GLOBAL.REMOVE' | translate }}</span></button>
         <h2>{{step.name}}</h2>
-        <form name="editStepForm" class="form form-horizontal">
+        <form name="editStepForm" class="form">
           <cmf-autosave-status status="autosave"></cmf-autosave-status>
-          <div class="control-group">
+          <div class="form-group">
             <label for="name" class="control-label">{{ 'GLOBAL.NAME' | translate }}</label>
             <div class="controls">
               <input type="text" name="name" ng-model="step.name" required="required"/>
             </div>
           </div>
-          <div class="control-group">
+          <div class="form-group">
             <label for="description" class="control-label">{{ 'GLOBAL.DESCRIPTION' | translate }}</label>
             <div class="controls">
               <textarea name="description" ng-model="step.description"></textarea>

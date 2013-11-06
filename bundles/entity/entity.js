@@ -465,7 +465,7 @@
       };
     }
   ]).directive("entityReference", [
-    "entityStorage", "entityInfo", "$q", function(entityStorage, entityInfo, $q) {
+    "entityStorage", "entityInfo", "$q", "$parse", function(entityStorage, entityInfo, $q, $parse) {
       return {
         restrict: "E",
         scope: {

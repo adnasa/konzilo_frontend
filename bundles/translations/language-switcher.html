@@ -1,5 +1,5 @@
 
-<ul ng-show="showLangs" class="nav">
+<ul ng-show="showLangs" class="nav navbar-nav lang-switcher">
   <li class="dropdown"><a href="#/settings/targets" class="dropdown-toggle"><i class="icon-flag"></i><span>{{currentLanguage}}</span><b class="caret"></b></a>
     <ul class="dropdown-menu">
       <li ng-repeat="(langcode, language) in languages"><a ng-click="changeLanguage(langcode)">{{langcode}}</a></li>

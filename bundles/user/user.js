@@ -233,19 +233,14 @@
     }
   ]).config([
     "$routeProvider", "entityInfoProvider", function($routeProvider, entityInfoProvider) {
-      var dashboard, groupMgmt, login, profile, userMgmt;
+      var dashboard, groupMgmt, login, profile, resetPassword, userMgmt;
       login = {
         controller: "LoginController",
         templateUrl: "bundles/user/login.html"
       };
       dashboard = {
         controller: "DashboardController",
-        templateUrl: "bundles/user/dashboard.html",
-        resolve: {
-          loggedIn: function(UserState) {
-            return UserState.loggedIn(true);
-          }
-        }
+        templateUrl: "bundles/user/dashboard.html"
       };
       profile = {
         controller: "UserProfileController",
@@ -274,7 +269,12 @@
           }
         }
       };
+      resetPassword = {
+        controller: "ResetPasswordController",
+        templateUrl: "bundles/user/reset-password.html"
+      };
       $routeProvider.when('/login', login);
+      $routeProvider.when('/resetpassword', resetPassword);
       $routeProvider.when('/profile', profile);
       $routeProvider.when('/profile/:user', profile);
       $routeProvider.when('/dashboard', dashboard);
@@ -395,15 +395,21 @@
     }
     return params;
   }).controller("DashboardController", [
-    "$scope", "UserStorage", "UserState", function($scope, UserStorage, UserState) {
-      var info;
-      info = UserState.getInfo().info();
-      return $scope.translations = {
-        name: info.username
-      };
+    "$scope", "UserStorage", "UserState", "$location", function($scope, UserStorage, UserState, $location) {
+      return UserState.loggedIn(true).then(function() {
+        var info;
+        info = UserState.getInfo().info;
+        console.log(info);
+        return $scope.translations = {
+          name: info.username
+        };
+      }, function() {
+        return $location.url("/login");
+      });
     }
   ]).controller("LoginController", [
-    "$scope", "LoginStorage", "UserState", "$location", "GetParameters", "$http", function($scope, LoginStorage, UserState, $location, GetParameters, $http) {
+    "$scope", "LoginStorage", "UserState", "$location", "GetParameters", "$http", "$translate", function($scope, LoginStorage, UserState, $location, GetParameters, $http, $translate) {
+      $scope.$parent.title = $translate("LOGIN.LOGIN");
       UserState.loggedIn(true).then(function() {
         return $location.url("/");
       });
@@ -420,7 +426,7 @@
             return window.location = "/";
           }
         }, function(result) {
-          return $scope.message = "Felaktigt användarnamn eller lösenord";
+          return $scope.message = "LOGIN.WRONGUSERNAMEPASSWORD";
         });
       };
       return $scope.sendPassword = function() {
@@ -431,9 +437,21 @@
         });
       };
     }
-  ]).controller("DashboardController", [
-    "$scope", "LoginStorage", "UserState", function($scope, LoginStorage, UserState) {
-      return $scope.user = UserState.getInfo();
+  ]).controller("ResetPasswordController", [
+    "$scope", "UserState", "$location", "$http", "$translate", function($scope, UserState, $location, $http, $translate) {
+      $scope.$parent.title = $translate("LOGIN.RESETPASSWORD");
+      UserState.loggedIn(true).then(function() {
+        return $location.url("/");
+      });
+      return $scope.sendPassword = function() {
+        delete $scope.errorMessage;
+        delete $scope.successMessage;
+        return $http.post("/password/" + $scope.forgot).then(function() {
+          return $scope.successMessage = "LOGIN.PASSWORDSENT";
+        }, function(err) {
+          return $scope.errorMessage = "LOGIN.PASSWORDERROR";
+        });
+      };
     }
   ]).directive("userEditForm", [
     "InputAutoSave", "UserStorage", "KonziloConfig", "userAccess", function(InputAutoSave, UserStorage, KonziloConfig, userAccess) {
@@ -583,9 +601,9 @@
       });
       $scope.userGrid = function() {
         if ($scope.user) {
-          return "span6";
+          return "half";
         } else {
-          return "span12";
+          return "full";
         }
       };
       $scope.entity = entityInfo("User");

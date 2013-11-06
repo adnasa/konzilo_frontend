@@ -1,42 +1,44 @@
 
 <form ng-show="items" ng-submit="performActions()" class="form content-table-form draggable">
-  <div class="control-group">
+  <div class="form-group">
     <div class="controls">
       <input type="text" name="search" ng-model="search" placeholder="{{'GLOBAL.SEARCH' | translate}}"/>
     </div>
-    <div ng-show="operations" class="control-group actions">
-      <div class="controls">
-        <div class="operations">
-          <select name="operation" ng-options="item.label for (name, item) in operations" ng-model="operation"></select>
-        </div>
-        <div ng-transclude="ng-transclude" class="actions"></div>
-        <div class="confirm">
-          <input type="submit" value="{{ 'GLOBAL.EXECUTE' | translate }}"/>
-        </div>
-      </div>
-    </div>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th ng-show="operations">
-            <input type="checkbox" name="selectall" ng-model="selectall" ng-change="toggleSelect()"/>
-          </th>
-          <th ng-repeat="header in headers">{{header}}</th>
-        </tr>
-      </thead>
-      <tbody ui-sortable="sortableOptions" ng-model="items">
-        <tr ng-repeat="(key, item) in items | filter: search" class="item">
-          <td ng-show="operations">
-            <input type="checkbox" name="selected" ng-model="selected[key]"/>
-          </td>
-          <td ng-repeat="property in props">
-            <content-value item="item" property="property" options="properties[property]"></content-value>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
-  <div class="pagination">
+  <div ng-show="operations" class="form-group actions">
+    <div class="controls">
+      <div class="operations">
+        <select name="operation" ng-options="item.label for (name, item) in operations" ng-model="operation"></select>
+      </div>
+      <div ng-transclude="ng-transclude" class="actions"></div>
+    </div>
+  </div>
+  <div class="confirm form-group">
+    <div class="controls">
+      <input type="submit" value="{{ 'GLOBAL.EXECUTE' | translate }}" class="btn btn-primary"/>
+    </div>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th ng-show="operations">
+          <input type="checkbox" name="selectall" ng-model="selectall" ng-change="toggleSelect()"/>
+        </th>
+        <th ng-repeat="header in headers">{{header}}</th>
+      </tr>
+    </thead>
+    <tbody ui-sortable="sortableOptions" ng-model="items">
+      <tr ng-repeat="(key, item) in items | filter: search" class="item">
+        <td ng-show="operations">
+          <input type="checkbox" name="selected" ng-model="selected[key]"/>
+        </td>
+        <td ng-repeat="property in props">
+          <content-value item="item" property="property" options="properties[property]"></content-value>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div ng-show="pages" class="pagination">
     <ul>
       <li ng-repeat="page in pages">
         <button ng-click="getPage(page)" class="btn-link"></button>

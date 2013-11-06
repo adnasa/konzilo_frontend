@@ -60,7 +60,7 @@
     "STATUS": "Status",
     "TITLE": "Titel",
     "CLOSE": "Stäng",
-    "EMAIL": "Email",
+    "EMAIL": "E-postaddress",
     "IMAGE": "Bild",
     "SEND": "Skicka",
     "SEARCH": "Sök",
@@ -74,7 +74,8 @@
     "LOGOUT": "Logga ut",
     "BACK": "Tillbaka",
     "HIDE": "Dölj",
-    "FETCHMORE": "Hämta fler"
+    "FETCHMORE": "Hämta fler",
+    "DETAILS": "Detaljer"
   },
   "CHANNEL": {
     "TITLE": "Kanaler",
@@ -104,9 +105,11 @@
     "LOGIN": "Logga in",
     "FORGOTPASSWORD": "Glömt lösenordet?",
     "RETRIEVEPASSWORD": "Begär nytt lösenord",
-    "PASSWORDSENT": "En återställningslänk har skickats till den mail.",
-    "PASSWORDERROR": "Något gick fel när mailet skulle skickas. Angav du rätt uppgifter?",
-    "USERNAMEOREMAIL": "Användarnamn eller E-post"
+    "WRONGUSERNAMEPASSWORD": "Du angav ett felaktigt användarnamn eller lösenord.",
+      "PASSWORDSENT": "Ett epostmeddelande har skickats till den angivna adressen. Var vänlig och följ instruktionerna i det meddelandet.",
+    "PASSWORDERROR": "Det finns ingen användare med den epostadressen. Var vänlig och kontrollera epostadressen och försök igen.",
+    "USERNAMEOREMAIL": "Användarnamn eller e-postaddress",
+    "BACK": "Tillbaka till inloggning"
   },
   "TARGET": {
     "TITLE": "Målgrupper",
@@ -151,7 +154,8 @@
   "GROUP": {
     "TITLE": "Grupper",
     "CREATENEW": "Ny Grupp",
-    "CREATE": "Skapa grupp"
+    "CREATE": "Skapa grupp",
+    "ADDUSER": "Lägg till användare i grupp"
   },
   "MANAGE": {
     "TITLE": "Hantera",

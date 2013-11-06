@@ -35,7 +35,7 @@
         placeholder: "ui-placeholder box pad"
       };
       $scope.$watch("firstArticle", function() {
-        if ($scope.firstArticle && !$routeParams.id) {
+        if ($scope.firstArticle && !$routeParams.id && $(window).width() > 992) {
           return $location.path("/plan/" + $scope.firstArticle._id);
         }
       });

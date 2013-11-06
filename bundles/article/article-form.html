@@ -3,33 +3,41 @@
   <div class="title">
     <cmf-autosave-status status="autosave"></cmf-autosave-status>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label">{{ 'GLOBAL.WORKINGTITLE' | translate }}</label>
     <div class="controls">
       <input type="text" name="title" ng-model="article.title" required="required"/>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label">{{ 'GLOBAL.RESPONSIBLE' | translate }}</label>
     <div class="controls">
       <entity-reference ng-model="article.responsible" entity-type="Provider"></entity-reference>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label for="date" class="control-label">{{'GLOBAL.PUBLISHING' | translate}}</label>
     <div class="controls">
-      <input type="text" ng-model="article.publishdate" placeholder="{{'GLOBAL.DATE' | translate}}" datepicker-popup="yyyy-MM-dd" class="input-medium publishdate publishdate-date"/>
-      <input type="text" ng-model="publishtime" ng-change="changeTime(publishtime, article.publishdate)" placeholder="{{'GLOBAL.PUBLISHTIME' | translate}}" maxlength="5" class="input-mini publishdate publishdate-time"/>
+      <div class="publishdate">
+        <input type="text" ng-model="article.publishdate" placeholder="{{'GLOBAL.DATE' | translate}}" datepicker-popup="yyyy-MM-dd"/>
+      </div>
+      <div class="publishtime">
+        <input type="text" ng-model="publishtime" ng-change="changeTime(publishtime, article.publishdate)" placeholder="{{'GLOBAL.PUBLISHTIME' | translate}}" maxlength="5"/>
+      </div>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label for="date" class="control-label">{{'GLOBAL.UNPUBLISHING' | translate}}</label>
     <div class="controls">
-      <input type="text" ng-model="article.unpublishdate" placeholder="{{'GLOBAL.DATE' | translate}}" datepicker-popup="yyyy-MM-dd" class="input-medium"/>
-      <input type="text" ng-model="unpublishtime" ng-change="changeTime(unpublishtime, article.unpublishdate)" placeholder="{{'GLOBAL.UNPUBLISHTIME' | translate}}" maxlength="5" class="input-mini"/>
+      <div class="publishdate">
+        <input type="text" ng-model="article.unpublishdate" placeholder="{{'GLOBAL.DATE' | translate}}" datepicker-popup="yyyy-MM-dd"/>
+      </div>
+      <div class="publishtime">
+        <input type="text" ng-model="unpublishtime" ng-change="changeTime(unpublishtime, article.unpublishdate)" placeholder="{{'GLOBAL.UNPUBLISHTIME' | translate}}" maxlength="5"/>
+      </div>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label">{{'GLOBAL.CHANNEL' | translate}}</label>
     <div class="controls">
       <select name="channel" ng-model="article.channel" ng-change="changeTarget()">
@@ -37,7 +45,7 @@
       </select><span class="help-block">{{ channel.description }}</span>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label for="target" class="control-label">{{ 'GLOBAL.TARGET' | translate }}</label>
     <div class="controls">
       <select name="target" ng-model="article.target" ng-change="changeTarget()">
@@ -45,7 +53,7 @@
       </select><span markdown="target.description" class="help-block"></span>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label for="target" class="control-label">{{ 'GLOBAL.STEP' | translate }}</label>
     <div class="controls">
       <select name="step" ng-model="article.step" ng-change="changeTarget()">
@@ -53,7 +61,7 @@
       </select><span markdown="target.steps[step._id].description" class="help-block"></span>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label for="target" class="control-label">{{'GLOBAL.SUBJECT' | translate}}</label>
     <div class="controls">
       <select name="step" ng-model="article.topic" ng-disabled="!article.step" ng-change="topicChanged(article.topic)">
@@ -61,16 +69,16 @@
       </select><span ng-show="article.topic" class="help-block">{{'GLOBAL.TARGET_TOPIC_SPEC' | translate: translations}}</span>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label">{{ 'GLOBAL.KEYWORDS' | translate }}</label>
     <div class="controls">
       <cmf-input-list ng-model="article.keywords" placeholder="{{'GLOBAL.KEYWORDS' | translate}}"></cmf-input-list>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label for="description" class="control-label">{{ 'GLOBAL.ARTICLE_IDEA' | translate}}</label>
     <div class="controls">
-      <textarea ng-model="article.description" name="description" class="input-block-level"></textarea>
+      <textarea ng-model="article.description" name="description" rows="3"></textarea>
     </div>
   </div>
   <kz-vocabulary-input ng-model="article.vocabularies"></kz-vocabulary-input>

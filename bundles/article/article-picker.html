@@ -1,80 +1,66 @@
 
 <div class="picker-content">
   <div collapse="isCollapsed" class="picker-body">
-    <div class="container-fluid">
-      <div class="row-fluid picker-form">
-        <div class="span3">
-          <div class="simple">
-            <h2>{{ 'ARTICLEPICKER.TITLE' | translate }}</h2>
-            <div class="control-group">
-              <label class="control-label">{{ 'ARTICLEPICKER.DESCRIPTION' | translate }}</label>
-              <div class="controls">
-                <label class="radio">
-                  <input type="radio" name="articles" ng-model="selector" value="all" ng-change="showArticles()"/><span>{{ 'ARTICLEPICKER.ALL' | translate }}</span>
-                </label>
-                <label class="radio">
-                  <input type="radio" name="articles" ng-model="selector" value="recommended" ng-change="showArticles()"/><span>{{ 'ARTICLEPICKER.RECOMMENDED' | translate }}</span>
-                </label>
-                <label class="radio">
-                  <input type="radio" name="articles" ng-model="selector" value="advanced" ng-change="showArticles()"/><span>{{ 'ARTICLEPICKER.CUSTOM' | translate }}</span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="span9">
-          <div class="advanced">
-            <h2>{{ 'ARTICLEPICKER.SELECTION' | translate }}</h2>
-            <konzilo-query-filters builder="builder" description="{{ 'ARTICLEPICKER.SHOWARTICLES' | translate }}"></konzilo-query-filters>
-          </div>
+    <div class="picker-form">
+      <div class="simple">
+        <h2>{{ 'ARTICLEPICKER.TITLE' | translate }}</h2>
+        <p>{{ 'ARTICLEPICKER.DESCRIPTION' | translate }}</p>
+        <div class="form-group">
+          <label class="radio">
+            <input type="radio" name="articles" ng-model="selector" value="all" ng-change="showArticles()"/><span>{{ 'ARTICLEPICKER.ALL' | translate }}</span>
+          </label>
+          <label class="radio">
+            <input type="radio" name="articles" ng-model="selector" value="recommended" ng-change="showArticles()"/><span>{{ 'ARTICLEPICKER.RECOMMENDED' | translate }}</span>
+          </label>
+          <label class="radio">
+            <input type="radio" name="articles" ng-model="selector" value="advanced" ng-change="showArticles()"/><span>{{ 'ARTICLEPICKER.CUSTOM' | translate }}</span>
+          </label>
         </div>
       </div>
-      <div class="row-fluid">
-        <div class="span12 selection">
-          <div class="article-info"><span>{{ 'ARTICLE.FILTERCOUNT' | translate: translations }}</span>
-            <button ng-click="showTable()" class="btn btn-link">{{ pickLabel | translate }}</button>
-          </div>
-          <form ng-show="tableShown" class="form pick-form">
-            <div class="control-group">
-              <div class="controls">
-                <input type="text" name="search" ng-model="search" placeholder="{{'ARTICLEPICKER.SEARCHARTICLES' | translate}}"/>
-              </div>
-            </div>
-            <table ng-show="articles &amp;&amp; tableShown" class="articles table table-striped">
-              <tr>
-                <th>
-                  <input type="checkbox" name="selectall" ng-model="selectall" ng-change="toggleSelect()"/>
-                </th>
-                <th>{{ 'GLOBAL.TITLE' | translate }}</th>
-                <th>{{ 'GLOBAL.PUBLISHDATE' | translate }}</th>
-                <th>{{ 'GLOBAL.RESPONSIBLE' | translate }}</th>
-              </tr>
-              <tr ng-repeat="article in articles | filter: search" class="article">
-                <td>
-                  <input type="checkbox" name="selected" ng-model="selected[article._id]"/>
-                </td>
-                <td>{{article.title}}</td>
-                <td>{{article.publishdate | date: "yyyy-MM-dd" }}</td>
-                <td>{{article.responsible.label }}</td>
-              </tr>
-            </table>
-          </form>
-          <div ng-show="tableShown" class="pagination">
-            <ul>
-              <li ng-repeat="page in pages">
-                <button ng-click="getPage(page)" class="btn-link">{{page + 1}}</button>
-              </li>
-            </ul>
-          </div>
-          <div class="control-group actions">
-            <div class="controls">
-              <button ng-click="addArticles()" ng-disabled="count == 0" class="btn-primary btn">{{'ARTICLEPICKER.ADDSELECTED' | translate}}</button>
-              <label class="checkbox">
-                <input type="checkbox" name="purge" ng-model="purge" ng-disabled="count == 0"/><span>{{ 'ARTICLEPICKER.EMPTYBEFORE' | translate }}</span>
-              </label>
-            </div>
+      <div class="advanced">
+        <h2>{{ 'ARTICLEPICKER.SELECTION' | translate }}</h2>
+        <konzilo-query-filters builder="builder" description="{{ 'ARTICLEPICKER.SHOWARTICLES' | translate }}"></konzilo-query-filters>
+      </div>
+    </div>
+    <div class="selection">
+      <div class="article-info"><span>{{ 'ARTICLE.FILTERCOUNT' | translate: translations }}</span>
+        <button ng-click="showTable()" class="btn btn-link">{{ pickLabel | translate }}</button>
+      </div>
+      <form ng-show="tableShown" class="form form-inline pick-form">
+        <div class="form-group">
+          <div class="controls">
+            <input type="text" name="search" ng-model="search" placeholder="{{'ARTICLEPICKER.SEARCHARTICLES' | translate}}"/>
           </div>
         </div>
+        <table ng-show="articles &amp;&amp; tableShown" class="articles table table-striped">
+          <tr>
+            <th>
+              <input type="checkbox" name="selectall" ng-model="selectall" ng-change="toggleSelect()"/>
+            </th>
+            <th>{{ 'GLOBAL.TITLE' | translate }}</th>
+            <th>{{ 'GLOBAL.PUBLISHDATE' | translate }}</th>
+            <th>{{ 'GLOBAL.RESPONSIBLE' | translate }}</th>
+          </tr>
+          <tr ng-repeat="article in articles | filter: search" class="article">
+            <td>
+              <input type="checkbox" name="selected" ng-model="selected[article._id]"/>
+            </td>
+            <td>{{article.title}}</td>
+            <td>{{article.publishdate | date: "yyyy-MM-dd" }}</td>
+            <td>{{article.responsible.label }}</td>
+          </tr>
+        </table>
+      </form>
+      <ul ng-show="tableShown" class="pagination">
+        <li ng-repeat="page in pages">
+          <button ng-click="getPage(page)" class="btn-link">{{page + 1}}</button>
+        </li>
+      </ul>
+      <div class="actions">
+        <button ng-click="addArticles()" ng-disabled="count == 0" class="btn-primary btn">{{'ARTICLEPICKER.ADDSELECTED' | translate}}</button>
+        <label class="checkbox">
+          <input type="checkbox" name="purge" ng-model="purge" ng-disabled="count == 0"/><span>{{ 'ARTICLEPICKER.EMPTYBEFORE' | translate }}</span>
+        </label>
       </div>
     </div>
   </div>

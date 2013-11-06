@@ -51,7 +51,6 @@
       }).then(function() {
         if ($routeParams.endpoint) {
           bin.get($routeParams.endpoint).then(function(endpoint) {
-            console.log(endpoint);
             $scope.endpoint = endpoint;
             $scope.autosave = InputAutoSave.createInstance($scope.endpoint, function() {
               return bin.set($scope.endpoint.name, $scope.endpoint);

@@ -1,39 +1,41 @@
 
-<ng-form name="partForm" class="form form-horizontal">
-  <div class="title">
-    <cmf-autosave-status status="autosave"></cmf-autosave-status>
-    <h2>{{ 'IMAGEPART.TITLE' | translate }}</h2>
-  </div>
-  <div class="control-group">
-    <label class="control-label">{{'IMAGEPART.UPLOADFILES' | translate}}</label>
-    <div class="controls">
-      <file-upload-list ng-model="content.images" bundle="media"></file-upload-list>
+<ng-form name="partForm">
+  <div class="form-horizontal part-form">
+    <div class="title">
+      <cmf-autosave-status status="autosave"></cmf-autosave-status>
+      <h2>{{ 'IMAGEPART.TITLE' | translate }}</h2>
     </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label">{{ 'GLOBAL.HEADLINE' | translate }}</label>
-    <div class="controls">
-      <cmf-inline ng-model="content.headline">
-        <cmf-inline-preview><i class="icon-edit pull-right"></i>
-          <h1>{{content.headline}}</h1>
-        </cmf-inline-preview>
-        <cmf-inline-input>
-          <input type="text" name="headline" ng-model="content.headline"/>
-        </cmf-inline-input>
-      </cmf-inline>
+    <div class="form-group">
+      <label class="control-label">{{'IMAGEPART.UPLOADFILES' | translate}}</label>
+      <div class="controls">
+        <file-upload-list ng-model="content.images" bundle="media"></file-upload-list>
+      </div>
     </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label">{{ 'GLOBAL.DESCRIPTION' | translate }}</label>
-    <div class="controls">
-      <cmf-inline ng-model="content.description">
-        <cmf-inline-preview><i class="icon-edit pull-right"></i><span>{{content.description}}</span></cmf-inline-preview>
-        <cmf-inline-input>
-          <textarea type="text" name="description" ng-model="content.description" class="input-block-level"></textarea>
-        </cmf-inline-input>
-      </cmf-inline>
+    <div class="form-group">
+      <label class="control-label">{{ 'GLOBAL.HEADLINE' | translate }}</label>
+      <div class="controls">
+        <cmf-inline ng-model="content.headline">
+          <cmf-inline-preview><i class="icon-edit pull-right"></i>
+            <h1>{{content.headline}}</h1>
+          </cmf-inline-preview>
+          <cmf-inline-input>
+            <input type="text" name="headline" ng-model="content.headline"/>
+          </cmf-inline-input>
+        </cmf-inline>
+      </div>
     </div>
+    <div class="form-group">
+      <label class="control-label">{{ 'GLOBAL.DESCRIPTION' | translate }}</label>
+      <div class="controls">
+        <cmf-inline ng-model="content.description">
+          <cmf-inline-preview><i class="icon-edit pull-right"></i><span>{{content.description}}</span></cmf-inline-preview>
+          <cmf-inline-input>
+            <textarea type="text" name="description" ng-model="content.description" class="input-block-level"></textarea>
+          </cmf-inline-input>
+        </cmf-inline>
+      </div>
+    </div>
+    <author-picker author="part.byline"></author-picker>
+    <kz-vocabulary-input ng-model="part.vocabularies"></kz-vocabulary-input>
   </div>
-  <author-picker author="part.byline"></author-picker>
-  <kz-vocabulary-input ng-model="part.vocabularies"></kz-vocabulary-input>
 </ng-form>

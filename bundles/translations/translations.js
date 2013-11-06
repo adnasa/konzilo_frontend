@@ -1,12 +1,9 @@
 (function() {
   angular.module('konzilo.translations', ['pascalprecht.translate']).config([
     "$translateProvider", function($translateProvider) {
-      $translateProvider.useStaticFilesLoader({
-        prefix: 'locale/',
-        suffix: '.json'
-      });
-      $translateProvider.fallbackLanguage('en');
-      return $translateProvider.preferredLanguage('en');
+      $translateProvider.useLoader("kzLanguageLoader");
+      $translateProvider.fallbackLanguage('default');
+      return $translateProvider.preferredLanguage('default');
     }
   ]).directive("languageSwitcher", function() {
     return {
@@ -14,6 +11,7 @@
       scope: {
         defaults: "="
       },
+      replace: true,
       controller: [
         "$scope", "$element", "$attrs", "$translate", "KonziloConfig", "UserState", function($scope, $element, $attrs, $translate, KonziloConfig, UserState) {
           var getLangs;
@@ -49,6 +47,20 @@
       ],
       templateUrl: "bundles/translations/language-switcher.html"
     };
-  });
+  }).factory('kzLanguageLoader', [
+    "$http", function($http) {
+      return function(options) {
+        if (options.key === "default") {
+          return $http.get("/language").then(function(result) {
+            return result.data;
+          });
+        } else {
+          return $http.get("locale/" + options.key + ".json").then(function(result) {
+            return result.data;
+          });
+        }
+      };
+    }
+  ]);
 
 }).call(this);

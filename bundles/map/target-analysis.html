@@ -6,7 +6,7 @@
   <div class="modal-body">
     <p>{{target.description}}</p>
     <div class="form form-horizontal article-description">
-      <div ng-class="name" ng-repeat="(name, mood) in target.analysis" class="control-group">
+      <div ng-class="name" ng-repeat="(name, mood) in target.analysis" class="form-group">
         <label class="control-label">{{moods[name] | translate}}</label>
         <div class="controls">
           <ul>
@@ -14,13 +14,13 @@
           </ul>
         </div>
       </div>
-      <div ng-show="target.pain" class="control-group">
+      <div ng-show="target.pain" class="form-group">
         <label class="control-label">{{'TARGET.PAIN' | translate}}</label>
         <div class="controls">
           <p>{{target.pain}}</p>
         </div>
       </div>
-      <div ng-show="target.gain" class="control-group">
+      <div ng-show="target.gain" class="form-group">
         <label class="control-label">{{ 'TARGET.GAIN' | translate }}</label>
         <div class="controls">
           <p>{{target.gain}}</p>

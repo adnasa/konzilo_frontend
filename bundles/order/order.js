@@ -26,7 +26,50 @@
         return userAccess("create article parts");
       });
     }
-  ]).controller("OrderController", [
+  ]).controller("OrderInfo", [
+    "$scope", "TargetStorage", "ChannelStorage", "StepStorage", "KonziloConfig", function($scope, TargetStorage, ChannelStorage, StepStorage, KonziloConfig) {
+      var update;
+      update = function() {
+        if (!$scope.part) {
+          return;
+        }
+        $scope.translations = {};
+        $scope.article = $scope.part.article;
+        if ($scope.part.article.topic) {
+          $scope.translations.topic = $scope.part.article.topic;
+        }
+        if ($scope.part.article.target) {
+          TargetStorage.get($scope.part.article.target).then(function(result) {
+            $scope.target = result.toObject();
+            return $scope.translations.target = $scope.target.name;
+          });
+        }
+        if ($scope.part.article.channel) {
+          $scope.channel = ChannelStorage.get($scope.part.article.channel).then(function(result) {
+            return result.toObject();
+          });
+        }
+        if ($scope.part.article.step) {
+          $scope.step = StepStorage.get($scope.part.article.step).then(function(result) {
+            return result.toObject();
+          });
+        }
+        if ($scope.part.language) {
+          return $scope.language = KonziloConfig.get("languages").get($scope.part.language);
+        }
+      };
+      return $scope.$watch("part", update);
+    }
+  ]).directive("kzOrderInfo", function() {
+    return {
+      restrict: "AE",
+      scope: {
+        part: "="
+      },
+      controller: "OrderInfo",
+      templateUrl: 'bundles/order/order-info.html'
+    };
+  }).controller("OrderController", [
     "$scope", "ArticleStorage", "$routeParams", "UserStorage", "$q", "articleParts", "KonziloConfig", "TargetStorage", "InputAutoSave", "StepStorage", "ArticlePartStorage", "ChannelStorage", "$filter", "kzAnalysisDialog", "$location", function($scope, ArticleStorage, $routeParams, UserStorage, $q, articleParts, KonziloConfig, TargetStorage, InputAutoSave, StepStorage, ArticlePartStorage, ChannelStorage, $filter, kzAnalysisDialog, $location) {
       var getPart;
       $scope.savePart = function() {
@@ -51,24 +94,6 @@
       if ($routeParams.article) {
         ArticleStorage.get($routeParams.article, function(article) {
           $scope.article = article.toObject();
-          $scope.translations["topic"] = $scope.article.topic;
-          if ($scope.article.target) {
-            TargetStorage.get($scope.article.target).then(function(result) {
-              $scope.target = result.toObject();
-              return $scope.translations["target"] = $scope.target.name;
-            });
-          }
-          if ($scope.article.channel) {
-            $scope.channel = ChannelStorage.get($scope.article.channel).then(function(result) {
-              return result.toObject();
-            });
-          }
-          if ($scope.article.step) {
-            StepStorage.get($scope.article.step).then(function(result) {
-              $scope.step = result.toObject();
-              return $scope.translations["step"] = $scope.step.name;
-            });
-          }
           if ($routeParams.part) {
             return getPart($routeParams.part);
           }

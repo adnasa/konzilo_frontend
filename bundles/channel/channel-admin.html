@@ -1,25 +1,25 @@
 
-<div class="container-fluid main-content">
-  <div class="row-fluid">
-    <div ng-class="mainClass()" class="span12 right-side">
+<div class="wrapper">
+  <div class="main-content">
+    <div ng-class="{full: !channel, half: channel}">
       <div class="box pad">
-        <h2>{{ 'CHANNEL.TITLE' | translate }}</h2>
+        <h1>{{ 'CHANNEL.TITLE' | translate }}</h1>
         <content-table entity-type="Channel" properties="properties" query="query"></content-table>
-        <h3>{{ 'CHANNEL.ADD_NEW' | translate }}</h3>
-        <form name="addChannelForm" ng-submit="addChannel()" class="form form-horizontal">
-          <div class="control-group">
+        <h2>{{ 'CHANNEL.ADD_NEW' | translate }}</h2>
+        <form name="addChannelForm" ng-submit="addChannel()" class="form">
+          <div class="form-group">
             <label for="name" class="control-label">{{ 'GLOBAL.NAME' | translate }}</label>
             <div class="controls">
               <input type="text" name="name" ng-model="newChannel.name" required="required"/>
             </div>
           </div>
-          <div class="control-group">
+          <div class="form-group">
             <label for="description" class="control-label">{{ 'GLOBAL.DESCRIPTION' | translate }}</label>
             <div class="controls">
               <textarea name="description" ng-model="newChannel.description" required="required"></textarea>
             </div>
           </div>
-          <div class="control-group">
+          <div class="form-group">
             <label for="endpoint" class="control-label">{{ 'GLOBAL.ENDPOINT' | translate }}</label>
             <div class="controls">
               <select type="text" name="endpoint" ng-model="newChannel.endpoint" required="required">
@@ -28,29 +28,29 @@
             </div>
           </div>
           <div class="actions">
-            <input type="submit" name="save" value="{{'GLOBAL.SAVE' | translate}}"/>
+            <input type="submit" name="save" value="{{'GLOBAL.SAVE' | translate}}" class="btn btn-primary"/>
           </div>
         </form>
       </div>
     </div>
-    <div ng-show="channel" class="span6">
+    <div ng-show="channel" class="half">
       <div class="box pad">
         <h2>{{endpoint.name}}</h2>
-        <form name="editChannelForm" class="form form-horizontal">
+        <form name="editChannelForm" class="form">
           <cmf-autosave-status status="autosave"></cmf-autosave-status>
-          <div class="control-group">
+          <div class="form-group">
             <label for="name" class="control-label">{{ 'GLOBAL.NAME' | translate }}</label>
             <div class="controls">
               <input type="text" name="name" ng-model="channel.name" required="required"/>
             </div>
           </div>
-          <div class="control-group">
+          <div class="form-group">
             <label for="description" class="control-label">{{ 'GLOBAL.DESCRIPTION' | translate }}</label>
             <div class="controls">
               <textarea name="description" ng-model="channel.description" required="required"></textarea>
             </div>
           </div>
-          <div class="control-group">
+          <div class="form-group">
             <label for="endpoint" class="control-label">{{ 'GLOBAL.ENDPOINT' | translate }}</label>
             <div class="controls">
               <select type="text" name="endpoint" ng-model="channel.endpoint" required="required">

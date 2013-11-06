@@ -4,7 +4,7 @@
   <div class="editor">
     <div class="tools">
       <div class="btn-toolbar clearfix">
-        <div ng-repeat="tool in tools" class="btn-group dropdown"><a ng-click="useTool(tool)" class="btn dropdown-toggle markdown-editor-control"><i ng-class="tool.icon"></i></a>
+        <div ng-repeat="tool in tools" class="btn-group dropdown"><a ng-click="useTool(tool)" class="btn btn-default dropdown-toggle markdown-editor-control"><i ng-class="tool.icon"></i></a>
           <ul ng-show="tool.options" class="dropdown-menu">
             <li ng-repeat="(name, template) in tool.options"><a ng-click="useTool(tool, name)" class="markdown-editor-control">{{name}}</a></li>
           </ul>

@@ -1,142 +1,95 @@
 
 <div kntnt-article-picker="kntnt-article-picker"></div>
-<div class="container-fluid main-content">
-  <div class="row-fluid content">
-    <div class="span3">
+<div class="wrapper">
+  <div class="main-content">
+    <div ng-class="{ visible: part }" class="list">
       <div class="box pad">
         <div kntnt-clipboard-article-parts="kntnt-clipboard-article-parts" kz-max-height="150" selected="part" link-pattern="#/order/:article/:part" part-created="partCreated"></div>
       </div>
     </div>
-    <div ng-show="!part" class="span9">
-      <div class="box pad">
+    <div class="main-full">
+      <div ng-show="!part" class="box pad info-message">
         <h1>{{ "ORDER.TITLE" | translate }}</h1>
         <p>{{ "ORDER.DESCRIPTION" | translate }}</p>
       </div>
-    </div>
-    <div ng-show="part" class="span5">
-      <div class="box pad">
-        <h2>{{ "ORDER.PARTDESC" | translate }}</h2>
-        <cmf-autosave-status status="autosave"></cmf-autosave-status>
-        <form ng-submit="savePart()" name="partForm" class="form part-form form-horizontal">
-          <div class="control-group">
-            <label for="title" class="control-label">{{ "GLOBAL.WORKINGTITLE" | translate }}</label>
-            <div class="controls">
-              <input type="text" name="title" ng-model="part.title" required="required"/>
+      <div ng-show="part" ng-class="{ visible: part }" class="main">
+        <div class="box pad">
+          <ol ng-show="part" class="breadcrumb">
+            <li><a ng-href="#/order">{{'ORDER.TITLE' | translate}}</a></li>
+            <li class="active">{{part.article.title}}</li>
+            <li ng-show="part" class="active">{{part.title}}</li>
+          </ol>
+          <h2>{{ "ORDER.PARTDESC" | translate }}</h2>
+          <cmf-autosave-status status="autosave"></cmf-autosave-status>
+          <form ng-submit="savePart()" name="partForm" class="form form-horizontal">
+            <div class="form-group">
+              <label for="title" class="control-label">{{ "GLOBAL.WORKINGTITLE" | translate }}</label>
+              <div class="controls">
+                <input type="text" name="title" ng-model="part.title" required="required"/>
+              </div>
             </div>
-          </div>
-          <div class="control-group">
-            <label for="submitter" class="control-label">{{ "GLOBAL.SUBMITTER" | translate }}</label>
-            <div class="controls">
-              <entity-reference ng-model="part.submitter" entity-type="Provider"></entity-reference>
+            <div class="form-group">
+              <label for="submitter" class="control-label">{{ "GLOBAL.SUBMITTER" | translate }}</label>
+              <div class="controls">
+                <entity-reference ng-model="part.submitter" entity-type="Provider"></entity-reference>
+              </div>
             </div>
-          </div>
-          <div class="control-group">
-            <label for="provider" class="control-label">{{ "GLOBAL.PROVIDER" | translate }}</label>
-            <div class="controls">
-              <entity-reference ng-model="part.provider" entity-type="Provider"></entity-reference>
+            <div class="form-group">
+              <label for="provider" class="control-label">{{ "GLOBAL.PROVIDER" | translate }}</label>
+              <div class="controls">
+                <entity-reference ng-model="part.provider" entity-type="Provider"></entity-reference>
+              </div>
             </div>
-          </div>
-          <div class="control-group">
-            <label for="deadline" class="control-label">{{ "GLOBAL.DEADLINE" | translate }}</label>
-            <div class="controls">
-              <input type="text" ng-model="part.deadline" placeholder="{{'GLOBAL.DATE' | translate}}" datepicker-popup="yyyy-MM-dd" ng-change="changeDate()"/>
-              <input type="text" ng-model="deadlinetime" ng-change="changeTime(deadlinetime, part.deadline)" placeholder="{{'GLOBAL.TIME' | translate}}"/>
+            <div class="form-group">
+              <label for="deadline" class="control-label">{{ "GLOBAL.DEADLINE" | translate }}</label>
+              <div class="controls">
+                <div class="publishdate">
+                  <input type="text" ng-model="part.deadline" placeholder="{{'GLOBAL.DATE' | translate}}" datepicker-popup="yyyy-MM-dd" ng-change="changeDate()"/>
+                </div>
+                <div class="publishtime">
+                  <input type="text" ng-model="deadlinetime" ng-change="changeTime(deadlinetime, part.deadline)" placeholder="{{'GLOBAL.TIME' | translate}}"/>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="control-group">
-            <label for="type" class="control-label">{{'GLOBAL.DELIVERY' | translate}}</label>
-            <div class="controls">
-              <select name="type" ng-model="part.type" ng-options="key as value for (key, value) in types" required="required" ng-disabled="contentSaved(part)"></select>
+            <div class="form-group">
+              <label for="type" class="control-label">{{'GLOBAL.DELIVERY' | translate}}</label>
+              <div class="controls">
+                <select name="type" ng-model="part.type" ng-options="key as value for (key, value) in types" required="required" ng-disabled="contentSaved(part)"></select>
+              </div>
             </div>
-          </div>
-          <div class="control-group">
-            <label for="language" class="control-label">{{ 'GLOBAL.LANGUAGE' | translate }}</label>
-            <div class="controls">
-              <select name="language" ng-model="part.language">
-                <option value="{{code}}" ng-repeat="(code, lang) in languages" ng-selected="part.language == code">{{lang.name}}</option>
-              </select>
+            <div class="form-group">
+              <label for="language" class="control-label">{{ 'GLOBAL.LANGUAGE' | translate }}</label>
+              <div class="controls">
+                <select name="language" ng-model="part.language">
+                  <option value="{{code}}" ng-repeat="(code, lang) in languages" ng-selected="part.language == code">{{lang.name}}</option>
+                </select>
+              </div>
             </div>
-          </div>
-          <div class="control-group">
-            <label for="terms" class="control-label">{{ 'GLOBAL.TERMS' | translate }}</label>
-            <div class="controls">
-              <file-upload-list ng-model="part.terms" bundle="document" preview="false"></file-upload-list>
+            <div class="form-group">
+              <label for="terms" class="control-label">{{ 'GLOBAL.TERMS' | translate }}</label>
+              <div class="controls">
+                <file-upload-list ng-model="part.terms" bundle="document" preview="false"></file-upload-list>
+              </div>
             </div>
-          </div>
-          <div class="control-group">
-            <label for="assignment" class="control-label">{{ 'GLOBAL.ASSIGNMENT' | translate }}</label>
-            <div class="controls">
-              <textarea ng-model="part.assignment" placeholder="Beskriv uppdraget här." class="input-block-level"></textarea>
+            <div class="form-group">
+              <label for="assignment" class="control-label">{{ 'GLOBAL.ASSIGNMENT' | translate }}</label>
+              <div class="controls">
+                <textarea ng-model="part.assignment" placeholder="Beskriv uppdraget här." class="input-block-level"></textarea>
+              </div>
             </div>
-          </div>
-          <div class="control-group">
-            <label for="teaser" class="control-label">{{ 'GLOBAL.DISPLAY' | translate }}</label>
-            <div class="controls">
-              <label class="checkbox">
-                <input type="checkbox" ng-model="part.teaser"/><span>{{'ORDER.SHOWLISTINGS' | translate}}</span>
-              </label>
+            <div class="form-group">
+              <label for="teaser" class="control-label">{{ 'GLOBAL.DISPLAY' | translate }}</label>
+              <div class="controls">
+                <label class="checkbox">
+                  <input type="checkbox" ng-model="part.teaser"/><span>{{'ORDER.SHOWLISTINGS' | translate}}</span>
+                </label>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
-    <div ng-show="part" class="span4">
-      <div class="tabbed-box">
-        <tabset>
-          <tab heading="{{ 'ORDER.ARTICLE_TITLE' | translate}}">
-            <div class="inner pad form form-horizontal article-description">
-              <div class="control-group">
-                <label for="date" class="control-label">{{'GLOBAL.PUBLISHING' | translate}}</label>
-                <div class="controls"><span>{{article.publishdate |  date: 'yyyy-MM-dd'}} {{'ORDER.PUBLISHINFO' | translate}}</span></div>
-              </div>
-              <div ng-show="article.unpublishdate" class="control-group">
-                <label for="date" class="control-label">{{ 'GLOBAL.UNPUBLISHING' | translate }}</label>
-                <div class="controls"><span>{{article.unpublishdate | date: 'yyyy-MM-dd' }}</span></div>
-              </div>
-              <div ng-show="channel" class="control-group">
-                <label class="control-label">{{ 'GLOBAL.CHANNEL' | translate }}</label>
-                <div class="controls"><span markdown="channel.description" class="help-block"></span></div>
-              </div>
-              <div ng-show="target" class="control-group">
-                <label for="target" class="control-label">{{ 'GLOBAL.TARGET' | translate }}</label>
-                <div class="controls"><span markdown="target.description" class="help-block"></span><a ng-click="showAnalysis(target)">{{ 'GLOBAL.SHOW_ANALYSIS' | translate }}</a></div>
-              </div>
-              <div ng-show="article.step" class="control-group">
-                <label for="steps" class="control-label">{{ 'GLOBAL.STEP' | translate }}</label>
-                <div class="controls"><span class="help-block">{{ target.steps[article.step].description }}</span></div>
-              </div>
-              <div ng-show="article.step" class="control-group">
-                <label for="target" class="control-label">{{ 'GLOBAL.SUBJECT' | translate }}</label>
-                <div class="controls"><span ng-show="article.topic" class="help-block"><span>{{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate: translations  }}</span></span></div>
-              </div>
-              <div ng-show="article.keywords" class="control-group">
-                <label class="control-label">{{ 'GLOBAL.KEYWORDS' | translate  }}</label>
-                <div class="controls"><span class="help-block">{{'GLOBAL.KEYWORD_SPEC' | translate: translations }}</span>
-                  <ul class="keywords">
-                    <li ng-repeat="item in article.keywords" class="label label-info"><span>{{item}}</span></li>
-                  </ul>
-                </div>
-              </div>
-              <div ng-show="article.description" class="control-group">
-                <label for="description" class="control-label">{{ 'GLOBAL.ARTICLE_IDEA' | translate }}</label>
-                <div class="controls">
-                  <div markdown="article.description" class="text"></div>
-                </div>
-              </div>
-            </div>
-          </tab>
-          <tab heading="{{ 'GLOBAL.DISCUSSION' | translate }}">
-            <div class="inner pad">
-              <konzilo-comments ng-model="part.comments"></konzilo-comments>
-            </div>
-          </tab>
-          <tab heading="{{'GLOBAL.VERSIONS' | translate}}">
-            <div class="inner pad">
-              <konzilo-article-part-versions part="part" link-pattern="#/order/:article_id/:id"></konzilo-article-part-versions>
-              <konzilo-article-part-new-version part="part"></konzilo-article-part-new-version>
-            </div>
-          </tab>
-        </tabset>
+      <div ng-show="part" class="additional">
+        <kz-order-info part="part"></kz-order-info>
       </div>
     </div>
   </div>

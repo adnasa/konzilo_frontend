@@ -1,61 +1,63 @@
 
-<ng-form name="partForm" class="form form-horizontal">
-  <div class="title">
-    <h2>{{ 'TEXTPART.TITLE' | translate }}</h2>
-    <cmf-autosave-status status="autosave"></cmf-autosave-status>
-  </div>
-  <div class="control-group">
-    <label class="control-label">{{'GLOBAL.TOPHEADLINE' | translate}}</label>
-    <div class="controls">
-      <cmf-inline ng-model="content.topheadline">
-        <cmf-inline-preview><i class="icon-edit pull-right"></i><span>{{content.topheadline}}</span></cmf-inline-preview>
-        <cmf-inline-input>
-          <input type="text" name="title" ng-model="content.topheadline"/>
-        </cmf-inline-input>
-      </cmf-inline>
+<ng-form name="partForm">
+  <div class="form-horizontal part-form">
+    <div class="title">
+      <h2>{{ 'TEXTPART.TITLE' | translate }}</h2>
+      <cmf-autosave-status status="autosave"></cmf-autosave-status>
     </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label">{{ 'GLOBAL.HEADLINE' | translate }}</label>
-    <div class="controls">
-      <cmf-inline ng-model="content.headline">
-        <cmf-inline-preview><i class="icon-edit pull-right"></i>
-          <h1>{{content.headline}}</h1>
-        </cmf-inline-preview>
-        <cmf-inline-input>
-          <input type="text" name="headline" ng-model="content.headline"/>
-        </cmf-inline-input>
-      </cmf-inline>
+    <div class="form-group">
+      <label class="control-label">{{'GLOBAL.TOPHEADLINE' | translate}}</label>
+      <div class="controls">
+        <cmf-inline ng-model="content.topheadline">
+          <cmf-inline-preview><i class="icon-edit pull-right"></i><span>{{content.topheadline}}</span></cmf-inline-preview>
+          <cmf-inline-input>
+            <input type="text" name="title" ng-model="content.topheadline"/>
+          </cmf-inline-input>
+        </cmf-inline>
+      </div>
     </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label">{{ 'GLOBAL.KICKER' | translate }}</label>
-    <div class="controls">
-      <cmf-inline ng-model="content.kicker">
-        <cmf-inline-preview><i class="icon-edit pull-right"></i><strong>{{content.kicker}}</strong></cmf-inline-preview>
-        <cmf-inline-input>
-          <input type="text" name="headline" ng-model="content.kicker"/>
-        </cmf-inline-input>
-      </cmf-inline>
+    <div class="form-group">
+      <label class="control-label">{{ 'GLOBAL.HEADLINE' | translate }}</label>
+      <div class="controls">
+        <cmf-inline ng-model="content.headline">
+          <cmf-inline-preview><i class="icon-edit pull-right"></i>
+            <h1>{{content.headline}}</h1>
+          </cmf-inline-preview>
+          <cmf-inline-input>
+            <input type="text" name="headline" ng-model="content.headline"/>
+          </cmf-inline-input>
+        </cmf-inline>
+      </div>
     </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label">{{ 'GLOBAL.LEAD' | translate }}</label>
-    <div class="controls">
-      <cmf-inline ng-model="content.lead">
-        <cmf-inline-preview><i class="icon-edit pull-right"></i><strong>{{content.lead}}</strong></cmf-inline-preview>
-        <cmf-inline-input>
-          <textarea type="text" name="lead" ng-model="content.lead" class="input-block-level"></textarea>
-        </cmf-inline-input>
-      </cmf-inline>
+    <div class="form-group">
+      <label class="control-label">{{ 'GLOBAL.KICKER' | translate }}</label>
+      <div class="controls">
+        <cmf-inline ng-model="content.kicker">
+          <cmf-inline-preview><i class="icon-edit pull-right"></i><strong>{{content.kicker}}</strong></cmf-inline-preview>
+          <cmf-inline-input>
+            <input type="text" name="headline" ng-model="content.kicker"/>
+          </cmf-inline-input>
+        </cmf-inline>
+      </div>
     </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label">{{ 'GLOBAL.BODY' | translate }}</label>
-    <div class="controls">
-      <markdown-editor ng-model="content.body"></markdown-editor>
+    <div class="form-group">
+      <label class="control-label">{{ 'GLOBAL.LEAD' | translate }}</label>
+      <div class="controls">
+        <cmf-inline ng-model="content.lead">
+          <cmf-inline-preview><i class="icon-edit pull-right"></i><strong>{{content.lead}}</strong></cmf-inline-preview>
+          <cmf-inline-input>
+            <textarea type="text" name="lead" ng-model="content.lead" class="input-block-level"></textarea>
+          </cmf-inline-input>
+        </cmf-inline>
+      </div>
     </div>
+    <div class="form-group">
+      <label class="control-label">{{ 'GLOBAL.BODY' | translate }}</label>
+      <div class="controls">
+        <markdown-editor ng-model="content.body"></markdown-editor>
+      </div>
+    </div>
+    <author-picker author="part.byline"></author-picker>
+    <kz-vocabulary-input ng-model="part.vocabularies"></kz-vocabulary-input>
   </div>
-  <author-picker author="part.byline"></author-picker>
-  <kz-vocabulary-input ng-model="part.vocabularies"></kz-vocabulary-input>
 </ng-form>

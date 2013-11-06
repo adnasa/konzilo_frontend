@@ -4,13 +4,13 @@
     <h2>{{user.username}}</h2>
     <cmf-autosave-status status="autosave"></cmf-autosave-status>
   </div>
-  <div class="control-group">
-    <label class="control-label">{{'GLOBAL.EMAIL' | translate}}</label>
-    <div class="controls">
+  <div class="form-group">
+    <label class="control-label col-lg-2">{{'GLOBAL.EMAIL' | translate}}</label>
+    <div class="controls col-lg-10">
       <input type="email" name="email" ng-model="user.email"/>
     </div>
   </div>
-  <div ng-show="showAdminFields" class="control-group">
+  <div ng-show="showAdminFields" class="form-group">
     <label class="control-label">{{'USER.ROLES' | translate}}</label>
     <div class="controls">
       <select ng-model="user.roles" multiple="true">
@@ -18,7 +18,7 @@
       </select>
     </div>
   </div>
-  <div ng-show="showAdminFields" class="control-group">
+  <div ng-show="showAdminFields" class="form-group">
     <label class="control-label">{{'GLOBAL.LANGUAGE' | translate}}</label>
     <div class="controls">
       <select ng-model="user.language">
@@ -26,7 +26,7 @@
       </select>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label">{{'GLOBAL.PASSWORD' | translate}}</label>
     <div class="controls">
       <input type="password" name="password" ng-model="user.password" placeholder="{{'GLOBAL.PASSWORD' | translate}}"/>
@@ -34,9 +34,9 @@
       <div class="help-block">{{'USER.PASSWORDDESC' | translate}}</div>
     </div>
   </div>
-  <div ng-show="showAdminFields" class="control-group">
+  <div ng-show="showAdminFields" class="form-group">
     <label class="control-label">{{'USER.ACTIVE' | translate}}</label>
-    <div class="controls"><i class="icon-edit pull-right"></i>
+    <div class="controls">
       <label class="checkbox">
         <input type="checkbox" name="active" ng-model="user.active"/>
       </label>

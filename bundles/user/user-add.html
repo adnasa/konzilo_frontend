@@ -1,36 +1,40 @@
 
-<form ng-submit="saveUser()" name="userForm" class="form user-form form-horizontal">
+<form ng-submit="saveUser()" name="userForm" class="form user-add-form">
   <div class="title">
     <h2>{{'USER.ADDTITLE' | translate}}</h2>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label">{{'GLOBAL.USERNAME' | translate}}</label>
     <div class="controls">
       <input type="text" name="name" ng-model="user.username"/>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label">{{'GLOBAL.EMAIL' | translate}}</label>
     <div class="controls">
       <input type="email" name="email" ng-model="user.email"/>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label">{{'GLOBAL.PASSWORD' | translate}}</label>
     <div class="controls">
-      <input type="password" name="password" ng-model="user.password"/>
-      <input type="password" name="password2" ng-model="password2"/>
+      <div class="password-wrapper first">
+        <input type="password" name="password" placeholder="{{'GLOBAL.PASSWORD' | translate}}" ng-model="user.password"/>
+      </div>
+      <div class="password-wrapper last">
+        <input type="password" name="password2" placeholder="{{'USER.PASSWORDREPEAT' | translate}}" ng-model="password2"/>
+      </div>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label">{{'USER.ACTIVE' | translate}}</label>
-    <div class="controls"><i class="icon-edit pull-right"></i>
+    <div class="controls">
       <label class="checkbox">
         <input type="checkbox" name="active" ng-model="user.active"/>
       </label>
     </div>
   </div>
   <div class="form-actions">
-    <input type="submit" value="{{'USER.CREATE' | translate}}"/>
+    <input type="submit" value="{{'USER.CREATE' | translate}}" class="btn btn-primary"/>
   </div>
 </form>

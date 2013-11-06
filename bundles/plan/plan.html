@@ -1,31 +1,33 @@
 
 <div kntnt-article-picker="kntnt-article-picker"></div>
-<div class="container-fluid main-content">
-  <div class="row-fluid">
-    <div class="span3 left-side">
+<div class="wrapper">
+  <div class="main-content">
+    <div ng-class="{visible: article}" class="list">
       <div kntnt-clipboard-articles="kntnt-clipboard-articles" link-pattern="#/plan/:_id" first-article="firstArticle" article-created="articleCreated"></div>
     </div>
-    <div ng-show="!article" class="span9">
-      <div class="box pad">
+    <div class="main-full">
+      <div ng-show="!article" class="box pad info-message">
         <h1>{{ "PLAN.TITLE" | translate }}</h1>
         <p>{{ "PLAN.DESCRIPTION" | translate }}</p>
       </div>
-    </div>
-    <div ng-show="article" class="span5 right-side">
-      <section class="articleinfo">
+      <div ng-show="article" class="main">
         <div class="box pad">
+          <ol ng-show="article" class="breadcrumb">
+            <li><a ng-href="#/plan">{{'PLAN.TITLE' | translate}}</a></li>
+            <li ng-show="article" class="active">{{article.title}}</li>
+          </ol>
           <h2>{{ "PLAN.PLAN_TITLE" | translate }}</h2>
           <konzilo-article-form article="article"></konzilo-article-form>
         </div>
-      </section>
-    </div>
-    <div ng-show="article" class="span4">
-      <div class="tabbed-box">
-        <ul class="nav nav-tabs">
-          <li class="active"><a>{{ "GLOBAL.DISCUSSION" | translate }}</a></li>
-        </ul>
-        <div class="inner pad">
-          <konzilo-comments ng-model="article.comments"></konzilo-comments>
+      </div>
+      <div ng-show="article" class="additional">
+        <div class="tabbed-box">
+          <ul class="nav nav-tabs">
+            <li class="active"><a>{{ "GLOBAL.DISCUSSION" | translate }}</a></li>
+          </ul>
+          <div class="inner pad">
+            <konzilo-comments ng-model="article.comments"></konzilo-comments>
+          </div>
         </div>
       </div>
     </div>

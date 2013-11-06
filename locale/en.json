@@ -74,7 +74,8 @@
     "LOGOUT": "Log out",
     "BACK": "Back",
     "HIDE": "Dölj",
-    "FETCHMORE": "Fetch more"
+    "FETCHMORE": "Fetch more",
+    "DETAILS": "Details"
   },
   "CHANNEL": {
     "TITLE": "Channels",
@@ -104,9 +105,11 @@
     "LOGIN": "Log in",
     "FORGOTPASSWORD": "Forgot your password?",
     "RETRIEVEPASSWORD": "Request new password",
+    "WRONGUSERNAMEPASSWORD": "You entered an invalid username or password.",
     "PASSWORDSENT": "A login reset link has been sent to your email address.",
     "PASSWORDERROR": "Something went wrong. Are you sure you entered the right email address?",
-    "USERNAMEOREMAIL": "Username or email"
+    "USERNAMEOREMAIL": "Username or email",
+    "BACK": "Go back to the login page"
   },
   "TARGET": {
     "TITLE": "Target groups",
@@ -152,7 +155,8 @@
   "GROUP": {
     "TITLE": "Groups",
     "CREATENEW": "New group",
-    "CREATE": "Create group"
+    "CREATE": "Create group",
+    "ADDUSER": "Add user to group"
   },
   "MANAGE": {
     "TITLE": "Manage",

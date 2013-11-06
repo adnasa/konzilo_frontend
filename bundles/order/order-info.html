@@ -1,0 +1,59 @@
+
+<div class="tabbed-box">
+  <tabset>
+    <tab heading="{{ 'ORDER.ARTICLE_TITLE' | translate}}">
+      <div class="pad">
+        <div class="inner form form-horizontal article-description">
+          <div class="form-group">
+            <label for="date" class="control-label">{{'GLOBAL.PUBLISHING' | translate}}</label>
+            <div class="controls"><span>{{article.publishdate |  date: 'yyyy-MM-dd'}} {{'ORDER.PUBLISHINFO' | translate}}</span></div>
+          </div>
+          <div ng-show="article.unpublishdate" class="form-group">
+            <label for="date" class="control-label">{{ 'GLOBAL.UNPUBLISHING' | translate }}</label>
+            <div class="controls"><span>{{article.unpublishdate | date: 'yyyy-MM-dd' }}</span></div>
+          </div>
+          <div ng-show="channel" class="form-group">
+            <label class="control-label">{{ 'GLOBAL.CHANNEL' | translate }}</label>
+            <div class="controls"><span markdown="channel.description"></span></div>
+          </div>
+          <div ng-show="target" class="form-group">
+            <label for="target" class="control-label">{{ 'GLOBAL.TARGET' | translate }}</label>
+            <div class="controls"><span markdown="target.description"></span><a ng-click="showAnalysis(target)">{{ 'GLOBAL.SHOW_ANALYSIS' | translate }}</a></div>
+          </div>
+          <div ng-show="article.step" class="form-group">
+            <label for="steps" class="control-label">{{ 'GLOBAL.STEP' | translate }}</label>
+            <div class="controls"><span>{{ target.steps[article.step].description }}</span></div>
+          </div>
+          <div ng-show="article.step" class="form-group">
+            <label for="target" class="control-label">{{ 'GLOBAL.SUBJECT' | translate }}</label>
+            <div class="controls"><span ng-show="article.topic"><span>{{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate: translations  }}</span></span></div>
+          </div>
+          <div ng-show="article.keywords" class="form-group">
+            <label class="control-label">{{ 'GLOBAL.KEYWORDS' | translate  }}</label>
+            <div class="controls"><span>{{'GLOBAL.KEYWORD_SPEC' | translate: translations }}</span>
+              <ul class="keywords">
+                <li ng-repeat="item in article.keywords" class="label label-info"><span>{{item}}</span></li>
+              </ul>
+            </div>
+          </div>
+          <div ng-show="article.description" class="form-group">
+            <label for="description" class="control-label">{{ 'GLOBAL.ARTICLE_IDEA' | translate }}</label>
+            <div class="controls"></div>
+            <div markdown="article.description" class="text"></div>
+          </div>
+        </div>
+      </div>
+    </tab>
+    <tab heading="{{ 'GLOBAL.DISCUSSION' | translate }}">
+      <div class="inner pad">
+        <konzilo-comments ng-model="part.comments"></konzilo-comments>
+      </div>
+    </tab>
+    <tab heading="{{'GLOBAL.VERSIONS' | translate}}">
+      <div class="inner pad">
+        <konzilo-article-part-versions part="part" link-pattern="#/order/:article_id/:id"></konzilo-article-part-versions>
+        <konzilo-article-part-new-version part="part"></konzilo-article-part-new-version>
+      </div>
+    </tab>
+  </tabset>
+</div>

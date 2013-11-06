@@ -1,40 +1,44 @@
 
-<div class="container-fluid main-content">
-  <div class="row-fluid">
-    <div class="span2">
-      <form ng-submit="newTarget()" class="box pad">
-        <input type="text" name="target" ng-model="targetName" placeholder="{{ 'TARGET.ADDNEW' | translate }}"/>
+<div class="wrapper">
+  <div class="main-content">
+    <div class="list">
+      <form ng-submit="newTarget()" class="box pad form-inline">
+        <div class="form-group">
+          <input type="text" name="target" ng-model="targetName" placeholder="{{ 'TARGET.ADDNEW' | translate }}" class="form-control"/>
+        </div>
         <input type="submit" name="newtarget" value="{{ 'GLOBAL.SAVE' | translate }}" class="btn btn-primary"/>
       </form>
-      <ul class="targets nav nav-stacked nav-tabs menu-list">
-        <li ng-repeat="target in targets"><a href="#/settings/targets/{{target._id}}">{{ target.name }}</a></li>
-      </ul>
+      <div class="item-list">
+        <ul class="nav nav-stacked nav-pills menu-list">
+          <li ng-repeat="item in targets" ng-class="{active: item._id == target._id}"><a href="#/settings/targets/{{item._id}}">{{ item.name }}</a></li>
+        </ul>
+      </div>
     </div>
-    <div ng-show="target" class="span10 target">
+    <div ng-show="target" class="main-full">
       <div class="box pad">
         <button ng-click="removeTarget(target)" class="btn btn-danger pull-right"><i class="icon-remove"></i><span>{{'GLOBAL.REMOVE' | translate}}</span></button>
-        <h2>{{title}}</h2>
+        <h1>{{title}}</h1>
         <cmf-autosave-status status="autosave"></cmf-autosave-status>
         <form ng-submit="saveTarget()" name="mapForm" class="form form-horizontal">
-          <div class="control-group">
+          <div class="form-group">
             <label class="control-label">{{ 'GLOBAL.NAME' | translate }}</label>
             <div class="controls">
               <input type="text" name="name" ng-model="target.name"/>
             </div>
           </div>
-          <div class="control-group">
+          <div class="form-group">
             <label class="control-label">{{ 'GLOBAL.DESCRIPTION' | translate }}</label>
             <div class="controls">
               <textarea name="target_desc" placeholder="{{ 'TARGET.TARGETDESC' | translate}}" ng-model="target.description" class="input-block-level"></textarea>
             </div>
           </div>
-          <div class="control-group">
+          <div class="form-group">
             <label class="control-label">{{ 'TARGET.PAIN' | translate }}</label>
             <div class="controls">
               <textarea ng-model="target.pain" class="input-block-level"></textarea>
             </div>
           </div>
-          <div class="control-group">
+          <div class="form-group">
             <label class="control-label">{{ 'TARGET.GAIN' | translate }}</label>
             <div class="controls">
               <textarea ng-model="target.gain" class="input-block-level"></textarea>
@@ -42,7 +46,7 @@
           </div>
         </form>
         <form ng-repeat="(name, mood) in moods" class="form form-horizontal">
-          <div class="control-group">
+          <div class="form-group">
             <label class="control-label">{{ mood | translate }}</label>
             <div class="controls">
               <cmf-input-list ng-model="target.analysis[name]"></cmf-input-list>
@@ -50,43 +54,47 @@
           </div>
         </form>
       </div>
-      <form name="newstrategy" ng-submit="saveTarget()" class="form form form-horizontal">
+      <form name="newstrategy" ng-submit="saveTarget()" class="form form">
         <div ng-repeat="step in steps" class="step box pad">
           <h3>{{step.name}}</h3>
-          <div class="control-group">
-            <label class="control-label">{{ "TARGET.LOOKINGFOR" | translate }}</label>
-            <div class="controls">
-              <textarea ng-model="target.steps[step._id].description" class="input-block-level"></textarea>
-            </div>
-          </div>
-          <div ng-repeat="topic in target.steps[step._id].topics" class="topics">
-            <div class="control-group">
-              <label class="control-label">{{ "TARGET.SUBJECTNAME" | translate }}</label>
+          <div class="form-horizontal">
+            <div class="form-group">
+              <label class="control-label">{{ "TARGET.LOOKINGFOR" | translate }}</label>
               <div class="controls">
-                <input ng-model="topic.name" type="text" placeholder="{{ 'TARGET.SUBJECTNAME' | translate}}" required="required"/>
+                <textarea ng-model="target.steps[step._id].description" class="input-block-level"></textarea>
               </div>
             </div>
-            <div class="control-group">
-              <label class="control-label">{{ 'GLOBAL.DESCRIPTION' | translate }}</label>
-              <div class="controls">
-                <textarea ng-model="topic.description"></textarea>
+            <div ng-repeat="topic in target.steps[step._id].topics" class="topics">
+              <div class="form-group">
+                <label class="control-label">{{ "TARGET.SUBJECTNAME" | translate }}</label>
+                <div class="controls">
+                  <input ng-model="topic.name" type="text" placeholder="{{ 'TARGET.SUBJECTNAME' | translate}}" required="required"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">{{ 'GLOBAL.DESCRIPTION' | translate }}</label>
+                <div class="controls">
+                  <textarea ng-model="topic.description"></textarea>
+                </div>
               </div>
             </div>
           </div>
           <h4>Nytt ämne</h4>
-          <div class="control-group form-horizontal">
-            <label class="control-label">Ämne</label>
-            <div class="controls">
-              <input type="text" ng-model="newTopics[step._id].name" placeholder="{{ 'TARGET.SUBJECTNAME' | translate}}"/>
+          <div class="form-horizontal">
+            <div class="form-group">
+              <label class="control-label">Ämne</label>
+              <div class="controls">
+                <input type="text" ng-model="newTopics[step._id].name" placeholder="{{ 'TARGET.SUBJECTNAME' | translate}}"/>
+              </div>
             </div>
-          </div>
-          <div class="control-group">
-            <label class="control-label">{{ "GLOBAL.DESCRIPTION" | translate }}</label>
-            <div class="controls">
-              <textarea ng-model="newTopics[step._id].description" placeholder=" {{ 'GLOBAL.DESCRIPTION' | translate }}"></textarea>
+            <div class="form-group">
+              <label class="control-label">{{ "GLOBAL.DESCRIPTION" | translate }}</label>
+              <div class="controls">
+                <textarea ng-model="newTopics[step._id].description" placeholder=" {{ 'GLOBAL.DESCRIPTION' | translate }}"></textarea>
+              </div>
             </div>
             <div class="form-actions">
-              <button ng-click="addTopic(target.steps[step._id], step._id)" class="btn"><i class="icon-plus"></i><span>{{"GLOBAL.APPEND" | translate}}</span></button>
+              <button ng-click="addTopic(target.steps[step._id], step._id)" class="btn btn-primary"><i class="icon-plus"></i><span>{{"GLOBAL.APPEND" | translate}}</span></button>
             </div>
           </div>
         </div>

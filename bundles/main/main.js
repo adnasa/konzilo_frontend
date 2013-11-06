@@ -45,6 +45,12 @@
         });
       }
     };
-  });
+  }).run([
+    "$route", "$rootScope", function($route, $rootScope) {
+      return $rootScope.$on("$routeChangeSuccess", function() {
+        return $rootScope.navbar = false;
+      });
+    }
+  ]);
 
 }).call(this);
