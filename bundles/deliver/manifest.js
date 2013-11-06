@@ -3,5 +3,4 @@ exports.scripts = ["deliver.js"];
 exports.jade = {
   "deliver.html": "templates/deliver.jade",
   "deliver-info.html": "templates/deliver-info.jade",
-  "deliver-modal.html": "templates/deliver-modal.jade"
 };
