@@ -203,6 +203,18 @@ angular.module("kntnt.user",
     labelProperty: "username"
     idProperty: "_id"
     properties:
+      displayname:
+        label: "Display name"
+        processEmpty: true
+        processor: (val, entity) ->
+          return val if !_.isEmpty(val)
+          user = entity.toObject()
+          if (user.firstname or user.lastname)
+            (for property in ["firstname", "lastname"] when not _.isEmpty(user[property])
+              user[property]
+            ).join(' ')
+          else
+            user.email
       username:
         label: "Username"
         type: String
@@ -336,8 +348,8 @@ angular.module("kntnt.user",
 ])
 
 .directive("userEditForm",
-["InputAutoSave", "UserStorage", "KonziloConfig", "userAccess", "UserState",
-(InputAutoSave, UserStorage, KonziloConfig, userAccess, UserState) ->
+["InputAutoSave", "UserStorage", "KonziloConfig", "userAccess", "UserState", "$http",
+(InputAutoSave, UserStorage, KonziloConfig, userAccess, UserState, $http) ->
   restrict: "AE",
   templateUrl: "bundles/user/user-edit.html"
   scope: { user: "=" }
@@ -347,6 +359,23 @@ angular.module("kntnt.user",
     $scope.languages = KonziloConfig.get("languages").listAll()
     KonziloConfig.get("roles").listAll().then (roles) ->
       $scope.roles = roles
+    $scope.sendVerifyEmail = ->
+      $scope.autosave?.stop()
+      $http.post("/email/verify/#{$scope.user._id}/#{$scope.email}").then ->
+        $scope.successMessage = "LOGIN.EMAILVERIFYSENT"
+        $scope.verificationemailsent = true
+      , (err) ->
+        $scope.errorMessage = "LOGIN.EMAILVERIFYERROR"
+
+    $scope.performVerifyEmail = ->
+      $scope.user.everificationcode = $scope.emailverificationcode
+      $scope.user.email = $scope.email
+      UserStorage.save($scope.user).then ->
+        $scope.verifySuccess = "USER.EMAILVERIFICATIONSUCCESS"
+        $scope.verificationemailsent = false
+        $scope.autosave.start()
+      , ->
+        $scope.verifyFail = "USER.EMAILVERIFICATIONFAIL"
 
     $scope.hasRole = (role) ->
       return if not $scope.user?.roles
@@ -356,6 +385,9 @@ angular.module("kntnt.user",
       if $scope.userForm?.$valid and
       _.isEqual($scope.user.password, $scope.password2)
         UserStorage.save user
+
+    $scope.setDisplayName = ->
+        $scope.user.displayname = $scope.displayname;
 
     $scope.aggregateDisplayName = ->
       if ($scope.user.firstname or $scope.user.lastname)
@@ -375,6 +407,12 @@ angular.module("kntnt.user",
       $scope.user.roles = $scope.user.roles or []
       if (not activeUser or $scope.user._id is not activeUser._id)
         $scope.username = $scope.user.username
+        if $scope.user.emailverificationemail
+          $scope.email = $scope.user.emailverificationemail
+        else
+          $scope.email = $scope.user.email
+
+        $scope.verificationemailsent = $scope.user.emailverificationemail != $scope.user.email
         $scope.autosave = InputAutoSave.createInstance $scope.user,
         ->
           UserStorage.save($scope.user).then (result) ->

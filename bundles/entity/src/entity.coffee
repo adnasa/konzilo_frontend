@@ -25,9 +25,12 @@ angular.module("konzilo.entity", ["ngResource"])
       @info = entityInfo(@name)
       @storage = $injector.get(@info.storageController)
       @data = data
-      for prop, info of @info.properties when info.processor and @data[prop]
-        processor = $injector.get(info.processor)
-        @data[prop] = processor(@data[prop]) if processor
+      for prop, info of @info.properties when info.processor and (info.processEmpty or @data[prop])
+        if not _.isFunction(info.processor)
+          processor = $injector.get(info.processor)
+        else
+          processor = info.processor
+        @data[prop] = processor(@data[prop], @) if processor
       @dirty = false
 
     save: (callback, errorCallback) ->

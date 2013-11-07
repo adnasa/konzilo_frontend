@@ -4,27 +4,36 @@ form.form.user-form.form-horizontal(name="userForm")
       cmf-autosave-status(status="autosave")
 
   .form-group
-    label.control-label {{'GLOBAL.USERNAME' | translate}}
+    label.control-label {{'USER.FULLNAME' | translate}}
     .controls
-      input(type="text", name="username", ng-model="username", ng-pattern="usernamePattern", placeholder="{{'GLOBAL.USERNAME' | translate}}")
-      .confirm(ng-show="username != user.username && userForm.username.$valid")
-        button.btn.btn-danger(ng-click="user.username = username") {{'USER.CONFIRMUSERNAMECHANGE' | translate}}
-        span.help-block {{'USER.CONFIRMUSERNAMECHANGEMESSAGE' | translate}}
-      .alert.alert-danger(ng-show="!userForm.username.$valid") {{'USER.INVALIDUSERNAME' | translate}}
-
+      input.input-half.first(type="text", name="firstname", ng-model="user.firstname", placeholder="{{'USER.FIRSTNAME' | translate}}")
+      input.input-half.last(type="text", name="lastname", ng-model="user.lastname", placeholder="{{'USER.LASTNAME' | translate}}")
   .form-group
     label.control-label {{'USER.DISPLAYNAME' | translate}}
     .controls
       input(type="text", name="displayname", ng-model="user.displayname", placeholder="{{'USER.DISPLAYNAME' | translate}}")
-  .form-group
-    label.control-label {{'USER.FULLNAME' | translate}}
-    .controls
-      input.input-half.first(type="text", name="firstname", ng-model="user.firstname", ng-change="aggregateDisplayName()", placeholder="{{'USER.FIRSTNAME' | translate}}")
-      input.input-half.last(type="text", name="lastname", ng-model="user.lastname", ng-change="aggregateDisplayName()", placeholder="{{'USER.LASTNAME' | translate}}")
+      span.help-block {{'USER.DISPLAYNAMEHELP' | translate}}
   .form-group
     label.control-label.col-lg-2 {{'GLOBAL.EMAIL' | translate}}
-    .controls.col-lg-10
-      input(type="email", name="email", ng-model="user.email", required, ng-change="aggregateDisplayName()")
+    .controls.col-lg-10.email
+      input.input-half.first(type="email", name="email", ng-model="email")
+      button.input-half.last.btn.btn-default(ng-click="sendVerifyEmail()", ng-show="email != user.email") Send email verification email
+      span.help-block {{'USER.EMAILHELP' | translate }}
+      .alert.alert-danger(ng-show="verificationemailsent") {{'USER.EMAILVERIFYHELP' | translate: {email: email} }}
+      input.input-half.first(type="text", name="emailverificationcode", ng-model="emailverificationcode", placeholder="verification code", ng-show="verificationemailsent")
+      button.input-half.last.btn.btn-default(ng-click="performVerifyEmail()", ng-show="verificationemailsent") Verify
+      .alert.alert-danger(ng-show="verifyFail") {{'USER.EMAILVERIFICATIONFAIL' | translate}}
+      .alert.alert-success(ng-show="verifySuccess") {{'USER.EMAILVERIFICATIONSUCCESS' | translate}}
+
+  .form-group
+    label.control-label {{'GLOBAL.USERNAME' | translate}}
+    .controls
+      input(type="text", name="username", ng-model="username", ng-pattern="usernamePattern", placeholder="{{'GLOBAL.USERNAME' | translate}}")
+      span.help-block {{'USER.USERNAMEHELP' | translate}}
+      .confirm(ng-show="username != user.username && userForm.username.$valid")
+        button.btn.btn-danger(ng-click="user.username = username") {{'USER.CONFIRMUSERNAMECHANGE' | translate}}
+        span.help-block {{'USER.CONFIRMUSERNAMECHANGEMESSAGE' | translate}}
+      .alert.alert-danger(ng-show="!userForm.username.$valid") {{'USER.USERNAMEHELP' | translate}}
   .form-group(ng-show="showAdminFields")
     label.control-label {{'USER.ROLES' | translate}}
     .controls
