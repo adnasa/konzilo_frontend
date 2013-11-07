@@ -60,7 +60,8 @@ bundles = [
   "translations",
   "user",
   "vocabulary",
-  "main"
+  "main",
+  "contenttype"
 ]
 
 dependencies = (bowerFolder + "/" + dependency for dependency in dependencies)

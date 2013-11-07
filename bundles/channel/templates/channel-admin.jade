@@ -39,3 +39,5 @@
             .controls
               select(type="text", name="endpoint", ng-model="channel.endpoint", required)
                 option(ng-repeat="endpoint in endpoints") {{endpoint.name}}
+        h2 {{'CHANNEL.TEMPLATE' | translate}}
+        kz-content-type-form(content-type="channel.contentType")

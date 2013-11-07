@@ -24,6 +24,28 @@
       text: ["$translate", ($translate) ->
         label: $translate("TEXTPART.LABEL")
         defaultName: $translate("TEXTPART.DEFAULTNAME")
+        fields: [
+          {
+            name: "topheadline"
+            label: "GLOBAL.TOPHEADLINE"
+          },
+          {
+            name: "headline"
+            label: "GLOBAL.HEADLINE"
+          },
+          {
+            name: "kicker"
+            label: "GLOBAL.KICKER"
+          },
+          {
+            name: "lead"
+            label: "GLOBAL.LEAD"
+          },
+          {
+            name: "body"
+            label: "GLOBAL.BODY"
+          }
+        ]
         controller: ["$scope", "articlePart",
         "InputAutoSave", "useAutoSave"
         ($scope, articlePart, InputAutoSave, useAutoSave) ->
@@ -46,6 +68,20 @@
       media: ["$translate", ($translate) ->
         label: $translate("MEDIAPART.LABEL")
         defaultName: $translate("MEDIAPART.DEFAULTNAME")
+        fields: [
+          {
+            name: "media"
+            label: "MEDIAPART.MEDIA"
+          },
+          {
+            name: "title"
+            label: "GLOBAL.TITLE"
+          },
+          {
+            name: "description",
+            label: "GLOBAL.DESCRIPTION"
+          }
+        ]
         controller: ["$scope", "articlePart",
         "InputAutoSave", "useAutoSave", "$http",
         ($scope, articlePart, InputAutoSave, useAutoSave, $http) ->
@@ -86,6 +122,20 @@
       ]
       image: ["$translate", ($translate) ->
         label: $translate("IMAGEPART.LABEL")
+        fields: [
+          {
+            name: "images"
+            label: "IMAGEPART.UPLOADFILES"
+          },
+          {
+            name: "title"
+            label: "GLOBAL.TITLE"
+          },
+          {
+            name: "description",
+            label: "GLOBAL.DESCRIPTION"
+          }
+        ]
         defaultName: $translate("IMAGEPART.DEFAULTNAME")
         controller: ["$scope", "articlePart",
         "InputAutoSave", "UserStorage", "$q", "useAutoSave"
@@ -113,6 +163,14 @@
     $get: ($injector) ->
       fn = (name) => @providers[name]
       fn.getProviders = => @providers
+      fn.types = =>
+        types = {}
+        for name, definition of @providers
+          if _.isPlainObject(definition)
+            types[name] = definition
+          else
+            types[name] = $injector.invoke(definition)
+        return types
       # Get all labels
       fn.labels = =>
         labels = {}

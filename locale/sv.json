@@ -79,7 +79,8 @@
   },
   "CHANNEL": {
     "TITLE": "Kanaler",
-    "ADD_NEW": "Lägg till ny kanal"
+    "ADD_NEW": "Lägg till ny kanal",
+    "TEMPLATE": "Mall"
   },
   "CLIENT": {
     "TITLE": "Klienter",
@@ -274,7 +275,8 @@
     "FILTERCOUNT": "Ditt val matchar {{count}} artiklar.",
     "LOCKEDTEXT": "Artikeldelen redigeras av {{user}}.",
     "UNLOCK": "Lås upp",
-    "NEWPART": "Skapa ny artikeldel"
+    "NEWPART": "Skapa ny artikeldel",
+    "ADDTYPE": "Lägg till artikeldelstyp"
   },
   "ENDPOINT": {
     "REMOVE": "Ta bort publiceringsmål",

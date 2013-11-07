@@ -1,0 +1,15 @@
+form.template-form(name="templateForm")
+  .part(ng-repeat="(index, part) in contentType.parts")
+    .well
+      .actions
+        button.btn.btn-danger.pull-right(ng-click="removePart(index)") {{'GLOBAL.REMOVE' | translate}}
+      .form-group
+        label.control-label {{'GLOBAL.NAME' | translate}}
+        input(type="text", ng-model="part.label")
+      .fields
+        label.checkbox(ng-repeat="info in types[part.type].fields")
+          input(type="checkbox", ng-model="part.show[info.name]")
+          span {{info.label | translate}}
+  select(ng-model="newPart", ng-change="addPart()")
+    option(value="") {{ 'ARTICLE.ADDTYPE' | translate }}
+    option(ng-repeat="(key, value) in typeLabels", value="{{key}}", ng-selected="key == type") {{value}}
