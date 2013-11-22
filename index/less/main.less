@@ -551,6 +551,10 @@ a.new-target {
     }
   }
 
+  &:hover {
+    text-decoration: none;
+  }
+
   &.ui-draggable:hover {
     border: 1px solid @kntntGreen;
   }
@@ -698,8 +702,8 @@ a.new-target {
       }
       .icon {
 	float: right;
-	margin-top: 3px;
       }
+	margin-top: 3px;
     }
   }
   .pick-form {
@@ -771,8 +775,16 @@ a.new-target {
   }
 }
 
-.article-description .control-label {
-  padding-top: 0;
+.article-description { 
+
+  .control-label {
+    padding-top: 0;
+  }
+
+  dl {
+    margin-top: 0;
+  }
+
 }
 
 
@@ -819,7 +831,6 @@ form.add-part-form {
   }
 }
 
-
 .articleparts {
   .article {
     margin-bottom: 30px;
@@ -834,11 +845,8 @@ form.add-part-form {
   .part-list > .inner {
     padding: 10px;
   }
-  .part {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid @gray;
-    background: @white;
+  a > .parts {
+    margin-top: 10px;
   }
 }
 
@@ -1148,6 +1156,29 @@ form.add-part-form {
 .template-form {
   .actions {
     overflow: hidden;
+  }
+}
+
+.part-group {
+  .content .top {
+    display: block;
+    background: #eee;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  .part-form {
+    margin-top: 10px;
+  }
+}
+
+.part-comments {
+  position: relative;
+  float: right;
+  .content {
+    position: absolute;
+    width: 600px;
+    z-index: 1000;
+    background: @white;
   }
 }
 

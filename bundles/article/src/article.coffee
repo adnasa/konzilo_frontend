@@ -47,11 +47,16 @@
           }
         ]
         controller: ["$scope", "articlePart",
-        "InputAutoSave", "useAutoSave"
-        ($scope, articlePart, InputAutoSave, useAutoSave) ->
+        "InputAutoSave", "useAutoSave", "showFields", "definition"
+        ($scope, articlePart, InputAutoSave, useAutoSave, showFields, definition) ->
+
+          $scope.setActive = ->
+            $scope.$emit("kzActivePart", $scope.part)
+
           $scope.part = articlePart.toObject()
           $scope.part.content = $scope.part.content or {}
           $scope.content = $scope.part.content
+          $scope.showFields = showFields
           $scope.part.vocabularies = $scope.part.vocabularies or {}
           savePart = ->
             articlePart.set("byline", $scope.part.byline)
@@ -82,10 +87,18 @@
             label: "GLOBAL.DESCRIPTION"
           }
         ]
+        valid: (part) ->
+          validUrl = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/
+          if part.content?.media and not validUrl.test(part.content.media)
+            return false
+
+          return true
+
         controller: ["$scope", "articlePart",
-        "InputAutoSave", "useAutoSave", "$http",
-        ($scope, articlePart, InputAutoSave, useAutoSave, $http) ->
+        "InputAutoSave", "useAutoSave", "$http", "showFields",
+        ($scope, articlePart, InputAutoSave, useAutoSave, $http, showFields) ->
           $scope.part = articlePart.toObject()
+          $scope.showFields = showFields
           $scope.part.vocabularies = $scope.part.vocabularies or {}
           $scope.part.content = $scope.part.content or {}
           $scope.content = $scope.part.content
@@ -138,12 +151,13 @@
         ]
         defaultName: $translate("IMAGEPART.DEFAULTNAME")
         controller: ["$scope", "articlePart",
-        "InputAutoSave", "UserStorage", "$q", "useAutoSave"
+        "InputAutoSave", "UserStorage", "$q", "useAutoSave", "showFields",
         ($scope, articlePart,
-          InputAutoSave, UserStorage, $q, useAutoSave) ->
+          InputAutoSave, UserStorage, $q, useAutoSave, showFields) ->
           $scope.part = articlePart.toObject()
           $scope.part.content = $scope.part.content or {}
           $scope.part.vocabularies = $scope.part.vocabularies or {}
+          $scope.showFields = showFields
 
           $scope.content = $scope.part.content
           $scope.content.images = [] if not $scope.content.images
@@ -189,8 +203,13 @@
           else
             names[name] = $injector.invoke(definition).defaultName
         return names
-      return fn
 
+      # Check if a part is valid
+      fn.valid = (part) =>
+        return true if not @providers[part.type].valid
+        return @providers[part.type].valid(part)
+
+      return fn
     getProviders: -> @providers
   )
 
@@ -337,37 +356,55 @@
   ])
 
   .directive("kntntAddArticlePart",
-  ["ArticlePartStorage", "UserState", "KonziloConfig", "articleParts"
-  (ArticlePartStorage, UserState, KonziloConfig, articleParts) ->
+  ["ArticlePartStorage", "UserState", "KonziloConfig", "articleParts", "kzArticleSettings",
+  (ArticlePartStorage, UserState, KonziloConfig, articleParts, kzArticleSettings) ->
     restrict: 'AE'
     scope: { article: "=", partCreated: "=" }
     controller: ["$scope", "$element", "$attrs", ($scope, $element, $attrs) ->
-
-      $scope.types = articleParts.labels()
+      types = {}
+      for type, label in  articleParts.labels()
+        types[type] = label: label
       defaultNames = articleParts.defaultNames()
-      article = $scope.article
       user = UserState.getInfo().info
+      update = ->
+        if $scope.article?._id != article?._id and $scope.article?.channel
+          $scope.types = {}
+          article = $scope.article
+          kzArticleSettings(article).then (settings) ->
+            if not settings
+              $scope.types = types
+            else
+              for part in settings.parts
+                length = _.filter(article.parts, typeName: part.name).length
+                if length < part.max or part.max == 0
+                  $scope.types[part.type] =
+                    typeName: part.name
+                    label: part.label
+            $scope.showForm = _.size($scope.types)
+
+      $scope.$watch("article", update)
 
       $scope.addArticlePart = ->
         if $scope.addArticlePartForm.$valid and $scope.type?.length > 0
           KonziloConfig.get("languages").listAll().then (languages) ->
             defaultLang = _.find(languages, default: true)
             articlePart =
-              title: defaultNames[$scope.type]
+              title: $scope.types[$scope.type].label
               state: "notstarted"
               type: $scope.type
+              typeName: $scope.types[$scope.type].typeName
               submitter: user._id
               article: $scope.article._id
 
             articlePart.language = defaultLang.langcode if defaultLang
             # Generate a unique name by iterating over the number of parts
             # of the same type.
-            count = _.filter(article.parts, type: articlePart.type).length
+            count = _.filter($scope.article.parts, type: articlePart.type).length
             articlePart.title += " #{count}" if count > 1
             ArticlePartStorage.save articlePart, (result) ->
-              article.parts.push(result)
+              $scope.article.parts.push(result)
               if $scope.partCreated
-                $scope.partCreated(article, result)
+                $scope.partCreated($scope.article, result)
                 $scope.articlePartTitle = ""
       return
     ]
@@ -405,14 +442,15 @@
 
   .directive("kntntClipboardArticleParts",
   ["ClipboardStorage", "ArticleStorage",
-  "ArticlePartStorage", "$translate", "$routeParams"
+  "ArticlePartStorage", "$translate", "$routeParams", "kzPartSettings"
   (ClipboardStorage, ArticleStorage,
-    ArticlePartStorage, $translate, $routeParams) ->
+    ArticlePartStorage, $translate, $routeParams, kzPartSettings) ->
     restrict: "AE",
     scope: selected: "=", linkPattern: "@", partCreated: "="
     controller: ["$scope", "$attrs", ($scope, $attrs) ->
       articleMap = {}
       linkPattern = $attrs.linkPattern
+
       $scope.size = 1
       drawClipboard = (articles) ->
         for article in articles.toArray() when article.publishdate
@@ -421,6 +459,14 @@
             for part in article.parts
               part.link = linkPattern.replace(":article", article._id)
                 .replace(":part", part._id)
+
+              if part.typeName
+                part.article = article
+                part.removable = kzPartSettings(part).then (settings) ->
+                  length = _.filter(article.parts, typeName: part.typeName).length
+                  not settings or settings.min < length
+              else
+                part.removable = true
           article
 
       getClipboard = (reset = false) ->
@@ -431,8 +477,9 @@
             $scope.articles = drawClipboard($scope.collection)
             $scope.size = $scope.articles.length
           return
-      getClipboard()()
 
+
+      getClipboard()()
       $scope.options =
         stop: (event, ui) ->
           id = ui.item.attr("data-id")
@@ -653,11 +700,6 @@
 
 
       ArticlePartStorage.changed(fetchParts)
-
-      $scope.$watch "selected", ->
-        return if not $scope.selected
-        $scope.selectedPart = $scope.selected.id()
-        $scope.selectedArticle = $scope.selected.get("article")._id
 
       $scope.collapsed = (article) -> articlesToggled[article._id]
     ]
@@ -914,6 +956,9 @@
           else
             save()
 
+      $scope.clearClipboard = ->
+        ClipboardStorage.truncate()
+
       $scope.collapseClass = ->
         if $scope.isCollapsed then "collapsed" else "open"
 
@@ -928,8 +973,9 @@
   .directive("konziloArticlepartForm",
   ["articleParts", "$compile", "$controller", "$injector",
   "$http", "$templateCache", "KonziloEntity", "UserState",
+  "kzPartSettings",
   (articleParts, $compile, $controller, $injector,
-  $http, $templateCache, KonziloEntity, UserState) ->
+  $http, $templateCache, KonziloEntity, UserState, kzPartSettings) ->
     restrict: "AE",
     scope:
       articlePart: "="
@@ -952,15 +998,25 @@
             templatePromise = $http.get(definition.templateUrl,
               { cache: $templateCache }).then (response) -> return response.data
 
-          templatePromise.then (template) ->
-            if definition.controller
-              $controller definition.controller,
-                $scope: scope,
-                articlePart: articlePart
-                useAutoSave: scope.useAutoSave
+          # Show all fields by default.
+          kzPartSettings(articlePart).then (partSettings) ->
+            if not partSettings
+              showFields = {}
+              showFields[field.name] = true for field in definition.fields
+            else
+              showFields = partSettings.show
+            templatePromise.then (template) ->
+              if definition.controller
+                $controller definition.controller,
+                  $scope: scope,
+                  articlePart: articlePart
+                  useAutoSave: scope.useAutoSave
+                  showFields: showFields
+                  definition: definition
 
-            element.html(template)
-            $compile(element.contents())(scope)
+              element.html(template)
+              $compile(element.contents())(scope)
+
         articlePart = scope.articlePart
         if articlePart and
         (not currentPart or not _.isEqual(articlePart, currentPart))
@@ -1028,14 +1084,17 @@
       nextState = null
       update = ->
         return if not $scope.articlePart
+        if $scope.articlePart.toObject
+          $scope.part = $scope.articlePart.toObject()
+        else
+          $scope.part = $scope.articlePart
+
         userId = UserState.getInfo().info._id
-
-        locked = $scope.articlePart.get('locked')
-
+        locked = $scope.part.locked
         locked = if _.isPlainObject(locked) then locked._id else locked
         $scope.locked = locked and userId != locked
 
-        currentState = $scope.articlePart.get("state")
+        currentState = $scope.part.state
 
         if not currentState or currentState == ArticlePartStates[0].name
           index = 0
@@ -1057,20 +1116,22 @@
             $scope.nextLabel = ArticlePartStates[index+1]?.transitionLabel
           , ->
             $scope.nextLabel = undefined
+        $scope.show = !locked and (nextState or prevState)
 
       $scope.nextState = ->
-          $scope.articlePart.set("state", nextState)
-          $scope.articlePart.save().then(update)
+        $scope.part.state = nextState
+        ArticlePartStorage.save($scope.part).then(update)
 
       $scope.prevState = ->
-          if prevState
-            $scope.articlePart.set("state", prevState)
-            $scope.articlePart.save().then(update)
+        if prevState
+          $scope.part.state = prevState
+          ArticlePartStorage.save($scope.part).then(update)
 
       $scope.$watch("articlePart", update)
+
       ArticlePartStorage.itemSaved (item) ->
-        if $scope.articlePart?.get("_id") == item.get("_id")
-          $scope.articlePart.set("state", item.get("state"))
+        if $scope.part?._id == item.get("_id")
+          $scope.part.state = item.get("state")
           update()
     ]
     templateUrl: "bundles/article/articlepart-change-state.html"
@@ -1112,7 +1173,14 @@
     controller: ["$scope", "$attrs", ($scope, $attrs) ->
       $scope.translations = {}
       $scope.saveArticle = (article) ->
-        ArticleStorage.save article
+        # Set the provider for all parts that don't have one already.
+        if article.provider
+          for part in article.parts
+            part.provider = article.provider if not part.provider
+        ArticleStorage.save(article).then (result) ->
+          $scope.article.parts = result.parts
+          return article
+
       $scope.today = new Date()
       $scope.changeTarget = ->
         # Fetch channels and make sure the description is available.

@@ -18,7 +18,7 @@
             a.block(ng-href="{{part.link}}")
               span(class="article-state {{part.state}}")
               span {{part.title}}
-            button.btn-link.clipboard-remove(ng-click="removeArticlePart(article, part)")
+            button.btn-link.clipboard-remove(ng-show="part.removable", ng-click="removeArticlePart(article, part)")
               i.icon-remove
   kz-entity-pager(collection="collection", items-fetched="nextPage")
 

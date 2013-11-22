@@ -159,26 +159,28 @@ entityInfo, $q, $http, $cacheFactory) ->
     save: (item, callback, errorCallback) ->
       @cache.removeAll()
       deferred = $q.defer()
-      data = if item.toObject then item.toObject() else item
+      if not item.toObject
+        item = new KonziloEntity(@name, item)
 
-      if data._id
-        method = @resource.update
-      else
-        method = @resource.save
-
-      method.bind(@resource) data, (result) =>
-        if item.setData
-          item.setData(result)
-          newItem = item
+      @triggerEvent("preSave", item).then (item) =>
+        data = item.toObject()
+        if data._id
+          method = @resource.update
         else
-          newItem = new KonziloEntity(@name, result)
-        @triggerEvent("itemSaved", newItem)
-        @triggerEvent("changed", newItem)
-        callback(result) if callback
-        deferred.resolve result
-      , (result) ->
-        errorCallback(result) if errorCallback
-        deferred.reject(result)
+          method = @resource.save
+        method.bind(@resource) data, (result) =>
+          if item.setData
+            item.setData(result)
+            newItem = item
+          else
+            newItem = new KonziloEntity(@name, result)
+          @triggerEvent("itemSaved", newItem)
+          @triggerEvent("changed", newItem)
+          callback(result) if callback
+          deferred.resolve result
+        , (result) ->
+          errorCallback(result) if errorCallback
+          deferred.reject(result)
 
       deferred.promise
 
@@ -240,8 +242,23 @@ entityInfo, $q, $http, $cacheFactory) ->
 
     # Trigger a particular event.
     triggerEvent: (event, item) ->
+      promises = []
       if @eventCallbacks[event]
-        callback(item) for callback in @eventCallbacks[event]
+        for callback in @eventCallbacks[event]
+          result = callback(item)
+          promises.push(result) if result?.then
+
+      deferred = $q.defer()
+      resolveCallback = (result)->
+        if promises.length == 0
+          deferred.resolve(result)
+        else
+          promises.shift().then(resolveCallback)
+
+      if promises.length == 0
+        return $q.when(item)
+      promises.shift().then(resolveCallback)
+      return deferred.promise
 
     # Item removed event.
     itemRemoved: (fn) ->
@@ -250,6 +267,9 @@ entityInfo, $q, $http, $cacheFactory) ->
     # Item saved event.
     itemSaved: (fn) ->
       @on "itemSaved", fn
+
+    preSave: (fn) ->
+      @on "preSave", fn
 
     changed: (fn) ->
       @on "changed", fn

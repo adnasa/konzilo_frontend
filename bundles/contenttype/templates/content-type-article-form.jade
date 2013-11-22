@@ -1,0 +1,11 @@
+.content-type-form
+  cmf-autosave-status(status="autosave")
+  .part-type.box.pad(ng-repeat="info in parts",
+    ng-show="info.parts.length > 0",
+    ng-class="{ 'part-group': info.parts.length > 1 }")
+    h2 {{info.partInfo.label}}
+    .content(ng-repeat="part in info.parts")
+      a.top(ng-click="part.show = !part.show", ng-show="info.parts.length > 1") {{part.title}}
+      .part-form(ng-show="info.parts.length == 1 || part.show")
+        konzilo-articlepart-form(article-part="part", use-auto-save="useSave", active="active[part._id]")
+        konzilo-articlepart-change-state(article-part="part")

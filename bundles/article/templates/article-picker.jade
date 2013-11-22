@@ -50,6 +50,8 @@
               label.checkbox
                 input(type="checkbox", name="purge", ng-model="purge", ng-disabled="count == 0")
                 span {{ 'ARTICLEPICKER.EMPTYBEFORE' | translate }}
+              button.btn-danger.btn(ng-click="clearClipboard()") {{'ARTICLEPICKER.EMPTYCLIPBOARD' | translate}}
+
 
   .picker(ng-class="collapseClass()")
     button.btn.picker-btn(ng-click="isCollapsed = !isCollapsed")

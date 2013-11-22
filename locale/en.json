@@ -75,7 +75,10 @@
     "BACK": "Back",
     "HIDE": "Dölj",
     "FETCHMORE": "Fetch more",
-    "DETAILS": "Details"
+    "DETAILS": "Details",
+    "MACHINENAME": "Machine name",
+    "CHANGE": "Change",
+    "ADD": "Add"
   },
   "CHANNEL": {
     "TITLE": "Channels",

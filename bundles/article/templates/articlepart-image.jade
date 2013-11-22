@@ -1,13 +1,10 @@
 ng-form(name="partForm")
   .form-horizontal.part-form
-    .title
-        cmf-autosave-status(status="autosave")
-        h2 {{ 'IMAGEPART.TITLE' | translate }}
-    .form-group
+    .form-group(ng-show="showFields.images")
       label.control-label {{'IMAGEPART.UPLOADFILES' | translate}}
       .controls
         file-upload-list(ng-model="content.images", bundle="media")
-    .form-group
+    .form-group(ng-show="showFields.headline")
       label.control-label {{ 'GLOBAL.HEADLINE' | translate }}
       .controls
         cmf-inline(ng-model="content.headline")
@@ -16,7 +13,7 @@ ng-form(name="partForm")
             h1 {{content.headline}}
           cmf-inline-input
             input(type="text", name="headline", ng-model="content.headline")
-    .form-group
+    .form-group(ng-show="showFields.description")
       label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
       .controls
         cmf-inline(ng-model="content.description")
@@ -25,5 +22,3 @@ ng-form(name="partForm")
             span {{content.description}}
           cmf-inline-input
             textarea.input-block-level(type="text", name="description", ng-model="content.description")
-    author-picker(author="part.byline")
-    kz-vocabulary-input(ng-model="part.vocabularies")

@@ -4,20 +4,14 @@
       .top
         h2.title {{state.label | translate}}
       .articleparts.content
-        .row-item(ng-repeat="article in articles[state.name]")
-          .header
-             .pull-right
-               span {{article.publishdate | date: 'yyyy-MM-dd' }}
-               button.btn-link(ng-click="toggleArticle(article)")
-                 i(
-                  ng-class="{'icon-chevron-down': selectedArticle == article._id, 'icon-chevron-right': selectedArticle != article._id}"
-                )
-             .header-content
-               div(class="article-state {{article.state}}")
-               h3.title {{article.title}}
-          .content(ng-show="selectedArticle == article._id")
-            .inner
-              a.row-item(href="{{part.link}}", ng-class="{active: selectedPart == part._id}", ui-jq="draggable", ng-repeat="(index, part) in article.items", data-id="{{part._id}}")
-                div(class="article-state {{part.state}}")
-                span() {{part.title}}
-                .status {{ part.status }}
+        a.row-item(
+          ng-repeat="article in articles[state.name]",
+          ng-href="#/deliver/{{article._id}}",
+          ng-class="{'active': selected._id == article._id}")
+          span(class="article-state {{article.state}}")
+          span {{article.title}}
+          span.pull-right {{ article.publishdate | date: "yyyy-MM-dd" }}
+          .parts
+            .row-item(ng-repeat="part in article.items")
+              span(class="article-state {{part.state}}")
+              span {{part.title}}

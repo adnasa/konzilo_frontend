@@ -10,6 +10,10 @@ form.form.article-form.form-horizontal(ng-submit="saveArticle(article)", name="a
     .controls
       entity-reference(ng-model="article.responsible", entity-type="Provider")
   .form-group
+    label.control-label {{ 'GLOBAL.PROVIDER' | translate }}
+    .controls
+      entity-reference(ng-model="article.provider", entity-type="Provider")
+  .form-group
     label.control-label(for="date") {{'GLOBAL.PUBLISHING' | translate}}
     .controls
       .publishdate

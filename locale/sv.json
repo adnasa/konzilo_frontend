@@ -75,7 +75,11 @@
     "BACK": "Tillbaka",
     "HIDE": "Dölj",
     "FETCHMORE": "Hämta fler",
-    "DETAILS": "Detaljer"
+    "DETAILS": "Detaljer",
+    "MACHINENAME": "Maskinnamn",
+    "CHANGE": "Ändra",
+    "ADD": "Lägg till"
+
   },
   "CHANNEL": {
     "TITLE": "Kanaler",
