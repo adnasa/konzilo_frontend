@@ -90,20 +90,28 @@ angular.module("konzilo.contenttype", ["konzilo.config",
         return true
 
       update = ->
-        return if $scope.article?._id == article or not $scope.article?.channel
+        $scope.autosave?.stop()
+        return if not $scope.article?.channel
         article = $scope.article._id
         kzArticleSettings($scope.article).then (settings) ->
           parts = []
-          for part in settings.parts
-            results = _.filter($scope.article.parts, typeName: part.name)
-            parts.push(partInfo: part, parts: results)
+          if settings.parts?.length > 0
+            for part in settings.parts
+              results = _.filter($scope.article.parts, typeName: part.name)
+              parts.push(partInfo: part, parts: results)
+          else
+            for part in $scope.article.parts
+              parts.push(partInfo: { label: part.title }, parts: [part])
+
           $scope.parts = parts
           $scope.autosave = InputAutoSave.createInstance(
             $scope.article.parts, saveParts, valid)
         $scope.active = {}
         for part in $scope.article.parts
           $scope.active[part._id] = false
+
       $scope.$watch("article", update)
+      $scope.$watch("article.parts", update)
     ]
     templateUrl: "bundles/contenttype/content-type-article-form.html"
 ])
