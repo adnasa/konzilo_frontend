@@ -27,21 +27,30 @@ angular.module("konzilo.contenttype", ["konzilo.config",
 ])
 
 .factory("kzPartSettings", [
-  "ChannelStorage", "$q", "KonziloEntity"
-  (ChannelStorage, $q, KonziloEntity) ->
+  "ChannelStorage", "$q", "KonziloEntity", "ArticleStorage",
+  (ChannelStorage, $q, KonziloEntity, ArticleStorage) ->
     (part) ->
       if not part.toObject
         part = new KonziloEntity('ArticlePart', part)
-
       deferred = $q.defer()
-      channel = part.get("article").channel
-      return $q.when(false) if not channel
-      ChannelStorage.get(channel).then (result) ->
-        parts = result.get("contentType")?.parts
-        if parts
-          return deferred.resolve(_.find(parts, name: part.get("typeName")))
-        else
-          return deferred.resolve(false)
+
+      getChannel = (article) ->
+        channel = article.channel
+        return deferred.resolve(false) if not channel
+        ChannelStorage.get(channel).then (result) ->
+          parts = result.get("contentType")?.parts
+          if parts
+            return deferred.resolve(_.find(parts, name: part.get("typeName")))
+          else
+            return deferred.resolve(false)
+
+      article = part.get("article")
+      if not _.isPlainObject(article)
+        ArticleStorage.get(article).then (article) ->
+          getChannel(article.toObject())
+      else
+        getChannel(article)
+
       return deferred.promise
 ])
 
