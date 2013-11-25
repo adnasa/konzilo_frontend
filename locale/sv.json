@@ -78,8 +78,9 @@
     "DETAILS": "Detaljer",
     "MACHINENAME": "Maskinnamn",
     "CHANGE": "Ändra",
-    "ADD": "Lägg till"
-
+    "ADD": "Lägg till",
+    "MAX": "Maximum",
+    "MIN": "Minimum"
   },
   "CHANNEL": {
     "TITLE": "Kanaler",
@@ -270,7 +271,7 @@
     "APPROVED": "Godkänd",
     "NEWVERSION": "Ny version",
     "BACKTONOTSTARTED": "Sluta arbeta",
-    "BACKTOSTARTED": "Fortsätt arbeta med artikeln",
+    "BACKTOSTARTED": "Inte klar",
     "POSTFORREVIEW": "Skicka till godkännande",
     "STARTWORKING": "Börja arbeta",
     "APPROVE": "Godkänn",

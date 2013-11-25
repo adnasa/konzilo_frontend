@@ -78,7 +78,9 @@
     "DETAILS": "Details",
     "MACHINENAME": "Machine name",
     "CHANGE": "Change",
-    "ADD": "Add"
+    "ADD": "Add",
+    "MAX": "Maximum",
+    "MIN": "Minimum"
   },
   "CHANNEL": {
     "TITLE": "Channels",
@@ -269,7 +271,7 @@
     "APPROVED": "Approved",
     "NEWVERSION": "New version",
     "BACKTONOTSTARTED": "Stop working",
-    "BACKTOSTARTED": "Continue working",
+    "BACKTOSTARTED": "Not done",
     "POSTFORREVIEW": "Send for review",
     "STARTWORKING": "Start working",
     "APPROVE": "Approve",
