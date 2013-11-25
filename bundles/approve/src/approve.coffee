@@ -28,26 +28,57 @@ angular.module "kntnt.approve",
     userAccess("update article parts")
 ])
 .controller("ApproveController", [
-  '$scope', 'ArticlePartStorage',
+  '$scope', 'ArticleStorage', "ArticlePartStorage",
   '$routeParams','$translate', "$location",
-  ($scope, ArticlePartStorage, $routeParams, $translate, $location) ->
-    $scope.query = { state: "needsreview" }
-
+  ($scope, ArticleStorage, ArticlePartStorage,
+  $routeParams, $translate, $location) ->
     $scope.failState = "started"
     $scope.approveState = "approved"
     $scope.$parent.title = $translate("REVIEW.TITLE")
+    getArticle = (reset=true) ->
+      ArticleStorage.clearCache() if reset
+      ArticleStorage.get $routeParams.id, (article) ->
+        article = article.toObject()
+        article.parts = _.filter(article.parts, state: "needsreview")
+        if not article.parts.length > 0
+          $location.path("/approve")
+        $scope.article = article
 
-    ArticlePartStorage.changed (part) ->
-      if $location.path().indexOf("approve") != -1
-        state = part.get("state")
+    getArticle() if $routeParams.id
 
-        if $routeParams.id == part.id() and
-        (state == $scope.failState or state == $scope.approveState)
-          $location.url("/approve")
+    $scope.$on "stateChanged", (event, part) ->
+      getArticle()
+])
 
-    if $routeParams.id
-      ArticlePartStorage.get $routeParams.id, (articlePart) ->
-        $scope.articlePart = articlePart
-        $scope.part = articlePart.toObject()
+.directive("kzApproveQueue", [
+  "ArticlePartStorage", "UserState",
+  (ArticlePartStorage, UserState) ->
+    restrict: "AE",
+    scope: { selected: "=", linkPattern: "@", part: "=" }
+    controller: ($scope) ->
+      user = UserState.getInfo().info._id
+      query = { state: "needsreview", submitter:  user}
+      getArticles = ->
+        ArticlePartStorage.query({ q: query, limit: 500 }).then (result) ->
+          $scope.articles = {}
+          for articlePart in result.toArray()
+            article = articlePart.article
+            if $scope.part and $scope.part.id() is articlePart._id and
 
+            article._id is $scope.part.get("article")._id
+              articlesToggled[article._id] = true
+
+            articlePart.article = article._id
+            if not $scope.articles[article._id]
+              $scope.articles[article._id] = article
+              $scope.articles[article._id].parts = []
+
+            article.link = $scope.linkPattern
+            .replace(":article", article._id)
+
+            $scope.articles[article._id].parts.push(articlePart)
+          $scope.size = _.size($scope.articles)
+      getArticles()
+      ArticlePartStorage.changed(getArticles)
+    templateUrl: "bundles/approve/approve-queue.html"
 ])
