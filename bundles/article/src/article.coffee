@@ -362,8 +362,9 @@
     scope: { article: "=", partCreated: "=" }
     controller: ["$scope", "$element", "$attrs", ($scope, $element, $attrs) ->
       types = {}
-      for type, label in  articleParts.labels()
+      for type, label of  articleParts.labels()
         types[type] = label: label
+
       defaultNames = articleParts.defaultNames()
       user = UserState.getInfo().info
       update = ->
@@ -371,7 +372,7 @@
           $scope.types = {}
           article = $scope.article
           kzArticleSettings(article).then (settings) ->
-            if not settings
+            if not settings?.parts?.length > 0
               $scope.types = types
             else
               for part in settings.parts
@@ -1027,7 +1028,8 @@
           currentPart = articlePart
           # Show a locked message if this part is locked to someone else.
           locked = articlePart.get('locked')
-          if locked and userId != locked._id
+          lockedId = locked?._id or locked
+          if locked and userId != lockedId
             scope.translations =
               user: locked.username
 
@@ -1116,19 +1118,23 @@
             $scope.nextLabel = ArticlePartStates[index+1]?.transitionLabel
           , ->
             $scope.nextLabel = undefined
-        $scope.show = !locked and (nextState or prevState)
+        $scope.show = !$scope.locked and (prevState or nextState)
+
+      stateChanged = (part) ->
+        $scope.$emit("stateChanged", part)
+        update()
 
       $scope.nextState = ->
         $scope.part.state = nextState
-        ArticlePartStorage.save($scope.part).then(update)
+        ArticlePartStorage.save($scope.part).then(stateChanged)
 
       $scope.prevState = ->
+        console.log prevState
         if prevState
           $scope.part.state = prevState
-          ArticlePartStorage.save($scope.part).then(update)
+          ArticlePartStorage.save($scope.part).then(stateChanged)
 
       $scope.$watch("articlePart", update)
-
       ArticlePartStorage.itemSaved (item) ->
         if $scope.part?._id == item.get("_id")
           $scope.part.state = item.get("state")
