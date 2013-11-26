@@ -7,7 +7,7 @@
             label.control-label {{'GLOBAL.DEADLINE' | translate}}
             .controls
               dl(ng-repeat="part in article.parts", ng-show="part.deadline")
-                dt {{part.title}} 
+                dt {{part.title}}
                 dd {{part.deadline | date: "yyyy-MM-dd"}}
           .form-group(ng-show="part.terms")
             label.control-label(for="terms") {{'GLOBAL.TERMS' | translate}}
@@ -40,7 +40,7 @@
             label.control-label {{ 'GLOBAL.KEYWORDS' | translate }}
             .controls
               ul.keywords
-                li.label.label-info(ng-repeat="item in part.article.keywords")
+                li.label.label-info(ng-repeat="item in article.keywords")
                   span {{item}}
           .form-group(ng-show="article.description")
             label.control-label(for="assignment") {{'GLOBAL.ARTICLE_IDEA' | translate }}
@@ -54,6 +54,8 @@
                 dd {{part.assignment}}
     tab(heading="{{ 'GLOBAL.DISCUSSION' | translate }}")
       .inner.pad
-        .parts(ng-repeat="part in article.parts")
-          h2.pad {{part.title}}
-          konzilo-comments(ng-model="part.comments")
+        .parts.group(ng-repeat="part in article.parts")
+          .top
+            h2.title {{part.title}}
+          .content
+            konzilo-comments(ng-model="part.comments")

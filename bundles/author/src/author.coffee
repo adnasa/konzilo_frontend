@@ -31,9 +31,10 @@ angular.module("konzilo.author", ["cmf.input", "konzilo.translations"])
   restrict: 'AE'
   scope:
     author: "="
+    showFields: "="
   controller: ["$scope", "$element", "$attrs", ($scope, $element, $attrs) ->
     $scope.images = []
-    if $scope.author.image
+    if $scope.author?.image
       $scope.images.push($scope.author.image)
     $scope.getImage = ->
       if $scope.images.length > 0
@@ -48,6 +49,7 @@ angular.module("konzilo.author", ["cmf.input", "konzilo.translations"])
   restrict: 'AE'
   scope:
     author: "="
+    showFields: "="
   controller: ["$scope", "$element", "$attrs", ($scope, $element, $attrs) ->
     info = UserState.getInfo().info
     user = null

@@ -80,7 +80,8 @@
     "CHANGE": "Change",
     "ADD": "Add",
     "MAX": "Maximum",
-    "MIN": "Minimum"
+    "MIN": "Minimum",
+    "AUTHOR": "Author"
   },
   "CHANNEL": {
     "TITLE": "Channels",

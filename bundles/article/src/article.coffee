@@ -174,6 +174,47 @@
         ]
         templateUrl: "bundles/article/articlepart-image.html"
       ]
+      author: ["$translate", ($translate) ->
+        label: $translate("GLOBAL.AUTHOR")
+        fields: [
+          {
+            name: "name"
+            label: "GLOBAL.NAME"
+          },
+          {
+            name: "email"
+            label: "GLOBAL.EMAIL"
+          },
+          {
+            name: "about",
+            label: "AUTHOR.ABOUT"
+          },
+          {
+            name: "image",
+            label: "GLOBAL.IMAGE"
+          }
+        ]
+        defaultName: $translate("IMAGEPART.DEFAULTNAME")
+        controller: ["$scope", "articlePart",
+        "InputAutoSave", "UserStorage", "$q", "useAutoSave", "showFields",
+        ($scope, articlePart,
+          InputAutoSave, UserStorage, $q, useAutoSave, showFields) ->
+          $scope.part = articlePart.toObject()
+          $scope.part.content = $scope.part.content or {}
+          $scope.showFields = showFields
+
+          $scope.content = $scope.part.content
+          savePart = ->
+            articlePart.save()
+            return
+          clean = -> $scope.partForm.$valid
+          if useAutoSave
+            $scope.autosave = InputAutoSave.createInstance(
+              $scope.part, savePart, clean)
+        ]
+        template: "<author-picker author=\"content\"></author-picker>"
+      ]
+
     $get: ($injector) ->
       fn = (name) => @providers[name]
       fn.getProviders = => @providers
@@ -974,9 +1015,9 @@
   .directive("konziloArticlepartForm",
   ["articleParts", "$compile", "$controller", "$injector",
   "$http", "$templateCache", "KonziloEntity", "UserState",
-  "kzPartSettings",
+  "kzPartSettings", "$q",
   (articleParts, $compile, $controller, $injector,
-  $http, $templateCache, KonziloEntity, UserState, kzPartSettings) ->
+  $http, $templateCache, KonziloEntity, UserState, kzPartSettings, $q) ->
     restrict: "AE",
     scope:
       articlePart: "="
