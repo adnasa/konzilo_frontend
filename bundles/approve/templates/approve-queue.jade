@@ -1,0 +1,12 @@
+.articleparts
+  a.row-item(
+    ng-repeat="article in articles",
+    ng-href="{{article.link}}",
+    ng-class="{'active': selected._id == article._id}")
+    span(class="article-state {{article.state}}")
+    span {{article.title}}
+    span.pull-right {{ article.publishdate | date: "yyyy-MM-dd" }}
+    .parts
+      .row-item(ng-repeat="part in article.parts")
+        span(class="article-state {{part.state}}")
+        span {{part.title}}

@@ -1,0 +1,4 @@
+.fields
+  label.checkbox(ng-repeat="(field, info) in type.fields")
+    input(type="checkbox", ng-model="settings[field]")
+    span {{info[label]}}

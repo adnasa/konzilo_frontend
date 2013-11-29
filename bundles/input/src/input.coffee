@@ -359,12 +359,18 @@ angular.module("cmf.input", [])
 
 .factory("InputAutoSave", ["$timeout", ($timeout) ->
   class InputAutoSave
-    constructor: (@obj, @saveCallback, @validCallback, @timeout = 1500) ->
+    constructor: (@obj, @saveCallback, @validCallback, @dirtyCallback = null, @timeout = 1500) ->
       @originalObj = _.cloneDeep(@obj)
       @saveCallbacks = []
       @errorCallbacks = []
+
+      if not @dirtyCallback
+        @dirtyCallback = (original, newObj) ->
+          not _.isEqual(original, _.cloneDeep(newObj))
+
       @callback = =>
-        if @dirty() and @validCallback(@obj) and not @stopSaving
+        if @dirtyCallback(@originalObj, @obj) and @validCallback(@obj) and
+        not @stopSaving
           result = @saveCallback(@obj)
           if result?.then
             result.then =>
@@ -383,7 +389,7 @@ angular.module("cmf.input", [])
         return
       @callback()
 
-    dirty: -> not _.isEqual(@originalObj, _.cloneDeep(@obj))
+    dirty: -> @dirtyCallback(@originalObj, @obj)
 
     stop: ->
       @stopSaving = true
@@ -457,3 +463,60 @@ angular.module("cmf.input", [])
   template: "<div class=\"save-status\" ng-class=\"{error: error}\"
     ng-show=\"statusMessage\">{{statusMessage | translate: translations}}</div>"
 ])
+
+.directive("kzFocus", ->
+  restrict: "A"
+  link: (scope, element, attrs) ->
+    elementFocused = false
+    element.on "focus", ->
+      if not elementFocused
+        scope.$eval(attrs.kzFocus)
+        elementFocused = true
+    element.on "blur", ->
+      elementFocused = false
+
+)
+.directive("kzMachineName", ->
+  restrict: "AE"
+  replace: true
+  template: "<ng-form>
+  <div class=\"form-group\">
+    <label class=\"control-label\">{{'GLOBAL.NAME' | translate}}</label>
+    <input type=\"text\" ng-model=\"label\" name=\"label\" required />
+    <div class=\"help-block\" ng-show=\"name\">
+      {{'GLOBAL.MACHINENAME' | translate}}: {{name}}
+      <a ng-click=\"customName=true\">{{'GLOBAL.CHANGE' | translate}}</a>
+    </div>
+  </div>
+  <div class=\"form-group\"  ng-show=\"customName\">
+    <label class=\"control-label\">{{'GLOBAL.MACHINENAME' | translate}}</label>
+    <input type=\"text\" ng-model=\"name\" name=\"name\" required />
+  </div>
+  </ng-form>"
+  scope: { name: "=", label: "=", valid: "=" }
+  controller: ["$scope", "$q", ($scope, $q) ->
+    transliterate = (source) ->
+      rx = new RegExp('[^a-z0-9]+', 'g')
+      return source.toLowerCase().replace(rx, "_").substr(0, 40)
+
+    validate = (candidate) ->
+      if $scope.valid
+        result = $scope.valid(candidate)
+      if result?.then
+        result.then (promisedResult) ->
+          if promisedResult
+            candidate
+          else
+            validate(candidate + "_")
+      else if result
+        return $q.when(candidate)
+      else
+        validate(candidate + "_").then (newCandidate) ->
+          return newCandidate
+
+    $scope.$watch "label", ->
+      if $scope.label
+        validate(transliterate($scope.label)).then (result) ->
+          $scope.name = result
+  ]
+)

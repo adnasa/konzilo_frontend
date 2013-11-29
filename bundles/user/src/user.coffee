@@ -402,8 +402,6 @@ angular.module("kntnt.user",
       if !_.isEqual($scope.user.password, $scope.password2)
         $scope.updatePasswordFail = "USER.PASSWORDNOTSIMILARFAIL"
 
-
-
     userAccess("administer system").then ->
       $scope.showAdminFields = true
 

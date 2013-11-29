@@ -34,27 +34,25 @@ angular.module("konzilo.order", ["konzilo.menu"])
   update = ->
     return if not $scope.part
     $scope.translations = {}
-
     $scope.article = $scope.part.article
-    if $scope.part.article.topic
-      $scope.translations.topic = $scope.part.article.topic
 
-    if $scope.part.article.target
-      TargetStorage.get($scope.part.article.target).then (result) ->
+    if $scope.article.topic
+      $scope.translations.topic = $scope.article.topic
+
+    if $scope.article.target
+      TargetStorage.get($scope.article.target).then (result) ->
         $scope.target = result.toObject()
         $scope.translations.target = $scope.target.name
 
-    if $scope.part.article.channel
-      $scope.channel = ChannelStorage.get($scope.part.article.channel)
+    if $scope.article.channel
+      $scope.channel = ChannelStorage.get($scope.article.channel)
       .then (result) -> result.toObject()
 
-    if $scope.part.article.step
-      $scope.step = StepStorage.get($scope.part.article.step)
-      .then (result) -> result.toObject()
+    if $scope.article.step
+      $scope.step = StepStorage.get($scope.article.step)
+      .then (result) ->
+        result.toObject()
 
-    if $scope.part.language
-      $scope.language = KonziloConfig.get("languages")
-      .get($scope.part.language)
   $scope.$watch("part", update)
 ])
 

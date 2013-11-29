@@ -1,9 +1,6 @@
 ng-form(name="partForm")
   .form-horizontal.part-form
-    .title
-      h2 {{ 'TEXTPART.TITLE' | translate }}
-      cmf-autosave-status(status="autosave")
-    .form-group
+    .form-group(ng-show="showFields.topheadline")
       label.control-label {{'GLOBAL.TOPHEADLINE' | translate}}
       .controls
         cmf-inline(ng-model="content.topheadline")
@@ -11,8 +8,8 @@ ng-form(name="partForm")
             i.icon-edit.pull-right
             span {{content.topheadline}}
           cmf-inline-input
-            input(type="text", name="title", ng-model="content.topheadline")
-    .form-group
+            input(type="text", name="title", ng-model="content.topheadline", kz-focus="setActive()")
+    .form-group(ng-show="showFields.headline")
       label.control-label {{ 'GLOBAL.HEADLINE' | translate }}
       .controls
         cmf-inline(ng-model="content.headline")
@@ -20,8 +17,8 @@ ng-form(name="partForm")
             i.icon-edit.pull-right
             h1 {{content.headline}}
           cmf-inline-input
-            input(type="text", name="headline", ng-model="content.headline")
-    .form-group
+            input(type="text", name="headline", ng-model="content.headline", kz-focus="setActive()")
+    .form-group(ng-show="showFields.kicker")
       label.control-label {{ 'GLOBAL.KICKER' | translate }}
       .controls
         cmf-inline(ng-model="content.kicker")
@@ -29,8 +26,8 @@ ng-form(name="partForm")
             i.icon-edit.pull-right
             strong {{content.kicker}}
           cmf-inline-input
-            input(type="text", name="headline", ng-model="content.kicker")
-    .form-group
+            input(type="text", name="headline", ng-model="content.kicker", kz-focus="setActive()")
+    .form-group(ng-show="showFields.lead")
       label.control-label {{ 'GLOBAL.LEAD' | translate }}
       .controls
         cmf-inline(ng-model="content.lead")
@@ -38,10 +35,9 @@ ng-form(name="partForm")
             i.icon-edit.pull-right
             strong {{content.lead}}
           cmf-inline-input
-            textarea.input-block-level(type="text", name="lead", ng-model="content.lead")
-    .form-group
+            textarea.input-block-level(type="text", name="lead", ng-model="content.lead", kz-focus="setActive()")
+    .form-group(ng-show="showFields.body")
       label.control-label {{ 'GLOBAL.BODY' | translate }}
       .controls
         markdown-editor(ng-model="content.body")
-    author-picker(author="part.byline")
-    kz-vocabulary-input(ng-model="part.vocabularies")
+

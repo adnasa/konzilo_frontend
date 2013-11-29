@@ -75,11 +75,18 @@
     "BACK": "Tillbaka",
     "HIDE": "Dölj",
     "FETCHMORE": "Hämta fler",
-    "DETAILS": "Detaljer"
+    "DETAILS": "Detaljer",
+    "MACHINENAME": "Maskinnamn",
+    "CHANGE": "Ändra",
+    "ADD": "Lägg till",
+    "MAX": "Maximum",
+    "MIN": "Minimum",
+    "AUTHOR": "Författare"
   },
   "CHANNEL": {
     "TITLE": "Kanaler",
-    "ADD_NEW": "Lägg till ny kanal"
+    "ADD_NEW": "Lägg till ny kanal",
+    "TEMPLATE": "Mall"
   },
   "CLIENT": {
     "TITLE": "Klienter",
@@ -202,7 +209,7 @@
     "SHOWARTICLES": "Visa artiklar",
     "SEARCHARTICLES": "Sök bland artiklar",
     "ADDSELECTED": "Lägg till valda artiklar",
-    "EMPTYBEFORE": "Töm artikellistan innan nya läggs till",
+    "EMPTYBEFORE": "Töm artikellistan innan nya artiklar läggs till",
     "PICKER": "Artikelväljare",
     "STEPDESC": "Som tar läsaren",
     "PUBLISHDESC": "Som publiceras på",
@@ -210,7 +217,8 @@
     "RESPONSIBLEDESC": "där ansvarig är",
     "STATUSDESC": "som har status",
     "MATCHES": "Matchar",
-    "MATCHESDEC": "som matchar"
+    "MATCHESDEC": "som matchar",
+    "EMPTYCLIPBOARD": "Töm artikellistan"
   },
   "AUTHOR": {
     "EDIT": "Redigera författare",
@@ -286,7 +294,7 @@
     "APPROVED": "Godkänd",
     "NEWVERSION": "Ny version",
     "BACKTONOTSTARTED": "Sluta arbeta",
-    "BACKTOSTARTED": "Fortsätt arbeta med artikeln",
+    "BACKTOSTARTED": "Inte klar",
     "POSTFORREVIEW": "Skicka till godkännande",
     "STARTWORKING": "Börja arbeta",
     "APPROVE": "Godkänn",
@@ -295,7 +303,8 @@
     "FILTERCOUNT": "Ditt val matchar {{count}} artiklar.",
     "LOCKEDTEXT": "Artikeldelen redigeras av {{user}}.",
     "UNLOCK": "Lås upp",
-    "NEWPART": "Skapa ny artikeldel"
+    "NEWPART": "Skapa ny artikeldel",
+    "ADDTYPE": "Lägg till artikeldelstyp"
   },
   "ENDPOINT": {
     "REMOVE": "Ta bort publiceringsmål",

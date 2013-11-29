@@ -3,10 +3,12 @@
     tab(heading="{{'GLOBAL.ORDER' | translate}}")
       .pad
         .inner.form.form-horizontal.article-description
-          .form-group(ng-show="part.deadline")
-            label.control-label(for="date") {{'GLOBAL.DEADLINE' | translate}}
+          .form-group(ng-show="hasDeadline")
+            label.control-label {{'GLOBAL.DEADLINE' | translate}}
             .controls
-              span {{part.deadline | date: "yyyy-MM-dd"}}
+              dl(ng-repeat="part in article.parts", ng-show="part.deadline")
+                dt {{part.title}}
+                dd {{part.deadline | date: "yyyy-MM-dd"}}
           .form-group(ng-show="part.terms")
             label.control-label(for="terms") {{'GLOBAL.TERMS' | translate}}
             .controls
@@ -22,32 +24,38 @@
             .controls
               span(markdown="target.description")
               a(ng-click="showAnalysis(target)") {{'GLOBAL.SHOW_ANALYSIS' | translate}}
-          .form-group(ng-show="part.article.step")
+          .form-group(ng-show="article.step")
             label.control-label(for="steps") {{'GLOBAL.STEP' | translate}}
             .controls
               span {{ target.steps[part.article.step].description }}
-          .form-group(ng-show="part.article.channel")
+          .form-group(ng-show="article.channel")
             label.control-label {{'GLOBAL.CHANNEL' | translate}}
             .controls
               span {{ channel.description }}
-          .form-group(ng-show="part.article.step")
+          .form-group(ng-show="article.step")
             label.control-label(for="target") {{'GLOBAL.SUBJECT' | translate}}
             .controls
-              span(ng-show="part.article.topic") {{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate }}
-          .form-group(ng-show="part.article.keywords")
+              span(ng-show="article.topic") {{ 'GLOBAL.TARGET_TOPIC_SPEC' | translate }}
+          .form-group(ng-show="article.keywords")
             label.control-label {{ 'GLOBAL.KEYWORDS' | translate }}
             .controls
               ul.keywords
-                li.label.label-info(ng-repeat="item in part.article.keywords")
+                li.label.label-info(ng-repeat="item in article.keywords")
                   span {{item}}
-          .form-group(ng-show="part.article.description")
+          .form-group(ng-show="article.description")
             label.control-label(for="assignment") {{'GLOBAL.ARTICLE_IDEA' | translate }}
             .controls
-              .text(markdown="part.article.description")
-          .form-group(ng-show="part.assignment")
+              .text(markdown="article.description")
+          .form-group(ng-show="hasAssignment")
             label.control-label(for="assignment") {{'GLOBAL.TASK' | translate}}
             .controls
-              .text(markdown="part.assignment")
-    tab(heading="{{'GLOBAL.DISCUSSION' | translate}}")
+              dl(ng-repeat="part in article.parts", ng-show="part.assignment")
+                dt {{part.title}}
+                dd {{part.assignment}}
+    tab(heading="{{ 'GLOBAL.DISCUSSION' | translate }}")
       .inner.pad
-        konzilo-comments(ng-model="part.comments")
+        .parts.group(ng-repeat="part in article.parts")
+          .top
+            h2.title {{part.title}}
+          .content
+            konzilo-comments(ng-model="part.comments")

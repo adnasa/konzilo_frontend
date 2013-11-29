@@ -37,56 +37,88 @@ StepStorage, KonziloConfig, kzAnalysisDialog) ->
     kzAnalysisDialog(target)
 
   update = ->
-    return if not $scope.part
+    return if not $scope.article
     $scope.translations = {}
+    if $scope.article.topic
+      $scope.translations.topic = $scope.article.topic
 
-    $scope.article = $scope.part.article
-    if $scope.part.article.topic
-      $scope.translations.topic = $scope.part.article.topic
-
-    if $scope.part.article.target
-      TargetStorage.get($scope.part.article.target).then (result) ->
+    if $scope.article.target
+      TargetStorage.get($scope.article.target).then (result) ->
         $scope.target = result.toObject()
         $scope.translations.target = $scope.target.name
 
-    if $scope.part.article.channel
-      $scope.channel = ChannelStorage.get($scope.part.article.channel)
+    if $scope.article.channel
+      $scope.channel = ChannelStorage.get($scope.article.channel)
       .then (result) -> result.toObject()
 
-    if $scope.part.article.step
-      $scope.step = StepStorage.get($scope.part.article.step)
+    if $scope.article.step
+      $scope.step = StepStorage.get($scope.article.step)
       .then (result) -> result.toObject()
 
-    if $scope.part.language
-      $scope.language = KonziloConfig.get("languages")
-      .get($scope.part.language)
-  $scope.$watch("part", update)
+    has = (property) ->
+      for part in $scope.article.parts
+        return true if part[property]
+      return false
+
+    $scope.hasDeadline = has("deadline")
+    $scope.hasAssignment = has("assignment")
+
+    $scope.languages = []
+    KonziloConfig.get("languages").listAll().then (languages)->
+      for part in $scope.article.parts when part.language
+        $scope.languages.push(languages[part.language])
+
+  $scope.$watch("article", update)
 ])
 
 .directive("kzDeliverInfo", ->
   restrict: "AE"
-  scope: part: "="
+  scope: article: "="
   controller: "DeliverInfo"
   templateUrl: 'bundles/deliver/deliver-info.html'
 )
 
 .controller("DeliverController",
-["$scope", "ArticlePartStorage", "$routeParams", "$translate", "UserState"
-($scope, ArticlePartStorage, $routeParams, $translate, UserState) ->
+["$scope", "ArticlePartStorage", "$routeParams", "$translate", "UserState",
+"GroupStorage",
+($scope, ArticlePartStorage, $routeParams,
+$translate, UserState, GroupStorage, ChannelStorage, kzShowFields) ->
   $scope.states = [ "notstarted", "started", "needsreview" ]
   $scope.useSave = true
   $scope.translations = {}
   userId = UserState.getInfo().info._id
 
-  $scope.isLocked = (part) -> part?.locked != userId
-
-  $scope.unlockPart = (part) ->
-    part.locked = userId
+  $scope.$on("kzActivePart", (event, part) -> $scope.part = part)
 
   $scope.$parent.title = $translate("DELIVER.TITLE")
-  if $routeParams.id
-    ArticlePartStorage.get $routeParams.id, (articlePart) ->
-      $scope.articlePart = articlePart
-      $scope.part = articlePart.toObject()
 
+  getArticle = (id) ->
+    ids = [ userId ]
+    GroupStorage.query
+      q:
+        members: { $all: ids }
+    .then (result) ->
+      ids.concat(group._id for group in result.toArray())
+    .then (providers) ->
+      ArticlePartStorage.query
+        q:
+          article: id
+          provider: { $in: providers }
+          state: { $ne: "approved" }
+          type: { $exists: true }
+      , (parts) ->
+        parts = parts.toArray()
+        return if parts.length == 0
+        article = parts[0]?.article
+        for part in parts
+          part.article = part.article._id
+        article.parts = parts
+        $scope.article = article
+
+  if $routeParams.id
+    getArticle($routeParams.id)
+
+  $scope.$on "stateChanged", (event, part) ->
+    if part.state == "approved" and $routeParams.id
+      getArticle($routeParams.id)
 ])

@@ -75,7 +75,13 @@
     "BACK": "Back",
     "HIDE": "Dölj",
     "FETCHMORE": "Fetch more",
-    "DETAILS": "Details"
+    "DETAILS": "Details",
+    "MACHINENAME": "Machine name",
+    "CHANGE": "Change",
+    "ADD": "Add",
+    "MAX": "Maximum",
+    "MIN": "Minimum",
+    "AUTHOR": "Author"
   },
   "CHANNEL": {
     "TITLE": "Channels",
@@ -211,7 +217,8 @@
     "RESPONSIBLEDESC": "where responsible are",
     "STATUSDESC": "which has the status",
     "MATCHES": "Matching",
-    "MATCHESDEC": "that matches"
+    "MATCHESDEC": "that matches",
+    "EMPTYCLIPBOARD": "Empty article list"
   },
   "AUTHOR": {
     "EDIT": "Edit author",
@@ -285,7 +292,7 @@
     "APPROVED": "Approved",
     "NEWVERSION": "New version",
     "BACKTONOTSTARTED": "Stop working",
-    "BACKTOSTARTED": "Continue working",
+    "BACKTOSTARTED": "Not done",
     "POSTFORREVIEW": "Send for review",
     "STARTWORKING": "Start working",
     "APPROVE": "Approve",

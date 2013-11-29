@@ -1,32 +1,8 @@
 .author-picker
-  ng-form(name="authorPicker")
-    .form-group(ng-show="author")
-      label.control-label {{ 'AUTHOR.NAME' | translate }}
-      .controls
-        .author.well(ng-show="author")
-          .top
-            .image
-              file-picker(ng-model="author.image", bundle="media")
-            .info
-              cmf-inline(ng-model="author.name")
-                cmf-inline-preview
-                  h3 {{author.name}}
-                cmf-inline-input
-                  input(type="text", ng-model="author.name")
-              cmf-inline(ng-model="author.email")
-                cmf-inline-preview
-                  span {{author.email | placeholder: "E-post"}}
-                cmf-inline-input
-                  input(type="email", ng-model="author.email")
-          .text
-            cmf-inline(ng-model="author.about")
-              cmf-inline-preview
-                p {{author.about}}
-              cmf-inline-input
-                textarea.input-block-level(ng-model="author.about", name="about")
-    .form-group
-      label.control-label {{ 'AUTHOR.PICK' | translate }}
-      .controls
-        entity-reference(entity-type="Author", ng-model="author")
-        .links
-          a(ng-click="newAuthor()") {{ 'AUTHOR.NEW' | translate }}
+  author-form(author="author")
+  .form-group
+    label.control-label {{ 'AUTHOR.PICK' | translate }}
+    .controls
+      entity-reference(entity-type="Author", ng-model="author")
+      .links
+        a(ng-click="newAuthor()") {{ 'AUTHOR.NEW' | translate }}

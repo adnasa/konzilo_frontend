@@ -46,10 +46,12 @@
                button.btn-link(ng-click="getPage(page)") {{page + 1}}
 
            .actions
+              button.btn-danger.btn(ng-click="clearClipboard()") {{'ARTICLEPICKER.EMPTYCLIPBOARD' | translate}}
               button.btn-primary.btn(ng-click="addArticles()", ng-disabled="count == 0") {{'ARTICLEPICKER.ADDSELECTED' | translate}}
               label.checkbox
                 input(type="checkbox", name="purge", ng-model="purge", ng-disabled="count == 0")
                 span {{ 'ARTICLEPICKER.EMPTYBEFORE' | translate }}
+
 
   .picker(ng-class="collapseClass()")
     button.btn.picker-btn(ng-click="isCollapsed = !isCollapsed")

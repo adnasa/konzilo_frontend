@@ -1,4 +1,5 @@
-angular.module("konzilo.channel", ["konzilo.config", 'konzilo.translations'])
+angular.module("konzilo.channel", ["konzilo.config",
+'konzilo.translations', 'konzilo.contenttype'])
 .config(["$routeProvider", "entityInfoProvider", "$translateProvider",
 ($routeProvider, entityInfoProvider, $translateProvider) ->
   entityInfoProvider.addProvider "Channel",
@@ -42,12 +43,13 @@ angular.module("konzilo.channel", ["konzilo.config", 'konzilo.translations'])
 ])
 .controller("ChannelAdminController",
 ["$scope", "KonziloConfig", "$http", "$routeParams",
-"InputAutoSave", "ChannelStorage", "$translate",
+"InputAutoSave", "ChannelStorage", "$translate", "articleParts",
 ($scope, KonziloConfig, $http, $routeParams,
-InputAutoSave, ChannelStorage, $translate) ->
+InputAutoSave, ChannelStorage, $translate, articleParts) ->
   bin = KonziloConfig.get("endpoints")
   $scope.endpoints = bin.listAll()
   $scope.query = {}
+  $scope.types = articleParts.labels()
 
   $scope.properties =
     name: $translate("GLOBAL.NAME")
@@ -61,13 +63,11 @@ InputAutoSave, ChannelStorage, $translate) ->
   if $routeParams.channel
     ChannelStorage.get($routeParams.channel).then (channel) ->
       $scope.channel = channel.toObject()
+      $scope.channel.contentType = $scope.channel.contentType or {}
       valid = -> $scope.editChannelForm.$valid
       save = -> ChannelStorage.save($scope.channel)
       $scope.autosave = InputAutoSave.createInstance($scope.channel,
         save, valid)
-
-  $scope.mainClass = ->
-    if $scope.channel then "span6" else "span12"
 
   $scope.newChannel = {}
   $scope.addChannel = ->

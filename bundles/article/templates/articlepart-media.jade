@@ -1,9 +1,6 @@
 ng-form(name="partForm")
   .form-horizontal.part-form
-    .title
-        cmf-autosave-status(status="autosave")
-        h2 {{ 'MEDIAPART.TITLE' | translate }}
-    .form-group
+    .form-group(ng-show="showFields.media")
       label.control-label {{ 'MEDIAPART.MEDIA' | translate }}
       .controls
         cmf-inline(ng-model="content.media")
@@ -13,7 +10,7 @@ ng-form(name="partForm")
             img(src="{{photo}}", ng-show="photo")
           cmf-inline-input
             input(type="url", ng-model="content.media", ng-change="showMedia()")
-    .form-group
+    .form-group(ng-show="showFields.title")
       label.control-label {{ 'GLOBAL.TITLE' | translate }}
       .controls
         cmf-inline(ng-model="content.title")
@@ -22,7 +19,7 @@ ng-form(name="partForm")
             h1 {{content.title}}
           cmf-inline-input
             input(type="text", name="headline", ng-model="content.title")
-    .form-group
+    .form-group(ng-show="showFields.description")
       label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
       .controls
         cmf-inline(ng-model="content.description")
@@ -31,5 +28,3 @@ ng-form(name="partForm")
             strong {{content.description}}
           cmf-inline-input
             textarea.input-block-level(type="text", name="description", ng-model="content.description")
-    author-picker(author="part.byline")
-    kz-vocabulary-input(ng-model="part.vocabularies")

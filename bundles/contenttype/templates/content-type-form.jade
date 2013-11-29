@@ -1,0 +1,62 @@
+.template-form
+  form.parts-form(name="templateForm")
+    .parts(ui-sortable, ng-model="contentType.parts")
+      .part(ng-repeat="(index, part) in contentType.parts")
+        .group
+          .top
+            h2.title {{part.label}}
+            .actions
+              button.btn.btn-link.pull-right(ng-click="removePart(index)") {{'GLOBAL.REMOVE' | translate}}
+          .content
+            .form-group
+              label.control-label {{'GLOBAL.NAME' | translate}}
+              input(type="text", ng-model="part.label")
+            .form-group
+              label.control-label {{'GLOBAL.MIN' | translate}}
+              .controls
+                select(type="text", required, ng-model="part.min",
+                  ng-change="newPartMaxLimit(index, part.min) && changeCardinality(part)")
+                  option(value="{{value}}", ng-repeat="value in minLimit",
+                    ng-selected="value == part.min") {{value}}
+            .form-group
+              label.control-label {{'GLOBAL.MAX' |  translate}}
+              .controls
+                select(type="text", required, ng-model="part.max",
+                  ng-change="changeCardinality(part)")
+                  option(value="{{value.value}}", ng-repeat="value in partMaxLimit[index]",
+                    ng-selected="value.value == part.max") {{value.label | translate}}
+            .fields
+              label.checkbox(ng-repeat="info in types[part.type].fields")
+                input(type="checkbox", ng-model="part.show[info.name]")
+                span {{info.label | translate}}
+
+  form.add-part-type(name="addPartType", ng-submit="addPart()")
+    .group
+      .top
+        h2.title {{'GLOBAL.NEWPART' | translate}}
+      .content
+        kz-machine-name(name="newPart.name", label="newPart.label", valid="valid")
+        .form-group
+          label.control-label {{'GLOBAL.MIN' | translate}}
+          .controls
+            select(type="text", required, ng-model="newPart.min",
+              ng-change="newPartMaxLimit(index, part.min) && changeCardinality(newPart)")
+              option(value="{{value}}", ng-repeat="value in minLimit",
+                ng-selected="value == newPart.min") {{value}}
+        .form-group
+          label.control-label {{'GLOBAL.MAX' |  translate}}
+          .controls
+            select(type="text", required, ng-model="newPart.max",
+              ng-change="changeCardinality(newPart)")
+              option(value="{{value.value}}", ng-repeat="value in maxLimit",
+                ng-selected="value.value == newPart.max") {{value.label | translate}}
+        .form-group
+          label.control-label {{ 'GLOBAL.TYPE' | translate }}
+          select(ng-model="newPart.type", ng-change="changePart()")
+            option(ng-repeat="(key, value) in typeLabels", value="{{key}}", ng-selected="key == type") {{value}}
+        .fields
+          label.checkbox(ng-repeat="info in types[newPart.type].fields")
+            input(type="checkbox", ng-model="newPart.show[info.name]")
+            span {{info.label | translate}}
+        .form-group
+          input.btn.btn-primary(type="submit", value="{{'GLOBAL.ADD' | translate}}")

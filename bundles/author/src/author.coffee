@@ -31,9 +31,10 @@ angular.module("konzilo.author", ["cmf.input", "konzilo.translations"])
   restrict: 'AE'
   scope:
     author: "="
+    showFields: "="
   controller: ["$scope", "$element", "$attrs", ($scope, $element, $attrs) ->
     $scope.images = []
-    if $scope.author.image
+    if $scope.author?.image
       $scope.images.push($scope.author.image)
     $scope.getImage = ->
       if $scope.images.length > 0
@@ -43,11 +44,12 @@ angular.module("konzilo.author", ["cmf.input", "konzilo.translations"])
 )
 
 .directive("authorPicker",
-["AuthorStorage", "UserStorage", "$modal", "UserState", "$translate",
-(AuthorStorage, UserStorage, $modal, UserState, $translate) ->
+["UserStorage", "$modal", "UserState", "$translate",
+(UserStorage, $modal, UserState, $translate) ->
   restrict: 'AE'
   scope:
     author: "="
+    showFields: "="
   controller: ["$scope", "$element", "$attrs", ($scope, $element, $attrs) ->
     info = UserState.getInfo().info
     user = null
@@ -71,7 +73,6 @@ angular.module("konzilo.author", ["cmf.input", "konzilo.translations"])
     $scope.$watch 'author', ->
       if not $scope.author and user and user.author
         $scope.author = user.author
-
       $scope.authorName = $scope.author.name if $scope.author
 
     $scope.$on 'entityReferenceChanged', (scope, value) ->
