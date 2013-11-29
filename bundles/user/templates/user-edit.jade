@@ -17,11 +17,11 @@ form.form.user-form.form-horizontal(name="userForm")
     label.control-label.col-lg-2 {{'GLOBAL.EMAIL' | translate}}
     .controls.col-lg-10.email
       input.input-half.first(type="email", name="email", ng-model="email")
-      button.input-half.last.btn.btn-default(ng-click="sendVerifyEmail()", ng-show="email != user.email") Send email verification email
-      span.help-block {{'USER.EMAILHELP' | translate }}
-      .alert.alert-danger(ng-show="verificationemailsent") {{'USER.EMAILVERIFYHELP' | translate: {email: email} }}
-      input.input-half.first(type="text", name="emailverificationcode", ng-model="emailverificationcode", placeholder="verification code", ng-show="verificationemailsent")
-      button.input-half.last.btn.btn-default(ng-click="performVerifyEmail()", ng-show="verificationemailsent") Verify
+      button.input-quarter.last.btn.btn-default(ng-click="sendVerifyEmail()", ng-disabled="email == user.email") {{'USER.VERIFYBUTTON' | translate}}
+      input.input-quarter.first(type="text", name="emailverificationcode", ng-model="emailverificationcode", placeholder="{{'USER.VERIFYCODEPLACEHOLDER' | translate}}", ng-show="verificationemailsent")
+      button.input-quarter.last.btn.btn-default(ng-click="performVerifyEmail()", ng-show="verificationemailsent", ng-disabled="!emailverificationcode") {{'USER.UPDATEBUTTON' | translate}}
+      span.help-block.clearfix {{'USER.EMAILHELP' | translate }}
+      .alert.alert-info(ng-show="verificationemailsent") {{'USER.EMAILVERIFYHELP' | translate: {email: email} }}
       .alert.alert-danger(ng-show="verifyFail") {{'USER.EMAILVERIFICATIONFAIL' | translate}}
       .alert.alert-success(ng-show="verifySuccess") {{'USER.EMAILVERIFICATIONSUCCESS' | translate}}
 
@@ -34,22 +34,25 @@ form.form.user-form.form-horizontal(name="userForm")
         button.btn.btn-danger(ng-click="user.username = username") {{'USER.CONFIRMUSERNAMECHANGE' | translate}}
         span.help-block {{'USER.CONFIRMUSERNAMECHANGEMESSAGE' | translate}}
       .alert.alert-danger(ng-show="!userForm.username.$valid") {{'USER.USERNAMEHELP' | translate}}
-  .form-group(ng-show="showAdminFields")
-    label.control-label {{'USER.ROLES' | translate}}
+  .form-group.password
+    label.control-label {{'GLOBAL.PASSWORD' | translate}}
     .controls
-      select(ng-model="user.roles", multiple="true")
-        option(ng-repeat="(name, role) in roles", value="{{name}}", ng-selected="hasRole(name)") {{role.label}}
+      input(type="password", name="password", ng-model="user.password", placeholder="{{'GLOBAL.PASSWORD' | translate}}")
+      input(type="password", name="password2", ng-model="password2", placeholder="{{'USER.PASSWORDREPEAT' | translate}}")
+      button.btn.btn-default(ng-click="updatePassword()") {{'USER.UPDATEPASSWORDBUTTON' | translate}}
+  .help-block {{'USER.PASSWORDDESC' | translate}}
   .form-group(ng-show="showAdminFields")
     label.control-label {{'GLOBAL.LANGUAGE' | translate}}
     .controls
       select(ng-model="user.language")
         option(ng-repeat="(name, language) in languages", value="{{name}}", ng-selected="name == user.language") {{language.name}}
-  .form-group
-    label.control-label {{'GLOBAL.PASSWORD' | translate}}
+      span.help-block {{'USER.LANGUAGEHELP' | translate}}
+  .form-group(ng-show="showAdminFields")
+    label.control-label {{'USER.ROLES' | translate}}
     .controls
-      input(type="password", name="password", ng-model="user.password", placeholder="{{'GLOBAL.PASSWORD' | translate}}")
-      input(type="password", name="password2", ng-model="password2", placeholder="{{'USER.PASSWORDREPEAT' | translate}}")
-      .help-block {{'USER.PASSWORDDESC' | translate}}
+      select(ng-model="user.roles", multiple="true")
+        option(ng-repeat="(name, role) in roles", value="{{name}}", ng-selected="hasRole(name)") {{role.label}}
+      span.help-block {{'USER.ROLESHELP' | translate}}
   .form-group(ng-show="showAdminFields")
     label.control-label {{'USER.ACTIVE' | translate}}
     .controls

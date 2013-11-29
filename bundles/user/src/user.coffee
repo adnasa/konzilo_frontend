@@ -373,6 +373,7 @@ angular.module("kntnt.user",
       UserStorage.save($scope.user).then ->
         $scope.verifySuccess = "USER.EMAILVERIFICATIONSUCCESS"
         $scope.verificationemailsent = false
+        delete $scope.emailverificationcode
         $scope.autosave.start()
       , ->
         $scope.verifyFail = "USER.EMAILVERIFICATIONFAIL"
@@ -397,6 +398,12 @@ angular.module("kntnt.user",
       else
         $scope.user.displayname = $scope.user.email
 
+    $scope.updatePassword = ->
+      if !_.isEqual($scope.user.password, $scope.password2)
+        $scope.updatePasswordFail = "USER.PASSWORDNOTSIMILARFAIL"
+
+
+
     userAccess("administer system").then ->
       $scope.showAdminFields = true
 
@@ -411,8 +418,8 @@ angular.module("kntnt.user",
           $scope.email = $scope.user.emailverificationemail
         else
           $scope.email = $scope.user.email
-
-        $scope.verificationemailsent = $scope.user.emailverificationemail != $scope.user.email
+        if $scope.user.emailverificationemail
+          $scope.verificationemailsent = $scope.user.emailverificationemail != $scope.user.email
         $scope.autosave = InputAutoSave.createInstance $scope.user,
         ->
           UserStorage.save($scope.user).then (result) ->

@@ -158,8 +158,14 @@ input[type="color"] {
   .form-control;
 }
 
-input.input-half {
+input.input-half, button.input-half {
   .make-lg-column(5);
+  margin-right: 5px;
+}
+
+input.input-quarter, button.input-quarter {
+  .make-lg-column(2);
+  float: left;
   margin-right: 5px;
 }
 
@@ -927,7 +933,14 @@ form.add-part-form {
   }
   .email {
     .help-block {
-
+      float: none;
+      display: block;
+      overflow: hidden;
+    }
+  }
+  .password {
+    button {
+      float: left;
     }
   }
 }
