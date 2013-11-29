@@ -91,7 +91,8 @@ $translate, UserState, GroupStorage, ChannelStorage, kzShowFields) ->
   $scope.$on("kzActivePart", (event, part) -> $scope.part = part)
 
   $scope.$parent.title = $translate("DELIVER.TITLE")
-  if $routeParams.id
+
+  getArticle = (id) ->
     ids = [ userId ]
     GroupStorage.query
       q:
@@ -101,15 +102,23 @@ $translate, UserState, GroupStorage, ChannelStorage, kzShowFields) ->
     .then (providers) ->
       ArticlePartStorage.query
         q:
-          article: $routeParams.id
+          article: id
           provider: { $in: providers }
           state: { $ne: "approved" }
           type: { $exists: true }
       , (parts) ->
         parts = parts.toArray()
+        return if parts.length == 0
         article = parts[0]?.article
         for part in parts
           part.article = part.article._id
         article.parts = parts
         $scope.article = article
+
+  if $routeParams.id
+    getArticle($routeParams.id)
+
+  $scope.$on "stateChanged", (event, part) ->
+    if part.state == "approved" and $routeParams.id
+      getArticle($routeParams.id)
 ])
