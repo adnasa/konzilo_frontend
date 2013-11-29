@@ -439,6 +439,7 @@
               type: $scope.type
               typeName: $scope.types[$scope.type].typeName
               submitter: user._id
+              provider: $scope.article.provider
               article: $scope.article._id
 
             articlePart.language = defaultLang.langcode if defaultLang
