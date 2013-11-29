@@ -59,7 +59,6 @@
           $scope.showFields = showFields
           $scope.part.vocabularies = $scope.part.vocabularies or {}
           savePart = ->
-            articlePart.set("byline", $scope.part.byline)
             articlePart.set("content", $scope.content)
             articlePart.save()
 
@@ -162,7 +161,6 @@
           $scope.content = $scope.part.content
           $scope.content.images = [] if not $scope.content.images
           savePart = ->
-            articlePart.set("byline", $scope.part.byline)
             articlePart.set("content", $scope.content)
             articlePart.save()
             return
@@ -196,14 +194,19 @@
         ]
         defaultName: $translate("IMAGEPART.DEFAULTNAME")
         controller: ["$scope", "articlePart",
-        "InputAutoSave", "UserStorage", "$q", "useAutoSave", "showFields",
+        "InputAutoSave", "UserStorage", "$q", "useAutoSave", "showFields", "UserState",
         ($scope, articlePart,
-          InputAutoSave, UserStorage, $q, useAutoSave, showFields) ->
+          InputAutoSave, UserStorage, $q, useAutoSave, showFields, UserState) ->
           $scope.part = articlePart.toObject()
           $scope.part.content = $scope.part.content or {}
           $scope.showFields = showFields
-
           $scope.content = $scope.part.content
+          # Set the author automatically if it's not filled in.
+          if _.isEmpty($scope.part.content)
+            UserStorage.get(UserState.getInfo().info._id).then (user) ->
+              author = user.get("author")
+              $scope.content = $scope.part.content = author if author
+
           savePart = ->
             articlePart.save()
             return
@@ -212,7 +215,7 @@
             $scope.autosave = InputAutoSave.createInstance(
               $scope.part, savePart, clean)
         ]
-        template: "<author-picker author=\"content\"></author-picker>"
+        template: "<author-form author=\"content\" show-fields=\"showFields\"></author-form>"
       ]
 
     $get: ($injector) ->
