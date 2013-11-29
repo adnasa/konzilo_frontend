@@ -158,12 +158,27 @@ input[type="color"] {
   .form-control;
 }
 
+input.input-half, button.input-half {
+  .make-lg-column(5);
+  margin-right: 5px;
+}
+
+input.input-quarter, button.input-quarter {
+  .make-lg-column(2);
+  float: left;
+  margin-right: 5px;
+}
+
 a {
   cursor: pointer;
 }
 
 .form-horizontal .controls {
   .make-lg-column(8);
+}
+
+.confirm {
+  margin-top: 10px;
 }
 
 .help-block {
@@ -921,6 +936,21 @@ form.add-part-form {
 .form-horizontal .form-group {
   padding-bottom: 10px;
   border-bottom: 1px solid @grayLighter;
+  .alert {
+    margin-top: 10px;
+  }
+  .email {
+    .help-block {
+      float: none;
+      display: block;
+      overflow: hidden;
+    }
+  }
+  .password {
+    button {
+      float: left;
+    }
+  }
 }
 
 .author {

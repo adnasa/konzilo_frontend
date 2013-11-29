@@ -203,6 +203,18 @@ angular.module("kntnt.user",
     labelProperty: "username"
     idProperty: "_id"
     properties:
+      displayname:
+        label: "Display name"
+        processEmpty: true
+        processor: (val, entity) ->
+          return val if !_.isEmpty(val)
+          user = entity.toObject()
+          if (user.firstname or user.lastname)
+            (for property in ["firstname", "lastname"] when not _.isEmpty(user[property])
+              user[property]
+            ).join(' ')
+          else
+            user.email
       username:
         label: "Username"
         type: String
@@ -336,20 +348,59 @@ angular.module("kntnt.user",
 ])
 
 .directive("userEditForm",
-["InputAutoSave", "UserStorage", "KonziloConfig", "userAccess",
-(InputAutoSave, UserStorage, KonziloConfig, userAccess) ->
+["InputAutoSave", "UserStorage", "KonziloConfig", "userAccess", "UserState", "$http",
+(InputAutoSave, UserStorage, KonziloConfig, userAccess, UserState, $http) ->
   restrict: "AE",
   templateUrl: "bundles/user/user-edit.html"
   scope: { user: "=" }
   controller: ["$scope", ($scope) ->
+    $scope.usernamePattern = /^[a-zA-Z0-9\.\-_~]{4,}$/
     activeUser = $scope.user
     $scope.languages = KonziloConfig.get("languages").listAll()
     KonziloConfig.get("roles").listAll().then (roles) ->
       $scope.roles = roles
+    $scope.sendVerifyEmail = ->
+      $scope.autosave?.stop()
+      $http.post("/email/verify/#{$scope.user._id}/#{$scope.email}").then ->
+        $scope.successMessage = "LOGIN.EMAILVERIFYSENT"
+        $scope.verificationemailsent = true
+      , (err) ->
+        $scope.errorMessage = "LOGIN.EMAILVERIFYERROR"
+
+    $scope.performVerifyEmail = ->
+      $scope.user.everificationcode = $scope.emailverificationcode
+      $scope.user.email = $scope.email
+      UserStorage.save($scope.user).then ->
+        $scope.verifySuccess = "USER.EMAILVERIFICATIONSUCCESS"
+        $scope.verificationemailsent = false
+        delete $scope.emailverificationcode
+        $scope.autosave.start()
+      , ->
+        $scope.verifyFail = "USER.EMAILVERIFICATIONFAIL"
 
     $scope.hasRole = (role) ->
       return if not $scope.user?.roles
       role in $scope.user.roles
+
+    $scope.saveUser = ->
+      if $scope.userForm?.$valid and
+      _.isEqual($scope.user.password, $scope.password2)
+        UserStorage.save user
+
+    $scope.setDisplayName = ->
+        $scope.user.displayname = $scope.displayname;
+
+    $scope.aggregateDisplayName = ->
+      if ($scope.user.firstname or $scope.user.lastname)
+        $scope.user.displayname = (for property in ["firstname", "lastname"] when not _.isEmpty($scope.user[property])
+          $scope.user[property]
+        ).join(' ')
+      else
+        $scope.user.displayname = $scope.user.email
+
+    $scope.updatePassword = ->
+      if !_.isEqual($scope.user.password, $scope.password2)
+        $scope.updatePasswordFail = "USER.PASSWORDNOTSIMILARFAIL"
 
     userAccess("administer system").then ->
       $scope.showAdminFields = true
@@ -360,12 +411,24 @@ angular.module("kntnt.user",
         $scope.user = $scope.user.toObject()
       $scope.user.roles = $scope.user.roles or []
       if (not activeUser or $scope.user._id is not activeUser._id)
+        $scope.username = $scope.user.username
+        if $scope.user.emailverificationemail
+          $scope.email = $scope.user.emailverificationemail
+        else
+          $scope.email = $scope.user.email
+        if $scope.user.emailverificationemail
+          $scope.verificationemailsent = $scope.user.emailverificationemail != $scope.user.email
         $scope.autosave = InputAutoSave.createInstance $scope.user,
         ->
-          UserStorage.save $scope.user
+          UserStorage.save($scope.user).then (result) ->
+            info = UserState.getInfo().info
+            info.username = result.username
+            info.email = result.email
+            info.language = result.language
+            UserState.saveInfo(info)
+            return result
         , ->
-          $scope.userForm?.$valid and
-          _.isEqual($scope.user.password, $scope.password2)
+          $scope.userForm?.$valid and _.isEqual($scope.user.password, $scope.password2)
     $scope.$watch('user', update)
   ]
 ])
