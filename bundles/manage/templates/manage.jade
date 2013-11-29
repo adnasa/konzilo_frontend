@@ -29,27 +29,7 @@ div(kntnt-article-picker)
                 a(href="{{publishInfo.resource_url}}") {{ 'MANAGE.GOTOARTICLE' | translate }}
             .planned(ng-show="!publishInfo.done")
               {{ 'MANAGE.PUBLISHINFO' | translate: translations }}
-        accordion.article-accordion
-          accordion-group(ng-repeat="part in article.parts")
-            accordion-heading {{part.title}}
-            form.form-inline.options-form
-              .form-group
-                select.form-control(ng-model="part.state")
-                  option(ng-repeat="state in states",
-                    value="{{state.name}}",
-                    ng-selected="part.state == state.name") {{state.label | translate}}
-              label.checkbox
-                input(type="checkbox", ng-model="part.teaser")
-                span {{ 'MANAGE.SHOWLISTINGS' | translate }}
-              .pull-right
-                button.btn(ng-click="newVersion(part)")
-                  i.icon-plus
-                  span {{ 'MANAGE.NEWVERSION' | translate }}
-                button.btn.btn-danger(ng-click="remove(part)")
-                  i.icon-remove
-                  span {{ 'MANAGE.REMOVEPART' | translate }}
-            .content
-              konzilo-articlepart-form(article-part="part")
+         kz-content-type-article-form(article="article")
         .box.pad.create-form(ng-show="article")
           kntnt-add-article-part(article="article")
       .additional(ng-show="article")
