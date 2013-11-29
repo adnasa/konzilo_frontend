@@ -209,7 +209,7 @@
     "SHOWARTICLES": "Visa artiklar",
     "SEARCHARTICLES": "Sök bland artiklar",
     "ADDSELECTED": "Lägg till valda artiklar",
-    "EMPTYBEFORE": "Töm artikellistan innan nya läggs till",
+    "EMPTYBEFORE": "Töm artikellistan innan nya artiklar läggs till",
     "PICKER": "Artikelväljare",
     "STEPDESC": "Som tar läsaren",
     "PUBLISHDESC": "Som publiceras på",
@@ -217,7 +217,8 @@
     "RESPONSIBLEDESC": "där ansvarig är",
     "STATUSDESC": "som har status",
     "MATCHES": "Matchar",
-    "MATCHESDEC": "som matchar"
+    "MATCHESDEC": "som matchar",
+    "EMPTYCLIPBOARD": "Töm artikellistan"
   },
   "AUTHOR": {
     "EDIT": "Redigera författare",

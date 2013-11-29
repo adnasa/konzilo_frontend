@@ -217,7 +217,8 @@
     "RESPONSIBLEDESC": "where responsible are",
     "STATUSDESC": "which has the status",
     "MATCHES": "Matching",
-    "MATCHESDEC": "that matches"
+    "MATCHESDEC": "that matches",
+    "EMPTYCLIPBOARD": "Empty article list"
   },
   "AUTHOR": {
     "EDIT": "Edit author",
