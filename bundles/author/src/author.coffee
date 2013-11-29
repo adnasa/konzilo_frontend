@@ -44,8 +44,8 @@ angular.module("konzilo.author", ["cmf.input", "konzilo.translations"])
 )
 
 .directive("authorPicker",
-["AuthorStorage", "UserStorage", "$modal", "UserState", "$translate",
-(AuthorStorage, UserStorage, $modal, UserState, $translate) ->
+["UserStorage", "$modal", "UserState", "$translate",
+(UserStorage, $modal, UserState, $translate) ->
   restrict: 'AE'
   scope:
     author: "="
@@ -73,7 +73,6 @@ angular.module("konzilo.author", ["cmf.input", "konzilo.translations"])
     $scope.$watch 'author', ->
       if not $scope.author and user and user.author
         $scope.author = user.author
-
       $scope.authorName = $scope.author.name if $scope.author
 
     $scope.$on 'entityReferenceChanged', (scope, value) ->
