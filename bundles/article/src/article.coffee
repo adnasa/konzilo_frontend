@@ -1163,7 +1163,7 @@
             $scope.nextLabel = ArticlePartStates[index+1]?.transitionLabel
           , ->
             $scope.nextLabel = undefined
-        $scope.show = !$scope.locked and (prevState or nextState)
+        $scope.show = !$scope.locked and ($scope.prevLabel or $scope.nextLabel)
 
       stateChanged = (part) ->
         $scope.$emit("stateChanged", part)
