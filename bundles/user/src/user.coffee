@@ -351,11 +351,6 @@ angular.module("kntnt.user",
       return if not $scope.user?.roles
       role in $scope.user.roles
 
-    $scope.saveUser = ->
-      if $scope.userForm?.$valid and
-      _.isEqual($scope.user.password, $scope.password2)
-        UserStorage.save user
-
     userAccess("administer system").then ->
       $scope.showAdminFields = true
 
