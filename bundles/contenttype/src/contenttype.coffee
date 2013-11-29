@@ -95,7 +95,7 @@ angular.module("konzilo.contenttype", ["konzilo.config",
         article = $scope.article._id
         kzArticleSettings($scope.article).then (settings) ->
           parts = []
-          if settings.parts?.length > 0
+          if settings?.parts?.length > 0
             for part in settings.parts
               results = _.filter($scope.article.parts, typeName: part.name)
               parts.push(partInfo: part, parts: results)
