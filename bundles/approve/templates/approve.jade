@@ -2,7 +2,7 @@
   .main-content
     .list(ng-class="{visible: articlePart}")
       .box.pad
-        div(kz-approve-queue, kz-max-height="150", link-pattern="#/approve/:article", article="article")
+        div(kz-approve-queue, kz-max-height="150", link-pattern="#/approve/:article", selected="article")
     .main-full
       .box.pad.info-message(ng-show="!article")
         h1 {{ 'REVIEW.TITLE' | translate }}
