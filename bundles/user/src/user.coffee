@@ -299,7 +299,6 @@ angular.module("kntnt.user",
 ($scope, UserStorage, UserState, $location) ->
   UserState.loggedIn(true).then ->
     info = UserState.getInfo().info
-    console.log info
     $scope.translations =
       name: info.username
   , ->
