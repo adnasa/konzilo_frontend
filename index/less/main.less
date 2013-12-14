@@ -218,13 +218,6 @@ img {
   padding-right: 0px;
 }
 
-// input.publishdate {
-//   .make-lg-column(6);
-// }
-
-// input.publishtime {
-//   .jake-lg-column(6);
-// }
 
 .radio, .checkbox {
   font-weight: normal;
@@ -1212,6 +1205,18 @@ form.add-part-form {
     z-index: 1000;
     background: @white;
   }
+}
+
+.glyphicon {
+  .icon-FontAwesome();
+}
+
+.glyphicon-chevron-left:before {
+  content: @chevron-left;
+}
+
+.glyphicon-chevron-right:before {
+  content: @chevron-right;
 }
 
 @media (min-width: @screen-md) {
