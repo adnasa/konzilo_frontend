@@ -81,7 +81,7 @@ angular.module("konzilo.config", [])
         callback(result.data.data) if callback
         return result.data.data
       , (error) ->
-        errorCallback(error) if error
+        errorCallback(error) if errorCallback
         return error
 
     write: (name, data, callback, errorCallback) =>
