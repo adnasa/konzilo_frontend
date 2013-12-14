@@ -3,12 +3,10 @@
     tab(heading="{{'GLOBAL.ORDER' | translate}}")
       .pad
         .inner.form.form-horizontal.article-description
-          .form-group(ng-show="hasDeadline")
+          .form-group(ng-show="part.deadline")
             label.control-label {{'GLOBAL.DEADLINE' | translate}}
             .controls
-              dl(ng-repeat="part in article.parts", ng-show="part.deadline")
-                dt {{part.title}}
-                dd {{part.deadline | date: "yyyy-MM-dd"}}
+              span {{part.deadline | date: "yyyy-MM-dd"}}
           .form-group(ng-show="part.terms")
             label.control-label(for="terms") {{'GLOBAL.TERMS' | translate}}
             .controls
@@ -46,16 +44,11 @@
             label.control-label(for="assignment") {{'GLOBAL.ARTICLE_IDEA' | translate }}
             .controls
               .text(markdown="article.description")
-          .form-group(ng-show="hasAssignment")
+          .form-group(ng-show="part.assignment")
             label.control-label(for="assignment") {{'GLOBAL.TASK' | translate}}
             .controls
-              dl(ng-repeat="part in article.parts", ng-show="part.assignment")
-                dt {{part.title}}
-                dd {{part.assignment}}
+              {{part.assignment}}
+
     tab(heading="{{ 'GLOBAL.DISCUSSION' | translate }}")
       .inner.pad
-        .parts.group(ng-repeat="part in article.parts")
-          .top
-            h2.title {{part.title}}
-          .content
-            konzilo-comments(ng-model="part.comments")
+        konzilo-comments(ng-model="part.comments")

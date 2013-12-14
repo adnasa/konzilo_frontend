@@ -37,7 +37,9 @@ StepStorage, KonziloConfig, kzAnalysisDialog) ->
     kzAnalysisDialog(target)
 
   update = ->
-    return if not $scope.article
+    return if not $scope.articlePart
+    $scope.article = $scope.articlePart.get("article")
+    $scope.part = $scope.articlePart.toObject()
     $scope.translations = {}
     if $scope.article.topic
       $scope.translations.topic = $scope.article.topic
@@ -55,25 +57,14 @@ StepStorage, KonziloConfig, kzAnalysisDialog) ->
       $scope.step = StepStorage.get($scope.article.step)
       .then (result) -> result.toObject()
 
-    has = (property) ->
-      for part in $scope.article.parts
-        return true if part[property]
-      return false
+    $scope.language = KonziloConfig.get("languages").get($scope.part.language)
 
-    $scope.hasDeadline = has("deadline")
-    $scope.hasAssignment = has("assignment")
-
-    $scope.languages = []
-    KonziloConfig.get("languages").listAll().then (languages)->
-      for part in $scope.article.parts when part.language
-        $scope.languages.push(languages[part.language])
-
-  $scope.$watch("article", update)
+  $scope.$watch("articlePart", update)
 ])
 
 .directive("kzDeliverInfo", ->
   restrict: "AE"
-  scope: article: "="
+  scope: articlePart: "="
   controller: "DeliverInfo"
   templateUrl: 'bundles/deliver/deliver-info.html'
 )
@@ -88,37 +79,14 @@ $translate, UserState, GroupStorage, ChannelStorage, kzShowFields) ->
   $scope.translations = {}
   userId = UserState.getInfo().info._id
 
-  $scope.$on("kzActivePart", (event, part) -> $scope.part = part)
-
   $scope.$parent.title = $translate("DELIVER.TITLE")
 
-  getArticle = (id) ->
-    ids = [ userId ]
-    GroupStorage.query
-      q:
-        members: { $all: ids }
-    .then (result) ->
-      ids.concat(group._id for group in result.toArray())
-    .then (providers) ->
-      ArticlePartStorage.query
-        q:
-          article: id
-          provider: { $in: providers }
-          state: { $ne: "approved" }
-          type: { $exists: true }
-      , (parts) ->
-        parts = parts.toArray()
-        return if parts.length == 0
-        article = parts[0]?.article
-        for part in parts
-          part.article = part.article._id
-        article.parts = parts
-        $scope.article = article
+  getPart = (id) ->
+    ArticlePartStorage.get(id).then (part) ->
+      $scope.part = part
+      $scope.article = part.get("article")
+      return part
 
   if $routeParams.id
-    getArticle($routeParams.id)
-
-  $scope.$on "stateChanged", (event, part) ->
-    if part.state == "approved" and $routeParams.id
-      getArticle($routeParams.id)
+    getPart($routeParams.id)
 ])

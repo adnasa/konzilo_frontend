@@ -215,7 +215,10 @@
             $scope.autosave = InputAutoSave.createInstance(
               $scope.part, savePart, clean)
         ]
-        template: "<author-form author=\"content\" show-fields=\"showFields\"></author-form>"
+        template: "<ng-form name=\"partForm\">
+          <cmf-autosave-status status=\"autosave\"></cmf-autosave-status>
+          <author-form author=\"content\" show-fields=\"showFields\"></author-form>
+        </ng-form>"
       ]
 
     $get: ($injector) ->
@@ -744,6 +747,12 @@
         else
           $scope.selectedArticle = article._id
 
+      $scope.$watch 'selected', (e, f) ->
+        if $scope.selected?.toObject
+          $scope.selectedId = $scope.selected.get('_id')
+          $scope.selectedArticle = $scope.selected.get('article')._id
+        else
+          $scope.selectedId = $scope.selected?._id
 
       ArticlePartStorage.changed(fetchParts)
 
@@ -1032,6 +1041,12 @@
       getPartForm = ->
         loadPartForm = ->
           type = articlePart.get('type')
+
+          if typeof(scope.useAutoSave) == 'undefined'
+            useAutoSave = true
+          else
+            useAutoSave = scope.useAutoSave
+
           definition = articleParts(type)
           # This is an invalid type. Let's bail.
           return if not definition
@@ -1056,7 +1071,7 @@
                 $controller definition.controller,
                   $scope: scope,
                   articlePart: articlePart
-                  useAutoSave: scope.useAutoSave
+                  useAutoSave: useAutoSave
                   showFields: showFields
                   definition: definition
 
@@ -1142,12 +1157,10 @@
         $scope.locked = locked and userId != locked
 
         currentState = $scope.part.state
-
         if not currentState or currentState == ArticlePartStates[0].name
           index = 0
         else
           index = _.findIndex(ArticlePartStates, name: currentState)
-
         nextState = ArticlePartStates[index+1]?.name
 
         if index > 0
@@ -1161,8 +1174,13 @@
           # You need to be able to update articles in order to approve things.
           userAccess("update articles").then ->
             $scope.nextLabel = ArticlePartStates[index+1]?.transitionLabel
+            $scope.show = !$scope.locked and
+              ($scope.backLabel or $scope.nextLabel)
           , ->
             $scope.nextLabel = undefined
+            $scope.show = !$scope.locked and
+               ($scope.backLabel or $scope.nextLabel)
+
         $scope.show = !$scope.locked and ($scope.prevLabel or $scope.nextLabel)
 
       stateChanged = (part) ->
@@ -1174,7 +1192,6 @@
         ArticlePartStorage.save($scope.part).then(stateChanged)
 
       $scope.prevState = ->
-        console.log prevState
         if prevState
           $scope.part.state = prevState
           ArticlePartStorage.save($scope.part).then(stateChanged)

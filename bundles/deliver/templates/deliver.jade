@@ -2,18 +2,21 @@
   .main-content
     .list(ng-class="{visible: articlePart}")
       .box.pad
-        div(kntnt-article-deliver, kz-max-height="150", link-pattern="#/deliver/:part", states="states", selected="article")
+        div(kntnt-article-deliver, kz-max-height="150", link-pattern="#/deliver/:part", states="states", selected="part")
     .main-full
       .box.pad.info-message(ng-show="!article")
         h1 {{'DELIVER.TITLE' | translate}}
         p {{'DELIVER.DESCRIPTION' | translate}}
       .main(ng-show="article")
-        .articleinfo
-          ol.breadcrumb
-            li
-              a(ng-href="#/deliver") {{'DELIVER.TITLE' | translate}}
-            li.active {{article.title}}
-          .inner
-            kz-content-type-article-form(article="article")
+        .box.pad
+          .articleinfo
+            ol.breadcrumb
+              li
+                a(ng-href="#/deliver") {{'DELIVER.TITLE' | translate}}
+              li.active {{article.title}}
+            .inner
+              .part-form(ng-show="part")
+                konzilo-articlepart-form(article-part="part")
+                konzilo-articlepart-change-state(article-part="part")
       .additional(ng-show="article")
-        kz-deliver-info(article="article", active-part="part")
+        kz-deliver-info(article-part="part")

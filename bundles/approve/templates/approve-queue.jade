@@ -1,12 +1,16 @@
 .articleparts
-  a.row-item(
+  .row-item(
     ng-repeat="article in articles",
-    ng-href="{{article.link}}",
     ng-class="{'active': selected._id == article._id}")
-    span(class="article-state {{article.state}}")
-    span {{article.title}}
-    span.pull-right {{ article.publishdate | date: "yyyy-MM-dd" }}
-    .parts
-      .row-item(ng-repeat="part in article.parts")
+    a.link-block(ng-click="toggleArticle(article)")
+      .pull-right
+        span {{ article.publishdate | date: "yyyy-MM-dd" }}
+        button.btn-link
+          i(ng-class="{ 'icon-chevron-down': selectedArticle == article._id, 'icon-chevron-right': selectedArticle != article._id }")
+      .top
+        span(class="article-state {{article.state}}")
+        span {{article.title}}
+    .parts(ng-show="selectedArticle == article._id")
+      a.row-item(ng-repeat="part in article.parts", ng-href="{{part.link}}", ng-class="{'active': selectedId == part._id}")
         span(class="article-state {{part.state}}")
         span {{part.title}}
