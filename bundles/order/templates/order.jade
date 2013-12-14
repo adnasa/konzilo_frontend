@@ -58,11 +58,5 @@ div(kntnt-article-picker)
               label.control-label(for="assignment") {{ 'GLOBAL.ASSIGNMENT' | translate }}
               .controls
                 textarea.input-block-level(ng-model="part.assignment", placeholder="Beskriv uppdraget här.")
-            .form-group
-              label.control-label(for="teaser") {{ 'GLOBAL.DISPLAY' | translate }}
-              .controls
-                label.checkbox
-                  input(type="checkbox", ng-model="part.teaser")
-                  span {{'ORDER.SHOWLISTINGS' | translate}}
       .additional(ng-show="part")
         kz-order-info(part="part")
