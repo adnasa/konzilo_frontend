@@ -467,7 +467,8 @@
     controller: ["$scope", "$attrs", ($scope, $attrs) ->
       linkPattern = $attrs.linkPattern
       prepareArticles = (articles) ->
-        for article in articles.toArray()
+        articles = articles.toArray() if articles.toArray
+        for article in articles
             article.link = linkPattern.replace(":article", article._id)
             article
 
@@ -502,7 +503,8 @@
 
       $scope.size = 1
       drawClipboard = (articles) ->
-        for article in articles.toArray() when article.publishdate
+        articles = articles.toArray() if articles?.toArray
+        for article in articles when article.publishdate
           articleMap[article._id] = article
           if article.parts
             for part in article.parts
@@ -821,10 +823,11 @@
         $scope.dates = _.keys($scope.clipboard).sort()
 
       # Get the clipboard.
-      getClipboard = (skip = 0) =>
+      getClipboard = (skip = 0) ->
         ClipboardStorage.query(sort: { publishdate: "asc" }, skip: skip).then (articles) =>
           articleMap = {}
           $scope.count = articles.count
+
           if articles?.toArray
             articles = articles.toArray()
           # Generate a map of articles that can be fetched without

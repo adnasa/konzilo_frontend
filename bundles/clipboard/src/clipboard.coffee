@@ -31,13 +31,15 @@ angular.module("kntnt.clipboard", [])
 
   get: (options = {}) ->
     deferred = $q.defer()
-    info.getSetting 'clipboard', (ids) =>
+    info.getSetting 'clipboard', (ids) ->
       options = _.defaults(options, q: _id: $in: ids)
       ArticleStorage.query(options)
       .then (result) ->
         deferred.resolve(result)
       , (err) ->
         deferred.resolve([])
+    , (err) ->
+      deferred.resolve([])
     return deferred.promise
 
   remove: (id) ->
