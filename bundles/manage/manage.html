@@ -33,28 +33,7 @@
             <div ng-show="!publishInfo.done" class="planned">{{ 'MANAGE.PUBLISHINFO' | translate: translations }}</div>
           </div>
         </div>
-        <accordion class="article-accordion">
-          <accordion-group ng-repeat="part in article.parts">
-            <accordion-heading>{{part.title}}</accordion-heading>
-            <form class="form-inline options-form">
-              <div class="form-group">
-                <select ng-model="part.state" class="form-control">
-                  <option ng-repeat="state in states" value="{{state.name}}" ng-selected="part.state == state.name">{{state.label | translate}}</option>
-                </select>
-              </div>
-              <label class="checkbox">
-                <input type="checkbox" ng-model="part.teaser"/><span>{{ 'MANAGE.SHOWLISTINGS' | translate }}</span>
-              </label>
-              <div class="pull-right">
-                <button ng-click="newVersion(part)" class="btn"><i class="icon-plus"></i><span>{{ 'MANAGE.NEWVERSION' | translate }}</span></button>
-                <button ng-click="remove(part)" class="btn btn-danger"><i class="icon-remove"></i><span>{{ 'MANAGE.REMOVEPART' | translate }}</span></button>
-              </div>
-            </form>
-            <div class="content">
-              <konzilo-articlepart-form article-part="part"></konzilo-articlepart-form>
-            </div>
-          </accordion-group>
-        </accordion>
+        <kz-content-type-article-form article="article"></kz-content-type-article-form>
         <div ng-show="article" class="box pad create-form">
           <kntnt-add-article-part article="article"></kntnt-add-article-part>
         </div>

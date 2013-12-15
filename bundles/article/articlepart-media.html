@@ -1,11 +1,8 @@
 
 <ng-form name="partForm">
+  <cmf-autosave-status status="autosave"></cmf-autosave-status>
   <div class="form-horizontal part-form">
-    <div class="title">
-      <cmf-autosave-status status="autosave"></cmf-autosave-status>
-      <h2>{{ 'MEDIAPART.TITLE' | translate }}</h2>
-    </div>
-    <div class="form-group">
+    <div ng-show="showFields.media" class="form-group">
       <label class="control-label">{{ 'MEDIAPART.MEDIA' | translate }}</label>
       <div class="controls">
         <cmf-inline ng-model="content.media">
@@ -19,7 +16,7 @@
         </cmf-inline>
       </div>
     </div>
-    <div class="form-group">
+    <div ng-show="showFields.title" class="form-group">
       <label class="control-label">{{ 'GLOBAL.TITLE' | translate }}</label>
       <div class="controls">
         <cmf-inline ng-model="content.title">
@@ -32,7 +29,7 @@
         </cmf-inline>
       </div>
     </div>
-    <div class="form-group">
+    <div ng-show="showFields.description" class="form-group">
       <label class="control-label">{{ 'GLOBAL.DESCRIPTION' | translate }}</label>
       <div class="controls">
         <cmf-inline ng-model="content.description">
@@ -43,7 +40,5 @@
         </cmf-inline>
       </div>
     </div>
-    <author-picker author="part.byline"></author-picker>
-    <kz-vocabulary-input ng-model="part.vocabularies"></kz-vocabulary-input>
   </div>
 </ng-form>

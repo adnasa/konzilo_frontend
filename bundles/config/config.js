@@ -142,7 +142,7 @@
             }
             return result.data.data;
           }, function(error) {
-            if (error) {
+            if (errorCallback) {
               errorCallback(error);
             }
             return error;

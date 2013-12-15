@@ -1,24 +1,24 @@
 
 <ng-form name="authorForm" class="form form-horizontal">
-  <div class="form-group">
+  <div ng-show="!showFields || showFields.name" class="form-group">
     <label class="control-label">{{ 'GLOBAL.NAME' | translate }}</label>
     <div class="controls">
       <input type="text" name="name" ng-model="author.name" required="required"/>
     </div>
   </div>
-  <div class="form-group">
+  <div ng-show="!showFields || showFields.email" class="form-group">
     <label class="control-label">{{ 'GLOBAL.EMAIL' | translate }}</label>
     <div class="controls">
       <input type="email" name="email" ng-model="author.email"/>
     </div>
   </div>
-  <div class="form-group">
+  <div ng-show="!showFields || showFeilds.about" class="form-group">
     <label class="control-label">{{ 'AUTHOR.ABOUT' | translate }}</label>
     <div class="controls">
       <textarea name="about" ng-model="author.about"></textarea>
     </div>
   </div>
-  <div class="form-group">
+  <div ng-show="!showFields || showFields.image" class="form-group">
     <label class="control-label">{{ 'GLOBAL.IMAGE' | translate }}</label>
     <div class="controls">
       <file-upload-list limit="1" ng-model="images" bundle="media" ng-change="getImage()"></file-upload-list>

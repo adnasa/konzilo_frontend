@@ -1,0 +1,84 @@
+
+<div class="template-form">
+  <form name="templateForm" class="parts-form">
+    <div ui-sortable="ui-sortable" ng-model="contentType.parts" class="parts">
+      <div ng-repeat="(index, part) in contentType.parts" class="part">
+        <div class="group">
+          <div class="top">
+            <h2 class="title">{{part.label}}</h2>
+            <div class="actions">
+              <button ng-click="removePart(index)" class="btn btn-link pull-right">{{'GLOBAL.REMOVE' | translate}}</button>
+            </div>
+          </div>
+          <div class="content">
+            <div class="form-group">
+              <label class="control-label">{{'GLOBAL.NAME' | translate}}</label>
+              <input type="text" ng-model="part.label"/>
+            </div>
+            <div class="form-group">
+              <label class="control-label">{{'GLOBAL.MIN' | translate}}</label>
+              <div class="controls">
+                <select type="text" required="required" ng-model="part.min" ng-change="newPartMaxLimit(index, part.min) &amp;&amp; changeCardinality(part)">
+                  <option value="{{value}}" ng-repeat="value in minLimit" ng-selected="value == part.min">{{value}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">{{'GLOBAL.MAX' |  translate}}</label>
+              <div class="controls">
+                <select type="text" required="required" ng-model="part.max" ng-change="changeCardinality(part)">
+                  <option value="{{value.value}}" ng-repeat="value in partMaxLimit[index]" ng-selected="value.value == part.max">{{value.label | translate}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="fields">
+              <label ng-repeat="info in types[part.type].fields" class="checkbox">
+                <input type="checkbox" ng-model="part.show[info.name]"/><span>{{info.label | translate}}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <form name="addPartType" ng-submit="addPart()" class="add-part-type">
+    <div class="group">
+      <div class="top">
+        <h2 class="title">{{'GLOBAL.NEWPART' | translate}}</h2>
+      </div>
+      <div class="content">
+        <kz-machine-name name="newPart.name" label="newPart.label" valid="valid"></kz-machine-name>
+        <div class="form-group">
+          <label class="control-label">{{'GLOBAL.MIN' | translate}}</label>
+          <div class="controls">
+            <select type="text" required="required" ng-model="newPart.min" ng-change="newPartMaxLimit(index, part.min) &amp;&amp; changeCardinality(newPart)">
+              <option value="{{value}}" ng-repeat="value in minLimit" ng-selected="value == newPart.min">{{value}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">{{'GLOBAL.MAX' |  translate}}</label>
+          <div class="controls">
+            <select type="text" required="required" ng-model="newPart.max" ng-change="changeCardinality(newPart)">
+              <option value="{{value.value}}" ng-repeat="value in maxLimit" ng-selected="value.value == newPart.max">{{value.label | translate}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">{{ 'GLOBAL.TYPE' | translate }}</label>
+          <select ng-model="newPart.type" ng-change="changePart()">
+            <option ng-repeat="(key, value) in typeLabels" value="{{key}}" ng-selected="key == type">{{value}}</option>
+          </select>
+        </div>
+        <div class="fields">
+          <label ng-repeat="info in types[newPart.type].fields" class="checkbox">
+            <input type="checkbox" ng-model="newPart.show[info.name]"/><span>{{info.label | translate}}</span>
+          </label>
+        </div>
+        <div class="form-group">
+          <input type="submit" value="{{'GLOBAL.ADD' | translate}}" class="btn btn-primary"/>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

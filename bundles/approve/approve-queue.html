@@ -1,0 +1,10 @@
+
+<div class="articleparts">
+  <div ng-repeat="article in articles" ng-class="{'active': selected._id == article._id}" class="row-item"><a ng-click="toggleArticle(article)" class="link-block">
+      <div class="pull-right"><span>{{ article.publishdate | date: "yyyy-MM-dd" }}</span>
+        <button class="btn-link"><i ng-class="{ 'icon-chevron-down': selectedArticle == article._id, 'icon-chevron-right': selectedArticle != article._id }"></i></button>
+      </div>
+      <div class="top"><span class="article-state {{article.state}}"></span><span>{{article.title}}</span></div></a>
+    <div ng-show="selectedArticle == article._id" class="parts"><a ng-repeat="part in article.parts" ng-href="{{part.link}}" ng-class="{'active': selectedId == part._id}" class="row-item"><span class="article-state {{part.state}}"></span><span>{{part.title}}</span></a></div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 (function() {
-  angular.module("konzilo.channel", ["konzilo.config", 'konzilo.translations']).config([
+  angular.module("konzilo.channel", ["konzilo.config", 'konzilo.translations', 'konzilo.contenttype']).config([
     "$routeProvider", "entityInfoProvider", "$translateProvider", function($routeProvider, entityInfoProvider, $translateProvider) {
       var channelAdmin;
       entityInfoProvider.addProvider("Channel", {
@@ -53,11 +53,12 @@
       return new KonziloStorage("/channel/:_id", "Channel");
     }
   ]).controller("ChannelAdminController", [
-    "$scope", "KonziloConfig", "$http", "$routeParams", "InputAutoSave", "ChannelStorage", "$translate", function($scope, KonziloConfig, $http, $routeParams, InputAutoSave, ChannelStorage, $translate) {
+    "$scope", "KonziloConfig", "$http", "$routeParams", "InputAutoSave", "ChannelStorage", "$translate", "articleParts", function($scope, KonziloConfig, $http, $routeParams, InputAutoSave, ChannelStorage, $translate, articleParts) {
       var bin;
       bin = KonziloConfig.get("endpoints");
       $scope.endpoints = bin.listAll();
       $scope.query = {};
+      $scope.types = articleParts.labels();
       $scope.properties = {
         name: $translate("GLOBAL.NAME"),
         endpoint: $translate("GLOBAL.ENDPOINT"),
@@ -75,6 +76,7 @@
         ChannelStorage.get($routeParams.channel).then(function(channel) {
           var save, valid;
           $scope.channel = channel.toObject();
+          $scope.channel.contentType = $scope.channel.contentType || {};
           valid = function() {
             return $scope.editChannelForm.$valid;
           };
@@ -84,13 +86,6 @@
           return $scope.autosave = InputAutoSave.createInstance($scope.channel, save, valid);
         });
       }
-      $scope.mainClass = function() {
-        if ($scope.channel) {
-          return "span6";
-        } else {
-          return "span12";
-        }
-      };
       $scope.newChannel = {};
       $scope.addChannel = function() {
         if ($scope.addChannelForm.$valid) {

@@ -487,18 +487,24 @@
     "$timeout", function($timeout) {
       var InputAutoSave;
       InputAutoSave = (function() {
-        function InputAutoSave(obj, saveCallback, validCallback, timeout) {
+        function InputAutoSave(obj, saveCallback, validCallback, dirtyCallback, timeout) {
           var _this = this;
           this.obj = obj;
           this.saveCallback = saveCallback;
           this.validCallback = validCallback;
+          this.dirtyCallback = dirtyCallback != null ? dirtyCallback : null;
           this.timeout = timeout != null ? timeout : 1500;
           this.originalObj = _.cloneDeep(this.obj);
           this.saveCallbacks = [];
           this.errorCallbacks = [];
+          if (!this.dirtyCallback) {
+            this.dirtyCallback = function(original, newObj) {
+              return !_.isEqual(original, _.cloneDeep(newObj));
+            };
+          }
           this.callback = function() {
             var callback, result, _i, _len, _ref;
-            if (_this.dirty() && _this.validCallback(_this.obj) && !_this.stopSaving) {
+            if (_this.dirtyCallback(_this.originalObj, _this.obj) && _this.validCallback(_this.obj) && !_this.stopSaving) {
               result = _this.saveCallback(_this.obj);
               if (result != null ? result.then : void 0) {
                 result.then(function() {
@@ -538,7 +544,7 @@
         }
 
         InputAutoSave.prototype.dirty = function() {
-          return !_.isEqual(this.originalObj, _.cloneDeep(this.obj));
+          return this.dirtyCallback(this.originalObj, this.obj);
         };
 
         InputAutoSave.prototype.stop = function() {
@@ -645,6 +651,72 @@
         template: "<div class=\"save-status\" ng-class=\"{error: error}\"    ng-show=\"statusMessage\">{{statusMessage | translate: translations}}</div>"
       };
     }
-  ]);
+  ]).directive("kzFocus", function() {
+    return {
+      restrict: "A",
+      link: function(scope, element, attrs) {
+        var elementFocused;
+        elementFocused = false;
+        element.on("focus", function() {
+          if (!elementFocused) {
+            scope.$eval(attrs.kzFocus);
+            return elementFocused = true;
+          }
+        });
+        return element.on("blur", function() {
+          return elementFocused = false;
+        });
+      }
+    };
+  }).directive("kzMachineName", function() {
+    return {
+      restrict: "AE",
+      replace: true,
+      template: "<ng-form>  <div class=\"form-group\">    <label class=\"control-label\">{{'GLOBAL.NAME' | translate}}</label>    <input type=\"text\" ng-model=\"label\" name=\"label\" required />    <div class=\"help-block\" ng-show=\"name\">      {{'GLOBAL.MACHINENAME' | translate}}: {{name}}      <a ng-click=\"customName=true\">{{'GLOBAL.CHANGE' | translate}}</a>    </div>  </div>  <div class=\"form-group\"  ng-show=\"customName\">    <label class=\"control-label\">{{'GLOBAL.MACHINENAME' | translate}}</label>    <input type=\"text\" ng-model=\"name\" name=\"name\" required />  </div>  </ng-form>",
+      scope: {
+        name: "=",
+        label: "=",
+        valid: "="
+      },
+      controller: [
+        "$scope", "$q", function($scope, $q) {
+          var transliterate, validate;
+          transliterate = function(source) {
+            var rx;
+            rx = new RegExp('[^a-z0-9]+', 'g');
+            return source.toLowerCase().replace(rx, "_").substr(0, 40);
+          };
+          validate = function(candidate) {
+            var result;
+            if ($scope.valid) {
+              result = $scope.valid(candidate);
+            }
+            if (result != null ? result.then : void 0) {
+              return result.then(function(promisedResult) {
+                if (promisedResult) {
+                  return candidate;
+                } else {
+                  return validate(candidate + "_");
+                }
+              });
+            } else if (result) {
+              return $q.when(candidate);
+            } else {
+              return validate(candidate + "_").then(function(newCandidate) {
+                return newCandidate;
+              });
+            }
+          };
+          return $scope.$watch("label", function() {
+            if ($scope.label) {
+              return validate(transliterate($scope.label)).then(function(result) {
+                return $scope.name = result;
+              });
+            }
+          });
+        }
+      ]
+    };
+  });
 
 }).call(this);

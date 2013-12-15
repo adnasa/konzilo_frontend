@@ -35,27 +35,24 @@
         }
         $scope.translations = {};
         $scope.article = $scope.part.article;
-        if ($scope.part.article.topic) {
-          $scope.translations.topic = $scope.part.article.topic;
+        if ($scope.article.topic) {
+          $scope.translations.topic = $scope.article.topic;
         }
-        if ($scope.part.article.target) {
-          TargetStorage.get($scope.part.article.target).then(function(result) {
+        if ($scope.article.target) {
+          TargetStorage.get($scope.article.target).then(function(result) {
             $scope.target = result.toObject();
             return $scope.translations.target = $scope.target.name;
           });
         }
-        if ($scope.part.article.channel) {
-          $scope.channel = ChannelStorage.get($scope.part.article.channel).then(function(result) {
+        if ($scope.article.channel) {
+          $scope.channel = ChannelStorage.get($scope.article.channel).then(function(result) {
             return result.toObject();
           });
         }
-        if ($scope.part.article.step) {
-          $scope.step = StepStorage.get($scope.part.article.step).then(function(result) {
+        if ($scope.article.step) {
+          return $scope.step = StepStorage.get($scope.article.step).then(function(result) {
             return result.toObject();
           });
-        }
-        if ($scope.part.language) {
-          return $scope.language = KonziloConfig.get("languages").get($scope.part.language);
         }
       };
       return $scope.$watch("part", update);

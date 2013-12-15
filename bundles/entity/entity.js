@@ -40,12 +40,16 @@
           _ref = this.info.properties;
           for (prop in _ref) {
             info = _ref[prop];
-            if (!(info.processor && this.data[prop])) {
+            if (!(info.processor && (info.processEmpty || this.data[prop]))) {
               continue;
             }
-            processor = $injector.get(info.processor);
+            if (!_.isFunction(info.processor)) {
+              processor = $injector.get(info.processor);
+            } else {
+              processor = info.processor;
+            }
             if (processor) {
-              this.data[prop] = processor(this.data[prop]);
+              this.data[prop] = processor(this.data[prop], this);
             }
           }
           this.dirty = false;
@@ -262,35 +266,41 @@
         }
 
         KonziloStorage.prototype.save = function(item, callback, errorCallback) {
-          var data, deferred, method,
+          var deferred,
             _this = this;
           this.cache.removeAll();
           deferred = $q.defer();
-          data = item.toObject ? item.toObject() : item;
-          if (data._id) {
-            method = this.resource.update;
-          } else {
-            method = this.resource.save;
+          if (!item.toObject) {
+            item = new KonziloEntity(this.name, item);
           }
-          method.bind(this.resource)(data, function(result) {
-            var newItem;
-            if (item.setData) {
-              item.setData(result);
-              newItem = item;
+          this.triggerEvent("preSave", item).then(function(item) {
+            var data, method;
+            data = item.toObject();
+            if (data._id) {
+              method = _this.resource.update;
             } else {
-              newItem = new KonziloEntity(_this.name, result);
+              method = _this.resource.save;
             }
-            _this.triggerEvent("itemSaved", newItem);
-            _this.triggerEvent("changed", newItem);
-            if (callback) {
-              callback(result);
-            }
-            return deferred.resolve(result);
-          }, function(result) {
-            if (errorCallback) {
-              errorCallback(result);
-            }
-            return deferred.reject(result);
+            return method.bind(_this.resource)(data, function(result) {
+              var newItem;
+              if (item.setData) {
+                item.setData(result);
+                newItem = item;
+              } else {
+                newItem = new KonziloEntity(_this.name, result);
+              }
+              _this.triggerEvent("itemSaved", newItem);
+              _this.triggerEvent("changed", newItem);
+              if (callback) {
+                callback(result);
+              }
+              return deferred.resolve(result);
+            }, function(result) {
+              if (errorCallback) {
+                errorCallback(result);
+              }
+              return deferred.reject(result);
+            });
           });
           return deferred.promise;
         };
@@ -394,16 +404,31 @@
         };
 
         KonziloStorage.prototype.triggerEvent = function(event, item) {
-          var callback, _i, _len, _ref, _results;
+          var callback, deferred, promises, resolveCallback, result, _i, _len, _ref;
+          promises = [];
           if (this.eventCallbacks[event]) {
             _ref = this.eventCallbacks[event];
-            _results = [];
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               callback = _ref[_i];
-              _results.push(callback(item));
+              result = callback(item);
+              if (result != null ? result.then : void 0) {
+                promises.push(result);
+              }
             }
-            return _results;
           }
+          deferred = $q.defer();
+          resolveCallback = function(result) {
+            if (promises.length === 0) {
+              return deferred.resolve(result);
+            } else {
+              return promises.shift().then(resolveCallback);
+            }
+          };
+          if (promises.length === 0) {
+            return $q.when(item);
+          }
+          promises.shift().then(resolveCallback);
+          return deferred.promise;
         };
 
         KonziloStorage.prototype.itemRemoved = function(fn) {
@@ -412,6 +437,10 @@
 
         KonziloStorage.prototype.itemSaved = function(fn) {
           return this.on("itemSaved", fn);
+        };
+
+        KonziloStorage.prototype.preSave = function(fn) {
+          return this.on("preSave", fn);
         };
 
         KonziloStorage.prototype.changed = function(fn) {

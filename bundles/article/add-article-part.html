@@ -1,7 +1,7 @@
 
-<form ng-submit="addArticlePart()" name="addArticlePartForm" class="form-inline add-part-form">
+<form ng-submit="addArticlePart()" name="addArticlePartForm" ng-show="showForm" class="form-inline add-part-form">
   <select name="type" ng-model="type" required="required" ng-change="addArticlePart()">
     <option value="">{{ 'ARTICLE.NEWPART' | translate }}</option>
-    <option ng-repeat="(key, value) in types" value="{{key}}" ng-selected="key == type">{{value}}</option>
+    <option ng-repeat="(key, value) in types" value="{{key}}" ng-selected="key == type">{{value.label}}</option>
   </select>
 </form>

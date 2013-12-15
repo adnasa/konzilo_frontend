@@ -57,6 +57,7 @@
         </li>
       </ul>
       <div class="actions">
+        <button ng-click="clearClipboard()" class="btn-danger btn">{{'ARTICLEPICKER.EMPTYCLIPBOARD' | translate}}</button>
         <button ng-click="addArticles()" ng-disabled="count == 0" class="btn-primary btn">{{'ARTICLEPICKER.ADDSELECTED' | translate}}</button>
         <label class="checkbox">
           <input type="checkbox" name="purge" ng-model="purge" ng-disabled="count == 0"/><span>{{ 'ARTICLEPICKER.EMPTYBEFORE' | translate }}</span>

@@ -16,7 +16,7 @@
         </div>
         <div ui-sortable="options" ng-model="article.parts" class="items">
           <div ng-class="activePart(part)" ng-repeat="(index, part) in article.parts" data-id="{{article._id}}" class="row-item"><a ng-href="{{part.link}}" class="block"><span class="article-state {{part.state}}"></span><span>{{part.title}}</span></a>
-            <button ng-click="removeArticlePart(article, part)" class="btn-link clipboard-remove"><i class="icon-remove"></i></button>
+            <button ng-show="part.removable" ng-click="removeArticlePart(article, part)" class="btn-link clipboard-remove"><i class="icon-remove"></i></button>
           </div>
         </div>
       </div>

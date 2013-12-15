@@ -32,64 +32,61 @@
         return kzAnalysisDialog(target);
       };
       update = function() {
-        if (!$scope.part) {
+        if (!$scope.articlePart) {
           return;
         }
+        $scope.article = $scope.articlePart.get("article");
+        $scope.part = $scope.articlePart.toObject();
         $scope.translations = {};
-        $scope.article = $scope.part.article;
-        if ($scope.part.article.topic) {
-          $scope.translations.topic = $scope.part.article.topic;
+        if ($scope.article.topic) {
+          $scope.translations.topic = $scope.article.topic;
         }
-        if ($scope.part.article.target) {
-          TargetStorage.get($scope.part.article.target).then(function(result) {
+        if ($scope.article.target) {
+          TargetStorage.get($scope.article.target).then(function(result) {
             $scope.target = result.toObject();
             return $scope.translations.target = $scope.target.name;
           });
         }
-        if ($scope.part.article.channel) {
-          $scope.channel = ChannelStorage.get($scope.part.article.channel).then(function(result) {
+        if ($scope.article.channel) {
+          $scope.channel = ChannelStorage.get($scope.article.channel).then(function(result) {
             return result.toObject();
           });
         }
-        if ($scope.part.article.step) {
-          $scope.step = StepStorage.get($scope.part.article.step).then(function(result) {
+        if ($scope.article.step) {
+          $scope.step = StepStorage.get($scope.article.step).then(function(result) {
             return result.toObject();
           });
         }
-        if ($scope.part.language) {
-          return $scope.language = KonziloConfig.get("languages").get($scope.part.language);
-        }
+        return $scope.language = KonziloConfig.get("languages").get($scope.part.language);
       };
-      return $scope.$watch("part", update);
+      return $scope.$watch("articlePart", update);
     }
   ]).directive("kzDeliverInfo", function() {
     return {
       restrict: "AE",
       scope: {
-        part: "="
+        articlePart: "="
       },
       controller: "DeliverInfo",
       templateUrl: 'bundles/deliver/deliver-info.html'
     };
   }).controller("DeliverController", [
-    "$scope", "ArticlePartStorage", "$routeParams", "$translate", "UserState", function($scope, ArticlePartStorage, $routeParams, $translate, UserState) {
-      var userId;
+    "$scope", "ArticlePartStorage", "$routeParams", "$translate", "UserState", "GroupStorage", function($scope, ArticlePartStorage, $routeParams, $translate, UserState, GroupStorage, ChannelStorage, kzShowFields) {
+      var getPart, userId;
       $scope.states = ["notstarted", "started", "needsreview"];
       $scope.useSave = true;
       $scope.translations = {};
       userId = UserState.getInfo().info._id;
-      $scope.isLocked = function(part) {
-        return (part != null ? part.locked : void 0) !== userId;
-      };
-      $scope.unlockPart = function(part) {
-        return part.locked = userId;
-      };
       $scope.$parent.title = $translate("DELIVER.TITLE");
-      if ($routeParams.id) {
-        return ArticlePartStorage.get($routeParams.id, function(articlePart) {
-          $scope.articlePart = articlePart;
-          return $scope.part = articlePart.toObject();
+      getPart = function(id) {
+        return ArticlePartStorage.get(id).then(function(part) {
+          $scope.part = part;
+          $scope.article = part.get("article");
+          return part;
         });
+      };
+      if ($routeParams.id) {
+        return getPart($routeParams.id);
       }
     }
   ]);

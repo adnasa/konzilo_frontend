@@ -34,12 +34,14 @@
     return {
       restrict: 'AE',
       scope: {
-        author: "="
+        author: "=",
+        showFields: "="
       },
       controller: [
         "$scope", "$element", "$attrs", function($scope, $element, $attrs) {
+          var _ref;
           $scope.images = [];
-          if ($scope.author.image) {
+          if ((_ref = $scope.author) != null ? _ref.image : void 0) {
             $scope.images.push($scope.author.image);
           }
           return $scope.getImage = function() {
@@ -52,11 +54,12 @@
       templateUrl: "bundles/author/author-form.html"
     };
   }).directive("authorPicker", [
-    "AuthorStorage", "UserStorage", "$modal", "UserState", "$translate", function(AuthorStorage, UserStorage, $modal, UserState, $translate) {
+    "UserStorage", "$modal", "UserState", "$translate", function(UserStorage, $modal, UserState, $translate) {
       return {
         restrict: 'AE',
         scope: {
-          author: "="
+          author: "=",
+          showFields: "="
         },
         controller: [
           "$scope", "$element", "$attrs", function($scope, $element, $attrs) {

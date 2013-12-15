@@ -53,8 +53,7 @@
           return deferred.promise;
         },
         get: function(options) {
-          var deferred,
-            _this = this;
+          var deferred;
           if (options == null) {
             options = {};
           }
@@ -72,6 +71,8 @@
             }, function(err) {
               return deferred.resolve([]);
             });
+          }, function(err) {
+            return deferred.resolve([]);
           });
           return deferred.promise;
         },

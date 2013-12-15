@@ -75,11 +75,18 @@
     "BACK": "Tillbaka",
     "HIDE": "Dölj",
     "FETCHMORE": "Hämta fler",
-    "DETAILS": "Detaljer"
+    "DETAILS": "Detaljer",
+    "MACHINENAME": "Maskinnamn",
+    "CHANGE": "Ändra",
+    "ADD": "Lägg till",
+    "MAX": "Maximum",
+    "MIN": "Minimum",
+    "AUTHOR": "Författare"
   },
   "CHANNEL": {
     "TITLE": "Kanaler",
-    "ADD_NEW": "Lägg till ny kanal"
+    "ADD_NEW": "Lägg till ny kanal",
+    "TEMPLATE": "Mall"
   },
   "CLIENT": {
     "TITLE": "Klienter",
@@ -202,7 +209,7 @@
     "SHOWARTICLES": "Visa artiklar",
     "SEARCHARTICLES": "Sök bland artiklar",
     "ADDSELECTED": "Lägg till valda artiklar",
-    "EMPTYBEFORE": "Töm artikellistan innan nya läggs till",
+    "EMPTYBEFORE": "Töm artikellistan innan nya artiklar läggs till",
     "PICKER": "Artikelväljare",
     "STEPDESC": "Som tar läsaren",
     "PUBLISHDESC": "Som publiceras på",
@@ -210,7 +217,8 @@
     "RESPONSIBLEDESC": "där ansvarig är",
     "STATUSDESC": "som har status",
     "MATCHES": "Matchar",
-    "MATCHESDEC": "som matchar"
+    "MATCHESDEC": "som matchar",
+    "EMPTYCLIPBOARD": "Töm artikellistan"
   },
   "AUTHOR": {
     "EDIT": "Redigera författare",
@@ -246,6 +254,27 @@
     "ENDDATE": "Slutdatum"
   },
   "USER": {
+    "FULLNAME": "Fullständigt namn",
+    "FIRSTNAME": "Ange ditt förnamn",
+    "LASTNAME": "Ange ditt efternamn",
+    "DISPLAYNAME": "Visningsnamn",
+    "CONFIRMUSERNAMECHANGE": "Ändra användarnamnet",
+    "CONFIRMUSERNAMECHANGEMESSAGE": "Klicka på knappen ovan för att godkänna ändring av av användarnamnet",
+    "INVALIDUSERNAME": "Du måste ha minst 4 tecken i ditt användarnamn. Du kan endast använda tecken a-z, A-Z, 0-9 och . - _ ~",
+    "USERNAMEHELP": "Ange det namn du vill använda för att logga in i Konzilo. Det skall bestå av minst fyra tecken som skall vara stora eller små bokstäver ur det engelska alfabetet (a-z), siffror (0-9), punkt (.), tilde (~), bindestreck (-) eller understreck (_).",
+    "DISPLAYNAMEHELP": "Ange ett namn som du vill att Konzilo skall använda istället för ditt för- och efternamn i användargränssnittet. Lämna tomt om du föredrar att ditt för- och efternamn används (rekommenderas)",
+    "LANGUAGEHELP": "Välj ett språk för användargränssnittet. Ditt val har inget att göra med vilket språk du skriver artiklar på",
+    "ROLESHELP": "Du har ovan angivna roller",
+    "GROUPESHELP": "Du har ovan angivna grupper",
+    "BYLINESHELP": "Du har ovan angivna bylines",
+    "UPDATEPASSWORDBUTTON": "Uppdatera",
+    "EMAILHELP": "Ange din epostadress och klicka på knappen Verifiera för att gå vidare",
+    "EMAILVERIFYHELP": "Ett epostmeddelande har skickats till {{email}} med en verifikationskod. Ange koden här och tryck på knappen Uppdatera",
+    "EMAILVERIFICATIONSUCCESS": "Din epostadress är ändrad",
+    "EMAILVERIFICATIONFAIL": "Det gick inte att ändra din epost",
+    "VERIFYBUTTON": "Verifiera",
+    "UPDATEBUTTON": "Uppdatera",
+    "VERIFYCODEPLACEHOLDER": "Verifikationskod",
     "TITLE": "Användare",
     "ADDTITLE": "Skapa ny användare",
     "CREATE": "Skapa användare",
@@ -265,7 +294,7 @@
     "APPROVED": "Godkänd",
     "NEWVERSION": "Ny version",
     "BACKTONOTSTARTED": "Sluta arbeta",
-    "BACKTOSTARTED": "Fortsätt arbeta med artikeln",
+    "BACKTOSTARTED": "Inte klar",
     "POSTFORREVIEW": "Skicka till godkännande",
     "STARTWORKING": "Börja arbeta",
     "APPROVE": "Godkänn",
@@ -274,7 +303,8 @@
     "FILTERCOUNT": "Ditt val matchar {{count}} artiklar.",
     "LOCKEDTEXT": "Artikeldelen redigeras av {{user}}.",
     "UNLOCK": "Lås upp",
-    "NEWPART": "Skapa ny artikeldel"
+    "NEWPART": "Skapa ny artikeldel",
+    "ADDTYPE": "Lägg till artikeldelstyp"
   },
   "ENDPOINT": {
     "REMOVE": "Ta bort publiceringsmål",

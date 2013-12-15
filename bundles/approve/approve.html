@@ -1,33 +1,29 @@
 
 <div class="wrapper">
   <div class="main-content">
-    <div ng-class="{visible: articlePart}" class="list">
+    <div ng-class="{visible: part}" class="list">
       <div class="box pad">
-        <div kntnt-article-parts="kntnt-article-parts" kz-max-height="150" link-pattern="#/approve/:part" query="query" part="articlePart"></div>
+        <div kz-approve-queue="kz-approve-queue" kz-max-height="150" link-pattern="#/approve/:part" selected="part"></div>
       </div>
     </div>
     <div class="main-full">
-      <div ng-show="!articlePart" class="box pad info-message">
+      <div ng-show="!article" class="box pad info-message">
         <h1>{{ 'REVIEW.TITLE' | translate }}</h1>
         <p>{{ 'REVIEW.DESC' | translate }}</p>
       </div>
-      <div ng-show="articlePart" class="main">
+      <div ng-show="article" class="main">
         <div class="box pad articleinfo">
-          <ol ng-show="articlePart" class="breadcrumb">
+          <ol ng-show="article" class="breadcrumb">
             <li><a ng-href="#/deliver">{{'DELIVER.TITLE' | translate}}</a></li>
-            <li class="active">{{part.article.title}}</li>
-            <li ng-show="part" class="active">{{part.title}}</li>
+            <li class="active">{{article.title}}</li>
           </ol>
-          <div class="inner">
-            <konzilo-articlepart-form article-part="articlePart"></konzilo-articlepart-form>
-            <div class="well">
-              <konzilo-articlepart-approve article-part="articlePart" fail-state="failState" approve-state="approveState"></konzilo-articlepart-approve>
-            </div>
-          </div>
+          <h1>{{article.title}}</h1>
+          <konzilo-articlepart-form article-part="part"></konzilo-articlepart-form>
+          <konzilo-articlepart-change-state article-part="part"></konzilo-articlepart-change-state>
         </div>
       </div>
-      <div ng-show="articlePart" class="additional">
-        <kz-deliver-info part="part"></kz-deliver-info>
+      <div ng-show="article" class="additional">
+        <kz-deliver-info article-part="part"></kz-deliver-info>
       </div>
     </div>
   </div>

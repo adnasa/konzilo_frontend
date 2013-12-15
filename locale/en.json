@@ -75,7 +75,13 @@
     "BACK": "Back",
     "HIDE": "Dölj",
     "FETCHMORE": "Fetch more",
-    "DETAILS": "Details"
+    "DETAILS": "Details",
+    "MACHINENAME": "Machine name",
+    "CHANGE": "Change",
+    "ADD": "Add",
+    "MAX": "Maximum",
+    "MIN": "Minimum",
+    "AUTHOR": "Author"
   },
   "CHANNEL": {
     "TITLE": "Channels",
@@ -211,7 +217,8 @@
     "RESPONSIBLEDESC": "where responsible are",
     "STATUSDESC": "which has the status",
     "MATCHES": "Matching",
-    "MATCHESDEC": "that matches"
+    "MATCHESDEC": "that matches",
+    "EMPTYCLIPBOARD": "Empty article list"
   },
   "AUTHOR": {
     "EDIT": "Edit author",
@@ -247,6 +254,25 @@
     "ENDDATE": "End date"
   },
   "USER": {
+    "FULLNAME": "Full name",
+    "FIRSTNAME": "Enter your first name",
+    "LASTNAME": "Enter your last name",
+    "DISPLAYNAME": "Display name",
+    "CONFIRMUSERNAMECHANGE": "Change user name",
+    "CONFIRMUSERNAMECHANGEMESSAGE": "Click on the button above to confirm the change of the user name",
+    "INVALIDUSERNAME": "You must have at least 4 characters in your user name. They can only be of the characters a-z, A-Z, 0-9 and . - _ ~",
+    "LANGUAGEHELP": "Välj ett språk för användargränssnittet. Ditt val har inget att göra med vilket språk du skriver artiklar på.",
+    "ROLESHELP": "Du har ovan angivna roller",
+    "GROUPESHELP": "Du har ovan angivna grupper",
+    "BYLINESHELP": "Du har ovan angivna bylines",
+    "UPDATEPASSWORDBUTTON": "Update",
+    "EMAILHELP": "Enter your email address and click the button Verify",
+    "EMAILVERIFYHELP": "An email has been sent to {{email}} with a verification code. Efter the code here and press the button Update",
+    "EMAILVERIFICATIONSUCCESS": "Your email is changed",
+    "EMAILVERIFICATIONFAIL": "The email address could not be changed",
+    "VERIFYBUTTON": "Verify",
+    "UPDATEBUTTON": "Update",
+    "VERIFYCODEPLACEHOLDER": "Verification code",
     "TITLE": "Users",
     "ADDTITLE": "Create new user",
     "CREATE": "Create user",
@@ -266,7 +292,7 @@
     "APPROVED": "Approved",
     "NEWVERSION": "New version",
     "BACKTONOTSTARTED": "Stop working",
-    "BACKTOSTARTED": "Continue working",
+    "BACKTOSTARTED": "Not done",
     "POSTFORREVIEW": "Send for review",
     "STARTWORKING": "Start working",
     "APPROVE": "Approve",

@@ -5,9 +5,55 @@
     <cmf-autosave-status status="autosave"></cmf-autosave-status>
   </div>
   <div class="form-group">
+    <label class="control-label">{{'USER.FULLNAME' | translate}}</label>
+    <div class="controls">
+      <input type="text" name="firstname" ng-model="user.firstname" placeholder="{{'USER.FIRSTNAME' | translate}}" class="input-half first"/>
+      <input type="text" name="lastname" ng-model="user.lastname" placeholder="{{'USER.LASTNAME' | translate}}" class="input-half last"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label">{{'USER.DISPLAYNAME' | translate}}</label>
+    <div class="controls">
+      <input type="text" name="displayname" ng-model="user.displayname" placeholder="{{'USER.DISPLAYNAME' | translate}}"/><span class="help-block">{{'USER.DISPLAYNAMEHELP' | translate}}</span>
+    </div>
+  </div>
+  <div class="form-group">
     <label class="control-label col-lg-2">{{'GLOBAL.EMAIL' | translate}}</label>
-    <div class="controls col-lg-10">
-      <input type="email" name="email" ng-model="user.email"/>
+    <div class="controls col-lg-10 email">
+      <input type="email" name="email" ng-model="email" class="input-half first"/>
+      <button ng-click="sendVerifyEmail()" ng-disabled="email == user.email" class="input-quarter last btn btn-default">{{'USER.VERIFYBUTTON' | translate}}</button>
+      <input type="text" name="emailverificationcode" ng-model="emailverificationcode" placeholder="{{'USER.VERIFYCODEPLACEHOLDER' | translate}}" ng-show="verificationemailsent" class="input-quarter first"/>
+      <button ng-click="performVerifyEmail()" ng-show="verificationemailsent" ng-disabled="!emailverificationcode" class="input-quarter last btn btn-default">{{'USER.UPDATEBUTTON' | translate}}</button><span class="help-block clearfix">{{'USER.EMAILHELP' | translate }}</span>
+      <div ng-show="verificationemailsent" class="alert alert-info">{{'USER.EMAILVERIFYHELP' | translate: {email: email} }}</div>
+      <div ng-show="verifyFail" class="alert alert-danger">{{'USER.EMAILVERIFICATIONFAIL' | translate}}</div>
+      <div ng-show="verifySuccess" class="alert alert-success">{{'USER.EMAILVERIFICATIONSUCCESS' | translate}}</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label">{{'GLOBAL.USERNAME' | translate}}</label>
+    <div class="controls">
+      <input type="text" name="username" ng-model="username" ng-pattern="usernamePattern" placeholder="{{'GLOBAL.USERNAME' | translate}}"/><span class="help-block">{{'USER.USERNAMEHELP' | translate}}</span>
+      <div ng-show="username != user.username &amp;&amp; userForm.username.$valid" class="confirm">
+        <button ng-click="user.username = username" class="btn btn-danger">{{'USER.CONFIRMUSERNAMECHANGE' | translate}}</button><span class="help-block">{{'USER.CONFIRMUSERNAMECHANGEMESSAGE' | translate}}</span>
+      </div>
+      <div ng-show="!userForm.username.$valid" class="alert alert-danger">{{'USER.USERNAMEHELP' | translate}}</div>
+    </div>
+  </div>
+  <div class="form-group password">
+    <label class="control-label">{{'GLOBAL.PASSWORD' | translate}}</label>
+    <div class="controls">
+      <input type="password" name="password" ng-model="user.password" placeholder="{{'GLOBAL.PASSWORD' | translate}}"/>
+      <input type="password" name="password2" ng-model="password2" placeholder="{{'USER.PASSWORDREPEAT' | translate}}"/>
+      <button ng-click="updatePassword()" class="btn btn-default">{{'USER.UPDATEPASSWORDBUTTON' | translate}}</button>
+    </div>
+  </div>
+  <div class="help-block">{{'USER.PASSWORDDESC' | translate}}</div>
+  <div ng-show="showAdminFields" class="form-group">
+    <label class="control-label">{{'GLOBAL.LANGUAGE' | translate}}</label>
+    <div class="controls">
+      <select ng-model="user.language">
+        <option ng-repeat="(name, language) in languages" value="{{name}}" ng-selected="name == user.language">{{language.name}}</option>
+      </select><span class="help-block">{{'USER.LANGUAGEHELP' | translate}}</span>
     </div>
   </div>
   <div ng-show="showAdminFields" class="form-group">
@@ -15,23 +61,7 @@
     <div class="controls">
       <select ng-model="user.roles" multiple="true">
         <option ng-repeat="(name, role) in roles" value="{{name}}" ng-selected="hasRole(name)">{{role.label}}</option>
-      </select>
-    </div>
-  </div>
-  <div ng-show="showAdminFields" class="form-group">
-    <label class="control-label">{{'GLOBAL.LANGUAGE' | translate}}</label>
-    <div class="controls">
-      <select ng-model="user.language">
-        <option ng-repeat="(name, language) in languages" value="{{name}}" ng-selected="name == user.language">{{language.name}}</option>
-      </select>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="control-label">{{'GLOBAL.PASSWORD' | translate}}</label>
-    <div class="controls">
-      <input type="password" name="password" ng-model="user.password" placeholder="{{'GLOBAL.PASSWORD' | translate}}"/>
-      <input type="password" name="password2" ng-model="password2" placeholder="{{'USER.PASSWORDREPEAT' | translate}}"/>
-      <div class="help-block">{{'USER.PASSWORDDESC' | translate}}</div>
+      </select><span class="help-block">{{'USER.ROLESHELP' | translate}}</span>
     </div>
   </div>
   <div ng-show="showAdminFields" class="form-group">

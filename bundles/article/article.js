@@ -13,15 +13,36 @@
             return {
               label: $translate("TEXTPART.LABEL"),
               defaultName: $translate("TEXTPART.DEFAULTNAME"),
+              fields: [
+                {
+                  name: "topheadline",
+                  label: "GLOBAL.TOPHEADLINE"
+                }, {
+                  name: "headline",
+                  label: "GLOBAL.HEADLINE"
+                }, {
+                  name: "kicker",
+                  label: "GLOBAL.KICKER"
+                }, {
+                  name: "lead",
+                  label: "GLOBAL.LEAD"
+                }, {
+                  name: "body",
+                  label: "GLOBAL.BODY"
+                }
+              ],
               controller: [
-                "$scope", "articlePart", "InputAutoSave", "useAutoSave", function($scope, articlePart, InputAutoSave, useAutoSave) {
+                "$scope", "articlePart", "InputAutoSave", "useAutoSave", "showFields", "definition", function($scope, articlePart, InputAutoSave, useAutoSave, showFields, definition) {
                   var clean, savePart;
+                  $scope.setActive = function() {
+                    return $scope.$emit("kzActivePart", $scope.part);
+                  };
                   $scope.part = articlePart.toObject();
                   $scope.part.content = $scope.part.content || {};
                   $scope.content = $scope.part.content;
+                  $scope.showFields = showFields;
                   $scope.part.vocabularies = $scope.part.vocabularies || {};
                   savePart = function() {
-                    articlePart.set("byline", $scope.part.byline);
                     articlePart.set("content", $scope.content);
                     return articlePart.save();
                   };
@@ -42,10 +63,31 @@
             return {
               label: $translate("MEDIAPART.LABEL"),
               defaultName: $translate("MEDIAPART.DEFAULTNAME"),
+              fields: [
+                {
+                  name: "media",
+                  label: "MEDIAPART.MEDIA"
+                }, {
+                  name: "title",
+                  label: "GLOBAL.TITLE"
+                }, {
+                  name: "description",
+                  label: "GLOBAL.DESCRIPTION"
+                }
+              ],
+              valid: function(part) {
+                var validUrl, _ref;
+                validUrl = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/;
+                if (((_ref = part.content) != null ? _ref.media : void 0) && !validUrl.test(part.content.media)) {
+                  return false;
+                }
+                return true;
+              },
               controller: [
-                "$scope", "articlePart", "InputAutoSave", "useAutoSave", "$http", function($scope, articlePart, InputAutoSave, useAutoSave, $http) {
+                "$scope", "articlePart", "InputAutoSave", "useAutoSave", "$http", "showFields", function($scope, articlePart, InputAutoSave, useAutoSave, $http, showFields) {
                   var clean, savePart;
                   $scope.part = articlePart.toObject();
+                  $scope.showFields = showFields;
                   $scope.part.vocabularies = $scope.part.vocabularies || {};
                   $scope.part.content = $scope.part.content || {};
                   $scope.content = $scope.part.content;
@@ -100,19 +142,31 @@
           "$translate", function($translate) {
             return {
               label: $translate("IMAGEPART.LABEL"),
+              fields: [
+                {
+                  name: "images",
+                  label: "IMAGEPART.UPLOADFILES"
+                }, {
+                  name: "title",
+                  label: "GLOBAL.TITLE"
+                }, {
+                  name: "description",
+                  label: "GLOBAL.DESCRIPTION"
+                }
+              ],
               defaultName: $translate("IMAGEPART.DEFAULTNAME"),
               controller: [
-                "$scope", "articlePart", "InputAutoSave", "UserStorage", "$q", "useAutoSave", function($scope, articlePart, InputAutoSave, UserStorage, $q, useAutoSave) {
+                "$scope", "articlePart", "InputAutoSave", "UserStorage", "$q", "useAutoSave", "showFields", function($scope, articlePart, InputAutoSave, UserStorage, $q, useAutoSave, showFields) {
                   var clean, savePart;
                   $scope.part = articlePart.toObject();
                   $scope.part.content = $scope.part.content || {};
                   $scope.part.vocabularies = $scope.part.vocabularies || {};
+                  $scope.showFields = showFields;
                   $scope.content = $scope.part.content;
                   if (!$scope.content.images) {
                     $scope.content.images = [];
                   }
                   savePart = function() {
-                    articlePart.set("byline", $scope.part.byline);
                     articlePart.set("content", $scope.content);
                     articlePart.save();
                   };
@@ -127,6 +181,57 @@
               templateUrl: "bundles/article/articlepart-image.html"
             };
           }
+        ],
+        author: [
+          "$translate", function($translate) {
+            return {
+              label: $translate("GLOBAL.AUTHOR"),
+              fields: [
+                {
+                  name: "name",
+                  label: "GLOBAL.NAME"
+                }, {
+                  name: "email",
+                  label: "GLOBAL.EMAIL"
+                }, {
+                  name: "about",
+                  label: "AUTHOR.ABOUT"
+                }, {
+                  name: "image",
+                  label: "GLOBAL.IMAGE"
+                }
+              ],
+              defaultName: $translate("IMAGEPART.DEFAULTNAME"),
+              controller: [
+                "$scope", "articlePart", "InputAutoSave", "UserStorage", "$q", "useAutoSave", "showFields", "UserState", function($scope, articlePart, InputAutoSave, UserStorage, $q, useAutoSave, showFields, UserState) {
+                  var clean, savePart;
+                  $scope.part = articlePart.toObject();
+                  $scope.part.content = $scope.part.content || {};
+                  $scope.showFields = showFields;
+                  $scope.content = $scope.part.content;
+                  if (_.isEmpty($scope.part.content)) {
+                    UserStorage.get(UserState.getInfo().info._id).then(function(user) {
+                      var author;
+                      author = user.get("author");
+                      if (author) {
+                        return $scope.content = $scope.part.content = author;
+                      }
+                    });
+                  }
+                  savePart = function() {
+                    articlePart.save();
+                  };
+                  clean = function() {
+                    return $scope.partForm.$valid;
+                  };
+                  if (useAutoSave) {
+                    return $scope.autosave = InputAutoSave.createInstance($scope.part, savePart, clean);
+                  }
+                }
+              ],
+              template: "<ng-form name=\"partForm\">          <cmf-autosave-status status=\"autosave\"></cmf-autosave-status>          <author-form author=\"content\" show-fields=\"showFields\"></author-form>        </ng-form>"
+            };
+          }
         ]
       },
       $get: function($injector) {
@@ -137,6 +242,20 @@
         };
         fn.getProviders = function() {
           return _this.providers;
+        };
+        fn.types = function() {
+          var definition, name, types, _ref;
+          types = {};
+          _ref = _this.providers;
+          for (name in _ref) {
+            definition = _ref[name];
+            if (_.isPlainObject(definition)) {
+              types[name] = definition;
+            } else {
+              types[name] = $injector.invoke(definition);
+            }
+          }
+          return types;
         };
         fn.labels = function() {
           var definition, labels, name, _ref;
@@ -165,6 +284,12 @@
             }
           }
           return names;
+        };
+        fn.valid = function(part) {
+          if (!_this.providers[part.type].valid) {
+            return true;
+          }
+          return _this.providers[part.type].valid(part);
         };
         return fn;
       },
@@ -357,7 +482,7 @@
       };
     }
   ]).directive("kntntAddArticlePart", [
-    "ArticlePartStorage", "UserState", "KonziloConfig", "articleParts", function(ArticlePartStorage, UserState, KonziloConfig, articleParts) {
+    "ArticlePartStorage", "UserState", "KonziloConfig", "articleParts", "kzArticleSettings", function(ArticlePartStorage, UserState, KonziloConfig, articleParts, kzArticleSettings) {
       return {
         restrict: 'AE',
         scope: {
@@ -366,39 +491,76 @@
         },
         controller: [
           "$scope", "$element", "$attrs", function($scope, $element, $attrs) {
-            var article, defaultNames, user;
-            $scope.types = articleParts.labels();
+            var defaultNames, label, type, types, update, user, _ref;
+            types = {};
+            _ref = articleParts.labels();
+            for (type in _ref) {
+              label = _ref[type];
+              types[type] = {
+                label: label
+              };
+            }
             defaultNames = articleParts.defaultNames();
-            article = $scope.article;
             user = UserState.getInfo().info;
+            update = function() {
+              var article, _ref1, _ref2;
+              if (((_ref1 = $scope.article) != null ? _ref1._id : void 0) !== (typeof article !== "undefined" && article !== null ? article._id : void 0) && ((_ref2 = $scope.article) != null ? _ref2.channel : void 0)) {
+                $scope.types = {};
+                article = $scope.article;
+                return kzArticleSettings(article).then(function(settings) {
+                  var length, part, _i, _len, _ref3, _ref4;
+                  if (!(settings != null ? (_ref3 = settings.parts) != null ? _ref3.length : void 0 : void 0) > 0) {
+                    $scope.types = types;
+                  } else {
+                    _ref4 = settings.parts;
+                    for (_i = 0, _len = _ref4.length; _i < _len; _i++) {
+                      part = _ref4[_i];
+                      length = _.filter(article.parts, {
+                        typeName: part.name
+                      }).length;
+                      if (length < part.max || part.max === 0) {
+                        $scope.types[part.type] = {
+                          typeName: part.name,
+                          label: part.label
+                        };
+                      }
+                    }
+                  }
+                  return $scope.showForm = _.size($scope.types);
+                });
+              }
+            };
+            $scope.$watch("article", update);
             $scope.addArticlePart = function() {
-              var _ref;
-              if ($scope.addArticlePartForm.$valid && ((_ref = $scope.type) != null ? _ref.length : void 0) > 0) {
+              var _ref1;
+              if ($scope.addArticlePartForm.$valid && ((_ref1 = $scope.type) != null ? _ref1.length : void 0) > 0) {
                 return KonziloConfig.get("languages").listAll().then(function(languages) {
                   var articlePart, count, defaultLang;
                   defaultLang = _.find(languages, {
                     "default": true
                   });
                   articlePart = {
-                    title: defaultNames[$scope.type],
+                    title: $scope.types[$scope.type].label,
                     state: "notstarted",
                     type: $scope.type,
+                    typeName: $scope.types[$scope.type].typeName,
                     submitter: user._id,
+                    provider: $scope.article.provider,
                     article: $scope.article._id
                   };
                   if (defaultLang) {
                     articlePart.language = defaultLang.langcode;
                   }
-                  count = _.filter(article.parts, {
+                  count = _.filter($scope.article.parts, {
                     type: articlePart.type
                   }).length;
                   if (count > 1) {
                     articlePart.title += " " + count;
                   }
                   return ArticlePartStorage.save(articlePart, function(result) {
-                    article.parts.push(result);
+                    $scope.article.parts.push(result);
                     if ($scope.partCreated) {
-                      $scope.partCreated(article, result);
+                      $scope.partCreated($scope.article, result);
                       return $scope.articlePartTitle = "";
                     }
                   });
@@ -422,11 +584,13 @@
             var getArticles, linkPattern, prepareArticles;
             linkPattern = $attrs.linkPattern;
             prepareArticles = function(articles) {
-              var article, _i, _len, _ref, _results;
-              _ref = articles.toArray();
+              var article, _i, _len, _results;
+              if (articles.toArray) {
+                articles = articles.toArray();
+              }
               _results = [];
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                article = _ref[_i];
+              for (_i = 0, _len = articles.length; _i < _len; _i++) {
+                article = articles[_i];
                 article.link = linkPattern.replace(":article", article._id);
                 _results.push(article);
               }
@@ -458,7 +622,7 @@
       };
     }
   ]).directive("kntntClipboardArticleParts", [
-    "ClipboardStorage", "ArticleStorage", "ArticlePartStorage", "$translate", "$routeParams", function(ClipboardStorage, ArticleStorage, ArticlePartStorage, $translate, $routeParams) {
+    "ClipboardStorage", "ArticleStorage", "ArticlePartStorage", "$translate", "$routeParams", "kzPartSettings", function(ClipboardStorage, ArticleStorage, ArticlePartStorage, $translate, $routeParams, kzPartSettings) {
       return {
         restrict: "AE",
         scope: {
@@ -473,20 +637,34 @@
             linkPattern = $attrs.linkPattern;
             $scope.size = 1;
             drawClipboard = function(articles) {
-              var article, part, _i, _j, _len, _len1, _ref, _ref1, _results;
-              _ref = articles.toArray();
+              var article, part, _i, _j, _len, _len1, _ref, _results;
+              if (articles != null ? articles.toArray : void 0) {
+                articles = articles.toArray();
+              }
               _results = [];
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                article = _ref[_i];
+              for (_i = 0, _len = articles.length; _i < _len; _i++) {
+                article = articles[_i];
                 if (!article.publishdate) {
                   continue;
                 }
                 articleMap[article._id] = article;
                 if (article.parts) {
-                  _ref1 = article.parts;
-                  for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-                    part = _ref1[_j];
+                  _ref = article.parts;
+                  for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+                    part = _ref[_j];
                     part.link = linkPattern.replace(":article", article._id).replace(":part", part._id);
+                    if (part.typeName) {
+                      part.article = article;
+                      part.removable = kzPartSettings(part).then(function(settings) {
+                        var length;
+                        length = _.filter(article.parts, {
+                          typeName: part.typeName
+                        }).length;
+                        return !settings || settings.min < length;
+                      });
+                    } else {
+                      part.removable = true;
+                    }
                   }
                 }
                 _results.push(article);
@@ -814,14 +992,16 @@
                 return $scope.selectedArticle = article._id;
               }
             };
-            ArticlePartStorage.changed(fetchParts);
-            $scope.$watch("selected", function() {
-              if (!$scope.selected) {
-                return;
+            $scope.$watch('selected', function(e, f) {
+              var _ref, _ref1;
+              if ((_ref = $scope.selected) != null ? _ref.toObject : void 0) {
+                $scope.selectedId = $scope.selected.get('_id');
+                return $scope.selectedArticle = $scope.selected.get('article')._id;
+              } else {
+                return $scope.selectedId = (_ref1 = $scope.selected) != null ? _ref1._id : void 0;
               }
-              $scope.selectedPart = $scope.selected.id();
-              return $scope.selectedArticle = $scope.selected.get("article")._id;
             });
+            ArticlePartStorage.changed(fetchParts);
             return $scope.collapsed = function(article) {
               return articlesToggled[article._id];
             };
@@ -840,8 +1020,7 @@
         },
         controller: [
           "$scope", "$element", "$attrs", function($scope, $element, $attrs) {
-            var appendPage, articleMap, drawClipboard, fetchedArticles, formatDate, getClipboard, originalDates, pattern, transformLink,
-              _this = this;
+            var appendPage, articleMap, drawClipboard, fetchedArticles, formatDate, getClipboard, originalDates, pattern, transformLink;
             formatDate = function(date) {
               return $filter('date')(date, 'yyyy-MM');
             };
@@ -904,6 +1083,7 @@
               return $scope.dates = _.keys($scope.clipboard).sort();
             };
             getClipboard = function(skip) {
+              var _this = this;
               if (skip == null) {
                 skip = 0;
               }
@@ -1131,6 +1311,9 @@
                 }
               }
             };
+            $scope.clearClipboard = function() {
+              return ClipboardStorage.truncate();
+            };
             $scope.collapseClass = function() {
               if ($scope.isCollapsed) {
                 return "collapsed";
@@ -1154,7 +1337,7 @@
       };
     }
   ]).directive("konziloArticlepartForm", [
-    "articleParts", "$compile", "$controller", "$injector", "$http", "$templateCache", "KonziloEntity", "UserState", function(articleParts, $compile, $controller, $injector, $http, $templateCache, KonziloEntity, UserState) {
+    "articleParts", "$compile", "$controller", "$injector", "$http", "$templateCache", "KonziloEntity", "UserState", "kzPartSettings", "$q", function(articleParts, $compile, $controller, $injector, $http, $templateCache, KonziloEntity, UserState, kzPartSettings, $q) {
       return {
         restrict: "AE",
         scope: {
@@ -1166,10 +1349,15 @@
           currentPart = null;
           userId = UserState.getInfo().info._id;
           getPartForm = function() {
-            var articlePart, loadPartForm, locked, template;
+            var articlePart, loadPartForm, locked, lockedId, template;
             loadPartForm = function() {
-              var definition, templatePromise, type;
+              var definition, templatePromise, type, useAutoSave;
               type = articlePart.get('type');
+              if (typeof scope.useAutoSave === 'undefined') {
+                useAutoSave = true;
+              } else {
+                useAutoSave = scope.useAutoSave;
+              }
               definition = articleParts(type);
               if (!definition) {
                 return;
@@ -1186,16 +1374,31 @@
                   return response.data;
                 });
               }
-              return templatePromise.then(function(template) {
-                if (definition.controller) {
-                  $controller(definition.controller, {
-                    $scope: scope,
-                    articlePart: articlePart,
-                    useAutoSave: scope.useAutoSave
-                  });
+              return kzPartSettings(articlePart).then(function(partSettings) {
+                var field, showFields, _i, _len, _ref;
+                if (!partSettings) {
+                  showFields = {};
+                  _ref = definition.fields;
+                  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    field = _ref[_i];
+                    showFields[field.name] = true;
+                  }
+                } else {
+                  showFields = partSettings.show;
                 }
-                element.html(template);
-                return $compile(element.contents())(scope);
+                return templatePromise.then(function(template) {
+                  if (definition.controller) {
+                    $controller(definition.controller, {
+                      $scope: scope,
+                      articlePart: articlePart,
+                      useAutoSave: useAutoSave,
+                      showFields: showFields,
+                      definition: definition
+                    });
+                  }
+                  element.html(template);
+                  return $compile(element.contents())(scope);
+                });
               });
             };
             articlePart = scope.articlePart;
@@ -1205,7 +1408,8 @@
               }
               currentPart = articlePart;
               locked = articlePart.get('locked');
-              if (locked && userId !== locked._id) {
+              lockedId = (locked != null ? locked._id : void 0) || locked;
+              if (locked && userId !== lockedId) {
                 scope.translations = {
                   user: locked.username
                 };
@@ -1265,7 +1469,7 @@
         },
         controller: [
           "$scope", function($scope) {
-            var nextState, prevState, update;
+            var nextState, prevState, stateChanged, update;
             prevState = null;
             nextState = null;
             update = function() {
@@ -1273,11 +1477,16 @@
               if (!$scope.articlePart) {
                 return;
               }
+              if ($scope.articlePart.toObject) {
+                $scope.part = $scope.articlePart.toObject();
+              } else {
+                $scope.part = $scope.articlePart;
+              }
               userId = UserState.getInfo().info._id;
-              locked = $scope.articlePart.get('locked');
+              locked = $scope.part.locked;
               locked = _.isPlainObject(locked) ? locked._id : locked;
               $scope.locked = locked && userId !== locked;
-              currentState = $scope.articlePart.get("state");
+              currentState = $scope.part.state;
               if (!currentState || currentState === ArticlePartStates[0].name) {
                 index = 0;
               } else {
@@ -1291,31 +1500,38 @@
               }
               $scope.backLabel = (_ref1 = ArticlePartStates[index - 1]) != null ? _ref1.backLabel : void 0;
               if (nextState !== "approved") {
-                return $scope.nextLabel = (_ref2 = ArticlePartStates[index + 1]) != null ? _ref2.transitionLabel : void 0;
+                $scope.nextLabel = (_ref2 = ArticlePartStates[index + 1]) != null ? _ref2.transitionLabel : void 0;
               } else {
-                return userAccess("update articles").then(function() {
+                userAccess("update articles").then(function() {
                   var _ref3;
-                  return $scope.nextLabel = (_ref3 = ArticlePartStates[index + 1]) != null ? _ref3.transitionLabel : void 0;
+                  $scope.nextLabel = (_ref3 = ArticlePartStates[index + 1]) != null ? _ref3.transitionLabel : void 0;
+                  return $scope.show = !$scope.locked && ($scope.backLabel || $scope.nextLabel);
                 }, function() {
-                  return $scope.nextLabel = void 0;
+                  $scope.nextLabel = void 0;
+                  return $scope.show = !$scope.locked && ($scope.backLabel || $scope.nextLabel);
                 });
               }
+              return $scope.show = !$scope.locked && ($scope.prevLabel || $scope.nextLabel);
+            };
+            stateChanged = function(part) {
+              $scope.$emit("stateChanged", part);
+              return update();
             };
             $scope.nextState = function() {
-              $scope.articlePart.set("state", nextState);
-              return $scope.articlePart.save().then(update);
+              $scope.part.state = nextState;
+              return ArticlePartStorage.save($scope.part).then(stateChanged);
             };
             $scope.prevState = function() {
               if (prevState) {
-                $scope.articlePart.set("state", prevState);
-                return $scope.articlePart.save().then(update);
+                $scope.part.state = prevState;
+                return ArticlePartStorage.save($scope.part).then(stateChanged);
               }
             };
             $scope.$watch("articlePart", update);
             return ArticlePartStorage.itemSaved(function(item) {
               var _ref;
-              if (((_ref = $scope.articlePart) != null ? _ref.get("_id") : void 0) === item.get("_id")) {
-                $scope.articlePart.set("state", item.get("state"));
+              if (((_ref = $scope.part) != null ? _ref._id : void 0) === item.get("_id")) {
+                $scope.part.state = item.get("state");
                 return update();
               }
             });
@@ -1383,7 +1599,20 @@
             var update;
             $scope.translations = {};
             $scope.saveArticle = function(article) {
-              return ArticleStorage.save(article);
+              var part, _i, _len, _ref;
+              if (article.provider) {
+                _ref = article.parts;
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                  part = _ref[_i];
+                  if (!part.provider) {
+                    part.provider = article.provider;
+                  }
+                }
+              }
+              return ArticleStorage.save(article).then(function(result) {
+                $scope.article.parts = result.parts;
+                return article;
+              });
             };
             $scope.today = new Date();
             $scope.changeTarget = function() {
