@@ -81,7 +81,7 @@
     "ADD": "Lägg till",
     "MAX": "Maximum",
     "MIN": "Minimum",
-    "AUTHOR": "Författare"
+    "AUTHOR": "Innehållsproducent"
   },
   "CHANNEL": {
     "TITLE": "Kanaler",
@@ -221,11 +221,11 @@
     "EMPTYCLIPBOARD": "Töm artikellistan"
   },
   "AUTHOR": {
-    "EDIT": "Redigera författare",
-    "NEW": "Ny författare",
-    "ABOUT": "Om författaren",
-    "NAME": "Författare",
-    "PICK": "Välj författare"
+    "EDIT": "Redigera innehållsproducent",
+    "NEW": "Ny innehållsproducent",
+    "ABOUT": "Om producenten",
+    "NAME": "Innehållsproducent",
+    "PICK": "Välj producent"
   },
   "CLIPBOARD": {
     "DESCRIPTION": "Använd artikelväljaren för att lägga till artiklar."
