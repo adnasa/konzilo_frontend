@@ -945,20 +945,24 @@ form.add-part-form {
 }
 
 .author {
+  .clearfix();
+  margin: 20px 0;
+  padding: 10px 0;
+  border-top: 1px solid @grayLighter;
+  border-bottom: 1px solid @grayLighter;
   .input-preview {
     border: 1px solid @well-bg;
     &:hover {
       border: 1px dotted @kntntGreen;
     }
   }
-  .top {
-    .make-row();
-    .image {
-      .make-xs-column(4);
-    }
-    .top {
-      .make-xs-column(8);
-    }
+  .image {
+    .make-sm-column-push(2);
+    .make-xs-column(2);
+  }
+  .content {
+    .make-sm-column-push(2);
+    .make-xs-column(4);
   }
   h3 {
     margin: 0;
@@ -972,6 +976,11 @@ form.add-part-form {
 .author-picker .links {
   .make-lg-column(12);
   padding-left: 0;
+  a {
+    margin-top: 5px;
+    display: inline-block;
+    margin-left: 10px;
+  }
 }
 
 .file-picker {
