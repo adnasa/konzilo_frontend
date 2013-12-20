@@ -49,7 +49,6 @@
         controller: ["$scope", "articlePart",
         "InputAutoSave", "useAutoSave", "showFields", "definition"
         ($scope, articlePart, InputAutoSave, useAutoSave, showFields, definition) ->
-
           $scope.setActive = ->
             $scope.$emit("kzActivePart", $scope.part)
 
@@ -59,6 +58,7 @@
           $scope.showFields = showFields
           $scope.part.vocabularies = $scope.part.vocabularies or {}
           savePart = ->
+            articlePart.set("byline", $scope.part.byline)
             articlePart.set("content", $scope.content)
             articlePart.save()
 
@@ -162,6 +162,7 @@
           $scope.content.images = [] if not $scope.content.images
           savePart = ->
             articlePart.set("content", $scope.content)
+            articlePart.set("byline", $scope.part.byline)
             articlePart.save()
             return
 
@@ -171,54 +172,6 @@
               $scope.part, savePart, clean)
         ]
         templateUrl: "bundles/article/articlepart-image.html"
-      ]
-      author: ["$translate", ($translate) ->
-        label: $translate("GLOBAL.AUTHOR")
-        fields: [
-          {
-            name: "name"
-            label: "GLOBAL.NAME"
-          },
-          {
-            name: "email"
-            label: "GLOBAL.EMAIL"
-          },
-          {
-            name: "about",
-            label: "AUTHOR.ABOUT"
-          },
-          {
-            name: "image",
-            label: "GLOBAL.IMAGE"
-          }
-        ]
-        defaultName: $translate("IMAGEPART.DEFAULTNAME")
-        controller: ["$scope", "articlePart",
-        "InputAutoSave", "UserStorage", "$q", "useAutoSave", "showFields", "UserState",
-        ($scope, articlePart,
-          InputAutoSave, UserStorage, $q, useAutoSave, showFields, UserState) ->
-          $scope.part = articlePart.toObject()
-          $scope.part.content = $scope.part.content or {}
-          $scope.showFields = showFields
-          $scope.content = $scope.part.content
-          # Set the author automatically if it's not filled in.
-          if _.isEmpty($scope.part.content)
-            UserStorage.get(UserState.getInfo().info._id).then (user) ->
-              author = user.get("author")
-              $scope.content = $scope.part.content = author if author
-
-          savePart = ->
-            articlePart.save()
-            return
-          clean = -> $scope.partForm.$valid
-          if useAutoSave
-            $scope.autosave = InputAutoSave.createInstance(
-              $scope.part, savePart, clean)
-        ]
-        template: "<ng-form name=\"partForm\">
-          <cmf-autosave-status status=\"autosave\"></cmf-autosave-status>
-          <author-form author=\"content\" show-fields=\"showFields\"></author-form>
-        </ng-form>"
       ]
 
     $get: ($injector) ->
