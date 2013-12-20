@@ -1,8 +1,15 @@
 .author-picker
-  author-form(author="author")
   .form-group
     label.control-label {{ 'AUTHOR.PICK' | translate }}
     .controls
       entity-reference(entity-type="Author", ng-model="author")
       .links
         a(ng-click="newAuthor()") {{ 'AUTHOR.NEW' | translate }}
+        a(ng-click="editAuthor()") {{ 'AUTHOR.EDIT' | translate }}
+  .author(ng-show="author")
+    .image
+      img(ng-src="{{author.image.uri}}", ng-show="author.image")
+      i.icon-user.icon.icon-5x(ng-show="!author.image")
+    .content
+      h3 {{author.name}}
+      p {{author.about}}
