@@ -60,3 +60,15 @@
             span {{info.label | translate}}
         .form-group
           input.btn.btn-primary(type="submit", value="{{'GLOBAL.ADD' | translate}}")
+  form.endpointSettings(name="endpointSettings")
+    .group
+      .top
+        h2.title {{'ENDPOINT.TYPESETTINGS' | translate}}
+      .content
+        .form-group(ng-repeat="(name, label) in typeSettings")
+          label.control-label {{label}}
+          .controls
+            select(ng-model="contentType.endpointSettings[name]")
+              option(ng-repeat="component in components",
+                ng-selected="component.name == contentType.endpointSettings[name]"
+                value="{{component.name}}") {{component.part}} - {{component.field | translate}}

@@ -1,5 +1,6 @@
 bowerFolder = "bower_components"
 bundleFolder = "bundles"
+
 # Main files for inclusion.
 dependencies = [
   "lodash/dist/lodash.js"

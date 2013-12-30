@@ -116,15 +116,16 @@ angular.module("konzilo.contenttype", ["konzilo.config",
     templateUrl: "bundles/contenttype/content-type-article-form.html"
 ])
 
-.directive("kzContentTypeForm", ["articleParts", (articleParts) ->
+.directive("kzContentTypeForm", ["articleParts", "$http", (articleParts, $http) ->
   restrict: "AE"
   scope:
     contentType: "="
+    endpointType: "="
   controller: ["$scope", ($scope) ->
+    endpointTypes = {}
     $scope.types = articleParts.types()
     $scope.typeLabels = articleParts.labels()
     $scope.newPart = { show: {}, min: 1, max: 1 }
-
     getMaxLimit = (minLimit) ->
       minLimit = 1 if not minLimit or parseInt(minLimit) < 1
       minLimit = parseInt(minLimit)
@@ -156,12 +157,23 @@ angular.module("konzilo.contenttype", ["konzilo.config",
 
     update = ->
       return if not $scope.contentType
+      $scope.components = []
       $scope.contentType.parts = [] if not $scope.contentType.parts
+
+      if not $scope.contentType.endpointSettings
+        $scope.contentType.endpointSettings = {}
+
       $scope.partMaxLimit = {}
       $scope.partMinLimit = {}
       for part, index in $scope.contentType.parts
         $scope.newPartMaxLimit(index, part.min)
         $scope.newPartMinLimit(index, part.max)
+        for field in $scope.types[part.type].fields
+          if part.show[field.name]
+            $scope.components.push
+              name: "#{part.name}.#{field.name}"
+              part: part.label
+              field: field.label
 
     $scope.removePart = (index) ->
       $scope.contentType.parts = (part for part, i in $scope.contentType.parts when i != index)
@@ -174,7 +186,18 @@ angular.module("konzilo.contenttype", ["konzilo.config",
         $scope.newPartMaxLimit(type.parts.length-1)
         $scope.newPartMinLimit(type.parts.length-1)
         $scope.newPart = { show: {}, min: 1, max: 1 }
+
+
     $scope.$watch("contentType", update)
+
+    updateEndpointType = ->
+      if $scope.endpointType
+        $scope.typeSettings = endpointTypes[$scope.endpointType]?.typeSettings
+
+    $http.get('/endpointtype').then (result) ->
+      endpointTypes = result.data
+      updateEndpointType()
+      $scope.$watch("endpointType", updateEndpointType)
   ]
   templateUrl: "bundles/contenttype/content-type-form.html"
 ])

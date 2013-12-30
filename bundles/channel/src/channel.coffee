@@ -47,7 +47,7 @@ angular.module("konzilo.channel", ["konzilo.config",
 ($scope, KonziloConfig, $http, $routeParams,
 InputAutoSave, ChannelStorage, $translate, articleParts) ->
   bin = KonziloConfig.get("endpoints")
-  $scope.endpoints = bin.listAll()
+
   $scope.query = {}
   $scope.types = articleParts.labels()
 
@@ -60,14 +60,17 @@ InputAutoSave, ChannelStorage, $translate, articleParts) ->
         label: $translate("GLOBAL.EDIT")
         link: "#/settings/channels/#{item._id}"
 
-  if $routeParams.channel
-    ChannelStorage.get($routeParams.channel).then (channel) ->
-      $scope.channel = channel.toObject()
-      $scope.channel.contentType = $scope.channel.contentType or {}
-      valid = -> $scope.editChannelForm.$valid
-      save = -> ChannelStorage.save($scope.channel)
-      $scope.autosave = InputAutoSave.createInstance($scope.channel,
-        save, valid)
+  bin.listAll().then (endpoints) ->
+    $scope.endpoints = endpoints
+    if $routeParams.channel
+      ChannelStorage.get($routeParams.channel).then (channel) ->
+        $scope.channel = channel.toObject()
+        $scope.channel.contentType = $scope.channel.contentType or {}
+        $scope.endpoint = $scope.endpoints[$scope.channel.endpoint]
+        valid = -> $scope.editChannelForm.$valid
+        save = -> ChannelStorage.save($scope.channel)
+        $scope.autosave = InputAutoSave.createInstance($scope.channel,
+          save, valid)
 
   $scope.newChannel = {}
   $scope.addChannel = ->
