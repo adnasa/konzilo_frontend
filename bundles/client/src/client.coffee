@@ -11,7 +11,7 @@ angular.module("konzilo.client", ["konzilo.config", "konzilo.translations"])
   $routeProvider.when('/settings/clients', clientAdmin)
 ])
 .run(["konziloMenu", (konziloMenu) ->
-  konziloMenu("settingsMenu").addItem "#/settings/clients", "Klienter",
+  konziloMenu("settingsMenu").addItem "#/settings/clients", "CLIENT.TITLE",
     (userAccess) ->
       userAccess("administer system")
 ])

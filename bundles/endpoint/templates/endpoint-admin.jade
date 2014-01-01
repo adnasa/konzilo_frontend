@@ -14,10 +14,10 @@
             label.control-label(for="langcode") {{'GLOBAL.TYPE' | translate}}
             .controls
               select(type="text", name="name", ng-model="type", required, ng-options="value.label for (key, value) in types", required)
-          .form-group(ng-repeat="(name, setting) in type.settings")
-            label.control-label {{setting}}
+          .form-group(ng-repeat="setting in type.settings")
+            label.control-label {{setting.label | translate }}
             .controls
-              input(type="text", ng-model="newEndpoint.settings[name]", required)
+              input(type="text", ng-model="newEndpoint.settings[setting.name]", required)
           .form-actions
             input.btn.btn-primary(type="submit", value="{{'GLOBAL.SAVE' | translate}}")
     .half(ng-show="endpoint")
@@ -29,10 +29,10 @@
             label.control-label(for="name") {{'GLOBAL.NAME' | translate}}
             .controls
               input(type="text", name="name", ng-model="endpoint.name", required)
-          .form-group(ng-repeat="(name, setting) in getSettings(endpoint.type)")
-            label.control-label {{setting}}
+          .form-group(ng-repeat="setting in getSettings(endpoint.type)")
+            label.control-label {{setting.label | translate }}
             .controls
-              input(type="text", ng-model="endpoint.settings[name]", required)
+              input(type="text", ng-model="endpoint.settings[setting.name]", required)
         form(method="POST", action="/endpoint/{{endpoint.name}}/authorize")
           .form-group
             .controls

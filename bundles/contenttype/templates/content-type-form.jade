@@ -65,10 +65,10 @@
       .top
         h2.title {{'ENDPOINT.TYPESETTINGS' | translate}}
       .content
-        .form-group(ng-repeat="(name, label) in typeSettings")
-          label.control-label {{label}}
+        .form-group(ng-repeat="settings in typeSettings")
+          label.control-label {{settings.label | translate}}
           .controls
-            select(ng-model="contentType.endpointSettings[name]")
+            select(ng-model="contentType.endpointSettings[settings.name]")
               option(ng-repeat="component in components",
-                ng-selected="component.name == contentType.endpointSettings[name]"
+                ng-selected="component.name == contentType.endpointSettings[settings.name]"
                 value="{{component.name}}") {{component.part}} - {{component.field | translate}}
