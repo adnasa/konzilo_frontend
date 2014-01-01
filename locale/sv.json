@@ -81,7 +81,9 @@
     "ADD": "Lägg till",
     "MAX": "Maximum",
     "MIN": "Minimum",
-    "AUTHOR": "Innehållsproducent"
+    "AUTHOR": "Innehållsproducent",
+    "URL": "URL",
+    "CONTENT": "Innehåll"
   },
   "CHANNEL": {
     "TITLE": "Kanaler",
@@ -310,6 +312,16 @@
     "REMOVE": "Ta bort publiceringsmål",
     "TITLE": "Publiceringsmål",
     "ADDNEW": "Lägg till nytt publiceringsmål",
-    "NOTAUTHORIZED": "Den här anslutningen är inte auktoriserad än"
+    "NOTAUTHORIZED": "Den här anslutningen är inte auktoriserad än",
+    "TYPESETTINGS": "Inställningar för publiceringsmål"
+  },
+  "DRUPAL": {
+    "CLIENTID": "Klient-ID",
+    "CLIENTSECRET": "Klient-hemlighet",
+    "ENDPOINTNAME": "Namn på mål i Drupal"
+  },
+  "WORDPRESS": {
+    "BLOGID": "Blogg-ID",
+    "EXCERPT": "Excerpt"
   }
 }
