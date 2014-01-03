@@ -84,7 +84,8 @@
     "AUTHOR": "Innehållsproducent",
     "URL": "URL",
     "CONTENT": "Innehåll",
-    "TELLER": "Berättare"
+    "TELLER": "Berättare",
+    "NOTES": "Anteckningar"
   },
   "CHANNEL": {
     "TITLE": "Kanaler",

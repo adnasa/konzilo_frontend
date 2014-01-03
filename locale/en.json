@@ -84,7 +84,8 @@
     "AUTHOR": "Author",
     "URL": "URL",
     "CONTENT": "Content",
-    "TELLER": "Teller"
+    "TELLER": "Teller",
+    "NOTES": "Notes"
   },
   "CHANNEL": {
     "TITLE": "Channels",

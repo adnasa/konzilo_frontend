@@ -353,7 +353,7 @@ angular.module("kntnt.user",
   templateUrl: "bundles/user/user-edit.html"
   scope: { user: "=" }
   controller: ["$scope", ($scope) ->
-    $scope.usernamePattern = /^[a-zA-Z0-9\.\-_~]{4,}$/
+    $scope.usernamePattern = /^[a-zA-Z0-9\.\-_~@]{4,}$/
     activeUser = $scope.user
     $scope.languages = KonziloConfig.get("languages").listAll()
     KonziloConfig.get("roles").listAll().then (roles) ->
@@ -387,7 +387,7 @@ angular.module("kntnt.user",
         UserStorage.save user
 
     $scope.setDisplayName = ->
-        $scope.user.displayname = $scope.displayname;
+        $scope.user.displayname = $scope.displayname
 
     $scope.aggregateDisplayName = ->
       if ($scope.user.firstname or $scope.user.lastname)
@@ -471,8 +471,8 @@ angular.module("kntnt.user",
 ])
 
 .controller("UserMgmtController",
-["$scope", "UserStorage", "entityInfo", "$routeParams", "$translate",
-($scope, UserStorage, entityInfo, $routeParams, $translate) ->
+["$scope", "UserStorage", "entityInfo", "$routeParams", "$translate", "$location",
+($scope, UserStorage, entityInfo, $routeParams, $translate, $location) ->
   UserStorage.query { group: false }, (result) ->
     updateUsers = ->
       $scope.users = for user in result.toArray()
@@ -494,8 +494,24 @@ angular.module("kntnt.user",
         oldItem.setData(item.toObject())
       updateUsers()
 
+    UserStorage.itemRemoved (id) ->
+      result.remove(id)
+      updateUsers()
+
   $scope.userGrid = ->
     if $scope.user then "half" else "full"
+
+  $scope.addUser = ->
+    if $scope.newUserForm.$valid
+      user =
+        email: $scope.email
+        username: $scope.email
+        displayname: $scope.email
+      UserStorage.save(user).then (result) ->
+        $location.path("/settings/users/#{result._id}")
+
+  $scope.removeUser = (user) ->
+    UserStorage.remove(user._id) if confirm($translate("USER.CONFIRMREMOVE"))
 
   $scope.entity = entityInfo("User")
   $scope.properties =
