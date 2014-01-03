@@ -530,13 +530,12 @@ angular.module("kntnt.user",
 ($scope, KonziloConfig, $http, $routeParams,
 InputAutoSave, GroupStorage, $translate) ->
   $scope.query = {}
-  $scope.properties =
-    name: $translate("GLOBAL.NAME")
-    operations:
-      label: $translate("GLOBAL.OPERATIONS")
-      value: (item) ->
-        label: $translate("GLOBAL.EDIT")
-        link: "#/settings/groups/#{item._id}"
+  fetchGroups = ->
+    $scope.groups = GroupStorage.query().then (result) -> result.toArray()
+
+  fetchGroups()
+
+  GroupStorage.itemSaved(fetchGroups)
 
   if $routeParams.group
     GroupStorage.get($routeParams.group).then (group) ->
@@ -545,9 +544,6 @@ InputAutoSave, GroupStorage, $translate) ->
       valid = -> $scope.editGroupForm.$valid
       save = -> GroupStorage.save($scope.group)
       $scope.autosave = InputAutoSave.createInstance($scope.group, save, valid)
-
-  $scope.mainClass = ->
-    if $scope.group then "span6" else "span12"
 
   $scope.newGroup = {}
   $scope.addUser = ->

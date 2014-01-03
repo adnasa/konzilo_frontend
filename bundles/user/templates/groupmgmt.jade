@@ -1,39 +1,52 @@
 .wrapper
   .main-content
-    div(ng-class="{full: !group, half: group}")
-      section.articleinfo
-          .box.pad
-            h1 {{"GROUP.TITLE" | translate}}
-            content-table(entity-type="Group", properties="properties", query="query")
-            form.form.form-inline.add-group-form(name="addGroupForm", ng-submit="addGroup()")
-              .form-group
-                input.form-control(type="text", name="name", ng-model="newGroup.name",
-                  placeholder="{{ 'GROUP.CREATENEW' | translate }}", required)
-              input.btn.btn-primary(type="submit", name="save", value="{{'GROUP.CREATE' | translate}}")
-
-    .half(ng-show="group")
-      .box.pad
-        form.form.form-horizontal(name="editGroupForm")
-          h2 {{group.name}}
-          .form-group
-            label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}
-            .controls
-              input(type="text", name="name", ng-model="group.name", required)
-          .form-group
-            label.control-label {{'GLOBAL.USER' | translate}}
-            .controls
-              table.table-striped.table
-                tr(ng-repeat="user in group.members")
-                  td {{user.username}}
-                  td
-                    button.btn.btn-danger(ng-click="removeUser(user)")
-                      i.icon-remove
-                      span {{'GLOBAL.REMOVE' | translate}}
-
-        form.add-group-user-form(name="userInput")
-          .form-inline
+    .list.box.pad
+      form.new-group.form-inline.add-article(ng-submit="addGroup()", name="addGroupForm")
+        .form-group
+          input.form-control(type="text", name="name", ng-model="newGroup.name",
+         placeholder="{{ 'GROUP.CREATENEW' | translate }}", required)
+        button.btn.btn-default.add-article
+          i.icon-plus
+      .groups
+        .row-item(ng-repeat="group in groups")
+          a.block(ng-href="#/settings/groups/{{group._id}}") {{group.name}}
+          button.btn-link.clipboard-remove(ng-click="removeGroup(group)")
+            i.icon-remove
+    .main-full
+      .main(ng-show="group")
+        .box.pad
+          form.form.form-horizontal(name="editGroupForm")
+            h2 {{group.name}}
             .form-group
-              entity-reference(entity-type="User",
-                ng-model="newUser",
-                placeholder="{{'GROUP.ADDUSER' | translate}}")
-              button.btn.btn-primary(ng-click="addUser()") {{ 'GLOBAL.APPEND' | translate }}
+              label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}
+              .controls
+                input(type="text", name="name", ng-model="group.name", required)
+            .form-group(ng-show="group.members")
+              label.control-label {{'GLOBAL.USER' | translate}}
+              .controls
+                table.table-striped.table
+                  tr(ng-repeat="user in group.members")
+                    td {{user.username}}
+                    td
+                      button.btn.btn-danger(ng-click="removeUser(user)")
+                        i.icon-remove
+                        span {{'GLOBAL.REMOVE' | translate}}
+          form.add-group-user-form(name="userInput")
+            h3 {{'GROUP.ADDUSER' | translate}}
+            .form-inline
+              .form-group
+                entity-reference(entity-type="User",
+                  ng-model="newUser",
+                  placeholder="{{'GROUP.ADDUSER' | translate}}")
+                button.btn.btn-primary(ng-click="addUser()") {{ 'GLOBAL.APPEND' | translate }}
+      .additional(ng-show="group")
+        .tabbed-box
+          tabset
+            tab(heading="{{ 'GLOBAL.DISCUSSION' | translate }}")
+              .pad
+                konzilo-comments(ng-model="group.adminComments")
+            tab(heading="{{'GLOBAL.NOTES' | translate}}")
+              .pad
+                markdown-editor(ng-model="group.adminNotes")
+
+
