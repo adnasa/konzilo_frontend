@@ -14,7 +14,7 @@ angular.module("konzilo.contenttype", ["konzilo.config",
           existingParts = _.filter(parts, typeName: part.name)
           while existingParts.length < part.min
             articlePart =
-              title: part.label
+              title: article.get("title") + " [#{part.label}]"
               state: "notstarted"
               type: part.type
               typeName: part.name
