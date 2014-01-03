@@ -120,6 +120,13 @@ angular.module("konzilo.entity", ["ngResource"])
       _.find @data, (value) ->
         value.id() is item.id()
 
+    remove: (item) ->
+      if _.isPlainObject(item)
+        item = item._id
+      if item.toObject
+        item = item.id()
+      _.remove(@data, (value) -> value.id() == item)
+
     hasItem: (item) ->
       if @get(item) then true else false
 
