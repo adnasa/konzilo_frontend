@@ -136,6 +136,8 @@ angular.module("konzilo.file",
         formData: { bundle: $scope.bundle }
         maxFileSize: bundleInfo.maxFileSize
         acceptFileTypes: new RegExp(bundleInfo.acceptFileTypes)
+        start: (e, data) ->
+          $scope.uploading = true
         done: (e, data) ->
           FileStorage.clearCache()
           files.push(data.result)
@@ -158,6 +160,7 @@ angular.module("konzilo.file",
       $scope.query[key] = $scope[key]
     FileStorage.query { q: $scope.query }, (result) ->
       $scope.files = result.toArray()
+
 
     $scope.selectFile = (file) ->
       if file not in $scope.selected

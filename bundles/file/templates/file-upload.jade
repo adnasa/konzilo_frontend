@@ -15,6 +15,7 @@
            button.btn.btn-link.cancel(type="button",
             ng-click="file.$cancel()") {{ 'GLOBAL.REMOVE' | translate }}
   button.btn.btn-primary(ng-click="submit()") {{'GLOBAL.UPLOAD' | translate }}
+  .icon-spinner.icon-spin(ng-show="uploading")
   dl
     dt {{'FILE.ALLOWEDTYPES' | translate }}
     dd
