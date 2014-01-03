@@ -83,7 +83,8 @@
     "MIN": "Minimum",
     "AUTHOR": "Author",
     "URL": "URL",
-    "CONTENT": "Content"
+    "CONTENT": "Content",
+    "TELLER": "Teller"
   },
   "CHANNEL": {
     "TITLE": "Channels",
