@@ -23,6 +23,6 @@
                   ng-repeat="article in clipboard[date]")
                   span(class="article-state {{article.state}}")
                   span {{article.title}}
-                  span.pull-right {{ article.publishdate | date: "yyyy-MM-dd" }}
+                  span.pull-right {{ article.publishdate | date: "EEE yyyy-MM-dd" }}
           .fetchmore
             a(ng-click="nextPage()", ng-show="skip + 20  <= count") {{'GLOBAL.FETCHMORE' | translate}}

@@ -3,7 +3,7 @@
   .row-item(ng-repeat="article in articles")
     a.link-block(ng-click="toggleArticle(article)")
       .pull-right
-        span {{article.publishdate | date: 'yyyy-MM-dd'}}
+        span {{article.publishdate | date: 'EEE yyyy-MM-dd'}}
         button.btn-link
           i(ng-class="toggleIcon(article)")
       .top

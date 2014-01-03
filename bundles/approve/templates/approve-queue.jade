@@ -4,7 +4,7 @@
     ng-class="{'active': selected._id == article._id}")
     a.link-block(ng-click="toggleArticle(article)")
       .pull-right
-        span {{ article.publishdate | date: "yyyy-MM-dd" }}
+        span {{ article.publishdate | date: "EEE yyyy-MM-dd" }}
         button.btn-link
           i(ng-class="{ 'icon-chevron-down': selectedArticle == article._id, 'icon-chevron-right': selectedArticle != article._id }")
       .top
