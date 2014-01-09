@@ -325,5 +325,8 @@
   "WORDPRESS": {
     "BLOGID": "Blogg-ID",
     "EXCERPT": "Excerpt"
+  },
+  "CONTENTTYPE": {
+    "USEAUTHOR": "Använd författare"
   }
 }

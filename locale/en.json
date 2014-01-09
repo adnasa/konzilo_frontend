@@ -322,5 +322,8 @@
   "WORDPRESS": {
     "BLOGID": "Blog ID",
     "EXCERPT": "Excerpt"
+  },
+  "CONTENTTYPE": {
+    "USEAUTHOR": "Use author"
   }
 }
