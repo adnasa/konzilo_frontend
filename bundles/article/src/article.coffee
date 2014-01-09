@@ -47,14 +47,16 @@
           }
         ]
         controller: ["$scope", "articlePart",
-        "InputAutoSave", "useAutoSave", "showFields", "definition"
-        ($scope, articlePart, InputAutoSave, useAutoSave, showFields, definition) ->
+        "InputAutoSave", "useAutoSave", "showFields", "definition", "useAuthor",
+        ($scope, articlePart, InputAutoSave, useAutoSave,
+          showFields, definition, useAuthor) ->
           $scope.setActive = ->
             $scope.$emit("kzActivePart", $scope.part)
 
           $scope.part = articlePart.toObject()
           $scope.part.content = $scope.part.content or {}
           $scope.content = $scope.part.content
+          $scope.useAuthor = useAuthor
           $scope.showFields = showFields
           $scope.part.vocabularies = $scope.part.vocabularies or {}
           savePart = ->
@@ -94,10 +96,12 @@
           return true
 
         controller: ["$scope", "articlePart",
-        "InputAutoSave", "useAutoSave", "$http", "showFields",
-        ($scope, articlePart, InputAutoSave, useAutoSave, $http, showFields) ->
+        "InputAutoSave", "useAutoSave", "$http", "showFields", "useAuthor",
+        ($scope, articlePart, InputAutoSave, useAutoSave, $http,
+          showFields, useAuthor) ->
           $scope.part = articlePart.toObject()
           $scope.showFields = showFields
+          $scope.useAuthor = useAuthor
           $scope.part.vocabularies = $scope.part.vocabularies or {}
           $scope.part.content = $scope.part.content or {}
           $scope.content = $scope.part.content
@@ -150,14 +154,16 @@
         ]
         defaultName: $translate("IMAGEPART.DEFAULTNAME")
         controller: ["$scope", "articlePart",
-        "InputAutoSave", "UserStorage", "$q", "useAutoSave", "showFields",
+        "InputAutoSave", "UserStorage", "$q", "useAutoSave",
+        "showFields", "useAuthor",
         ($scope, articlePart,
-          InputAutoSave, UserStorage, $q, useAutoSave, showFields) ->
+          InputAutoSave, UserStorage, $q,
+            useAutoSave, showFields, useAuthor) ->
           $scope.part = articlePart.toObject()
           $scope.part.content = $scope.part.content or {}
           $scope.part.vocabularies = $scope.part.vocabularies or {}
           $scope.showFields = showFields
-
+          $scope.useAuthor = useAuthor
           $scope.content = $scope.part.content
           $scope.content.images = [] if not $scope.content.images
           savePart = ->
@@ -1019,9 +1025,11 @@
           kzPartSettings(articlePart).then (partSettings) ->
             if not partSettings
               showFields = {}
+              useAuthor = true
               showFields[field.name] = true for field in definition.fields
             else
               showFields = partSettings.show
+              useAuthor = partSettings.useAuthor
             templatePromise.then (template) ->
               if definition.controller
                 $controller definition.controller,
@@ -1029,6 +1037,7 @@
                   articlePart: articlePart
                   useAutoSave: useAutoSave
                   showFields: showFields
+                  useAuthor: useAuthor
                   definition: definition
 
               element.html(template)

@@ -29,6 +29,10 @@
               label.checkbox(ng-repeat="info in types[part.type].fields")
                 input(type="checkbox", ng-model="part.show[info.name]")
                 span {{info.label | translate}}
+            .form-group
+              label.checkbox
+                input(type="checkbox", ng-model="part.useAuthor")
+                span {{'CONTENTTYPE.USEAUTHOR' | translate}}
 
   form.add-part-type(name="addPartType", ng-submit="addPart()")
     .group
@@ -59,8 +63,12 @@
             input(type="checkbox", ng-model="newPart.show[info.name]")
             span {{info.label | translate}}
         .form-group
+          label.checkbox
+            input(type="checkbox", ng-model="newPart.useAuthor")
+            span {{'CONTENTTYPE.USEAUTHOR' | translate}}
+        .form-group
           input.btn.btn-primary(type="submit", value="{{'GLOBAL.ADD' | translate}}")
-  form.endpointSettings(name="endpointSettings")
+  form.endpointSettings(name="endpointSettings", ng-show="typeSettings")
     .group
       .top
         h2.title {{'ENDPOINT.TYPESETTINGS' | translate}}

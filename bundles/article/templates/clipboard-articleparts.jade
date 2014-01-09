@@ -11,7 +11,7 @@
         h3.title {{article.title}}
     .content(ng-show="active(article)")
       .inner
-        .row-item.add-part
+        .add-part
           div(kntnt-add-article-part, article="article", part-created="partCreated")
         .items(ui-sortable="options", ng-model="article.parts")
           .row-item(ng-class="activePart(part)", ng-repeat="(index, part) in article.parts", data-id="{{article._id}}")
@@ -21,4 +21,3 @@
             button.btn-link.clipboard-remove(ng-show="part.removable", ng-click="removeArticlePart(article, part)")
               i.icon-remove
   kz-entity-pager(collection="collection", items-fetched="nextPage")
-

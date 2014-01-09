@@ -29,4 +29,5 @@ ng-form(name="partForm")
             strong {{content.description}}
           cmf-inline-input
             textarea.input-block-level(type="text", name="description", ng-model="content.description")
-    author-picker(author="author")
+    div(ng-show="useAuthor")
+      author-picker(author="author")

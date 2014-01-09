@@ -41,5 +41,5 @@ ng-form(name="partForm")
       label.control-label {{ 'GLOBAL.BODY' | translate }}
       .controls
         markdown-editor(ng-model="content.body")
-    author-picker(author="part.byline")
-
+    div(ng-show="useAuthor")
+      div(author-picker, author="part.byline")
