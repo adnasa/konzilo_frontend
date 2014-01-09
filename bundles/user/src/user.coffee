@@ -421,9 +421,10 @@ angular.module("kntnt.user",
         ->
           UserStorage.save($scope.user).then (result) ->
             info = UserState.getInfo().info
-            info.username = result.username
-            info.email = result.email
-            info.language = result.language
+            if info._id == result._id
+              info.username = result.username
+              info.email = result.email
+              info.language = result.language
             UserState.saveInfo(info)
             return result
         , ->
