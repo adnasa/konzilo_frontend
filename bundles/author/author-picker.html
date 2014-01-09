@@ -1,11 +1,17 @@
 
 <div class="author-picker">
-  <author-form author="author"></author-form>
   <div class="form-group">
     <label class="control-label">{{ 'AUTHOR.PICK' | translate }}</label>
     <div class="controls">
       <entity-reference entity-type="Author" ng-model="author"></entity-reference>
-      <div class="links"><a ng-click="newAuthor()">{{ 'AUTHOR.NEW' | translate }}</a></div>
+      <div class="links"><a ng-click="newAuthor()">{{ 'AUTHOR.NEW' | translate }}</a><a ng-click="editAuthor()" ng-show="author">{{ 'AUTHOR.EDIT' | translate }}</a></div>
+    </div>
+  </div>
+  <div ng-show="author" class="author">
+    <div class="image"><img ng-src="{{author.image.uri}}" ng-show="author.image"/><i ng-show="!author.image" class="icon-user icon icon-5x"></i></div>
+    <div class="content">
+      <h3>{{author.name}}</h3>
+      <p>{{author.about}}</p>
     </div>
   </div>
 </div>

@@ -1,7 +1,7 @@
 
 <div class="articleparts">
   <div ng-repeat="article in articles" ng-class="{'active': selected._id == article._id}" class="row-item"><a ng-click="toggleArticle(article)" class="link-block">
-      <div class="pull-right"><span>{{ article.publishdate | date: "yyyy-MM-dd" }}</span>
+      <div class="pull-right"><span>{{ article.publishdate | date: "EEE yyyy-MM-dd" }}</span>
         <button class="btn-link"><i ng-class="{ 'icon-chevron-down': selectedArticle == article._id, 'icon-chevron-right': selectedArticle != article._id }"></i></button>
       </div>
       <div class="top"><span class="article-state {{article.state}}"></span><span>{{article.title}}</span></div></a>

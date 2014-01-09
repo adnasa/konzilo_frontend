@@ -81,11 +81,16 @@
     "ADD": "Add",
     "MAX": "Maximum",
     "MIN": "Minimum",
-    "AUTHOR": "Author"
+    "AUTHOR": "Author",
+    "URL": "URL",
+    "CONTENT": "Content",
+    "TELLER": "Teller",
+    "NOTES": "Notes"
   },
   "CHANNEL": {
     "TITLE": "Channels",
-    "ADD_NEW": "Add new channel"
+    "ADD_NEW": "Add new channel",
+    "TEMPLATE": "Template"
   },
   "CLIENT": {
     "TITLE": "Clients",
@@ -261,7 +266,7 @@
     "CONFIRMUSERNAMECHANGE": "Change user name",
     "CONFIRMUSERNAMECHANGEMESSAGE": "Click on the button above to confirm the change of the user name",
     "INVALIDUSERNAME": "You must have at least 4 characters in your user name. They can only be of the characters a-z, A-Z, 0-9 and . - _ ~",
-    "LANGUAGEHELP": "Välj ett språk för användargränssnittet. Ditt val har inget att göra med vilket språk du skriver artiklar på.",
+    "LANGUAGEHELP": "Choose a language for the administrative interface. Your choice has nothing to do with the language you are writing articles on.",
     "ROLESHELP": "Du har ovan angivna roller",
     "GROUPESHELP": "Du har ovan angivna grupper",
     "BYLINESHELP": "Du har ovan angivna bylines",
@@ -306,6 +311,19 @@
   "ENDPOINT": {
     "REMOVE": "Remove endpoint",
     "TITLE": "Endpoints",
-    "ADDNEW": "Add new endpoint"
+    "ADDNEW": "Add new endpoint",
+    "TYPESETTINGS": "Endpoint settings"
+  },
+  "DRUPAL": {
+    "CLIENTID": "Client ID",
+    "CLIENTSECRET": "Client secret",
+    "ENDPOINTNAME": "Endpoint name"
+  },
+  "WORDPRESS": {
+    "BLOGID": "Blog ID",
+    "EXCERPT": "Excerpt"
+  },
+  "CONTENTTYPE": {
+    "USEAUTHOR": "Use author"
   }
 }

@@ -1,16 +1,40 @@
 
 <div class="wrapper">
-  <div class="main-content user-mgmt">
-    <div ng-class="userGrid()" class="half">
-      <div class="box pad">
-        <h1>Användare</h1>
-        <content-table items="users" properties="properties" id="username" selected="selected" entity="entity"></content-table>
-        <user-add-form></user-add-form>
+  <div class="main-content">
+    <div ng-class="{visible: user}" class="list box pad">
+      <form ng-submit="addUser()" name="newUserForm" class="new-user form-inline add-article">
+        <div class="form-group">
+          <input type="email" ng-model="email" placeholder="{{'GLOBAL.EMAIL' | translate}}" required="required"/>
+        </div>
+        <button class="btn btn-default add-article"><i class="icon-plus"></i></button>
+      </form>
+      <div class="users">
+        <div ng-repeat="user in users" class="row-item"><a ng-href="#/settings/users/{{user._id}}" class="block">{{user.displayname}}</a>
+          <button ng-click="removeUser(user)" ng-show="user.removable" class="btn-link clipboard-remove"><i class="icon-remove"></i></button>
+        </div>
       </div>
     </div>
-    <div ng-show="user" class="half">
-      <div class="box pad">
-        <user-edit-form user="user"></user-edit-form>
+    <div class="main-full">
+      <div ng-show="user" class="main">
+        <div class="box pad">
+          <user-edit-form user="user"></user-edit-form>
+        </div>
+      </div>
+      <div ng-show="user" class="additional">
+        <div class="tabbed-box">
+          <tabset>
+            <tab heading="{{ 'GLOBAL.DISCUSSION' | translate }}">
+              <div class="pad">
+                <konzilo-comments ng-model="user.adminComments"></konzilo-comments>
+              </div>
+            </tab>
+            <tab heading="{{'GLOBAL.NOTES' | translate}}">
+              <div class="pad">
+                <markdown-editor ng-model="user.adminNotes"></markdown-editor>
+              </div>
+            </tab>
+          </tabset>
+        </div>
       </div>
     </div>
   </div>

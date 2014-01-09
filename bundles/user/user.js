@@ -490,7 +490,7 @@
         controller: [
           "$scope", function($scope) {
             var activeUser, update;
-            $scope.usernamePattern = /^[a-zA-Z0-9\.\-_~]{4,}$/;
+            $scope.usernamePattern = /^[a-zA-Z0-9\.\-_~@]{4,}$/;
             activeUser = $scope.user;
             $scope.languages = KonziloConfig.get("languages").listAll();
             KonziloConfig.get("roles").listAll().then(function(roles) {
@@ -585,9 +585,11 @@
                   return UserStorage.save($scope.user).then(function(result) {
                     var info;
                     info = UserState.getInfo().info;
-                    info.username = result.username;
-                    info.email = result.email;
-                    info.language = result.language;
+                    if (info._id === result._id) {
+                      info.username = result.username;
+                      info.email = result.email;
+                      info.language = result.language;
+                    }
                     UserState.saveInfo(info);
                     return result;
                   });
@@ -655,7 +657,7 @@
       };
     }
   ]).controller("UserMgmtController", [
-    "$scope", "UserStorage", "entityInfo", "$routeParams", "$translate", function($scope, UserStorage, entityInfo, $routeParams, $translate) {
+    "$scope", "UserStorage", "entityInfo", "$routeParams", "$translate", "$location", function($scope, UserStorage, entityInfo, $routeParams, $translate, $location) {
       UserStorage.query({
         group: false
       }, function(result) {
@@ -683,7 +685,7 @@
           })();
         };
         updateUsers();
-        return UserStorage.itemSaved(function(item) {
+        UserStorage.itemSaved(function(item) {
           var oldItem;
           oldItem = result.get(item);
           if (!oldItem) {
@@ -693,12 +695,34 @@
           }
           return updateUsers();
         });
+        return UserStorage.itemRemoved(function(id) {
+          result.remove(id);
+          return updateUsers();
+        });
       });
       $scope.userGrid = function() {
         if ($scope.user) {
           return "half";
         } else {
           return "full";
+        }
+      };
+      $scope.addUser = function() {
+        var user;
+        if ($scope.newUserForm.$valid) {
+          user = {
+            email: $scope.email,
+            username: $scope.email,
+            displayname: $scope.email
+          };
+          return UserStorage.save(user).then(function(result) {
+            return $location.path("/settings/users/" + result._id);
+          });
+        }
+      };
+      $scope.removeUser = function(user) {
+        if (confirm($translate("USER.CONFIRMREMOVE"))) {
+          return UserStorage.remove(user._id);
         }
       };
       $scope.entity = entityInfo("User");
@@ -715,19 +739,15 @@
     }
   ]).controller("GroupMgmtController", [
     "$scope", "KonziloConfig", "$http", "$routeParams", "InputAutoSave", "GroupStorage", "$translate", function($scope, KonziloConfig, $http, $routeParams, InputAutoSave, GroupStorage, $translate) {
+      var fetchGroups;
       $scope.query = {};
-      $scope.properties = {
-        name: $translate("GLOBAL.NAME"),
-        operations: {
-          label: $translate("GLOBAL.OPERATIONS"),
-          value: function(item) {
-            return {
-              label: $translate("GLOBAL.EDIT"),
-              link: "#/settings/groups/" + item._id
-            };
-          }
-        }
+      fetchGroups = function() {
+        return $scope.groups = GroupStorage.query().then(function(result) {
+          return result.toArray();
+        });
       };
+      fetchGroups();
+      GroupStorage.itemSaved(fetchGroups);
       if ($routeParams.group) {
         GroupStorage.get($routeParams.group).then(function(group) {
           var save, valid;
@@ -742,13 +762,6 @@
           return $scope.autosave = InputAutoSave.createInstance($scope.group, save, valid);
         });
       }
-      $scope.mainClass = function() {
-        if ($scope.group) {
-          return "span6";
-        } else {
-          return "span12";
-        }
-      };
       $scope.newGroup = {};
       $scope.addUser = function() {
         $scope.group.members.push($scope.newUser);

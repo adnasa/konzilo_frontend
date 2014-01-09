@@ -54,5 +54,8 @@
         <markdown-editor ng-model="content.body"></markdown-editor>
       </div>
     </div>
+    <div ng-show="useAuthor">
+      <div author-picker="author-picker" author="part.byline"></div>
+    </div>
   </div>
 </ng-form>

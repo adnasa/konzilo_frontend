@@ -205,6 +205,18 @@
           });
         };
 
+        KonziloCollection.prototype.remove = function(item) {
+          if (_.isPlainObject(item)) {
+            item = item._id;
+          }
+          if (item.toObject) {
+            item = item.id();
+          }
+          return _.remove(this.data, function(value) {
+            return value.id() === item;
+          });
+        };
+
         KonziloCollection.prototype.hasItem = function(item) {
           if (this.get(item)) {
             return true;

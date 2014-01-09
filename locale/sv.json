@@ -81,7 +81,11 @@
     "ADD": "Lägg till",
     "MAX": "Maximum",
     "MIN": "Minimum",
-    "AUTHOR": "Författare"
+    "AUTHOR": "Innehållsproducent",
+    "URL": "URL",
+    "CONTENT": "Innehåll",
+    "TELLER": "Berättare",
+    "NOTES": "Anteckningar"
   },
   "CHANNEL": {
     "TITLE": "Kanaler",
@@ -221,11 +225,11 @@
     "EMPTYCLIPBOARD": "Töm artikellistan"
   },
   "AUTHOR": {
-    "EDIT": "Redigera författare",
-    "NEW": "Ny författare",
-    "ABOUT": "Om författaren",
-    "NAME": "Författare",
-    "PICK": "Välj författare"
+    "EDIT": "Redigera innehållsproducent",
+    "NEW": "Ny innehållsproducent",
+    "ABOUT": "Om producenten",
+    "NAME": "Innehållsproducent",
+    "PICK": "Välj producent"
   },
   "CLIPBOARD": {
     "DESCRIPTION": "Använd artikelväljaren för att lägga till artiklar."
@@ -310,6 +314,19 @@
     "REMOVE": "Ta bort publiceringsmål",
     "TITLE": "Publiceringsmål",
     "ADDNEW": "Lägg till nytt publiceringsmål",
-    "NOTAUTHORIZED": "Den här anslutningen är inte auktoriserad än"
+    "NOTAUTHORIZED": "Den här anslutningen är inte auktoriserad än",
+    "TYPESETTINGS": "Inställningar för publiceringsmål"
+  },
+  "DRUPAL": {
+    "CLIENTID": "Klient-ID",
+    "CLIENTSECRET": "Klient-hemlighet",
+    "ENDPOINTNAME": "Namn på mål i Drupal"
+  },
+  "WORDPRESS": {
+    "BLOGID": "Blogg-ID",
+    "EXCERPT": "Excerpt"
+  },
+  "CONTENTTYPE": {
+    "USEAUTHOR": "Använd författare"
   }
 }

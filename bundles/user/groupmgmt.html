@@ -1,52 +1,70 @@
 
 <div class="wrapper">
   <div class="main-content">
-    <div ng-class="{full: !group, half: group}">
-      <section class="articleinfo">
+    <div class="list box pad">
+      <form ng-submit="addGroup()" name="addGroupForm" class="new-group form-inline add-article">
+        <div class="form-group">
+          <input type="text" name="name" ng-model="newGroup.name" placeholder="{{ 'GROUP.CREATENEW' | translate }}" required="required" class="form-control"/>
+        </div>
+        <button class="btn btn-default add-article"><i class="icon-plus"></i></button>
+      </form>
+      <div class="groups">
+        <div ng-repeat="group in groups" class="row-item"><a ng-href="#/settings/groups/{{group._id}}" class="block">{{group.name}}</a>
+          <button ng-click="removeGroup(group)" class="btn-link clipboard-remove"><i class="icon-remove"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="main-full">
+      <div ng-show="group" class="main">
         <div class="box pad">
-          <h1>{{"GROUP.TITLE" | translate}}</h1>
-          <content-table entity-type="Group" properties="properties" query="query"></content-table>
-          <form name="addGroupForm" ng-submit="addGroup()" class="form form-inline add-group-form">
+          <form name="editGroupForm" class="form form-horizontal">
+            <h2>{{group.name}}</h2>
             <div class="form-group">
-              <input type="text" name="name" ng-model="newGroup.name" placeholder="{{ 'GROUP.CREATENEW' | translate }}" required="required" class="form-control"/>
+              <label for="name" class="control-label">{{ 'GLOBAL.NAME' | translate }}</label>
+              <div class="controls">
+                <input type="text" name="name" ng-model="group.name" required="required"/>
+              </div>
             </div>
-            <input type="submit" name="save" value="{{'GROUP.CREATE' | translate}}" class="btn btn-primary"/>
+            <div ng-show="group.members" class="form-group">
+              <label class="control-label">{{'GLOBAL.USER' | translate}}</label>
+              <div class="controls">
+                <table class="table-striped table">
+                  <tr ng-repeat="user in group.members">
+                    <td>{{user.username}}</td>
+                    <td>
+                      <button ng-click="removeUser(user)" class="btn btn-danger"><i class="icon-remove"></i><span>{{'GLOBAL.REMOVE' | translate}}</span></button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </form>
+          <form name="userInput" class="add-group-user-form">
+            <h3>{{'GROUP.ADDUSER' | translate}}</h3>
+            <div class="form-inline">
+              <div class="form-group">
+                <entity-reference entity-type="User" ng-model="newUser" placeholder="{{'GROUP.ADDUSER' | translate}}"></entity-reference>
+                <button ng-click="addUser()" class="btn btn-primary">{{ 'GLOBAL.APPEND' | translate }}</button>
+              </div>
+            </div>
           </form>
         </div>
-      </section>
-    </div>
-    <div ng-show="group" class="half">
-      <div class="box pad">
-        <form name="editGroupForm" class="form form-horizontal">
-          <h2>{{group.name}}</h2>
-          <div class="form-group">
-            <label for="name" class="control-label">{{ 'GLOBAL.NAME' | translate }}</label>
-            <div class="controls">
-              <input type="text" name="name" ng-model="group.name" required="required"/>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label">{{'GLOBAL.USER' | translate}}</label>
-            <div class="controls">
-              <table class="table-striped table">
-                <tr ng-repeat="user in group.members">
-                  <td>{{user.username}}</td>
-                  <td>
-                    <button ng-click="removeUser(user)" class="btn btn-danger"><i class="icon-remove"></i><span>{{'GLOBAL.REMOVE' | translate}}</span></button>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </form>
-        <form name="userInput" class="add-group-user-form">
-          <div class="form-inline">
-            <div class="form-group">
-              <entity-reference entity-type="User" ng-model="newUser" placeholder="{{'GROUP.ADDUSER' | translate}}"></entity-reference>
-              <button ng-click="addUser()" class="btn btn-primary">{{ 'GLOBAL.APPEND' | translate }}</button>
-            </div>
-          </div>
-        </form>
+      </div>
+      <div ng-show="group" class="additional">
+        <div class="tabbed-box">
+          <tabset>
+            <tab heading="{{ 'GLOBAL.DISCUSSION' | translate }}">
+              <div class="pad">
+                <konzilo-comments ng-model="group.adminComments"></konzilo-comments>
+              </div>
+            </tab>
+            <tab heading="{{'GLOBAL.NOTES' | translate}}">
+              <div class="pad">
+                <markdown-editor ng-model="group.adminNotes"></markdown-editor>
+              </div>
+            </tab>
+          </tabset>
+        </div>
       </div>
     </div>
   </div>

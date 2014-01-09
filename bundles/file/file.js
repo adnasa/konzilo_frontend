@@ -186,6 +186,9 @@
                 },
                 maxFileSize: bundleInfo.maxFileSize,
                 acceptFileTypes: new RegExp(bundleInfo.acceptFileTypes),
+                start: function(e, data) {
+                  return $scope.uploading = true;
+                },
                 done: function(e, data) {
                   var timeoutFn;
                   FileStorage.clearCache();

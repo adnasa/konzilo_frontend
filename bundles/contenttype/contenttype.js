@@ -17,7 +17,7 @@
               });
               while (existingParts.length < part.min) {
                 articlePart = {
-                  title: part.label,
+                  title: article.get("title") + (" [" + part.label + "]"),
                   state: "notstarted",
                   type: part.type,
                   typeName: part.name,
@@ -181,15 +181,17 @@
       };
     }
   ]).directive("kzContentTypeForm", [
-    "articleParts", function(articleParts) {
+    "articleParts", "$http", function(articleParts, $http) {
       return {
         restrict: "AE",
         scope: {
-          contentType: "="
+          contentType: "=",
+          endpointType: "="
         },
         controller: [
           "$scope", function($scope) {
-            var getMaxLimit, getMinLimit, update;
+            var endpointTypes, getMaxLimit, getMinLimit, update, updateEndpointType;
+            endpointTypes = {};
             $scope.types = articleParts.types();
             $scope.typeLabels = articleParts.labels();
             $scope.newPart = {
@@ -255,12 +257,16 @@
               return part.max = parseInt(part.max);
             };
             update = function() {
-              var index, part, _i, _len, _ref, _results;
+              var field, index, part, _i, _len, _ref, _results;
               if (!$scope.contentType) {
                 return;
               }
+              $scope.components = [];
               if (!$scope.contentType.parts) {
                 $scope.contentType.parts = [];
+              }
+              if (!$scope.contentType.endpointSettings) {
+                $scope.contentType.endpointSettings = {};
               }
               $scope.partMaxLimit = {};
               $scope.partMinLimit = {};
@@ -269,7 +275,25 @@
               for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
                 part = _ref[index];
                 $scope.newPartMaxLimit(index, part.min);
-                _results.push($scope.newPartMinLimit(index, part.max));
+                $scope.newPartMinLimit(index, part.max);
+                _results.push((function() {
+                  var _j, _len1, _ref1, _results1;
+                  _ref1 = $scope.types[part.type].fields;
+                  _results1 = [];
+                  for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                    field = _ref1[_j];
+                    if (part.show[field.name]) {
+                      _results1.push($scope.components.push({
+                        name: "" + part.name + "." + field.name,
+                        part: part.label,
+                        field: field.label
+                      }));
+                    } else {
+                      _results1.push(void 0);
+                    }
+                  }
+                  return _results1;
+                })());
               }
               return _results;
             };
@@ -303,7 +327,18 @@
                 };
               }
             };
-            return $scope.$watch("contentType", update);
+            $scope.$watch("contentType", update);
+            updateEndpointType = function() {
+              var _ref;
+              if ($scope.endpointType) {
+                return $scope.typeSettings = (_ref = endpointTypes[$scope.endpointType]) != null ? _ref.typeSettings : void 0;
+              }
+            };
+            return $http.get('/endpointtype').then(function(result) {
+              endpointTypes = result.data;
+              updateEndpointType();
+              return $scope.$watch("endpointType", updateEndpointType);
+            });
           }
         ],
         templateUrl: "bundles/contenttype/content-type-form.html"

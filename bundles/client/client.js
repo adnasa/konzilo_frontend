@@ -15,7 +15,7 @@
     }
   ]).run([
     "konziloMenu", function(konziloMenu) {
-      return konziloMenu("settingsMenu").addItem("#/settings/clients", "Klienter", function(userAccess) {
+      return konziloMenu("settingsMenu").addItem("#/settings/clients", "CLIENT.TITLE", function(userAccess) {
         return userAccess("administer system");
       });
     }

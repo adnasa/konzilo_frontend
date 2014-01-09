@@ -2,7 +2,7 @@
 <div class="articleparts">
   <p ng-show="size == 0">{{'CLIPBOARD.DESCRIPTION' | translate}}</p>
   <div ng-repeat="article in articles" class="row-item"><a ng-click="toggleArticle(article)" class="link-block">
-      <div class="pull-right"><span>{{article.publishdate | date: 'yyyy-MM-dd'}}</span>
+      <div class="pull-right"><span>{{article.publishdate | date: 'EEE yyyy-MM-dd'}}</span>
         <button class="btn-link"><i ng-class="toggleIcon(article)"></i></button>
       </div>
       <div class="top">
@@ -11,7 +11,7 @@
       </div></a>
     <div ng-show="active(article)" class="content">
       <div class="inner">
-        <div class="row-item add-part">
+        <div class="add-part">
           <div kntnt-add-article-part="kntnt-add-article-part" article="article" part-created="partCreated"></div>
         </div>
         <div ui-sortable="options" ng-model="article.parts" class="items">

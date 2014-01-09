@@ -12,7 +12,7 @@
           <div class="articles sortable">
             <div ng-repeat="(index, date) in dates" class="period"><a ng-click="toggleMonth(date)" class="toggle-period">
                 <h3><i ng-class="{'icon-chevron-down': !monthHidden[date], 'icon-chevron-right': monthHidden[date]}"></i><span>{{ getDate(date) | date: 'MMMM' }}</span></h3></a>
-              <div ng-show="!monthHidden[date]" class="content"><a ng-class="activeArticle(article)" href="{{link(article)}}" ng-repeat="article in clipboard[date]" class="row-item"><span class="article-state {{article.state}}"></span><span>{{article.title}}</span><span class="pull-right">{{ article.publishdate | date: "yyyy-MM-dd" }}</span></a></div>
+              <div ng-show="!monthHidden[date]" class="content"><a ng-class="activeArticle(article)" href="{{link(article)}}" ng-repeat="article in clipboard[date]" class="row-item"><span class="article-state {{article.state}}"></span><span>{{article.title}}</span><span class="pull-right">{{ article.publishdate | date: "EEE yyyy-MM-dd" }}</span></a></div>
             </div>
           </div>
           <div class="fetchmore"><a ng-click="nextPage()" ng-show="skip + 20  &lt;= count">{{'GLOBAL.FETCHMORE' | translate}}</a></div>

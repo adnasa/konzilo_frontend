@@ -56,7 +56,6 @@
     "$scope", "KonziloConfig", "$http", "$routeParams", "InputAutoSave", "ChannelStorage", "$translate", "articleParts", function($scope, KonziloConfig, $http, $routeParams, InputAutoSave, ChannelStorage, $translate, articleParts) {
       var bin;
       bin = KonziloConfig.get("endpoints");
-      $scope.endpoints = bin.listAll();
       $scope.query = {};
       $scope.types = articleParts.labels();
       $scope.properties = {
@@ -72,20 +71,24 @@
           }
         }
       };
-      if ($routeParams.channel) {
-        ChannelStorage.get($routeParams.channel).then(function(channel) {
-          var save, valid;
-          $scope.channel = channel.toObject();
-          $scope.channel.contentType = $scope.channel.contentType || {};
-          valid = function() {
-            return $scope.editChannelForm.$valid;
-          };
-          save = function() {
-            return ChannelStorage.save($scope.channel);
-          };
-          return $scope.autosave = InputAutoSave.createInstance($scope.channel, save, valid);
-        });
-      }
+      bin.listAll().then(function(endpoints) {
+        $scope.endpoints = endpoints;
+        if ($routeParams.channel) {
+          return ChannelStorage.get($routeParams.channel).then(function(channel) {
+            var save, valid;
+            $scope.channel = channel.toObject();
+            $scope.channel.contentType = $scope.channel.contentType || {};
+            $scope.endpoint = $scope.endpoints[$scope.channel.endpoint];
+            valid = function() {
+              return $scope.editChannelForm.$valid;
+            };
+            save = function() {
+              return ChannelStorage.save($scope.channel);
+            };
+            return $scope.autosave = InputAutoSave.createInstance($scope.channel, save, valid);
+          });
+        }
+      });
       $scope.newChannel = {};
       $scope.addChannel = function() {
         if ($scope.addChannelForm.$valid) {

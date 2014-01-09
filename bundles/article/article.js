@@ -32,7 +32,7 @@
                 }
               ],
               controller: [
-                "$scope", "articlePart", "InputAutoSave", "useAutoSave", "showFields", "definition", function($scope, articlePart, InputAutoSave, useAutoSave, showFields, definition) {
+                "$scope", "articlePart", "InputAutoSave", "useAutoSave", "showFields", "definition", "useAuthor", function($scope, articlePart, InputAutoSave, useAutoSave, showFields, definition, useAuthor) {
                   var clean, savePart;
                   $scope.setActive = function() {
                     return $scope.$emit("kzActivePart", $scope.part);
@@ -40,9 +40,11 @@
                   $scope.part = articlePart.toObject();
                   $scope.part.content = $scope.part.content || {};
                   $scope.content = $scope.part.content;
+                  $scope.useAuthor = useAuthor;
                   $scope.showFields = showFields;
                   $scope.part.vocabularies = $scope.part.vocabularies || {};
                   savePart = function() {
+                    articlePart.set("byline", $scope.part.byline);
                     articlePart.set("content", $scope.content);
                     return articlePart.save();
                   };
@@ -84,10 +86,11 @@
                 return true;
               },
               controller: [
-                "$scope", "articlePart", "InputAutoSave", "useAutoSave", "$http", "showFields", function($scope, articlePart, InputAutoSave, useAutoSave, $http, showFields) {
+                "$scope", "articlePart", "InputAutoSave", "useAutoSave", "$http", "showFields", "useAuthor", function($scope, articlePart, InputAutoSave, useAutoSave, $http, showFields, useAuthor) {
                   var clean, savePart;
                   $scope.part = articlePart.toObject();
                   $scope.showFields = showFields;
+                  $scope.useAuthor = useAuthor;
                   $scope.part.vocabularies = $scope.part.vocabularies || {};
                   $scope.part.content = $scope.part.content || {};
                   $scope.content = $scope.part.content;
@@ -156,18 +159,20 @@
               ],
               defaultName: $translate("IMAGEPART.DEFAULTNAME"),
               controller: [
-                "$scope", "articlePart", "InputAutoSave", "UserStorage", "$q", "useAutoSave", "showFields", function($scope, articlePart, InputAutoSave, UserStorage, $q, useAutoSave, showFields) {
+                "$scope", "articlePart", "InputAutoSave", "UserStorage", "$q", "useAutoSave", "showFields", "useAuthor", function($scope, articlePart, InputAutoSave, UserStorage, $q, useAutoSave, showFields, useAuthor) {
                   var clean, savePart;
                   $scope.part = articlePart.toObject();
                   $scope.part.content = $scope.part.content || {};
                   $scope.part.vocabularies = $scope.part.vocabularies || {};
                   $scope.showFields = showFields;
+                  $scope.useAuthor = useAuthor;
                   $scope.content = $scope.part.content;
                   if (!$scope.content.images) {
                     $scope.content.images = [];
                   }
                   savePart = function() {
                     articlePart.set("content", $scope.content);
+                    articlePart.set("byline", $scope.part.byline);
                     articlePart.save();
                   };
                   clean = function() {
@@ -179,57 +184,6 @@
                 }
               ],
               templateUrl: "bundles/article/articlepart-image.html"
-            };
-          }
-        ],
-        author: [
-          "$translate", function($translate) {
-            return {
-              label: $translate("GLOBAL.AUTHOR"),
-              fields: [
-                {
-                  name: "name",
-                  label: "GLOBAL.NAME"
-                }, {
-                  name: "email",
-                  label: "GLOBAL.EMAIL"
-                }, {
-                  name: "about",
-                  label: "AUTHOR.ABOUT"
-                }, {
-                  name: "image",
-                  label: "GLOBAL.IMAGE"
-                }
-              ],
-              defaultName: $translate("IMAGEPART.DEFAULTNAME"),
-              controller: [
-                "$scope", "articlePart", "InputAutoSave", "UserStorage", "$q", "useAutoSave", "showFields", "UserState", function($scope, articlePart, InputAutoSave, UserStorage, $q, useAutoSave, showFields, UserState) {
-                  var clean, savePart;
-                  $scope.part = articlePart.toObject();
-                  $scope.part.content = $scope.part.content || {};
-                  $scope.showFields = showFields;
-                  $scope.content = $scope.part.content;
-                  if (_.isEmpty($scope.part.content)) {
-                    UserStorage.get(UserState.getInfo().info._id).then(function(user) {
-                      var author;
-                      author = user.get("author");
-                      if (author) {
-                        return $scope.content = $scope.part.content = author;
-                      }
-                    });
-                  }
-                  savePart = function() {
-                    articlePart.save();
-                  };
-                  clean = function() {
-                    return $scope.partForm.$valid;
-                  };
-                  if (useAutoSave) {
-                    return $scope.autosave = InputAutoSave.createInstance($scope.part, savePart, clean);
-                  }
-                }
-              ],
-              template: "<ng-form name=\"partForm\">          <cmf-autosave-status status=\"autosave\"></cmf-autosave-status>          <author-form author=\"content\" show-fields=\"showFields\"></author-form>        </ng-form>"
             };
           }
         ]
@@ -1375,9 +1329,10 @@
                 });
               }
               return kzPartSettings(articlePart).then(function(partSettings) {
-                var field, showFields, _i, _len, _ref;
+                var field, showFields, useAuthor, _i, _len, _ref;
                 if (!partSettings) {
                   showFields = {};
+                  useAuthor = true;
                   _ref = definition.fields;
                   for (_i = 0, _len = _ref.length; _i < _len; _i++) {
                     field = _ref[_i];
@@ -1385,6 +1340,7 @@
                   }
                 } else {
                   showFields = partSettings.show;
+                  useAuthor = partSettings.useAuthor;
                 }
                 return templatePromise.then(function(template) {
                   if (definition.controller) {
@@ -1393,6 +1349,7 @@
                       articlePart: articlePart,
                       useAutoSave: useAutoSave,
                       showFields: showFields,
+                      useAuthor: useAuthor,
                       definition: definition
                     });
                   }
