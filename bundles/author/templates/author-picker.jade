@@ -5,7 +5,7 @@
       entity-reference(entity-type="Author", ng-model="author")
       .links
         a(ng-click="newAuthor()") {{ 'AUTHOR.NEW' | translate }}
-        a(ng-click="editAuthor()") {{ 'AUTHOR.EDIT' | translate }}
+        a(ng-click="editAuthor()", ng-show="author") {{ 'AUTHOR.EDIT' | translate }}
   .author(ng-show="author")
     .image
       img(ng-src="{{author.image.uri}}", ng-show="author.image")
