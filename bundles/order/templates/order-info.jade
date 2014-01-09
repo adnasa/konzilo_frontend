@@ -39,7 +39,7 @@
           .form-group(ng-show="article.description")
             label.control-label(for="description") {{ 'GLOBAL.ARTICLE_IDEA' | translate }}
             .controls
-            .text(markdown="article.description")
+              .text(markdown="article.description")
     tab(heading="{{ 'GLOBAL.DISCUSSION' | translate }}")
       .inner.pad
         konzilo-comments(ng-model="part.comments")
