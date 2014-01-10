@@ -1,36 +1,39 @@
 .wrapper
   .main-content
-    div(ng-class="{full: !step, half: step}")
-      .box.pad
-        h1 {{ 'STEP.TITLE' | translate }}
-        p {{ 'STEP.DESCRIPTION' | translate }}
-        draggable-content-table(entity-type="Step", properties="properties", query="query", weight="weight")
-      .box.pad
-        h2 {{ 'STEP.ADDSTEP' | translate }}
-        form.form(name="addStepForm", ng-submit="addStep()")
-          .form-group
-            label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}
-            .controls
-              input(type="text", name="name", ng-model="newStep.name", required)
-          .form-group
-            label.control-label(for="description") {{'GLOBAL.DESCRIPTION' | translate }}
-            .controls
-              textarea(name="description", ng-model="newStep.description")
-          .form-actions
-            input.btn.btn-primary(type="submit", name="save", value="{{ 'GLOBAL.SAVE' | translate}}")
-    .half(ng-show="step")
-      .box.pad
-        button.pull-right.btn.btn-danger(ng-click="removeStep(step)")
-          i.icon-remove
-          span {{ 'GLOBAL.REMOVE' | translate }}
-        h2 {{step.name}}
-        form.form(name="editStepForm")
-          cmf-autosave-status(status="autosave")
-          .form-group
-            label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}
-            .controls
-              input(type="text", name="name", ng-model="step.name", required)
-          .form-group
-            label.control-label(for="description") {{ 'GLOBAL.DESCRIPTION' | translate }}
-            .controls
-              textarea(name="description", ng-model="step.description")
+    .list.box.pad(ng-class="{visible: step}")
+      form.new-step.form-inline.add-article(ng-submit="addStep()", name="addStepForm")
+        .form-group
+          input(type="text", name="name", ng-model="newStep.name",
+            required, placeholder="{{'STEP.ADDSTEP' | translate}}")
+        button.btn.btn-default.add-article
+          i.icon-plus
+      a.row-item(
+        ng-repeat="item in steps",
+        ng-href="#/settings/steps/{{item._id}}",
+        ng-class="{active: item._id == step._id}") {{item.name}}
+    .main-full
+      .main(ng-show="step")
+        .box.pad
+          button.pull-right.btn.btn-danger(ng-click="removeStep(step)")
+            i.icon-remove
+            span {{ 'GLOBAL.REMOVE' | translate }}
+          h1 {{step.name}}
+          form.form(name="editStepForm")
+            cmf-autosave-status(status="autosave")
+            .form-group
+              label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}
+              .controls
+                input(type="text", name="name", ng-model="step.name", required)
+            .form-group
+              label.control-label(for="description") {{ 'GLOBAL.DESCRIPTION' | translate }}
+              .controls
+                textarea(name="description", ng-model="step.description")
+      .additional(ng-show="step")
+        .tabbed-box
+          tabset
+            tab(heading="{{ 'GLOBAL.DISCUSSION' | translate }}")
+              .pad
+                konzilo-comments(ng-model="step.adminComments")
+            tab(heading="{{'GLOBAL.NOTES' | translate}}")
+              .pad
+                markdown-editor(ng-model="step.adminNotes")
