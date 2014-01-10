@@ -80,9 +80,6 @@ angular.module("konzilo.config", [])
       $http.get("/config/#{@bin}/#{name}", cache: true).then (result) ->
         callback(result.data.data) if callback
         return result.data.data
-      , (error) ->
-        errorCallback(error) if errorCallback
-        return error
 
     write: (name, data, callback, errorCallback) =>
       @cache.removeAll()
