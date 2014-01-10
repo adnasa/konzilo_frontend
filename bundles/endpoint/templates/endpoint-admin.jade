@@ -1,39 +1,44 @@
 .wrapper
   .main-content
-    div(ng-class="{full: !endpoint, half: endpoint}")
-      .box.pad
-        h1 {{'ENDPOINT.TITLE' | translate}}
-        content-table(items="endpoints", properties="properties", id="name", selected="selected", operations="operations")
-        h2 {{'ENDPOINT.ADDNEW' | translate}}
-        form.form(name="addEndpointForm", ng-submit="addEndpoint()")
-          .form-group
-            label.control-label(for="name") {{'GLOBAL.NAME' | translate}}
-            .controls
-              input(type="text", name="name", ng-model="newEndpoint.name", required)
-          .form-group
-            label.control-label(for="langcode") {{'GLOBAL.TYPE' | translate}}
-            .controls
-              select(type="text", name="name", ng-model="type", required, ng-options="value.label for (key, value) in types", required)
-          .form-group(ng-repeat="setting in type.settings")
-            label.control-label {{setting.label | translate }}
-            .controls
-              input(type="text", ng-model="newEndpoint.settings[setting.name]", required)
-          .form-actions
-            input.btn.btn-primary(type="submit", value="{{'GLOBAL.SAVE' | translate}}")
-    .half(ng-show="endpoint")
-      .box.pad
-        h2 {{endpoint.name}}
-        form.form(name="editEndpointForm", ng-submit="addEndpoint()")
-          cmf-autosave-status(status="autosave")
-          .form-group
-            label.control-label(for="name") {{'GLOBAL.NAME' | translate}}
-            .controls
-              input(type="text", name="name", ng-model="endpoint.name", required)
-          .form-group(ng-repeat="setting in getSettings(endpoint.type)")
-            label.control-label {{setting.label | translate }}
-            .controls
-              input(type="text", ng-model="endpoint.settings[setting.name]", required)
-        form(method="POST", action="/endpoint/{{endpoint.name}}/authorize")
-          .form-group
-            .controls
-              input.btn-primary.btn(type="submit", name="save", value="Auktorisera")
+    .list.box.pad(ng-class="{visible: endpoint}")
+      form.form-inline.add-article(name="addEndpointForm", ng-submit="addEndpoint()")
+        .form-group
+          input(type="text", name="name", ng-model="newEndpoint.name", required, placeholder="{{'ENDPOINT.ADDNEW' | translate}}")
+        .form-group
+          select(type="text", name="name", ng-model="type", required, ng-options="value.label for (key, value) in types", required)
+            option(value="") {{'GLOBAL.TYPE' | translate}}
+        button.btn.btn-default.add-article
+          i.icon-plus
+      a.row-item(
+        ng-repeat="item in endpoints",
+        ng-href="#/settings/endpoints/{{item.name}}",
+        ng-class="{active: item.name == endpoint.name}") {{item.name}}
+    .main-full
+      .main(ng-show="endpoint")
+        .box.pad
+          button.btn-danger.btn.pull-right(
+            ng-click="deleteEndpoint(endpoint)") {{ 'ENDPOINT.REMOVE' | translate }}
+          h1 {{endpoint.name}}
+          form.form(name="editEndpointForm", ng-submit="addEndpoint()")
+            cmf-autosave-status(status="autosave")
+            .form-group
+              label.control-label(for="name") {{'GLOBAL.NAME' | translate}}
+              .controls
+                input(type="text", name="name", ng-model="endpoint.name", required)
+            .form-group(ng-repeat="setting in getSettings(endpoint.type)")
+              label.control-label {{setting.label | translate }}
+              .controls
+                input(type="text", ng-model="endpoint.settings[setting.name]", required)
+          form(method="POST", action="/endpoint/{{endpoint.name}}/authorize")
+            .form-group
+              .controls
+                input.btn-primary.btn(type="submit", name="save", value="Auktorisera")
+      .additional(ng-show="endpoint")
+        .tabbed-box
+          tabset
+            tab(heading="{{ 'GLOBAL.DISCUSSION' | translate }}")
+              .pad
+                konzilo-comments(ng-model="endpoint.adminComments")
+            tab(heading="{{'GLOBAL.NOTES' | translate}}")
+              .pad
+                markdown-editor(ng-model="endpoint.adminNotes")

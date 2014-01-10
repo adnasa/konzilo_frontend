@@ -19,24 +19,10 @@ angular.module("konzilo.endpoint", ["konzilo.config", "konzilo.translations"])
 ])
 .controller("EndpointAdminController",
 ["$scope", "KonziloConfig", "$http",
-"$routeParams", "InputAutoSave", "$translate",
-($scope, KonziloConfig, $http, $routeParams, InputAutoSave, $translate) ->
+"$routeParams", "InputAutoSave", "$translate", "$location",
+($scope, KonziloConfig, $http, $routeParams,
+InputAutoSave, $translate, $location) ->
   bin = KonziloConfig.get("endpoints")
-
-  $scope.properties =
-    name: $translate("GLOBAL.NAME")
-    type: $translate("GLOBAL.TYPE")
-    operations:
-      label: $translate("GLOBAL.OPERATIONS")
-      value: (item) ->
-        label: $translate("GLOBAL.EDIT")
-        link: "#/settings/endpoints/#{item.name}"
-
-  $scope.operations =
-    delete:
-      label: $translate("ENDPOINT.REMOVE")
-      action: (endpoint) ->
-        bin.remove(endpoint.name).then(fetchEndpoints)
 
   $http.get('/endpointtype').then (result) ->
     $scope.types = result.data
@@ -59,6 +45,11 @@ angular.module("konzilo.endpoint", ["konzilo.config", "konzilo.translations"])
 
   fetchEndpoints()
 
+  $scope.deleteEndpoint = (endpoint) ->
+    if confirm($translate("ENDPOINT.CONFIRMREMOVE"))
+      bin.remove(endpoint.name).then ->
+        $location.url("/settings/endpoints")
+
   $scope.getSettings = (type) ->
     return {} if not type
     return $scope.types[type].settings
@@ -73,7 +64,8 @@ angular.module("konzilo.endpoint", ["konzilo.config", "konzilo.translations"])
   $scope.addEndpoint = ->
     if $scope.addEndpointForm.$valid
       $scope.newEndpoint.type = $scope.type.name
-      bin.set($scope.newEndpoint.name, $scope.newEndpoint)
+      bin.set($scope.newEndpoint.name, $scope.newEndpoint).then ->
+        $location.url("/settings/endpoints/#{$scope.newEndpoint.name}")
       fetchEndpoints()
   return
 ])
