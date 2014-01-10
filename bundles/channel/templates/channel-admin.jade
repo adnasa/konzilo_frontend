@@ -1,29 +1,21 @@
 .wrapper
   .main-content
-    div(ng-class="{full: !channel, half: channel}")
-      .box.pad
-        h1 {{ 'CHANNEL.TITLE' | translate }}
-        content-table(entity-type="Channel", properties="properties", query="query")
-        h2 {{ 'CHANNEL.ADD_NEW' | translate }}
-        form.form(name="addChannelForm", ng-submit="addChannel()")
-          .form-group
-            label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}
-            .controls
-              input(type="text", name="name", ng-model="newChannel.name", required)
-          .form-group
-            label.control-label(for="description") {{ 'GLOBAL.DESCRIPTION' | translate }}
-            .controls
-              textarea(name="description", ng-model="newChannel.description", required)
-          .form-group
-            label.control-label(for="endpoint") {{ 'GLOBAL.ENDPOINT' | translate }}
-            .controls
-              select(type="text", name="endpoint", ng-model="newChannel.endpoint", required)
-                option(ng-repeat="endpoint in endpoints") {{endpoint.name}}
-          .actions
-            input.btn.btn-primary(type="submit", name="save", value="{{'GLOBAL.SAVE' | translate}}")
-    .half(ng-show="channel")
-      .box.pad
-        h2 {{endpoint.name}}
+    .list.box.pad(ng-class="{visible: channel}")
+      form.form-inline.add-article(name="addChannelForm", ng-submit="addChannel()")
+        .form-group
+          .controls
+            input(type="text", name="name", ng-model="newChannel.name",
+            required, placeholder="{{'CHANNEL.ADD_NEW' | translate}}")
+        button.btn.btn-default.add-article
+          i.icon-plus
+      a.row-item(
+        ng-repeat="item in channels",
+        ng-href="#/settings/channels/{{item._id}}",
+        ng-class="{active: item._id == channel._id}") {{item.name}}
+
+    .main-full
+      .main.box.pad(ng-show="channel")
+        h2 {{channel.name}}
         form.form(name="editChannelForm")
           cmf-autosave-status(status="autosave")
           .form-group
@@ -33,11 +25,22 @@
           .form-group
             label.control-label(for="description") {{ 'GLOBAL.DESCRIPTION' | translate }}
             .controls
-              textarea(name="description", ng-model="channel.description", required)
+              textarea(name="description", ng-model="channel.description")
           .form-group
             label.control-label(for="endpoint") {{ 'GLOBAL.ENDPOINT' | translate }}
             .controls
-              select(type="text", name="endpoint", ng-model="channel.endpoint", required)
+              select(type="text", name="endpoint", ng-model="channel.endpoint")
                 option(ng-repeat="endpoint in endpoints") {{endpoint.name}}
-        h2 {{'CHANNEL.TEMPLATE' | translate}}
-        kz-content-type-form(content-type="channel.contentType", endpoint-type="endpoint.type")
+        .template(ng-show="endpoint")
+          h2 {{'CHANNEL.TEMPLATE' | translate}}
+          kz-content-type-form(content-type="channel.contentType", endpoint-type="endpoint.type")
+
+      .additional(ng-show="channel")
+        .tabbed-box
+          tabset
+            tab(heading="{{ 'GLOBAL.DISCUSSION' | translate }}")
+              .pad
+                konzilo-comments(ng-model="channel.adminComments")
+            tab(heading="{{'GLOBAL.NOTES' | translate}}")
+              .pad
+                markdown-editor(ng-model="channel.adminNotes")

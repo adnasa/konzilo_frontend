@@ -44,22 +44,14 @@ angular.module("konzilo.channel", ["konzilo.config",
 .controller("ChannelAdminController",
 ["$scope", "KonziloConfig", "$http", "$routeParams",
 "InputAutoSave", "ChannelStorage", "$translate", "articleParts",
+"$location",
 ($scope, KonziloConfig, $http, $routeParams,
-InputAutoSave, ChannelStorage, $translate, articleParts) ->
+InputAutoSave, ChannelStorage, $translate, articleParts, $location) ->
   bin = KonziloConfig.get("endpoints")
 
   $scope.query = {}
   $scope.types = articleParts.labels()
-
-  $scope.properties =
-    name: $translate("GLOBAL.NAME")
-    endpoint: $translate("GLOBAL.ENDPOINT")
-    operations:
-      label: $translate("GLOBAL.OPERATIONS")
-      value: (item) ->
-        label: $translate("GLOBAL.EDIT")
-        link: "#/settings/channels/#{item._id}"
-
+  $scope.channels = ChannelStorage.query().then (result) -> result.toArray()
   bin.listAll().then (endpoints) ->
     $scope.endpoints = endpoints
     if $routeParams.channel
@@ -68,13 +60,16 @@ InputAutoSave, ChannelStorage, $translate, articleParts) ->
         $scope.channel.contentType = $scope.channel.contentType or {}
         $scope.endpoint = $scope.endpoints[$scope.channel.endpoint]
         valid = -> $scope.editChannelForm.$valid
-        save = -> ChannelStorage.save($scope.channel)
+        save = ->
+          ChannelStorage.save($scope.channel)
+          $scope.endpoint = $scope.endpoints[$scope.channel.endpoint]
         $scope.autosave = InputAutoSave.createInstance($scope.channel,
           save, valid)
 
   $scope.newChannel = {}
   $scope.addChannel = ->
     if $scope.addChannelForm.$valid
-      ChannelStorage.save($scope.newChannel).then -> fetchChannels()
+      ChannelStorage.save($scope.newChannel).then (channel) ->
+        $location.url("/settings/channels/#{channel._id}")
   return
 ])
