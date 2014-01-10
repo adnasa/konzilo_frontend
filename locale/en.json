@@ -310,8 +310,10 @@
   },
   "ENDPOINT": {
     "REMOVE": "Remove endpoint",
+    "CONFIRMREMOVE": "Are you sure you want to remove the endpoint?",
     "TITLE": "Endpoints",
     "ADDNEW": "Add new endpoint",
+    "NOTAUTHORIZED": "This connection has not been authorized yet.",
     "TYPESETTINGS": "Endpoint settings"
   },
   "DRUPAL": {

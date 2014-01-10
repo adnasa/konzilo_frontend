@@ -312,6 +312,7 @@
   },
   "ENDPOINT": {
     "REMOVE": "Ta bort publiceringsmål",
+    "CONFIRMREMOVE": "Är du säker på att du vill ta bort det här publiceringsmålet?",
     "TITLE": "Publiceringsmål",
     "ADDNEW": "Lägg till nytt publiceringsmål",
     "NOTAUTHORIZED": "Den här anslutningen är inte auktoriserad än",
