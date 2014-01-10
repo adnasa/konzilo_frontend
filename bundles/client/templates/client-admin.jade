@@ -1,18 +1,50 @@
 .wrapper
   .main-content
-    .full
-      .box.pad
-        h1 {{ "CLIENT.TITLE" | translate }}
-        content-table(items="clients", properties="properties", id="name", operations="operations")
-        h2 {{ 'CLIENT.ADDNEW' | translate }}
-        form.form(name="addClientForm", ng-submit="addClient()")
-          .form-group
-            label.control-label(for="name") {{ "GLOBAL.NAME" | translate }}
-            .controls
-              input(type="text", name="name", ng-model="client.name", required)
-          .form-group
-            label.control-label(for="langcode") {{"CLIENT.REDIRECT_URI" | translate}}
-            .controls
-              input(type="text", name="redirectURI", ng-model="client.redirectURI", required)
-          .form-actions
-            input.btn.btn-primary(type="submit", value="{{'GLOBAL.SAVE' | translate}}")
+    .list.box.pad(ng-class="{visible: client}")
+      form.form-inline.add-article(name="addClientForm", ng-submit="addClient()")
+        .form-group
+          input(type="text", name="name", ng-model="newClient.name",
+            required, placeholder="{{'GLOBAL.NAME' | translate}}")
+        .form-group
+          input(type="text", name="redirectURI", ng-model="newClient.redirectURI",
+              required, placeholder="{{'CLIENT.REDIRECT_URI' | translate}}")
+        button.btn.btn-default.add-article
+          i.icon-plus
+      a.row-item(
+        ng-repeat="item in clients",
+        ng-href="#/settings/clients/{{item.name}}",
+        ng-class="{active: item.name == client.name}") {{item.name}}
+    .main-full
+      .main(ng-show="client")
+        .box.pad
+          h1 {{client.name}}
+          cmf-autosave-status(status="autosave")
+          form.form-horizontal.article-description(name="editClientForm", ng-submit="saveClient()")
+            .form-group
+              label.control-label {{"GLOBAL.NAME" | translate}}
+              .controls
+                input(type="text", name="name", ng-model="client.name",
+                  required)
+            .form-group
+              label.control-label {{"CLIENT.REDIRECT_URI" | translate}}
+              .controls
+                input(type="text", name="redirectURI", ng-model="client.redirectURI",
+                  required)
+            .form-group
+              label.control-label {{"CLIENT.CLIENT_ID" | translate}}
+              .controls
+                span {{client.clientId}}
+            .form-group
+              label.control-label {{"CLIENT.SECRET" | translate}}
+              .controls
+                span {{client.clientSecret}}
+
+      .additional(ng-show="client")
+        .tabbed-box
+          tabset
+            tab(heading="{{ 'GLOBAL.DISCUSSION' | translate }}")
+              .pad
+                konzilo-comments(ng-model="client.adminComments")
+            tab(heading="{{'GLOBAL.NOTES' | translate}}")
+              .pad
+                markdown-editor(ng-model="client.adminNotes")
