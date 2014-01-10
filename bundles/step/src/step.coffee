@@ -49,7 +49,9 @@ angular.module("konzilo.step", ["konzilo.config", "konzilo.translations"])
 "InputAutoSave", "StepStorage", "KonziloConfig", "$translate", "$location",
 ($scope, $http, $routeParams,
 InputAutoSave, StepStorage, KonziloConfig, $translate, $location) ->
-  $scope.query = { q: {}, sort: weight: "asc" }
+  getSteps = ->
+    $scope.steps = StepStorage.query().then (result) -> result.toArray()
+  getSteps()
   $scope.properties =
     name: $translate("GLOBAL.NAME")
     operations:
@@ -73,6 +75,7 @@ InputAutoSave, StepStorage, KonziloConfig, $translate, $location) ->
     if $scope.addStepForm.$valid
       StepStorage.save($scope.newStep).then ->
         $scope.newStep = {}
+        getSteps()
 
   $scope.removeStep = (step) ->
     if confirm($translate("STEP.CONFIRMREMOVE"))
