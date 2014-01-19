@@ -110,7 +110,8 @@
     "LANGCODE": "Språk-kod",
     "DIRECTION": "Riktning",
     "STANDARDLANG": "Standardspråk",
-    "SETDEFAULT": "Sätt som standard"
+    "SETDEFAULT": "Sätt som standard",
+    "USEDASDEFAULT": "Används som standardspråk"
   },
   "LOGIN": {
     "LOGIN": "Logga in",
@@ -160,6 +161,7 @@
   "VOCABULARY": {
     "REMOVE": "Ta bort vokabulär",
     "NEWTERM": "Ny term",
+    "NEWVOCABULARY": "Nytt vokabulär",
     "TITLE": "Vokabulär"
   },
   "GROUP": {

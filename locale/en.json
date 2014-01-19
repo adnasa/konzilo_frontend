@@ -110,7 +110,8 @@
     "LANGCODE": "Language code",
     "DIRECTION": "Direction",
     "STANDARDLANG": "Standard language",
-    "SETDEFAULT": "Use as standard"
+    "SETDEFAULT": "Use as standard",
+    "USEDASDEFAULT": "Used as the standard language"
   },
   "LOGIN": {
     "LOGIN": "Log in",
@@ -160,7 +161,8 @@
   },
   "VOCABULARY": {
     "REMOVE": "Remove vocabulary",
-    "NEWTERM": "New vocabulary",
+    "NEWTERM": "New Term",
+    "NEWVOCABULARY": "New vocabulary",
     "TITLE": "Vocabulary"
   },
   "GROUP": {
