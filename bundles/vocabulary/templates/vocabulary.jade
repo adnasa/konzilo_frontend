@@ -3,7 +3,9 @@
     .list.box.pad
       form.form-inline.add-article(ng-submit="newVocabulary()")
         .form-group
-          input.form-control(type="text", name="target", ng-model="vocabularyName", placeholder="")
+          input.form-control(type="text", name="target",
+            ng-model="vocabularyName",
+            placeholder="{{'VOCABULARY.NEWVOCABULARY' | translate}}")
         button.btn.btn-default.add-article
           i.icon-plus
       .row-item(ng-repeat="item in vocabularies")
@@ -17,13 +19,13 @@
     .main-full
       .main(ng-show="vocabulary")
         .box.pad
+          cmf-autosave-status(status="autosave")
           button.btn.btn-danger.pull-right(ng-click="removeVocabulary(vocabulary)")
             i.icon-remove
             span {{ 'VOCABULARY.REMOVE' | translate }}
           h1 {{vocabulary.title}}
         .box.pad(ng-repeat="term in terms")
           form.form(name="termForm")
-            cmf-autosave-status(status="autosave")
             .form-group
               label.control-label {{'GLOBAL.NAME' | translate }}
               .controls

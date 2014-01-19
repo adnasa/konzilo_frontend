@@ -69,6 +69,10 @@ TermStorage, InputAutoSave, $translate) ->
     if confirm($translate("VOCABULARY.REMOVEMSG"))
       config.remove(vocabulary.name)
 
+  getTerms = (vocabulary) ->
+    TermStorage.query({vocabulary: vocabulary.name}).then (terms) ->
+      terms.toArray()
+
   $scope.vocabularies = config.listAll().then (vocabularies) ->
     $scope.vocabularies = vocabularies
     $scope.operations = {}
@@ -76,9 +80,7 @@ TermStorage, InputAutoSave, $translate) ->
     if $routeParams.vocabulary
       config.get($routeParams.vocabulary).then (vocabulary) ->
         $scope.vocabulary = vocabulary
-        $scope.terms = TermStorage.query({vocabulary: vocabulary.name}).then (terms) ->
-          terms.toArray()
-
+        $scope.terms = getTerms(vocabulary)
         if $routeParams.term
           TermStorage.get($routeParams.term).then (result) ->
             $scope.term = result.toObject()
@@ -94,16 +96,16 @@ TermStorage, InputAutoSave, $translate) ->
     $scope.saveVocabulary = (vocabulary) ->
       config.set $scope.vocabulary.name, $scope.vocabulary
 
-    $scope.saveTerm = () ->
+    $scope.saveTerm = ->
       TermStorage.save $scope.term
-      $scope.terms = TermStorage.query({ vocabulary: $scope.vocabulary.name })
+      $scope.terms = getTerms($scope.vocabulary)
 
     $scope.newTerm = ->
       return if not $scope.vocabulary
       term = { name: $scope.termName, vocabulary: $scope.vocabulary.name }
       TermStorage.save term
       $scope.termName = ""
-      $scope.terms = TermStorage.query({ vocabulary: $scope.vocabulary.name })
+      $scope.terms = getTerms($scope.vocabulary)
 
   return
 ])
