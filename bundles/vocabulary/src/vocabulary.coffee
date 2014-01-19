@@ -76,15 +76,9 @@ TermStorage, InputAutoSave, $translate) ->
     if $routeParams.vocabulary
       config.get($routeParams.vocabulary).then (vocabulary) ->
         $scope.vocabulary = vocabulary
-        $scope.properties =
-          name:
-            label: $translate("GLOBAL.NAME")
-            value: (item) ->
-              label: item.name
-              link: "/#/settings/vocabularies/#{vocabulary.name}/#{item._id}"
-          vocabulary: $translate("VOCABULARY.TITLE")
+        $scope.terms = TermStorage.query({vocabulary: vocabulary.name}).then (terms) ->
+          terms.toArray()
 
-        $scope.query = { vocabulary: vocabulary.name }
         if $routeParams.term
           TermStorage.get($routeParams.term).then (result) ->
             $scope.term = result.toObject()

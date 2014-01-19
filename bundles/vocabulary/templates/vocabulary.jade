@@ -1,47 +1,60 @@
 .wrapper
   .main-content
-    .list
-      .box
-        form.form-inline.new-vocabulary-form(ng-submit="newVocabulary()")
+    .list.box.pad
+      form.form-inline.add-article(ng-submit="newVocabulary()")
+        .form-group
+          input.form-control(type="text", name="target", ng-model="vocabularyName", placeholder="")
+        button.btn.btn-default.add-article
+          i.icon-plus
+      .row-item(ng-repeat="item in vocabularies")
+        a.link-block(ng-href="#/settings/vocabularies/{{item.name}}",
+          ng-class="{active: item._id == vocabulary._id}")
+            .pull-right
+              button.btn-link
+                i(class="icon-chevron-right")
+            .top
+              h3.title {{ item.title }}
+    .main-full
+      .main(ng-show="vocabulary")
+        .box.pad
+          button.btn.btn-danger.pull-right(ng-click="removeVocabulary(vocabulary)")
+            i.icon-remove
+            span {{ 'VOCABULARY.REMOVE' | translate }}
+          h1 {{vocabulary.title}}
+        .box.pad(ng-repeat="term in terms")
+          form.form(name="termForm")
+            cmf-autosave-status(status="autosave")
+            .form-group
+              label.control-label {{'GLOBAL.NAME' | translate }}
+              .controls
+                input(type="text", name="name", ng-model="term.name", ng-change="saveTerm()")
+            .form-group
+              label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
+              .controls
+                textarea.input-block-level(name="description",  ng-model="term.description")
+
+        form.form-inline.add-article(name="newTermForm", ng-submit="newTerm()")
           .form-group
-            input.form-control(type="text", name="target", ng-model="vocabularyName", placeholder="")
-          input.btn.btn-primary(type="submit", name="newstep", value="Spara")
-      .item-list
-        ul.nav.nav-pills.nav-stacked
-          li(ng-repeat="vocabulary in vocabularies")
-            a(href="#/settings/vocabularies/{{vocabulary.name}}") {{ vocabulary.title }}
-    .main(ng-show="vocabulary")
-      .box.pad
-        button.btn.btn-danger.pull-right(ng-click="removeVocabulary(vocabulary)")
-          i.icon-remove
-          span {{ 'VOCABULARY.REMOVE' | translate }}
-        h1 {{vocabulary.title}}
-        form.pad.form(ng-submit="saveVocabulary()", name="vocabularyForm")
-          .form-group
-            label.control-label {{ 'GLOBAL.TITLE' | translate }}
-            .controls
-              input(type="text", name="title", ng-model="vocabulary.title", ng-change="saveVocabulary()")
-          .form-group
-            label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
-            .controls
-              textarea.input-block-level(name="description",  ng-model="vocabulary.description", ng-change="saveVocabulary()")
-      .box.pad
-        content-table(query="query", entity-type="Term", properties="properties")
-        form.form-inline(name="newTermForm", ng-submit="newTerm()")
-          .form-group
-            input(type="text", name="termname", ng-model="termName", placeholder="{{'VOCABULARY.NEWTERM' | translate}}")
-          button.btn.btn-primary(name="newTerm")
+            input.form-control(type="text", name="termname", ng-model="termName", placeholder="{{'VOCABULARY.NEWTERM' | translate}}")
+
+          button.btn.btn-default.add-article(name="newTerm")
             i.icon-plus
-    .additional(ng-show="term")
-      .box
-        h2 {{term.name}}
-        form.pad.form(name="termForm")
-          cmf-autosave-status(status="autosave")
-          .form-group
-            label.control-label {{'GLOBAL.NAME' | translate }}
-            .controls
-              input(type="text", name="name", ng-model="term.name", ng-change="saveTerm()")
-          .form-group
-            label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
-            .controls
-              textarea.input-block-level(name="description",  ng-model="term.description")
+      .additional(ng-show="vocabulary")
+        .tabbed-box
+          tabset
+            tab(heading="{{'VOCABULARY.TITLE' | translate}}")
+              form.pad.form(ng-submit="saveVocabulary()", name="vocabularyForm")
+                .form-group
+                  label.control-label {{ 'GLOBAL.TITLE' | translate }}
+                  .controls
+                    input(type="text", name="title", ng-model="vocabulary.title", ng-change="saveVocabulary()")
+                .form-group
+                  label.control-label {{ 'GLOBAL.DESCRIPTION' | translate }}
+                  .controls
+                    textarea.input-block-level(name="description",  ng-model="vocabulary.description", ng-change="saveVocabulary()")
+            tab(heading="{{ 'GLOBAL.DISCUSSION' | translate }}")
+              .pad
+                konzilo-comments(ng-model="vocabulary.adminComments")
+            tab(heading="{{'GLOBAL.NOTES' | translate}}")
+              .pad
+                markdown-editor(ng-model="vocabulary.adminNotes")
