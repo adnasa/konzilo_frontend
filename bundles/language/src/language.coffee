@@ -24,8 +24,8 @@ angular.module("konzilo.language", ["konzilo.translations"])
 ])
 .controller("LanguageAdminController",
 ["$scope", "KonziloConfig", "directions", "$q", "$translate",
-"$routeParams",
-($scope, KonziloConfig, directions, $q, $translate, $routeParams) ->
+"$routeParams", "InputAutoSave",
+($scope, KonziloConfig, directions, $q, $translate, $routeParams, InputAutoSave) ->
   bin = KonziloConfig.get("languages")
   $scope.directions = directions
 
@@ -192,18 +192,30 @@ angular.module("konzilo.language", ["konzilo.translations"])
     $q.all(promises).then ->
       bin.set(language.langcode, language)
 
+  $scope.removeLanguage = (language) ->
+    if confirm($translate("LANGUAGE.CONFIRMREMOVE"))
+      bin.remove(language.langcode).then(getLanguages)
+
   $scope.addLanguage = ->
     language = {}
     if $scope.languages.length == 0
       language.default = true
-    language.name = $scope.defaultLanguages[$scope.language]
+    language.name = $scope.defaultLanguages[$scope.selectedLanguage]
     language.langcode = $scope.selectedLanguage
     language.direction = "ltr"
     bin.set(language.langcode, language).then ->
       getLanguages()
 
-  if ($routeParams.language)
-    $scope.language = bin.get($routeParams.language)
+  $scope.saveLanguage = ->
+    bin.set($scope.language.langcode, $scope.language).then(getLanguages)
+
+  if $routeParams.language
+    bin.get($routeParams.language).then (language) ->
+      $scope.language = language
+      $scope.autosave = InputAutoSave.createInstance $scope.language, $scope.saveLanguage, ->
+        $scope.editLanguageForm.$valid
+
+
 
   return
 ])
