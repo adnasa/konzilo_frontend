@@ -1,22 +1,42 @@
 .wrapper
   .main-content
-    .full
-      .box.pad
-        h1 {{ 'LANGUAGE.TITLE' | translate }}
-        content-table(items="languages", properties="properties", operations="operations")
-        h3 {{ 'LANGUAGE.ADDNEW' | translate }}
-        form.form(name="addLanguageForm", ng-submit="addLanguage()")
-          .form-group
-            label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}
-            .controls
-              input(type="text", name="name", ng-model="language.name", required)
-          .form-group
-            label.control-label(for="langcode") {{ 'LANGUAGE.LANGCODE' | translate }}
-            .controls
-              input(type="text", name="name", ng-model="language.langcode", required)
-          .form-group
-            label.control-label(for="langcode") {{ 'LANGUAGE.DIRECTION' | translate }}
-            .controls
-              select(type="text", name="name", ng-model="language.direction", required, ng-options="key as value for (key, value) in directions")
-          .form-actions
-            input.btn.btn-primary(type="submit", value="{{'GLOBAL.SAVE' | translate}}")
+    .list.box.pad
+      form.form-inline.add-article(ng-submit="addLanguage()")
+        .form-group
+          select(name="language", ng-model="selectedLanguage", required)
+            option(value="") {{'LANGUAGE.PICKLANG' | translate}}
+            option(ng-repeat="(key, name) in defaultLanguages", value="{{key}}") {{name}}
+        button.btn.btn-default.add-article
+          i.icon-plus
+      .languages
+        .row-item(
+          ng-repeat="item in languages",
+          ng-class="{active: item.langcode == language.langcode}")
+          a.block(ng-href="#/settings/languages/{{item.langcode}}") {{item.name}} [{{item.langcode}}]
+          button.btn-link.clipboard-remove(ng-click="removeLanguage(language)")
+            i.icon-remove
+    .main-full
+      .main(ng-show="language")
+        .box.pad
+          h1 {{language.name}}
+          form(name="languageForm")
+            p(ng-show="language.default") {{'LANGUAGE.USEDASDEFAULT' | translate}}
+            button.btn-default.btn(ng-click="setDefault(language)",
+              ng-show="!language.default") {{'LANGUAGE.SETDEFAULT' | translate}}
+
+          // h3 {{ 'LANGUAGE.ADDNEW' | translate }}
+          // form.form(name="addLanguageForm", ng-submit="addLanguage()")
+          //   .form-group
+          //     label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}
+          //     .controls
+          //       input(type="text", name="name", ng-model="language.name", required)
+          //   .form-group
+          //     label.control-label(for="langcode") {{ 'LANGUAGE.LANGCODE' | translate }}
+          //     .controls
+          //       input(type="text", name="name", ng-model="language.langcode", required)
+          //   .form-group
+          //     label.control-label(for="langcode") {{ 'LANGUAGE.DIRECTION' | translate }}
+          //     .controls
+          //       select(type="text", name="name", ng-model="language.direction", required, ng-options="key as value for (key, value) in directions")
+          //   .form-actions
+          //     input.btn.btn-primary(type="submit", value="{{'GLOBAL.SAVE' | translate}}")
