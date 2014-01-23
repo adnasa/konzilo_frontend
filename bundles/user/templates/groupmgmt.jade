@@ -15,12 +15,17 @@
     .main-full
       .main(ng-show="group")
         .box.pad
+          cmf-autosave-status(status="autosave")
           form.form.form-horizontal(name="editGroupForm")
             h2 {{group.name}}
             .form-group
               label.control-label(for="name") {{ 'GLOBAL.NAME' | translate }}
               .controls
                 input(type="text", name="name", ng-model="group.name", required)
+            .form-group
+              label.control-label(for="name") {{ 'GLOBAL.DESCRIPTION' | translate }}
+              .controls
+                textarea(name="description", ng-model="group.description")
             .form-group(ng-show="group.members")
               label.control-label {{'GLOBAL.USER' | translate}}
               .controls
@@ -31,10 +36,10 @@
                       button.btn.btn-danger(ng-click="removeUser(user)")
                         i.icon-remove
                         span {{'GLOBAL.REMOVE' | translate}}
-          form.add-group-user-form(name="userInput")
-            h3 {{'GROUP.ADDUSER' | translate}}
-            .form-inline
-              .form-group
+          form.add-group-user-form.form.form-horizontal(name="userInput")
+            .form-group
+              label.control-label {{'GROUP.ADDUSER' | translate}}
+              .controls
                 entity-reference(entity-type="User",
                   ng-model="newUser",
                   placeholder="{{'GROUP.ADDUSER' | translate}}")
@@ -48,5 +53,3 @@
             tab(heading="{{'GLOBAL.NOTES' | translate}}")
               .pad
                 markdown-editor(ng-model="group.adminNotes")
-
-
