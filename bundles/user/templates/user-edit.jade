@@ -17,8 +17,13 @@ form.form.user-form.form-horizontal(name="userForm")
     .controls.col-lg-10.email
       input.input-half.first(type="email", name="email", ng-model="email")
       button.input-quarter.last.btn.btn-default(ng-click="sendVerifyEmail()", ng-disabled="email == user.email") {{'USER.VERIFYBUTTON' | translate}}
-      input.input-quarter.first(type="text", name="emailverificationcode", ng-model="emailverificationcode", placeholder="{{'USER.VERIFYCODEPLACEHOLDER' | translate}}", ng-show="verificationemailsent")
-      button.input-quarter.last.btn.btn-default(ng-click="performVerifyEmail()", ng-show="verificationemailsent", ng-disabled="!emailverificationcode") {{'USER.UPDATEBUTTON' | translate}}
+      input.input-quarter.first(type="text", name="emailverificationcode",
+        ng-model="emailverificationcode",
+        placeholder="{{'USER.VERIFYCODEPLACEHOLDER' | translate}}",
+        ng-show="verificationemailsent")
+      button.input-quarter.last.btn.btn-default(ng-click="performVerifyEmail()",
+        ng-show="verificationemailsent",
+        ng-disabled="!emailverificationcode") {{'USER.UPDATEBUTTON' | translate}}
       span.help-block.clearfix {{'USER.EMAILHELP' | translate }}
       .alert.alert-info(ng-show="verificationemailsent") {{'USER.EMAILVERIFYHELP' | translate: {email: email} }}
       .alert.alert-danger(ng-show="verifyFail") {{'USER.EMAILVERIFICATIONFAIL' | translate}}
@@ -44,7 +49,7 @@ form.form.user-form.form-horizontal(name="userForm")
     label.control-label {{'GLOBAL.LANGUAGE' | translate}}
     .controls
       select(ng-model="user.language")
-        option(ng-repeat="(name, language) in languages", value="{{name}}", ng-selected="name == user.language") {{language.name}}
+        option(ng-repeat="(name, language) in languages", value="{{name}}", ng-selected="name == user.language || language.default") {{language.name}}
       span.help-block {{'USER.LANGUAGEHELP' | translate}}
   .form-group(ng-show="showAdminFields")
     label.control-label {{'USER.ROLES' | translate}}
@@ -58,4 +63,3 @@ form.form.user-form.form-horizontal(name="userForm")
       label.checkbox
         input(type="checkbox", name="active", ng-model="user.active")
   author-picker(author="user.author")
-

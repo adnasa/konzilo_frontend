@@ -49,7 +49,7 @@ div(kntnt-article-picker)
               .controls
                 select(name="language", ng-model="part.language")
                   option(value="{{code}}", ng-repeat="(code, lang) in languages",
-                    ng-selected="part.language == code") {{lang.name}}
+                    ng-selected="part.language == code || lang.default") {{lang.name}}
             .form-group
               label.control-label(for="terms") {{ 'GLOBAL.TERMS' | translate }}
               .controls
