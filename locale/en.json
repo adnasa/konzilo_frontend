@@ -85,7 +85,9 @@
     "URL": "URL",
     "CONTENT": "Content",
     "TELLER": "Teller",
-    "NOTES": "Notes"
+    "NOTES": "Notes",
+    "PERMISSIONS": "Permissions",
+    "LABEL": "Label"
   },
   "CHANNEL": {
     "TITLE": "Channels",
@@ -329,5 +331,8 @@
   },
   "CONTENTTYPE": {
     "USEAUTHOR": "Use author"
+  },
+  "ROLE": {
+    "TITLE": "Roles"
   }
 }

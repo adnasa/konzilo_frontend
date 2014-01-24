@@ -102,6 +102,10 @@ angular.module("kntnt.user",
   menu.addItem "#/settings/groups", $translate("GROUP.TITLE"),
     (userAccess) ->
       userAccess("administer system")
+  menu.addItem "#/settings/roles", $translate("ROLE.TITLE"),
+    (userAccess) ->
+      userAccess("administer system")
+
 ])
 .factory("userPermissions", ["$http", "$q", ($http, $q) ->
   (permission) ->
@@ -175,6 +179,13 @@ angular.module("kntnt.user",
       access: (userAccess) ->
         userAccess("administer system")
 
+  roleMgmt =
+    controller: "RoleMgmtController"
+    templateUrl: "bundles/user/rolemgmt.html"
+    resolve:
+      access: (userAccess) ->
+        userAccess("administer system")
+
   groupMgmt =
     controller: "GroupMgmtController"
     templateUrl: "bundles/user/groupmgmt.html"
@@ -196,6 +207,9 @@ angular.module("kntnt.user",
   $routeProvider.when('/settings/users/:user', userMgmt)
   $routeProvider.when('/settings/groups', groupMgmt)
   $routeProvider.when('/settings/groups/:group', groupMgmt)
+  $routeProvider.when('/settings/roles', roleMgmt)
+  $routeProvider.when('/settings/roles/:role', roleMgmt)
+
   $routeProvider.otherwise(login)
 
   entityInfoProvider.addProvider "User",
@@ -560,6 +574,23 @@ InputAutoSave, GroupStorage, $translate) ->
       GroupStorage.save($scope.newGroup)
       $scope.newGroup = undefined
   return
+])
+
+.controller("RoleMgmtController",
+["$scope", "KonziloConfig", "$http", "$routeParams",
+"InputAutoSave", "$translate",
+($scope, KonziloConfig, $http, $routeParams,
+InputAutoSave, $translate) ->
+  RoleStorage = KonziloConfig.get("roles")
+  $scope.permissions = $http.get("/permissions").then (data) -> data.data
+  $scope.roles = RoleStorage.listAll()
+
+  if $routeParams.role
+    RoleStorage.get($routeParams.role).then (role) ->
+      $scope.role = role
+      valid = -> $scope.editRoleForm.$valid
+      save = -> RoleStorage.set($routeParams.role, $scope.role)
+      $scope.autosave = InputAutoSave.createInstance($scope.role, save, valid)
 ])
 
 .directive("kzUserAccess",

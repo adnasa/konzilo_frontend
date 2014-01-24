@@ -85,7 +85,9 @@
     "URL": "URL",
     "CONTENT": "Innehåll",
     "TELLER": "Berättare",
-    "NOTES": "Anteckningar"
+    "NOTES": "Anteckningar",
+    "PERMISSIONS": "Rättigheter",
+    "LABEL": "Visningsnamn"
   },
   "CHANNEL": {
     "TITLE": "Kanaler",
@@ -331,5 +333,8 @@
   },
   "CONTENTTYPE": {
     "USEAUTHOR": "Använd författare"
+  },
+  "ROLE": {
+    "TITLE": "Roller"
   }
 }

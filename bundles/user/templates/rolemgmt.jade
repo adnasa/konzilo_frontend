@@ -1,0 +1,34 @@
+.wrapper
+  .main-content
+    .list
+      .roles.pad.box
+        .row-item(ng-repeat="(name, role) in roles")
+          a.block(ng-href="#/settings/roles/{{name}}") {{role.label}}
+    .main-full
+      .main(ng-show="role")
+        .box.pad
+          cmf-autosave-status(status="autosave")
+          form.form.form-horizontal(name="editRoleForm")
+            h2 {{role.name}}
+            .form-group
+              label.control-label(for="label") {{ 'GLOBAL.LABEL' | translate }}
+              .controls
+                input(type="text", name="label", ng-model="role.label", required)
+            .form-group
+              label.control-label(for="description") {{ 'GLOBAL.DESCRIPTION' | translate }}
+              .controls
+                textarea(name="description", ng-model="role.description")
+            .form-group
+              label.control-label(for="permissions") {{'GLOBAL.PERMISSIONS' | translate}}
+              .controls
+                ul
+                  li(ng-repeat="perm in role.permissions") {{permissions[perm]}}
+      .additional(ng-show="role")
+        .tabbed-box
+          tabset
+            tab(heading="{{ 'GLOBAL.DISCUSSION' | translate }}")
+              .pad
+                konzilo-comments(ng-model="role.adminComments")
+            tab(heading="{{'GLOBAL.NOTES' | translate}}")
+              .pad
+                markdown-editor(ng-model="role.adminNotes")

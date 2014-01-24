@@ -8,5 +8,6 @@ exports.jade = {
   "profile.html": "templates/profile.jade",
   "user-add.html": "templates/user-add.jade",
   "user-edit.html": "templates/user-edit.jade",
-  "usermgmt.html": "templates/usermgmt.jade"
+  "usermgmt.html": "templates/usermgmt.jade",
+  "rolemgmt.html": "templates/rolemgmt.jade"
 };
