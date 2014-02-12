@@ -1,0 +1,35 @@
+.wrapper
+  .main-content
+    .list.box.pad
+      form.form-inline.add-article(ng-submit="addAuthor()")
+        .form-group
+          input(type="text", name="name", ng-model="name", placeholder="{{'GLOBAL.NAME' | translate}}")
+        button.btn.btn-default.add-article
+          i.icon-plus
+      .languages
+        .row-item(
+          ng-repeat="item in authors",
+          ng-class="{active: item._id == author._id}")
+          a.block(ng-href="#/settings/authors/{{item._id}}") {{item.name}}
+          button.btn-link.clipboard-remove(ng-click="removeAuthor(item)")
+            i.icon-remove
+    .main-full
+      .main(ng-show="author")
+        .box.pad
+          h1 {{author.name}}
+          cmf-autosave-status(status="autosave")
+          form(name="authorForm").form.form-horizontal
+            author-form(author="author")
+            .form-group
+              label.control-label {{'GLOBAL.USER' | translate}}
+              .controls
+                entity-reference(ng-model="user", entity-type="User")
+      .additional(ng-show="author")
+        .tabbed-box
+          tabset
+            tab(heading="{{ 'GLOBAL.DISCUSSION' | translate }}")
+              .pad
+                konzilo-comments(ng-model="author.adminComments")
+            tab(heading="{{'GLOBAL.NOTES' | translate}}")
+              .pad
+                markdown-editor(ng-model="author.adminNotes")

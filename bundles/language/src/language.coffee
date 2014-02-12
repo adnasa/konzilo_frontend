@@ -14,7 +14,6 @@ angular.module("konzilo.language", ["konzilo.translations"])
 
   $routeProvider.when('/settings/languages', languageAdmin)
   $routeProvider.when('/settings/languages/:language', languageAdmin)
-
 ])
 .run(["konziloMenu", "$translate", (konziloMenu, $translate) ->
   konziloMenu("settingsMenu").addItem "#/settings/languages",

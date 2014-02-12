@@ -4,7 +4,8 @@ angular.module("konzilo.author", ["cmf.input", "konzilo.translations"])
   new KonziloStorage('/author/:_id', "Author")
 ])
 
-.config(["entityInfoProvider", (entityInfoProvider) ->
+.config(["entityInfoProvider", "$routeProvider",
+(entityInfoProvider, $routeProvider) ->
   # @todo Fix this, so that translations can be provided.
   entityInfoProvider.addProvider "Author",
     storageController: "AuthorStorage"
@@ -24,9 +25,23 @@ angular.module("konzilo.author", ["cmf.input", "konzilo.translations"])
         label: "About the author"
         type: String
       image: {}
+
+  authorAdmin =
+    controller: "AuthorAdminController"
+    templateUrl: "bundles/author/author-admin.html"
+    resolve:
+      access: (userAccess) ->
+        userAccess("administer system")
+  $routeProvider.when('/settings/authors', authorAdmin)
+  $routeProvider.when('/settings/authors/:author', authorAdmin)
   return
 ])
-
+.run(["konziloMenu", "$translate", (konziloMenu, $translate) ->
+  konziloMenu("settingsMenu").addItem "#/settings/authors",
+  $translate("AUTHOR.TITLE"),
+  (userAccess) ->
+    userAccess("administer system")
+])
 .directive("authorForm", ->
   restrict: 'AE'
   scope:
@@ -42,7 +57,6 @@ angular.module("konzilo.author", ["cmf.input", "konzilo.translations"])
   ]
   templateUrl: "bundles/author/author-form.html"
 )
-
 .directive("authorPicker",
 ["UserStorage", "$modal", "UserState", "$translate",
 (UserStorage, $modal, UserState, $translate) ->
@@ -88,4 +102,32 @@ angular.module("konzilo.author", ["cmf.input", "konzilo.translations"])
         $scope.author = author if author
   ]
   templateUrl: "bundles/author/author-picker.html"
+])
+.controller("AuthorAdminController", ["$scope", "$routeParams", "InputAutoSave",
+"AuthorStorage", "$translate", "UserStorage",
+($scope, $routeParams, InputAutoSave, AuthorStorage, $translate, UserStorage) ->
+  getAuthors = ->
+    $scope.authors = AuthorStorage.query({}).then (result) -> result.toArray()
+  getAuthors()
+
+  $scope.addAuthor = ->
+    AuthorStorage.save(name: $scope.name ).then(getAuthors)
+
+  $scope.saveAuthor = ->
+    AuthorStorage.save($scope.author).then (getAuthors)
+
+  $scope.removeAuthor = (author) ->
+    if confirm("AUTHOR.CONFIRMREMOVE")
+      AuthorStorage.remove(author).then(getAuthors)
+
+  $scope.$watch 'user', ->
+    console.log $scope.user
+
+  if $routeParams.author
+    AuthorStorage.get($routeParams.author).then (result) ->
+      $scope.author = result.toObject()
+      $scope.autosave = InputAutoSave.createInstance $scope.author,
+        $scope.saveAuthor, -> $scope.authorForm.$valid
+      $scope.user = UserStorage.query(author: $scope.author._id)
+      .then (result) -> result.toArray()?[0]
 ])

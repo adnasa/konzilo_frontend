@@ -3,5 +3,6 @@ exports.scripts = ["author.js"];
 exports.jade = {
   "author-dialog.html": "templates/author-dialog.jade",
   "author-form.html": "templates/author-form.jade",
-  "author-picker.html": "templates/author-picker.jade"
+  "author-picker.html": "templates/author-picker.jade",
+  "author-admin.html": "templates/author-admin.jade"
 };
