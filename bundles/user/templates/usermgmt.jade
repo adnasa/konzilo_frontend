@@ -1,11 +1,15 @@
 .wrapper
   .main-content
     .list.box.pad(ng-class="{visible: user}")
-      form.new-user.form-inline.add-article(ng-submit="addUser()", name="newUserForm")
-        .form-group
-          input(type="email", ng-model="email", placeholder="{{'GLOBAL.EMAIL' | translate}}", required)
-        button.btn.btn-default.add-article
-          i.icon-plus
+      form.new-user.add-article(ng-submit="addUser()", name="newUserForm")
+        .form-inline
+          .form-group
+            input(type="email", ng-model="email", placeholder="{{'GLOBAL.EMAIL' | translate}}", required)
+          button.btn.btn-default.add-article
+            i.icon-plus
+        label.checkbox
+          input(type="checkbox", ng-model="notify")
+          span {{'USER.NOTIFY' | translate}}            
       .users
         .row-item(ng-repeat="user in users")
           a.block(ng-href="#/settings/users/{{user._id}}") {{user.displayname}}
