@@ -212,7 +212,7 @@
 
       # Check if a part is valid
       fn.valid = (part) =>
-        return true if not @providers[part.type].valid
+        return true if not @providers[part.type]?.valid
         return @providers[part.type].valid(part)
 
       return fn
@@ -1202,7 +1202,7 @@
   (ArticleStorage, TargetStorage, InputAutoSave,
   ChannelStorage, StepStorage, $filter, $q, $translate) ->
     restrict: "AE",
-    scope: { article: "=" }
+    scope: { article: "=", useAutoSave: "=" }
     controller: ["$scope", "$attrs", ($scope, $attrs) ->
       $scope.translations = {}
       $scope.saveArticle = (article) ->
@@ -1264,8 +1264,9 @@
         if $scope.article.topic
           $scope.translations.topic = $scope.article.topic.toLowerCase()
         $scope.autosave.stop() if $scope.autosave
-        $scope.autosave = InputAutoSave.createInstance $scope.article, $scope.saveArticle, ->
-          $scope.articleForm?.$valid
+        if $scope.useAutoSave or typeof $scope.useAutoSave == "undefined"
+          $scope.autosave = InputAutoSave.createInstance $scope.article, $scope.saveArticle, ->
+            $scope.articleForm?.$valid
         $scope.changeTarget()
         return
 
