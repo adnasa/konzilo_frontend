@@ -4,7 +4,7 @@ bundleFolder = "bundles"
 # Main files for inclusion.
 dependencies = [
   "lodash/dist/lodash.js"
-  "jquery/jquery.js"
+  "jquery/dist/jquery.js"
   "jquery-ui/ui/jquery.ui.core.js"
   "jquery-ui/ui/jquery.ui.widget.js"
   "jquery-ui/ui/jquery.ui.mouse.js"
