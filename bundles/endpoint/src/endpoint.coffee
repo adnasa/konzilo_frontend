@@ -30,7 +30,9 @@ InputAutoSave, $translate, $location) ->
   .then ->
     if $routeParams.endpoint
       bin.get($routeParams.endpoint).then (endpoint) ->
+        $scope.settings = $scope.types[endpoint.type]?.settings or {}
         $scope.endpoint = endpoint
+        $scope.endpoint.settings = {} if not $scope.endpoint.settings
         $scope.autosave = InputAutoSave.createInstance $scope.endpoint,
           ->
             bin.set($scope.endpoint.name, $scope.endpoint)
@@ -49,10 +51,6 @@ InputAutoSave, $translate, $location) ->
     if confirm($translate("ENDPOINT.CONFIRMREMOVE"))
       bin.remove(endpoint.name).then ->
         $location.url("/settings/endpoints")
-
-  $scope.getSettings = (type) ->
-    return {} if not type
-    return $scope.types[type].settings
 
   $scope.mainClass = ->
     if $scope.endpoint then "span6" else "span12"

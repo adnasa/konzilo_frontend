@@ -24,11 +24,11 @@
             .form-group
               label.control-label(for="name") {{'GLOBAL.NAME' | translate}}
               .controls
-                input(type="text", name="name", ng-model="endpoint.name", required)
-            .form-group(ng-repeat="setting in getSettings(endpoint.type)")
+                input(type="text", name="name", ng-model="endpoint.name")
+            .form-group(ng-repeat="setting in settings")
               label.control-label {{setting.label | translate }}
               .controls
-                input(type="text", ng-model="endpoint.settings[setting.name]", required)
+                input(type="text", ng-model="endpoint.settings[setting.name]")
           form(method="POST", action="/endpoint/{{endpoint.name}}/authorize")
             .form-group
               .controls
