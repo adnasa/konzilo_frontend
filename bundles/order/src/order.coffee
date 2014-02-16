@@ -80,9 +80,13 @@ kzAnalysisDialog, $location) ->
   $scope.today = new Date()
   $scope.translations = {}
 
+  contentSaved = (part) ->
+    return part.typeName or (part.content and _.size(part.content) > 0)
+
   getPart = (part) ->
     ArticlePartStorage.get($routeParams.part).then (part) ->
       $scope.part = part.toObject()
+      $scope.part.contentSaved = contentSaved($scope.part)
       $scope.changeDate()
       $scope.part.terms = $scope.part.terms or []
       if $scope.autosave
@@ -96,12 +100,6 @@ kzAnalysisDialog, $location) ->
       if $routeParams.part
         getPart($routeParams.part)
 
-  $scope.contentSaved = (part) ->
-    if _.isObject($scope.article?.channel?.contentType)
-      return true
-    if not part?.content
-      return false
-    return _.size(part.content) > 0
 
   $scope.changeDate = ->
     if $scope.part?.deadline

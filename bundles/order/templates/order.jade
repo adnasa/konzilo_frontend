@@ -43,7 +43,7 @@ div(kntnt-article-picker)
             .form-group
               label.control-label(for="type") {{'GLOBAL.DELIVERY' | translate}}
               .controls
-                select(name="type", ng-model="part.type", ng-options="key as value for (key, value) in types", required, ng-disabled="contentSaved(part)")
+                select(name="type", ng-model="part.type", ng-options="key as value for (key, value) in types", required, ng-disabled="part.contentSaved")
             .form-group
               label.control-label(for="language") {{ 'GLOBAL.LANGUAGE' | translate }}
               .controls
