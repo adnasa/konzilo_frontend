@@ -1207,7 +1207,7 @@
       $scope.translations = {}
       $scope.saveArticle = (article) ->
         # Set the provider for all parts that don't have one already.
-        if article.provider
+        if article.provider and article.parts
           for part in article.parts
             part.provider = article.provider if not part.provider
         ArticleStorage.save(article).then (result) ->
