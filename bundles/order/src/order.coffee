@@ -97,7 +97,10 @@ kzAnalysisDialog, $location) ->
         getPart($routeParams.part)
 
   $scope.contentSaved = (part) ->
-    return false if not part?.content
+    if _.isObject($scope.article?.channel?.contentType)
+      return true
+    if not part?.content
+      return false
     return _.size(part.content) > 0
 
   $scope.changeDate = ->
