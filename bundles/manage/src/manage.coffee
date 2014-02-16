@@ -27,17 +27,26 @@ angular.module("konzilo.manage", ["konzilo.config", "konzilo.translations"])
 ["$scope", "$routeParams", "ArticleStorage", "ArticlePartStorage",
 "KonziloConfig", "articleParts", "$translate", "$filter",
 "UserState", "$http", "ChannelStorage", "ArticlePartStates", "$location",
+"InputAutoSave",
 ($scope, $routeParams, ArticleStorage, ArticlePartStorage,
 KonziloConfig, articleParts, $translate, $filter,
-UserState, $http, ChannelStorage, ArticlePartStates, $location) ->
+UserState, $http, ChannelStorage, ArticlePartStates, $location, InputAutoSave) ->
   $scope.types = articleParts.labels()
   $scope.newPart = {}
   user = UserState.getInfo().info
   $scope.translations = {}
   $scope.$parent.title = $translate("MANAGE.TITLE")
-
+  $scope.useSave = false
   $scope.articleCreated = (article) ->
     $location.path("/manage/#{article._id}")
+
+  valid = ->
+    for part in $scope.article?.parts
+      return false if not articleParts.valid(part)
+    return true
+
+  saveArticle = ->
+    ArticleStorage.save($scope.article)
 
   # Set date by default.
   $scope.articleDefaults =
@@ -47,6 +56,8 @@ UserState, $http, ChannelStorage, ArticlePartStates, $location) ->
       result.toObject()
     .then (article) ->
       $scope.article = article
+      $scope.autosave = InputAutoSave.createInstance(
+        $scope.article, saveArticle, valid)
       return if not article.channel
       ChannelStorage.get(article.channel).then (channel) ->
         endpoint = channel.get("endpoint")

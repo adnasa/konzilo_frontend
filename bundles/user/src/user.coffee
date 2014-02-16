@@ -372,6 +372,7 @@ angular.module("kntnt.user",
     $scope.languages = KonziloConfig.get("languages").listAll()
     KonziloConfig.get("roles").listAll().then (roles) ->
       $scope.roles = roles
+
     $scope.sendVerifyEmail = ->
       $scope.autosave?.stop()
       $http.post("/email/verify/#{$scope.user._id}/#{$scope.email}").then ->
@@ -486,8 +487,8 @@ angular.module("kntnt.user",
 ])
 
 .controller("UserMgmtController",
-["$scope", "UserStorage", "entityInfo", "$routeParams", "$translate", "$location",
-($scope, UserStorage, entityInfo, $routeParams, $translate, $location) ->
+["$scope", "UserStorage", "entityInfo", "$routeParams", "$translate", "$location", "$http"
+($scope, UserStorage, entityInfo, $routeParams, $translate, $location, $http) ->
   UserStorage.query { group: false }, (result) ->
     updateUsers = ->
       $scope.users = for user in result.toArray()
@@ -513,6 +514,13 @@ angular.module("kntnt.user",
       result.remove(id)
       updateUsers()
 
+  sendNotifyEmail = (email) ->
+    $http.post("/password/#{email}",
+      message: $translate("USER.EMAILNOTIFYMESSAGE")
+      title: $translate('USER.EMAILNOTIFYTITLE')
+    ).then ->
+      $scope.message = "USER.MESSAGESENT"
+
   $scope.userGrid = ->
     if $scope.user then "half" else "full"
 
@@ -523,6 +531,7 @@ angular.module("kntnt.user",
         username: $scope.email
         displayname: $scope.email
       UserStorage.save(user).then (result) ->
+        sendNotifyEmail($scope.email) if $scope.notify
         $location.path("/settings/users/#{result._id}")
 
   $scope.removeUser = (user) ->

@@ -77,20 +77,7 @@ angular.module("konzilo.contenttype", ["konzilo.config",
     controller: ["$scope", ($scope) ->
       article = undefined
       $scope.useSave = false
-
-      saveParts = ->
-        return if not $scope.article?.parts
-        # @todo only save the part that needs to be saved.
-        for part in $scope.article.parts
-          ArticlePartStorage.save(part)
-
-      valid = ->
-        for part in $scope.article?.parts
-          return false if not articleParts.valid(part)
-        return true
-
       update = ->
-        $scope.autosave?.stop()
         return if not $scope.article?.channel
         article = $scope.article._id
         kzArticleSettings($scope.article).then (settings) ->
@@ -104,8 +91,6 @@ angular.module("konzilo.contenttype", ["konzilo.config",
               parts.push(partInfo: { label: part.title }, parts: [part])
 
           $scope.parts = parts
-          $scope.autosave = InputAutoSave.createInstance(
-            $scope.article.parts, saveParts, valid)
         $scope.active = {}
         for part in $scope.article.parts
           $scope.active[part._id] = false
