@@ -40,6 +40,11 @@ InputAutoSave, $translate, $location) ->
         endpoint.authorized = $http.get("/endpoint/#{endpoint.name}")
         .then (result) -> result.data.authorized
       return
+  $scope.valid = (name) ->
+    if not $scope.endpoints
+      fetchEndpoints()
+      return false
+    not _.find($scope.endpoints, name: name)
 
   fetchEndpoints = ->
     bin.listAll().then (result) ->

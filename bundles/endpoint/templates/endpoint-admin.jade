@@ -3,7 +3,7 @@
     .list.box.pad(ng-class="{visible: endpoint}")
       form.form-inline.add-article(name="addEndpointForm", ng-submit="addEndpoint()")
         .form-group
-          input(type="text", name="name", ng-model="newEndpoint.name", required, placeholder="{{'ENDPOINT.ADDNEW' | translate}}")
+          kz-machine-name(name="newEndpoint.name", label="newEndpoint.label", valid="valid")
         .form-group
           select(type="text", name="name", ng-model="type", required, ng-options="value.label for (key, value) in types", required)
             option(value="") {{'GLOBAL.TYPE' | translate}}
@@ -12,19 +12,19 @@
       a.row-item(
         ng-repeat="item in endpoints",
         ng-href="#/settings/endpoints/{{item.name}}",
-        ng-class="{active: item.name == endpoint.name}") {{item.name}}
+        ng-class="{active: item.name == endpoint.name}") {{item.label || item.name}}
     .main-full
       .main(ng-show="endpoint")
         .box.pad
           button.btn-danger.btn.pull-right(
             ng-click="deleteEndpoint(endpoint)") {{ 'ENDPOINT.REMOVE' | translate }}
-          h1 {{endpoint.name}}
+          h1 {{endpoint.label || endpoint.name}}
           form.form(name="editEndpointForm", ng-submit="addEndpoint()")
             cmf-autosave-status(status="autosave")
             .form-group
-              label.control-label(for="name") {{'GLOBAL.NAME' | translate}}
+              label.control-label(for="label") {{'GLOBAL.NAME' | translate}}
               .controls
-                input(type="text", name="name", ng-model="endpoint.name")
+                input(type="text", name="label", ng-model="endpoint.label")
             .form-group(ng-repeat="setting in settings")
               label.control-label {{setting.label | translate }}
               .controls
