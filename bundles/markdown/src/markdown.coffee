@@ -12,14 +12,13 @@ angular.module('konzilo.markdown', ["konzilo.file"])
       else
         template = @template
       if @perLine
-        result = []
-        result = for line, index in text.split("\n")
-          template.replace("{{text}}", line).replace("{{row}}", index + 1)
-        result = result.join("\n")
+        result = (for line, index in text.split("\n")
+          template.replace("{{text}}", line).replace("{{row}}", index + 1))
+        .join("\n")
       else
         result = template.replace("{{text}}", text)
       callback(result) if callback
-
+)
 .factory("MarkdownBrowserPlugin", (MarkdownPlugin, fileBrowser) ->
   class MarkdownBrowserPlugin extends MarkdownPlugin
     constructor: (@icon) ->
