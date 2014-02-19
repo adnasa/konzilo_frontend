@@ -17,7 +17,6 @@ div(kntnt-article-picker)
               {{part.article.title}}
             li.active(ng-show="part")
               {{part.title}}
-          h2 {{ "ORDER.PARTDESC" | translate }}
           cmf-autosave-status(status="autosave")
           form.form.form-horizontal(ng-submit="savePart()", name="partForm")
             .form-group

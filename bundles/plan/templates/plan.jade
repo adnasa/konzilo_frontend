@@ -17,7 +17,6 @@ div(kntnt-article-picker)
               a(ng-href="#/plan") {{'PLAN.TITLE' | translate}}
             li.active(ng-show="article")
               {{article.title}}
-          h2 {{ "PLAN.PLAN_TITLE" | translate }}
           konzilo-article-form(article="article")
       .additional(ng-show="article")
         .tabbed-box
