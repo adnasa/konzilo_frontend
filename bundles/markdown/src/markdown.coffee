@@ -12,10 +12,10 @@ angular.module('konzilo.markdown', ["konzilo.file"])
       else
         template = @template
       if @perLine
-        result = ""
-        for line, index in text.split("\n")
-          result += template.replace("{{text}}", line)
-          .replace("{{row}}", index + 1) + "\n"
+        result = []
+        result = for line, index in text.split("\n")
+          template.replace("{{text}}", line).replace("{{row}}", index + 1))
+        result = result.join("\n")
       else
         result = template.replace("{{text}}", text)
       callback(result) if callback
