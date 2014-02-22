@@ -54,7 +54,7 @@ form.form.user-form.form-horizontal(name="userForm")
   .form-group(ng-show="showAdminFields")
     label.control-label {{'USER.ROLES' | translate}}
     .controls
-      select(ng-model="user.roles", multiple="true")
+      select(ng-model="user.roles", multiple="true", ng-disabled="!user.removable")
         option(ng-repeat="(name, role) in roles", value="{{name}}", ng-selected="hasRole(name)") {{role.label}}
       span.help-block {{'USER.ROLESHELP' | translate}}
   .form-group(ng-show="showAdminFields")
