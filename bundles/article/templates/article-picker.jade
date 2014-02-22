@@ -1,23 +1,24 @@
 .picker-content
   .picker-body(collapse="isCollapsed")
-    .picker-form
-      .simple
-        h2 {{ 'ARTICLEPICKER.TITLE' | translate }}
-        p {{ 'ARTICLEPICKER.DESCRIPTION' | translate }}
-        .form-group
-          label.radio
-            input(type="radio", name="articles", ng-model="selector", value="all", ng-change="showArticles()")
-            span {{ 'ARTICLEPICKER.ALL' | translate }}
-          label.radio
-            input(type="radio", name="articles", ng-model="selector", value="recommended", ng-change="showArticles()")
-            span {{ 'ARTICLEPICKER.RECOMMENDED' | translate }}
-          label.radio
-            input(type="radio", name="articles", ng-model="selector", value="advanced", ng-change="showArticles()")
-            span {{ 'ARTICLEPICKER.CUSTOM' | translate }}
-      .advanced
-        h2 {{ 'ARTICLEPICKER.SELECTION' | translate }}
-        konzilo-query-filters(builder="builder",
-          description="{{ 'ARTICLEPICKER.SHOWARTICLES' | translate }}")
+    .picker-wrapper
+      .picker-form
+        .simple
+          h2 {{ 'ARTICLEPICKER.TITLE' | translate }}
+          p {{ 'ARTICLEPICKER.DESCRIPTION' | translate }}
+          .form-group
+            label.radio
+              input(type="radio", name="articles", ng-model="selector", value="all", ng-change="showArticles()")
+              span {{ 'ARTICLEPICKER.ALL' | translate }}
+            label.radio
+              input(type="radio", name="articles", ng-model="selector", value="recommended", ng-change="showArticles()")
+              span {{ 'ARTICLEPICKER.RECOMMENDED' | translate }}
+            label.radio
+              input(type="radio", name="articles", ng-model="selector", value="advanced", ng-change="showArticles()")
+              span {{ 'ARTICLEPICKER.CUSTOM' | translate }}
+        .advanced
+          h2 {{ 'ARTICLEPICKER.SELECTION' | translate }}
+          konzilo-query-filters(builder="builder",
+            description="{{ 'ARTICLEPICKER.SHOWARTICLES' | translate }}")
 
     .selection
       .article-info
