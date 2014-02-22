@@ -162,6 +162,7 @@
   },
   "VOCABULARY": {
     "REMOVE": "Ta bort vokabulär",
+    "REMOVEMSG": "Är du säker på att du vill ta bort det här vokabuläret?",
     "NEWTERM": "Ny term",
     "NEWVOCABULARY": "Nytt vokabulär",
     "TITLE": "Vokabulär"
@@ -282,7 +283,7 @@
     "EMAILVERIFICATIONFAIL": "Det gick inte att ändra din epost",
     "NOTIFY": "Notifiera användaren",
     "EMAILNOTIFYMESSAGE": "Ett konto har skapats åt dig i Konzilo. Använd länken för att sätta ditt lösenord.",
-    "EMAILNOTIFYTITLE": "Ett konto har skapats åt dig i konzilo",    
+    "EMAILNOTIFYTITLE": "Ett konto har skapats åt dig i konzilo",
     "VERIFYBUTTON": "Verifiera",
     "UPDATEBUTTON": "Uppdatera",
     "VERIFYCODEPLACEHOLDER": "Verifikationskod",

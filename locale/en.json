@@ -163,6 +163,7 @@
   },
   "VOCABULARY": {
     "REMOVE": "Remove vocabulary",
+    "REMOVEMSG": "Are you sure that you want to remove this vocabulary?",
     "NEWTERM": "New Term",
     "NEWVOCABULARY": "New vocabulary",
     "TITLE": "Vocabulary"
