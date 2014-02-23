@@ -316,7 +316,9 @@
     "LOCKEDTEXT": "Artikeldelen redigeras av {{user}}.",
     "UNLOCK": "Lås upp",
     "NEWPART": "Skapa ny artikeldel",
-    "ADDTYPE": "Lägg till artikeldelstyp"
+    "ADDTYPE": "Lägg till artikeldelstyp",
+    "NEWPARTASSIGNEDTITLE": "Du har ett nytt uppdrag!",
+    "NEWPARTASSIGNEDBODY": "Börja arbeta på det här:\r\n {{url}}"
   },
   "ENDPOINT": {
     "REMOVE": "Ta bort publiceringsmål",
