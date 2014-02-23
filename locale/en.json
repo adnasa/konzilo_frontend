@@ -296,7 +296,9 @@
     "INACTIVE": "Inactive",
     "ROLES": "Roles",
     "PASSWORDREPEAT": "Repeteat password",
-    "PASSWORDDESC": "Enter a new password here to change the password of the user. The password will not be changed if a new password is not provided."
+    "PASSWORDDESC": "Enter a new password here to change the password of the user. The password will not be changed if a new password is not provided.",
+    "DISPLAYNAMEHELP": "Pick the name that you want konzilo to use instead of your first and last name in the interface. Leave empty if you prefer your first and last name (Recommended).",
+    "USERNAMEHELP": "Pick the name that you want to use to log into konzilo. It should consist of at least four characters in the english alphabet (a-z), numbers (0-9), dots (.), tilde (~), hyphens(-) or underscores (_)."
   },
   "ARTICLE": {
     "IDEA": "Idea",
