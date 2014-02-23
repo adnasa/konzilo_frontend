@@ -44,7 +44,7 @@ form.form.user-form.form-horizontal(name="userForm")
       input(type="password", name="password", ng-model="password", placeholder="{{'GLOBAL.PASSWORD' | translate}}")
       input(type="password", name="password2", ng-model="password2", placeholder="{{'USER.PASSWORDREPEAT' | translate}}")
       div.updatepasswordbutton
-        button.btn.btn-default.updatepassword(ng-click="updatePassword()") {{'USER.UPDATEPASSWORDBUTTON' | translate}}
+        button.btn.btn-default.updatepassword(ng-disabled="!password || !password2", ng-click="updatePassword()") {{'USER.UPDATEPASSWORDBUTTON' | translate}}
         .help-block {{'USER.PASSWORDDESC' | translate}}
       .alert(ng-class="passwordInfo.status && 'alert-success' || 'alert-danger'", ng-show="passwordInfo.message") {{passwordInfo.message}}
 
