@@ -68,24 +68,36 @@ angular.module("konzilo.order", ["konzilo.menu"])
 "UserStorage", "$q", "articleParts", "KonziloConfig",
 "TargetStorage", "InputAutoSave", "StepStorage",
 "ArticlePartStorage", "ChannelStorage", "$filter",
-"kzAnalysisDialog", "$location",
+"kzAnalysisDialog", "$location", "ProviderEmail", "$translate",
 ($scope, ArticleStorage, $routeParams,
 UserStorage, $q, articleParts, KonziloConfig,
 TargetStorage, InputAutoSave, StepStorage,
 ArticlePartStorage, ChannelStorage, $filter,
-kzAnalysisDialog, $location) ->
-  $scope.savePart = ->
-    ArticlePartStorage.save $scope.part
-
+kzAnalysisDialog, $location, ProviderEmail, $translate) ->
   $scope.today = new Date()
   $scope.translations = {}
+  oldPart = {}
+
+  $scope.savePart = ->
+    ArticlePartStorage.save($scope.part).then (part) ->
+      id = oldPart.provider._id or oldPart.provider
+      if part.provider != id
+        url = $location.protocol() + '://' + $location.host()
+        port = $location.port()
+        if port != 80 or port != 443
+          url += ":" + port
+        url += "/#/deliver/" + part._id
+        ProviderEmail part.provider,
+          $translate("ARTICLE.NEWPARTASSIGNEDTITLE"),
+          $translate("ARTICLE.NEWPARTASSIGNEDBODY", { url: url })
+      oldPart = part
 
   contentSaved = (part) ->
     return part.typeName or (part.content and _.size(part.content) > 0)
 
   getPart = (part) ->
     ArticlePartStorage.get($routeParams.part).then (part) ->
-      $scope.part = part.toObject()
+      $scope.part = oldPart = part.toObject()
       $scope.part.contentSaved = contentSaved($scope.part)
       $scope.changeDate()
       $scope.part.terms = $scope.part.terms or []

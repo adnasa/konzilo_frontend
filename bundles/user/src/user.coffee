@@ -37,6 +37,13 @@ angular.module("kntnt.user",
         language = _.find(language, default: true)
         $tranlate.uses(language.langcode) if language
 ])
+
+.factory("ProviderEmail", ["$http", ($http) ->
+  (provider, title, body) ->
+    user = provider._id if _.isObject(provider)
+    $http.post("/provider/#{provider}/email", title: title, body: body)
+])
+
 .factory("User"
 ["$resource", "$http", "$cacheFactory",
 ($resource, $http, $cacheFactory) ->
@@ -82,6 +89,9 @@ angular.module("kntnt.user",
         return err
     getToken: ->
       @info.token
+
+    sendEmail: (title, body) ->
+      $http.post("/user/#{@info._id}/email", title: title, body: body)
 ])
 .factory("userAccess", ["$http", "$q", ($http, $q) ->
   (permission) ->
