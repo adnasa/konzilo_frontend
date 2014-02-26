@@ -235,7 +235,9 @@
     "NEW": "New author",
     "ABOUT": "About the author",
     "NAME": "Author",
-    "PICK": "Pick author"
+    "PICK": "Pick author",
+    "CONFIRMREMOVE": "Are you sure you want to remove this author?",
+    "TITLE": "Authors"
   },
   "CLIPBOARD": {
     "DESCRIPTION": "Use the article picker to select articles.."

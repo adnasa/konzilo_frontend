@@ -104,30 +104,36 @@ angular.module("konzilo.author", ["cmf.input", "konzilo.translations"])
   templateUrl: "bundles/author/author-picker.html"
 ])
 .controller("AuthorAdminController", ["$scope", "$routeParams", "InputAutoSave",
-"AuthorStorage", "$translate", "UserStorage",
-($scope, $routeParams, InputAutoSave, AuthorStorage, $translate, UserStorage) ->
+"AuthorStorage", "$translate", "UserStorage", "$location"
+($scope, $routeParams, InputAutoSave,
+AuthorStorage, $translate, UserStorage, $location) ->
   getAuthors = ->
     $scope.authors = AuthorStorage.query({}).then (result) -> result.toArray()
   getAuthors()
 
   $scope.addAuthor = ->
-    AuthorStorage.save(name: $scope.name ).then(getAuthors)
+    AuthorStorage.save(name: $scope.name).then (author) ->
+      $location.url("/settings/authors/#{author._id}")
 
   $scope.saveAuthor = ->
     AuthorStorage.save($scope.author).then (getAuthors)
 
   $scope.removeAuthor = (author) ->
-    if confirm("AUTHOR.CONFIRMREMOVE")
-      AuthorStorage.remove(author).then(getAuthors)
+    if confirm($translate("AUTHOR.CONFIRMREMOVE"))
+      AuthorStorage.remove(author).then ->
+        $location.url("/settings/authors")
 
-  $scope.$watch 'user', ->
-    console.log $scope.user
+  $scope.$on 'entityReferenceChanged', (scope, value, oldValue) ->
+    return if not $scope.author
+    value.author = $scope.author
+    UserStorage.save(value)
 
   if $routeParams.author
     AuthorStorage.get($routeParams.author).then (result) ->
       $scope.author = result.toObject()
       $scope.autosave = InputAutoSave.createInstance $scope.author,
         $scope.saveAuthor, -> $scope.authorForm.$valid
-      $scope.user = UserStorage.query(author: $scope.author._id)
-      .then (result) -> result.toArray()?[0]
+      $scope.user = UserStorage.query(q: { author: $scope.author._id })
+      .then (result) ->
+        result.toArray()?[0]
 ])

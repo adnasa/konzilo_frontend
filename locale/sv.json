@@ -234,7 +234,9 @@
     "NEW": "Ny innehållsproducent",
     "ABOUT": "Om producenten",
     "NAME": "Innehållsproducent",
-    "PICK": "Välj producent"
+    "PICK": "Välj producent",
+    "CONFIRMREMOVE": "Är du säker på att du vill ta bort den här producenten?",
+    "TITLE": "Innehållsproducenter"
   },
   "CLIPBOARD": {
     "DESCRIPTION": "Använd artikelväljaren för att lägga till artiklar."
