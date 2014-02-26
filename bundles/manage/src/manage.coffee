@@ -66,8 +66,9 @@ UserState, $http, ChannelStorage, ArticlePartStates, $location, InputAutoSave) -
         $http.get("/endpoint/#{endpoint}/jobs/#{$scope.article._id}")
         .then (result) ->
           $scope.publishInfo = result.data[0]
-          $scope.publishDate = $filter('date') $scope.publishInfo.date,
-            'yyyy-MM-dd HH:mm'
+          if $scope.publishInfo?.date
+            $scope.publishDate = $filter('date') $scope.publishInfo.date,
+              'yyyy-MM-dd HH:mm'
 
   $scope.remove = (part) ->
     if confirm($translate("MANAGE.CONFIRMPARTREMOVE"))

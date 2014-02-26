@@ -17,7 +17,6 @@ div(kntnt-article-picker)
               {{part.article.title}}
             li.active(ng-show="part")
               {{part.title}}
-          h2 {{ "ORDER.PARTDESC" | translate }}
           cmf-autosave-status(status="autosave")
           form.form.form-horizontal(ng-submit="savePart()", name="partForm")
             .form-group
@@ -43,13 +42,13 @@ div(kntnt-article-picker)
             .form-group
               label.control-label(for="type") {{'GLOBAL.DELIVERY' | translate}}
               .controls
-                select(name="type", ng-model="part.type", ng-options="key as value for (key, value) in types", required, ng-disabled="contentSaved(part)")
+                select(name="type", ng-model="part.type", ng-options="key as value for (key, value) in types", required, ng-disabled="part.contentSaved")
             .form-group
               label.control-label(for="language") {{ 'GLOBAL.LANGUAGE' | translate }}
               .controls
                 select(name="language", ng-model="part.language")
                   option(value="{{code}}", ng-repeat="(code, lang) in languages",
-                    ng-selected="part.language == code || lang.default") {{lang.name}}
+                    ng-selected="part.language == code") {{lang.name}}
             .form-group
               label.control-label(for="terms") {{ 'GLOBAL.TERMS' | translate }}
               .controls

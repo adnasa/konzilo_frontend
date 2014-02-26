@@ -648,7 +648,9 @@ a.new-target {
       margin-top: 0px;
     }
   }
-
+  .picker-wrapper {
+    border-bottom: 2px solid @grayLighter;
+  }
   .picker-form {
     .container;
     .make-row();
@@ -661,7 +663,6 @@ a.new-target {
       .make-md-column(9);
     }
 
-    border-bottom: 2px solid @grayLighter;
     .form-group {
       border: none;
     }
@@ -799,6 +800,18 @@ form.add-article {
   padding: 3%;
   background: @kntntGreen;
   color: @white;
+  label {
+    display: none;
+  }
+  .form-group {
+    vertical-align: top;
+  }
+  .help-block {
+    color: @white;
+  }
+  a {
+    color: @yellow;
+  }
   .icon-plus {
     color: @kntntGreen;
   }
@@ -1000,7 +1013,6 @@ form.add-part-form {
     border: 1px dotted @kntntGreen;
   }
   .tools {
-    overflow: hidden;
     padding-bottom: 5px;
   }
   textarea {
@@ -1074,6 +1086,14 @@ form.add-part-form {
     .make-lg-column(5);
     margin-right: 5px;
   }
+  .updatepasswordbutton {
+    button.updatepassword {
+      margin-top: 5px;
+    }
+    .help-block {
+      float: none;
+    }
+  }
 }
 
 .content-table-form {
@@ -1083,6 +1103,10 @@ form.add-part-form {
   input[type="text"], select {
     .make-xs-column(4);
   }
+}
+
+.modal-header h1 {
+  word-wrap: break-word;
 }
 
 .modal-body {

@@ -162,6 +162,7 @@
   },
   "VOCABULARY": {
     "REMOVE": "Ta bort vokabulär",
+    "REMOVEMSG": "Är du säker på att du vill ta bort det här vokabuläret?",
     "NEWTERM": "Ny term",
     "NEWVOCABULARY": "Nytt vokabulär",
     "TITLE": "Vokabulär"
@@ -266,6 +267,9 @@
     "FIRSTNAME": "Ange ditt förnamn",
     "LASTNAME": "Ange ditt efternamn",
     "DISPLAYNAME": "Visningsnamn",
+    "PASSWORDNOTSIMILARFAIL": "Lösenorden stämmer inte överens",
+    "PASSWORDUPDATESUCCESS": "Lösenordet är ändrat",
+    "PASSWORDEMPTYFAIL": "Ditt lösenord kan inte vara tomt",
     "CONFIRMUSERNAMECHANGE": "Ändra användarnamnet",
     "CONFIRMUSERNAMECHANGEMESSAGE": "Klicka på knappen ovan för att godkänna ändring av av användarnamnet",
     "INVALIDUSERNAME": "Du måste ha minst 4 tecken i ditt användarnamn. Du kan endast använda tecken a-z, A-Z, 0-9 och . - _ ~",
@@ -282,7 +286,7 @@
     "EMAILVERIFICATIONFAIL": "Det gick inte att ändra din epost",
     "NOTIFY": "Notifiera användaren",
     "EMAILNOTIFYMESSAGE": "Ett konto har skapats åt dig i Konzilo. Använd länken för att sätta ditt lösenord.",
-    "EMAILNOTIFYTITLE": "Ett konto har skapats åt dig i konzilo",    
+    "EMAILNOTIFYTITLE": "Ett konto har skapats åt dig i konzilo",
     "VERIFYBUTTON": "Verifiera",
     "UPDATEBUTTON": "Uppdatera",
     "VERIFYCODEPLACEHOLDER": "Verifikationskod",
@@ -315,7 +319,9 @@
     "LOCKEDTEXT": "Artikeldelen redigeras av {{user}}.",
     "UNLOCK": "Lås upp",
     "NEWPART": "Skapa ny artikeldel",
-    "ADDTYPE": "Lägg till artikeldelstyp"
+    "ADDTYPE": "Lägg till artikeldelstyp",
+    "NEWPARTASSIGNEDTITLE": "Du har ett nytt uppdrag!",
+    "NEWPARTASSIGNEDBODY": "Börja arbeta på det här:\r\n {{url}}"
   },
   "ENDPOINT": {
     "REMOVE": "Ta bort publiceringsmål",

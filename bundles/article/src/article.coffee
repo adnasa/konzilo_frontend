@@ -1213,7 +1213,6 @@
         ArticleStorage.save(article).then (result) ->
           $scope.article.parts = result.parts
           return article
-
       $scope.today = new Date()
       $scope.changeTarget = ->
         # Fetch channels and make sure the description is available.
@@ -1255,6 +1254,8 @@
       # Set the active article.
       update = ->
         return if not $scope.article
+        if _.isObject($scope.article.channel)
+          $scope.article.channel = $scope.article.channel._id
         $scope.article.vocabularies = {} if not $scope.article.vocabularies
         if $scope.article.publishdate
           $scope.publishtime = $filter('date')($scope.article.publishdate, "HH:mm")

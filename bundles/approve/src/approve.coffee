@@ -45,17 +45,19 @@ angular.module "kntnt.approve",
 ])
 
 .directive("kzApproveQueue", [
-  "ArticlePartStorage", "UserState",
-  (ArticlePartStorage, UserState) ->
+  "ArticlePartStorage", "UserState", "$location",
+  (ArticlePartStorage, UserState, $location) ->
     restrict: "AE",
     scope: { selected: "=", linkPattern: "@", part: "=" }
     controller: ($scope) ->
       user = UserState.getInfo().info._id
       query = { state: "needsreview", submitter:  user}
+      articleParts = []
       getArticles = ->
         ArticlePartStorage.query({ q: query, limit: 500 }).then (result) ->
           $scope.articles = {}
-          for articlePart in result.toArray()
+          articleParts = result.toArray()
+          for articlePart in articleParts
             article = articlePart.article
             if not $scope.articles[article._id]
               $scope.articles[article._id] = article
@@ -76,6 +78,15 @@ angular.module "kntnt.approve",
         $scope.$watch "selected", ->
           $scope.selectedArticle = $scope.selected?.get("article")._id
           $scope.selectedId = $scope.selected?.get('_id')
+          state = $scope.selected?.get('state')
+          if state and state != "needsreview"
+            id = $scope.selected.get('_id')
+            index = _.findIndex(articleParts, _id: id)
+            nextPart = articleParts[index + 1] or articleParts[index - 1]
+            if (index != -1 and nextPart)
+              $location.url("/approve/#{nextPart._id}")
+            else
+              $location.url('/approve')
 
       getArticles()
       ArticlePartStorage.changed(getArticles)

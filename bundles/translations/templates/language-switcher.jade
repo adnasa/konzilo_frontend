@@ -6,4 +6,4 @@ ul.nav.navbar-nav.lang-switcher(ng-show="showLangs")
       b.caret
     ul.dropdown-menu
       li(ng-repeat="(langcode, language) in languages")
-        a(ng-click="changeLanguage(langcode)") {{langcode}}
+        a(ng-click="changeLanguage(langcode)") {{language.name}}

@@ -33,7 +33,6 @@ angular.module("konzilo.contenttype", ["konzilo.config",
       if not part.toObject
         part = new KonziloEntity('ArticlePart', part)
       deferred = $q.defer()
-
       getChannel = (article) ->
         channel = article.channel
         return deferred.resolve(false) if not channel

@@ -37,6 +37,13 @@ angular.module("kntnt.user",
         language = _.find(language, default: true)
         $tranlate.uses(language.langcode) if language
 ])
+
+.factory("ProviderEmail", ["$http", ($http) ->
+  (provider, title, body) ->
+    user = provider._id if _.isObject(provider)
+    $http.post("/provider/#{provider}/email", title: title, body: body)
+])
+
 .factory("User"
 ["$resource", "$http", "$cacheFactory",
 ($resource, $http, $cacheFactory) ->
@@ -82,6 +89,9 @@ angular.module("kntnt.user",
         return err
     getToken: ->
       @info.token
+
+    sendEmail: (title, body) ->
+      $http.post("/user/#{@info._id}/email", title: title, body: body)
 ])
 .factory("userAccess", ["$http", "$q", ($http, $q) ->
   (permission) ->
@@ -361,8 +371,8 @@ angular.module("kntnt.user",
 ])
 
 .directive("userEditForm",
-["InputAutoSave", "UserStorage", "KonziloConfig", "userAccess", "UserState", "$http",
-(InputAutoSave, UserStorage, KonziloConfig, userAccess, UserState, $http) ->
+["InputAutoSave", "UserStorage", "KonziloConfig", "userAccess", "UserState", "$http", "$translate"
+(InputAutoSave, UserStorage, KonziloConfig, userAccess, UserState, $http, $translate) ->
   restrict: "AE",
   templateUrl: "bundles/user/user-edit.html"
   scope: { user: "=" }
@@ -412,9 +422,28 @@ angular.module("kntnt.user",
       else
         $scope.user.displayname = $scope.user.email
 
+    saveUser = (result) ->
+      info = UserState.getInfo().info
+      if info._id == result._id
+        info.username = result.username
+        info.email = result.email
+        info.language = result.language
+      UserState.saveInfo(info)
+      return result
+
     $scope.updatePassword = ->
-      if !_.isEqual($scope.user.password, $scope.password2)
-        $scope.updatePasswordFail = "USER.PASSWORDNOTSIMILARFAIL"
+      $scope.passwordInfo = {}
+      if !_.isEqual($scope.password, $scope.password2)
+        $scope.passwordInfo.message = $translate("USER.PASSWORDNOTSIMILARFAIL")
+        $scope.passwordInfo.status = false
+      else
+        if typeof $scope.password == 'undefined' || $scope.password == ''
+          $scope.passwordInfo.message = $translate("USER.PASSWORDEMPTYFAIL")
+          $scope.passwordInfo.status = false
+        else
+          $scope.user.password = $scope.password
+          $scope.passwordInfo.message = $translate("USER.PASSWORDUPDATESUCCESS")
+          $scope.passwordInfo.status = true
 
     userAccess("administer system").then ->
       $scope.showAdminFields = true
@@ -434,14 +463,7 @@ angular.module("kntnt.user",
           $scope.verificationemailsent = $scope.user.emailverificationemail != $scope.user.email
         $scope.autosave = InputAutoSave.createInstance $scope.user,
         ->
-          UserStorage.save($scope.user).then (result) ->
-            info = UserState.getInfo().info
-            if info._id == result._id
-              info.username = result.username
-              info.email = result.email
-              info.language = result.language
-            UserState.saveInfo(info)
-            return result
+          UserStorage.save($scope.user).then saveUser
         , ->
           $scope.userForm?.$valid and _.isEqual($scope.user.password, $scope.password2)
     $scope.$watch('user', update)

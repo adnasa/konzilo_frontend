@@ -1,8 +1,7 @@
 .articleparts
-  .row-item(ng-repeat="article in articles")
-    div(class="article-state {{article.state}}")
+  a.row-item(ng-repeat="article in articles", ng-href="{{article.link}}")
+    span(class="article-state {{article.state}}")
     .pull-right
       span {{article.publishdate | date: 'EEE yyyy-MM-dd'}}
-    h3.title
-      a(href="{{article.link}}") {{article.title}}
+    h3.title {{article.title}}
   kz-entity-pager(collection="collection", items-fetched="nextPage")

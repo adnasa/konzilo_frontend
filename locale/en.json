@@ -163,6 +163,7 @@
   },
   "VOCABULARY": {
     "REMOVE": "Remove vocabulary",
+    "REMOVEMSG": "Are you sure that you want to remove this vocabulary?",
     "NEWTERM": "New Term",
     "NEWVOCABULARY": "New vocabulary",
     "TITLE": "Vocabulary"
@@ -267,6 +268,9 @@
     "FIRSTNAME": "Enter your first name",
     "LASTNAME": "Enter your last name",
     "DISPLAYNAME": "Display name",
+    "PASSWORDNOTSIMILARFAIL": "The passwords does not match",
+    "PASSWORDUPDATESUCCESS": "The password has been changed",
+    "PASSWORDEMPTYFAIL": "Your password can not be empty",
     "CONFIRMUSERNAMECHANGE": "Change user name",
     "CONFIRMUSERNAMECHANGEMESSAGE": "Click on the button above to confirm the change of the user name",
     "INVALIDUSERNAME": "You must have at least 4 characters in your user name. They can only be of the characters a-z, A-Z, 0-9 and . - _ ~",
@@ -292,7 +296,9 @@
     "INACTIVE": "Inactive",
     "ROLES": "Roles",
     "PASSWORDREPEAT": "Repeteat password",
-    "PASSWORDDESC": "Enter a new password here to change the password of the user. The password will not be changed if a new password is not provided."
+    "PASSWORDDESC": "Enter a new password here to change the password of the user. The password will not be changed if a new password is not provided.",
+    "DISPLAYNAMEHELP": "Pick the name that you want konzilo to use instead of your first and last name in the interface. Leave empty if you prefer your first and last name (Recommended).",
+    "USERNAMEHELP": "Pick the name that you want to use to log into konzilo. It should consist of at least four characters in the english alphabet (a-z), numbers (0-9), dots (.), tilde (~), hyphens(-) or underscores (_)."
   },
   "ARTICLE": {
     "IDEA": "Idea",
@@ -313,7 +319,9 @@
     "FILTERCOUNT": "Your choice matches {{count}} articles.",
     "LOCKEDTEXT": "The article part is being edited by {{user}}.",
     "UNLOCK": "Unlock",
-    "NEWPART": "Create new article part"
+    "NEWPART": "Create new article part",
+    "NEWPARTASSIGNEDTITLE": "A new task has been assigned to you!",
+    "NEWPARTASSIGNEDBODY": "Start working on it here:\r\n {{url}}"
   },
   "ENDPOINT": {
     "REMOVE": "Remove endpoint",

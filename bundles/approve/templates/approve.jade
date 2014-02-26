@@ -13,7 +13,6 @@
             li
               a(ng-href="#/deliver") {{'DELIVER.TITLE' | translate}}
             li.active {{article.title}}
-          h1 {{article.title}}
           konzilo-articlepart-form(article-part="part")
           konzilo-articlepart-change-state(article-part="part")
       .additional(ng-show="article")
