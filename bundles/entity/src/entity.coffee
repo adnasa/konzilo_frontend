@@ -337,7 +337,7 @@ entityInfo, $q, $http, $cacheFactory) ->
     $scope.fetchMatches = (name) ->
       return [] if not info
       query = { q: {}}
-      query.q[labelProperty] = { $regex: name }
+      query.q[labelProperty] = { $regex: name, $options: 'i' }
       storage.query(query).then (result) ->
         for item in result.toArray()
           "#{item[labelProperty]} [#{item[idProperty]}]"
