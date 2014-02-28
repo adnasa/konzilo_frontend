@@ -8,6 +8,6 @@ ng-form(name="input-list")
             i.icon-remove
       li.item
         .input-group
-          input.form-control(type="text", ng-model="element", placeholder="{{placeholder}}")
+          input.form-control(type="text", ng-model="element", placeholder="{{placeholder}}", ng-enter="addElement()")
           button.btn.btn-link.input-group-btn(ng-click="addElement()")
             i.icon-plus

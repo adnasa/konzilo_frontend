@@ -35,6 +35,14 @@ angular.module("cmf.input", [])
       $scope.ngModel = _.without($scope.ngModel, item)
   ]
 )
+.directive("ngEnter", ->
+  (scope, element, attrs) ->
+    element.bind "keydown keypress", (event) ->
+      if event.which == 13
+        scope.$apply ->
+          scope.$eval attrs.ngEnter, {'event': event}
+        event.preventDefault()
+)
 # Checkboxes are a pain to handle. This makes the input of them easier.
 # Usage:
 #   <cmf-checkboxes list="your-data-list" choices="your-list-of-choices" />
