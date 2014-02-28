@@ -822,10 +822,6 @@
       ArticleStorage.changed(getClipboard)
       ClipboardStorage.changed(getClipboard)
 
-      # Group articles by date
-      # Remove an article from the clipboard.
-      $scope.removeFromClipboard = (article) ->
-        ClipboardStorage.remove article._id
     ]
     templateUrl: "bundles/article/clipboard-articles.html"
   ])
