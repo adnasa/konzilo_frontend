@@ -80,8 +80,8 @@ kzAnalysisDialog, $location, ProviderEmail, $translate) ->
 
   $scope.savePart = ->
     ArticlePartStorage.save($scope.part).then (part) ->
-      id = oldPart.provider._id or oldPart.provider
-      if part.provider != id
+      id = oldPart.provider?._id or oldPart.provider
+      if part.provider and part.provider != id
         url = $location.protocol() + '://' + $location.host()
         port = $location.port()
         if port != 80 or port != 443
