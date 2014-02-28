@@ -31,7 +31,10 @@ angular.module('konzilo.markdown', ["konzilo.file"])
         if files and files.length > 0
           file = files.shift()
           settings = file.settings
-          callback("[[entityType: File, alt: #{settings.alt}, title: #{settings.title}, entityId: #{file._id}]]")
+          settingsStr = ("#{key}: #{value}" for key, value of settings when value)
+          .join(', ')
+          settingsStr += ", " if settingsStr.length > 0
+          callback("[[entityType: File, #{settingsStr} entityId: #{file._id}]]")
 )
 
 .factory("markdownPlugins",
