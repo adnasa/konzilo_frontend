@@ -665,7 +665,7 @@
 
       groupParts = (parts) ->
         groupedResults = {}
-        for articlePart in parts
+        for articlePart in parts when articlePart.article
           articlePart.link = $scope.linkPattern.replace(":part", articlePart._id)
           availableParts[articlePart._id] = articlePart
           if not groupedResults[articlePart.state]
