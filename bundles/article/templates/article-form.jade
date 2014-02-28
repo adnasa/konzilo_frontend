@@ -21,9 +21,9 @@ form.form.article-form.form-horizontal(ng-submit="saveArticle(article)", name="a
           placeholder="{{'GLOBAL.DATE' | translate}}",
           datepicker-popup="yyyy-MM-dd")
       .publishtime
-        input(type="text", ng-model="publishtime",
+        input(type="text", ng-model="publishtime", name="publishtime",
           ng-change="changeTime(publishtime, article.publishdate)",
-          placeholder="{{'GLOBAL.PUBLISHTIME' | translate}}", maxlength="5")
+          placeholder="{{'GLOBAL.PUBLISHTIME' | translate}}", maxlength="5", ng-pattern="/^(2[0-3])|[01][0-9]:[0-5][0-9]$/")
   .form-group
     label.control-label(for="date") {{'GLOBAL.UNPUBLISHING' | translate}}
     .controls
@@ -31,9 +31,9 @@ form.form.article-form.form-horizontal(ng-submit="saveArticle(article)", name="a
         input(type="text", ng-model="article.unpublishdate",
           placeholder="{{'GLOBAL.DATE' | translate}}", datepicker-popup="yyyy-MM-dd")
       .publishtime
-        input(type="text", ng-model="unpublishtime",
+        input(type="text", ng-model="unpublishtime", name="unpublishtime",
           ng-change="changeTime(unpublishtime, article.unpublishdate)",
-          placeholder="{{'GLOBAL.UNPUBLISHTIME' | translate}}", maxlength="5")
+          placeholder="{{'GLOBAL.UNPUBLISHTIME' | translate}}", maxlength="5", ng-pattern="/^(2[0-3])|[01][0-9]:[0-5][0-9]$/")
   .form-group
     label.control-label {{'GLOBAL.CHANNEL' | translate}}
     .controls
