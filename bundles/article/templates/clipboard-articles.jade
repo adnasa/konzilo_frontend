@@ -7,8 +7,6 @@
           a.row-item(ng-repeat="article in unscheduled", href="{{link(article)}}", ng-class="activeArticle(article)")
               span(class="article-state {{article.state}}")
               span {{article.title}}
-              button.btn-link.clipboard-remove(ng-click="removeFromClipboard(article)")
-                span {{'GLOBAL.HIDE' | translate}}
       .scheduled
         .inner
           .articles.sortable

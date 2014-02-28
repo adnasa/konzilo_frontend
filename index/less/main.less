@@ -1099,8 +1099,10 @@ form.add-part-form {
     margin-right: 5px;
   }
   .updatepasswordbutton {
-    button.updatepassword {
-      margin-top: 5px;
+    @media (max-width: @screen-md-max) {
+      button.updatepassword {
+        margin-top: 5px;
+      }
     }
     .help-block {
       float: none;

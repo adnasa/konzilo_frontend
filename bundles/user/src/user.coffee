@@ -441,9 +441,13 @@ angular.module("kntnt.user",
           $scope.passwordInfo.message = $translate("USER.PASSWORDEMPTYFAIL")
           $scope.passwordInfo.status = false
         else
+          $scope.autosave?.stop()
           $scope.user.password = $scope.password
-          $scope.passwordInfo.message = $translate("USER.PASSWORDUPDATESUCCESS")
-          $scope.passwordInfo.status = true
+          UserStorage.save($scope.user).then ->
+            $scope.passwordInfo.message = $translate("USER.PASSWORDUPDATESUCCESS")
+            $scope.passwordInfo.status = true
+            $scope.autosave?.start()
+
 
     userAccess("administer system").then ->
       $scope.showAdminFields = true
