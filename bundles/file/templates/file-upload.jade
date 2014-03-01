@@ -1,19 +1,15 @@
 .file-upload
+  .alert.alert-danger(ng-show="error") {{error | translate}}
   form#fileupload(action="/file", method="POST",
-    enctype="multipart/form-data", file-upload="options")
-    input(type="file", name="files[]", multiple,
-      ng-model="files", ng-disabled="disabled")
+    enctype="multipart/form-data")
+    input(type="file", name="files[]", multiple, ng-disabled="disabled", ng-file-select="fileSelected($files)")
     .span5.fade(ng-class="{in: active()}")
-      .progress.progress-success.progress-striped.active(
-        file-upload-progress="progress()")
+      .progress.progress-success.progress-striped.active
         .bar(ng-style="{width: num + '%'}")
           .progress-extended &nbsp;
      table.table.table-striped.files.ng-cloak
        tr(ng-repeat="file in queue")
          td {{file.name}}
-         td
-           button.btn.btn-link.cancel(type="button",
-            ng-click="file.$cancel()") {{ 'GLOBAL.REMOVE' | translate }}
   button.btn.btn-primary(ng-click="submit()") {{'GLOBAL.UPLOAD' | translate }}
   .icon-spinner.icon-spin(ng-show="uploading")
   dl

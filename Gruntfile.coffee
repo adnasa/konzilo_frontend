@@ -25,13 +25,7 @@ dependencies = [
   "angular-bootstrap/ui-bootstrap-tpls.js"
   "angular-translate/angular-translate.js"
   "angular-translate-loader-static-files/angular-translate-loader-static-files.js"
-  "blueimp-load-image/js/load-image.min.js"
-  "blueimp-file-upload/js/jquery.iframe-transport.js"
-  "blueimp-file-upload/js/jquery.fileupload.js"
-  "blueimp-file-upload/js/jquery.fileupload-process.js"
-  "blueimp-file-upload/js/jquery.fileupload-image.js"
-  "blueimp-file-upload/js/jquery.fileupload-validate.js"
-  "blueimp-file-upload/js/jquery.fileupload-angular.js"
+  "ng-file-upload/angular-file-upload.js"
 ]
 
 bundles = [

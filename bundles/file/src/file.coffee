@@ -1,6 +1,7 @@
 angular.module("konzilo.file",
-["blueimp.fileupload", "ui.bootstrap",
-"kntnt.user", "ngResource", "cmf.input", "konzilo.translations"])
+["ui.bootstrap",
+"kntnt.user", "ngResource", "cmf.input",
+"konzilo.translations", "angularFileUpload"])
 
 .factory("fileBrowser", ["$modal", ($modal) ->
   (options) ->
@@ -120,8 +121,8 @@ angular.module("konzilo.file",
 ])
 
 .directive("fileUploadForm",
-["UserState", "$timeout", "FileBundle", "FileStorage"
-(UserState, $timeout, FileBundle, FileStorage) ->
+["UserState", "$timeout", "FileBundle", "FileStorage", "$upload", "$q",
+(UserState, $timeout, FileBundle, FileStorage, $upload, $q) ->
   restrict: "AE"
   templateUrl: 'bundles/file/file-upload.html'
   scope: { bundle: "=", filesUploaded: "=" }
@@ -130,6 +131,26 @@ angular.module("konzilo.file",
     FileBundle.get { name: $scope.bundle }, (bundleInfo) ->
       $scope.bundleInfo = bundleInfo
       $scope.fileTypes = _.toArray(bundleInfo.types).join(', ')
+      $scope.queue = []
+      $scope.fileSelected = (files) ->
+        $scope.queue = files
+
+      $scope.submit = ->
+        $scope.uploads = for file in $scope.queue
+          $upload.upload
+            url: '/file'
+            data: { bundle: $scope.bundle }
+            file: file
+        $scope.uploading = true
+        $q.all($scope.uploads).then (success) ->
+          files = (result.data for result in success)
+          $scope.uploading = false
+          $scope.filesUploaded(files)
+        , (err) ->
+          $scope.uploading = false
+          $scope.queue = []
+          $scope.error = err.data.message
+
       $scope.options =
         headers:
           Authorization: UserState.getTokenHeader()
@@ -146,6 +167,9 @@ angular.module("konzilo.file",
             timeoutFn = -> $scope.filesUploaded(files)
             $timeout(timeoutFn, 100)
             return
+        error: (e, data) ->
+          console.log e, data
+          return
   ]
 ])
 
