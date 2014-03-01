@@ -150,26 +150,6 @@ angular.module("konzilo.file",
           $scope.uploading = false
           $scope.queue = []
           $scope.error = err.data.message
-
-      $scope.options =
-        headers:
-          Authorization: UserState.getTokenHeader()
-        formData: { bundle: $scope.bundle }
-        maxFileSize: bundleInfo.maxFileSize
-        acceptFileTypes: new RegExp(bundleInfo.acceptFileTypes)
-        start: (e, data) ->
-          $scope.uploading = true
-        done: (e, data) ->
-          FileStorage.clearCache()
-          files.push(data.result)
-          # Really ugly hack to avoid errors when re-rendering the scope.
-          if files.length == $scope.queue.length
-            timeoutFn = -> $scope.filesUploaded(files)
-            $timeout(timeoutFn, 100)
-            return
-        error: (e, data) ->
-          console.log e, data
-          return
   ]
 ])
 
