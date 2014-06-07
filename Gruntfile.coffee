@@ -26,6 +26,7 @@ dependencies = [
   "angular-translate/angular-translate.js"
   "angular-translate-loader-static-files/angular-translate-loader-static-files.js"
   "ng-file-upload/angular-file-upload.js"
+  "vis/dist/vis.js"
 ]
 
 bundles = [
@@ -97,6 +98,13 @@ module.exports = (grunt) ->
             cwd: "bower_components/font-awesome/font"
             src: ['*']
             dest: 'web/font'
+            filter: 'isFile'
+          }
+          {
+            expand: true
+            cwd: "images"
+            src: ['*']
+            dest: 'web/images'
             filter: 'isFile'
           }
           {
