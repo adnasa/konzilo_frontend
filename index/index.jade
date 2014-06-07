@@ -8,6 +8,6 @@ html(class="no-js", ng-app="konzilo.main")
     link(rel="stylesheet", href="css/main.css")
     for script in scripts
       script(src=script)
-  body
+  body(class="{{page}}")
     include navbar.jade
     div(ng-view)

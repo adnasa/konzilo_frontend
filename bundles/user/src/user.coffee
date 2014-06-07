@@ -333,8 +333,10 @@ angular.module("kntnt.user",
 ["$scope", "LoginStorage", "UserState", "$location", "GetParameters", "$http", "$translate",
 ($scope, LoginStorage, UserState, $location, GetParameters, $http, $translate) ->
   $scope.$parent.title = $translate("LOGIN.LOGIN")
+  $scope.$parent.page = 'login'
   UserState.loggedIn(true).then ->
     $location.url("/")
+
   $scope.loginUser = ->
     $scope.message = false
     LoginStorage.save

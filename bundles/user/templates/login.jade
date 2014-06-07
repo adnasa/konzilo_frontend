@@ -1,4 +1,5 @@
 .login-form
+  img(src="images/logo_white.svg", width="600")
   .box.pad
     form.form(name="loginForm", ng-submit="loginUser()", ng-show="!showReset")
       .alert.alert-danger(ng-show="message") {{message | translate}}

@@ -65,7 +65,7 @@
 @pink:                  #c3325f;
 @purple:                #7a43b6;
 
-@background: #F2F2F2;
+@background: #f2f2f2;
 @maincolor: #fff;
 @kntntGreen: #60AD5F;
 @kntntGreener: #58A121;
@@ -74,6 +74,7 @@
 @kntntGreenDarker: darken(@kntntGreen, 20%);
 
 @kntntOrange: #FF6E00;
+@kntntOrangeLight: lighten(@kntntOrange, 5%);
 @kntntOrangeDark: #B24D00;
 @kntntGrayDark: #262626;
 @kntntDarker: #161616;
@@ -84,15 +85,14 @@
 @green: @kntntGreen;
 @grayLighter: #D9D9D9;
 
-@btn-primary-bg: @kntntGreen;
+@btn-primary-bg: @kntntOrange;
 
 //@screen-lg: 1500px;
-
 @navbar-inverse-color: @white;
 @navbar-inverse-link-color: @white;
 
 
-@label-primary-bg: @kntntGreen;
+@label-primary-bg: @kntntOrange;
 @label-info-bg: darken(@blue, 20%);
 
 @label-success-bg: @kntntGreen;
@@ -112,7 +112,7 @@ h6 { font-size: @font-size-base * 0.85; } // ~12px
 
 .navbar {
   .icon {
-    color: #A3D900;
+    color: @kntntOrange;
     margin-right: 5px;
   }
   .mainMenu.nav li {
@@ -236,6 +236,10 @@ img {
 body {
   background: @background;
   padding-top: 51px;
+}
+
+body.login {
+  background: @kntntOrange;
 }
 
 .main-content {
@@ -481,7 +485,7 @@ a.new-target {
 }
 
 .ui-placeholder {
-  background: @kntntGreen;
+  background: @kntntOrange;
   height: 50px;
 }
 
@@ -507,9 +511,9 @@ a.new-target {
   margin-bottom: 20px;
 
   &.droppable-hover {
-    border: 1px solid @kntntGreen;
+    border: 1px solid @kntntOrange;
     .top {
-      background: @kntntGreen;
+      background: @kntntOrange;
     }
   }
 
@@ -535,7 +539,7 @@ a.new-target {
       line-height: 35px;
       color: @white;
       &:hover {
-	color: @kntntGreener;
+	color: @kntntOrange;
       }
     }
   }
@@ -571,7 +575,7 @@ a.new-target {
   }
 
   &.ui-draggable:hover {
-    border: 1px solid @kntntGreen;
+    border: 1px solid @kntntOrange;
   }
   .top, header-content {
     padding-top: 5px;
@@ -596,7 +600,7 @@ a.new-target {
     color: @red;
   }
   .btn-link .icon-plus {
-    color: @kntntGreen;
+    color: @kntntOrange;
   }
   .btn-link:hover {
     text-decoration: none;
@@ -699,17 +703,17 @@ a.new-target {
     &.collapsed {
       position: fixed;
     }
-    border-top: 5px solid @kntntGreener;
+    border-top: 5px solid @kntntOrange;
     width: 100%;
     button {
-      background: @kntntGreener;
-      #gradient > .vertical(@kntntGreener, lighten(@kntntGreener, 10%));
+      background: @kntntOrange;
+      #gradient > .vertical(@kntntOrange, lighten(@kntntOrange, 10%));
       border: none;
       width: 150px;
       font-weight: bold;
       display: block;
       margin: 0 auto;
-      .box-shadow(0px 1px 1px #42912B);
+      .box-shadow(0px 1px 1px @kntntOrange);
       border-radius: 0px 0px 3px 3px;
       text-shadow: none;
       font-weight: 120;
@@ -807,7 +811,7 @@ a.new-target {
 
 form.add-article {
   padding: 3%;
-  background: @kntntGreen;
+  background: @kntntOrange;
   color: @white;
   label {
     display: none;
@@ -825,7 +829,7 @@ form.add-article {
     color: @yellow;
   }
   .icon-plus {
-    color: @kntntGreen;
+    color: @kntntOrange;
   }
   .checkbox {
     margin-bottom: 0;
@@ -836,8 +840,8 @@ form.add-article {
 
 form.add-part-form {
   .row-item;
-  background: @kntntGreen;
-  .box-shadow(inset 0 -1px 1px @kntntGreen, 0 1px 3px rgba(0,0,0,0.055););
+  background: @kntntOrange;
+  .box-shadow(inset 0 -1px 1px @kntntOrange, 0 1px 3px rgba(0,0,0,0.055););
   margin-bottom: 10px;
 }
 
@@ -980,7 +984,7 @@ form.add-part-form {
   .input-preview {
     border: 1px solid @well-bg;
     &:hover {
-      border: 1px dotted @kntntGreen;
+      border: 1px dotted @kntntOrange;
     }
   }
   .image {
@@ -1022,7 +1026,7 @@ form.add-part-form {
   }
   border: 1px solid @white;
   &:hover {
-    border: 1px dotted @kntntGreen;
+    border: 1px dotted @kntntOrange;
   }
   .tools {
     padding-bottom: 5px;
@@ -1216,7 +1220,20 @@ form.add-part-form {
   padding-left: 15px;
   padding-right: 15px;
   margin: 70px auto;
-  max-width: 500px;
+  max-width: 600px;
+  color: @white;
+  border-radius: 5px;
+  a {
+    color: @black;
+  }
+  img {
+    margin-bottom: 40px;
+  }
+  .box {
+    background: @kntntOrangeDark;
+    border: none;
+    padding: 20px;
+  }
 }
 
 .lang-switcher {
